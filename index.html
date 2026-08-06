@@ -744,8 +744,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     </div>
     <div class="downstream-label" id="ce-label" style="display:none">↳ Downstream action — outside fraud detection</div>
     <div class="claims-engine" id="claims-engine" style="display:none">
-      <div class="ce-hdr"><span style="font-size:26px">📨</span><div><div class="ce-title">Notification — Pega Smart Claims Engine</div><div class="ce-sub" id="ce-sub">Claim forwarded for standard processing</div></div><span class="ce-badge">SENT TO SCE</span></div>
-      <div class="ce-detail"><div class="ce-field"><span class="ce-lbl">Claim Reference</span><span class="ce-val" id="ce-ref">CLM-2024-0841</span></div><div class="ce-field"><span class="ce-lbl">Fraud Detection</span><span class="ce-val ce-green">No suspicious activity ✓</span></div><div class="ce-field"><span class="ce-lbl">Action</span><span class="ce-val ce-green">Forwarded to SCE ✓</span></div><div class="ce-field"><span class="ce-lbl">SCE Status</span><span class="ce-val">Awaiting assignment</span></div></div>
+      <div class="ce-hdr"><span style="font-size:26px">📨</span><div><div class="ce-title">Notification — Send for Claim Adjudication</div><div class="ce-sub" id="ce-sub">Claim forwarded for standard processing</div></div><span class="ce-badge">SENT FOR ADJUDICATION</span></div>
+      <div class="ce-detail"><div class="ce-field"><span class="ce-lbl">Claim Reference</span><span class="ce-val" id="ce-ref">CLM-2024-0841</span></div><div class="ce-field"><span class="ce-lbl">Fraud Detection</span><span class="ce-val ce-green">No suspicious activity ✓</span></div><div class="ce-field"><span class="ce-lbl">Action</span><span class="ce-val ce-green">Sent for adjudication ✓</span></div><div class="ce-field"><span class="ce-lbl">Adjudication Status</span><span class="ce-val">Awaiting assignment</span></div></div>
       <div style="padding:0 20px 16px"><button class="btn-back" style="width:100%" onclick="closeOverlay()">✕ Close</button></div>
     </div>
     <div class="aim-escalation" id="aim-escalation" style="display:none">
@@ -776,37 +776,57 @@ const S=[
 ];
 
 // Per-scenario, per-phase one-sentence explanation shown in rolling mode
+// Descriptions state what the phase is ABOUT TO DO — shown before checks run.
+// They must not pre-empt the result. The band turns red on failure at result time.
 const PHASE_DESC=[
-  { // CLM-0841 — Clean all the way through
-    ph1:'Pega scans the dental receipt for font tampering, arithmetic errors and forged stamps — everything checks out.',
-    ph2:'Pega Event Strategies verify the provider location, ABN, claim velocity and payment patterns — all clear.',
-    ph3:'Knowledge Buddy searches the fraud case library and the network graph traces relationship connections — no matches found, claim is clean.',
+  { // CLM-0841
+    ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
+    ph2:'Running the Pega Event Strategies across provider location, ABN, claim velocity and payment patterns.',
+    ph3:'Searching the fraud case library for similar cases and tracing the provider\'s network for hidden connections.',
   },
-  { // CLM-0842 — Caught at Phase 1 (document forgery)
-    ph1:'Pega detects three typefaces spliced into the one receipt, and a metadata trail showing it was authored in Photoshop two days after the service date.',
+  { // CLM-0842
+    ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
     ph2:null,
     ph3:null,
   },
-  { // CLM-0843 — Caught at Phase 2 (phantom ABN)
-    ph1:'The physio receipt passes document forensics — consistent font, correct arithmetic, valid item codes.',
-    ph2:'Event Strategy ES-005 cross-references the provider ABN against ASIC and ATO — the ABN was deregistered in July 2024, yet claims are still being submitted under it.',
+  { // CLM-0843
+    ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
+    ph2:'Running the Pega Event Strategies — including a live ASIC & ATO check on the provider\'s ABN.',
     ph3:null,
   },
-  { // CLM-0844 — Caught at Phase 2 (coordinated cluster)
-    ph1:'The dental receipt clears document forensics with no integrity issues detected.',
-    ph2:'Event Strategy ES-006 identifies that the payment BSB and account number match six other claims lodged in the past eight days from the same suburb — a coordinated billing cluster.',
+  { // CLM-0844
+    ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
+    ph2:'Running the Pega Event Strategies — including payment-account pattern analysis across recent claims.',
     ph3:null,
   },
-  { // CLM-0845 — Caught at Phase 3 (RAG similarity match)
-    ph1:'Optical receipt passes document forensics — no tampering or arithmetic issues.',
-    ph2:'All Pega Event Strategies pass with only a minor velocity flag, below the SIU threshold — proceeds to Phase 3.',
-    ph3:'Knowledge Buddy finds a 91% similarity match to four confirmed phantom billing cases with identical item codes and provider profile — flagged for investigation.',
+  { // CLM-0845
+    ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
+    ph2:'Running the Pega Event Strategies across provider location, ABN, claim velocity and payment patterns.',
+    ph3:'Knowledge Buddy compares this claim against the library of confirmed fraud cases for similarity.',
   },
-  { // CLM-0846 — Caught at Phase 3 (network graph ring detection)
-    ph1:'Physio receipt passes all document forensic checks cleanly.',
-    ph2:'All Pega Event Strategies pass — no flags raised, clean path to Phase 3.',
-    ph3:'The network graph traces a 3-hop connection from this provider through a shared IP to a confirmed fraud network — Community #47 with 14 members and 3 linked providers.',
+  { // CLM-0846
+    ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
+    ph2:'Running the Pega Event Strategies across provider location, ABN, claim velocity and payment patterns.',
+    ph3:'Tracing the provider\'s network up to 3 hops out, looking for links into known fraud communities.',
   },
+];
+
+// Shown in the band AFTER a phase resolves — states the finding.
+const PHASE_RESULT_DESC=[
+  { ph1:'Document integrity confirmed — no tampering detected.',
+    ph2:'All Event Strategies clear — no fraudulent patterns.',
+    ph3:'No similar fraud cases and no network connections found.' },
+  { ph1:'Suspicious document — spliced typefaces and a Photoshop metadata trail dated after the service.' },
+  { ph1:'Document integrity confirmed — no tampering detected.',
+    ph2:'ES-005 flagged the provider\'s ABN as deregistered in July 2024 — still being claimed under.' },
+  { ph1:'Document integrity confirmed — no tampering detected.',
+    ph2:'ES-006 matched the payment account to six other claims in eight days — a coordinated cluster.' },
+  { ph1:'Document integrity confirmed — no tampering detected.',
+    ph2:'All Event Strategies clear — only a minor velocity flag below threshold.',
+    ph3:'91% similarity to four confirmed phantom-billing cases — same codes, same provider profile.' },
+  { ph1:'Document integrity confirmed — no tampering detected.',
+    ph2:'All Event Strategies clear — no flags raised.',
+    ph3:'3-hop link into a confirmed fraud community — 14 members, 3 providers.' },
 ];
 
 const PHASES=[
@@ -824,7 +844,7 @@ const PHASES=[
     {ico:'🔗',name:'ES-006 Cluster Flag',running:'Detecting coordinated claim clusters...',pass:'No shared payment accounts or patterns detected',result:'pass',d:12000},
     {ico:'📊',name:'ES-007 Waiver Frequency',running:'Analysing 90-day waiver volume against capacity...',pass:'Waiver frequency within registered capacity',result:'pass',d:14000},
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes against ADA/MBS registry...',pass:'All ADA/MBS codes valid — 011 ✓  022 ✓  114 ✓',result:'pass',d:16000},
-  ]},ph3:{pass:true,score:'0',scoreColor:'#16A34A',scoreLabel:'Network Connections Found',verdict:'CLEAR — No ring detected',route:'Graph traversal clear · No similarity match · Passed to Smart Claims Engine',checks:[
+  ]},ph3:{pass:true,score:'0',scoreColor:'#16A34A',scoreLabel:'Network Connections Found',verdict:'CLEAR — No ring detected',route:'Graph traversal clear · No similarity match · Sent for Claim Adjudication',checks:[
     {ico:'🔍',name:'Knowledge Buddy RAG',running:'Searching Fraud Case Library for pattern matches...',pass:'Similarity score: 0.03 — No significant match found',result:'pass',d:2400},
     {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal from member node...',pass:'No ring connections detected — graph clear',result:'pass',d:5800,isMCP:true},
   ]}},
@@ -1347,6 +1367,9 @@ function activatePhase(ph,phData){
       sc.style.borderColor=phData.scoreColor+'55'; sc.style.boxShadow=`0 4px 20px ${phData.scoreColor}22`;
       setTimeout(()=>sc.scrollIntoView({behavior:'smooth',block:'center'}),150);
     }
+    // Swap the band from "about to do" to the actual finding
+    const resultDesc=PHASE_RESULT_DESC[curScenario]?.['ph'+ph];
+    if(resultDesc && $('ph'+ph+'-info-txt')) txt('ph'+ph+'-info-txt',resultDesc);
     const rb=$('ph'+ph+'-result'), rbI=$('ph'+ph+'-rb-ico');
     rb.classList.add('show');
     if(phData.pass){
@@ -1357,7 +1380,7 @@ function activatePhase(ph,phData){
       $('ph'+ph+'-block').style.background='#F0FDF4'; $('ph'+ph+'-block').style.borderColor='rgba(22,163,74,.3)'; $('ph'+ph+'-block').style.boxShadow='0 2px 8px rgba(22,163,74,.08)';
       if(ph===1){ txt('ph1-rb-title','Phase 1 Passed — Document Clean'); txt('ph1-rb-sub','Receipt integrity confirmed · Proceeding to Phase 2 Event Strategies'); }
       if(ph===2){ txt('ph2-rb-title','Phase 2 Passed — No Fraudulent Patterns Detected'); txt('ph2-rb-sub','All Pega Event Strategies evaluated · Proceeding to Phase 3 Agent Intelligence'); }
-      if(ph===3){ txt('ph3-rb-title','Phase 3 Complete — No Suspicious Activity'); txt('ph3-rb-sub','All fraud detection phases passed · Passed to Smart Claims Engine'); $('ph3-aim-btn').style.display='none'; }
+      if(ph===3){ txt('ph3-rb-title','Phase 3 Complete — No Suspicious Activity'); txt('ph3-rb-sub','All fraud detection phases passed · Sent for Claim Adjudication'); if($('ph3-aim-btn')){ $('ph3-aim-btn').style.display=''; $('ph3-aim-btn').textContent='View Fraud Detection Summary →'; } }
     } else {
       rb.className='result-badge show fail'; rbI.textContent='❌';
       const alertBand=$('ph'+ph+'-info-band');
@@ -1377,8 +1400,7 @@ function activatePhase(ph,phData){
       if($('ph'+ph+'-aim-btn')) $('ph'+ph+'-aim-btn').style.display='';
     }
     $('ph'+ph+'-btns').classList.add('show');
-    if(ph===3&&phData.pass) addTimer(()=>showFinalState(true),600);
-    // In rolling mode, auto-advance; in step-by-step, wait for presenter click
+    // In rolling mode, auto-advance after the standard phase pause; in manual/step-by-step, wait for the presenter's click.
     if(runMode==='rolling'&&!rollingPaused) rollingAdvanceAfterPhase();
   },maxD);
 }
@@ -1393,7 +1415,13 @@ function collapseAndContinue(ph){
   else showFinalState(true);
 }
 
-function showFinalAndAIM(){ showFinalState(false); }
+function showFinalAndAIM(){
+  // Determine whether the whole run was clean from the actual phase results,
+  // so a clean Phase 3 shows the clean summary rather than the suspicious one.
+  const pl=PHASES[curScenario];
+  const anyFail=(pl.ph1&&!pl.ph1.pass)||(pl.ph2&&!pl.ph2.pass)||(pl.ph3&&!pl.ph3.pass);
+  showFinalState(!anyFail);
+}
 
 function showFinalState(clean){
   [1,2,3].forEach(p=>collapsePhase(p));
@@ -1407,7 +1435,7 @@ function showFinalState(clean){
   if(clean){
     badge.className='fraud-summary-badge fsb-clean'; badge.textContent='✓ NO SUSPICIOUS ACTIVITY';
     txt('fs-icon','🛡️'); txt('fs-title','Fraud Detection — No Suspicious Activity');
-    txt('fs-sub','All phases completed · Claim passed to Smart Claims Engine');
+    txt('fs-sub','All phases completed · Sent for Claim Adjudication');
   } else {
     badge.className='fraud-summary-badge fsb-suspicious'; badge.textContent='⚠ SUSPICIOUS TRANSACTION';
     txt('fs-icon',isMedium?'⚠️':'🚨'); txt('fs-title','Fraud Detection — Suspicious Transaction Identified');
@@ -1431,7 +1459,7 @@ function showFinalState(clean){
     $('ce-label').style.display='block';
     const ce=$('claims-engine'); ce.style.display='block';
     txt('ce-ref',S[curScenario].id);
-    txt('ce-sub',S[curScenario].type.split(' ')[0]+' claim passed to Smart Claims Engine · Standard processing initiated');
+    txt('ce-sub',S[curScenario].type.split(' ')[0]+' claim sent for Claim Adjudication · Standard processing initiated');
   } else {
     const ae=$('aim-escalation'); ae.style.display='block';
     txt('ae-ref',S[curScenario].id.replace('CLM','INV'));
