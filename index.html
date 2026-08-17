@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Health Insurance Fraud Detection — Pega Infinity 26</title>
+<title>Health Insurance Fraud Detection — Pega Infinity 26.1</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -132,7 +132,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .s2-title{color:#fff}
 .light .s2-title{color:var(--navy)}
 .s2-tag{display:inline-block;font-size:clamp(11px,1.1vw,14px);font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:2px;color:#fff}
-.s2-pts{list-style:none;display:flex;flex-direction:column;gap:13px;margin-top:12px}
+.s2-pts{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:10px}
 .s2-pts li{font-size:clamp(13px,1.42vw,18px);line-height:1.5;display:flex;gap:7px}
 .dark .s2-pts li{color:var(--lblue)}
 .light .s2-pts li{color:var(--blue)}
@@ -150,7 +150,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .s3-sub{color:var(--gold)}
 .light .s3-sub{color:var(--teal)}
 .s3-grid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:16px;flex:1}
-.s3-card{border-radius:11px;padding:22px 24px;border-left-width:4px;border-left-style:solid;opacity:0;transform:translateY(8px);transition:all .4s ease;display:flex;flex-direction:column;justify-content:center}
+.s3-card{border-radius:11px;padding:22px 24px;border-left-width:4px;border-left-style:solid;opacity:0;transform:translateY(8px);transition:all .4s ease;display:flex;flex-direction:column;justify-content:flex-start}
 .s3-card.visible{opacity:1;transform:translateY(0)}
 .dark .s3-card{background:rgba(255,255,255,.05);border-top:1px solid rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
 .light .s3-card{background:#fff;border-top:1px solid rgba(0,31,95,.08);border-right:1px solid rgba(0,31,95,.08);border-bottom:1px solid rgba(0,31,95,.08);box-shadow:0 2px 10px rgba(0,31,95,.06)}
@@ -228,10 +228,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .form-select{padding:8px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;color:var(--text);font-family:var(--font);background:var(--white);cursor:pointer}
 .upload-zone{border:2px dashed var(--border);border-radius:8px;padding:18px;text-align:center;cursor:pointer;transition:all .2s;background:#FAFAFA}
 .upload-zone:hover{border-color:var(--red);background:var(--red-light)}
-.upload-zone.has-file{border-style:solid;border-color:var(--red);background:var(--red-light)}
+.upload-zone.has-file{border-style:solid;border-color:#16A34A;background:#F0FDF4}
 .upload-icon{font-size:24px;margin-bottom:5px}
 .upload-text{font-size:12px;color:var(--text-3)}
-.upload-text strong{color:var(--red)}
+.upload-text strong{color:inherit}
 .receipt-card{display:none;align-items:center;gap:10px;padding:9px 13px;background:var(--white);border:1px solid var(--border);border-radius:8px;margin-top:8px}
 .receipt-pdf{width:32px;height:32px;background:#FEE2E2;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
 .receipt-check{margin-left:auto;color:var(--green-mid);font-size:14px}
@@ -489,19 +489,20 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     <!-- SLIDE 2 — THREE PHASES -->
     <div class="pslide dark" id="ps1">
       <div class="s2-headline">One Intelligent Pipeline.</div>
-      <div class="s2-sub">Three Distinct Fraud Problems Solved.</div>
+      <div class="s2-sub">One Problem. Three Layers of Defence.</div>
       <div class="s2-grid">
         <div class="s2-col" id="c0">
           <div class="s2-bar" style="background:#F76923"></div>
           <div class="s2-body">
-            <div class="s2-title">Receipt & Document Fraud</div>
+            <div class="s2-title">Document Fraud</div>
             <span class="s2-tag" style="background:#F76923">Pega Goes Further</span>
             <ul class="s2-pts">
-              <li>OCR extracts text from documents — Pega Agentic AI interrogates the entire document</li>
+              <li>Document type classification & confidence scoring — every field scored against threshold before forensics</li>
+              <li>OCR extracts the text — Pega Agentic AI interrogates the entire document</li>
               <li>Font consistency analysis — spliced typefaces</li>
               <li>Stamp & colour forgery detection</li>
-              <li>AI-generated receipt detection — synthetic image artefacts</li>
-              <li>Metadata & provenance — authoring tool and timestamp trail</li>
+              <li>AI-generated receipt detection — flags artefacts from AI image generators</li>
+              <li>File history & authoring trail — made by clinic software, or edited after the service date?</li>
             </ul>
           </div>
         </div>
@@ -512,11 +513,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
             <span class="s2-tag" style="background:#10A5AC">Pega Event Strategies</span>
             <ul class="s2-pts">
               <li>Every strategy named, explainable and entirely auditable</li>
-              <li>Phantom ABN detection — live ASIC & ATO cross-reference</li>
-              <li>Coordinated claim clusters — shared payment account analysis</li>
+              <li>Phantom ABN detection — checked against the Australian Business Register</li>
+              <li>Repeat-account clustering — same payment account recurring across claims</li>
               <li>Provider location verification against member address</li>
               <li>Velocity & IP blocklist patterns</li>
-              <li>Waiver abuse rate and 90-day volume against registered capacity</li>
+              <li>Waiver abuse and 90-day volume — strategy defined, scope being confirmed</li>
               <li>New strategies added in days — no custom code, just Pega configuration</li>
             </ul>
           </div>
@@ -529,7 +530,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
             <ul class="s2-pts">
               <li>Invisible to conventional systems</li>
               <li>Network graph intelligence — 3-hop traversal catches connections invisible to direct-link analysis</li>
-              <li>Fraud community mapping across members, providers and accounts</li>
+              <li>Fraud community mapping — links an account or provider to fraud already confirmed, not just to itself</li>
               <li>Knowledge Buddy RAG — pattern similarity against confirmed fraud case library</li>
               <li>Early warning before fraud accumulates</li>
             </ul>
@@ -537,7 +538,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         </div>
       </div>
       <div class="s2-aim" id="aim">
-        🛡️ &nbsp;<strong>Pega Alerts & Investigations Management (AIM)</strong> — Every AI signal reviewed by a human investigator · AI assists, humans decide · Full APRA CPS 234 audit trail
+        🛡️ &nbsp;<strong>Pega Alerts & Investigations Management (AIM)</strong> — Every AI signal reviewed by a human investigator · AI assists, humans decide · Full audit trail on every case
       </div>
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
@@ -551,9 +552,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         <div class="s3-card" id="p0" style="border-left-color:#FFC836"><div class="s3-title">🏆 Proven Platform</div><div class="s3-body">#1 intelligent automation platform trusted by leading healthcare organisations globally</div></div>
         <div class="s3-card" id="p1" style="border-left-color:#10A5AC"><div class="s3-title">💰 Predictable Cost</div><div class="s3-body">Flat per-case pricing. No AI token tax. Costs scale with claims volume — not with AI usage</div></div>
         <div class="s3-card" id="p2" style="border-left-color:#5F67B9"><div class="s3-title">🧠 Self-Improving</div><div class="s3-body">Every investigator decision feeds back. The longer it runs, the more accurate it gets</div></div>
-        <div class="s3-card" id="p3" style="border-left-color:#F76923"><div class="s3-title">✅ APRA CPS 234</div><div class="s3-body">Every AI determination reviewed by a named human investigator. Court-ready audit trail on every case</div></div>
-        <div class="s3-card" id="p4" style="border-left-color:#10A5AC"><div class="s3-title">⚡ Fast to Deploy</div><div class="s3-body">Orchestrated end-to-end by Pega Infinity 26. No new platforms to build or infrastructure to own</div></div>
-        <div class="s3-card" id="p5" style="border-left-color:#334190"><div class="s3-title">📋 Legally Defensible</div><div class="s3-body">Every rule named, every flag explainable, every decision traceable. Built for regulatory scrutiny</div></div>
+        <div class="s3-card" id="p3" style="border-left-color:#F76923"><div class="s3-title">✅ APRA CPS 230</div><div class="s3-body">Claims management is a named critical operation under APRA's operational risk standard. Built for the audit trail, resilience and accountability that requires</div></div>
+        <div class="s3-card" id="p4" style="border-left-color:#10A5AC"><div class="s3-title">⚡ Fast to Deploy</div><div class="s3-body">Orchestrated end-to-end by Pega Infinity 26.1. No new platforms to build or infrastructure to own</div></div>
+        <div class="s3-card" id="p5" style="border-left-color:#334190"><div class="s3-title">👤 Human Oversight</div><div class="s3-body">Every AI determination reviewed by a named human investigator. Full audit trail on every case</div></div>
       </div>
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
@@ -561,14 +562,15 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 
     <!-- SLIDE 4 — LAUNCH -->
     <div class="pslide dark" id="ps3">
-      <div class="s4-main">See It Working.<br><span class="s4-gold">Right Now.</span></div>
+      <div class="s4-main">From Claim to Cleared —<br><span class="s4-gold">or Caught.</span></div>
       <div class="s4-pts">
-        <div class="s4-pt">Six real health insurance claim scenarios</div>
-        <div class="s4-pt">Three phases detecting fraud in real time</div>
-        <div class="s4-pt">AI assists — human decides · APRA CPS 234 compliant</div>
+        <div class="s4-pt">Six fraud scenarios modelled on real patterns — clean claims and caught fraud</div>
+        <div class="s4-pt">Three layers detecting fraud in real time</div>
+        <div class="s4-pt">AI assists — human decides · Full audit trail on every case</div>
+        <div class="s4-pt">No synthetic scoring — every number traces to a real check</div>
       </div>
-      <div class="s4-sub">Watch what happens in the seconds between a member submitting a claim and the outcome being determined</div>
-      <div class="s4-pulse"><div class="s4-pdot"></div><span class="s4-ptxt">Pega Infinity 26 · MCP Active · Live Pipeline</span></div>
+      <div class="s4-sub">What follows is the pipeline running across six claim scenarios — the seconds between a claim arriving and its outcome being determined.</div>
+      <div class="s4-pulse"><div class="s4-pdot"></div><span class="s4-ptxt">Pega Infinity 26.1 · Simulated Pipeline · Illustrative Scenarios</span></div>
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="goDemo()">Launch Demo →</button></div>
     </div>
@@ -579,7 +581,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="screen" id="demo-screen">
 <div class="page">
   <nav class="nav">
-    <div class="logo"><span class="logo-plus">U+</span>Insurance</div>
+    <div class="logo"><span class="logo-plus">H+</span>Health Insurance Co</div>
     <div class="nav-links">
       <a class="nav-link" href="#">My Cover</a>
       <a class="nav-link" href="#">Claims</a>
@@ -655,13 +657,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
               <label class="form-label">Upload Receipt <span class="req">*</span></label>
               <div class="upload-zone" id="upload-zone" onclick="simulateUpload()">
                 <div class="upload-icon">📎</div>
-                <div class="upload-text"><strong>Click to upload</strong> or drag and drop</div>
+                <div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div>
                 <div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>
               </div>
               <div id="upload-validation" style="display:none;margin-top:8px">
-                <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Document type detection</div><div class="val-detail" id="val-det-1">Checking file is a valid receipt or invoice...</div></div><div class="val-result" id="val-res-1"></div></div>
-                <div class="val-step" id="val-step-2" style="opacity:.3"><div class="val-ico" id="val-ico-2">⏳</div><div class="val-content"><div class="val-name">Content extraction</div><div class="val-detail" id="val-det-2">Extracting provider, amounts and item codes...</div></div><div class="val-result" id="val-res-2"></div></div>
-                <div class="val-step" id="val-step-3" style="opacity:.3"><div class="val-ico" id="val-ico-3">⏳</div><div class="val-content"><div class="val-name">Pre-validation check</div><div class="val-detail" id="val-det-3">Confirming document is ready for forensic analysis...</div></div><div class="val-result" id="val-res-3"></div></div>
+                <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Document type confirmed</div><div class="val-detail" id="val-det-1">Checking document type...</div></div></div>
+                <div class="val-step" id="val-step-2" style="opacity:.3"><div class="val-ico" id="val-ico-2">⏳</div><div class="val-content"><div class="val-name">Field extraction complete</div><div class="val-detail" id="val-det-2">Extracting provider, amounts and item codes...</div></div></div>
+                <div class="val-step" id="val-step-3" style="opacity:.3"><div class="val-ico" id="val-ico-3">⏳</div><div class="val-content"><div class="val-name">Confidence scoring complete</div><div class="val-detail" id="val-det-3">Scoring extraction confidence per field...</div></div></div>
+                <div class="val-step" id="val-step-4" style="opacity:.3"><div class="val-ico" id="val-ico-4">⏳</div><div class="val-content"><div class="val-name">Pre-flight gate passed</div><div class="val-detail" id="val-det-4">Running disqualifying keyword gate...</div></div></div>
               </div>
               <div class="receipt-card" id="receipt-card">
                 <div class="receipt-pdf">📄</div>
@@ -670,10 +673,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
               </div>
             </div>
             <div class="form-footer">
-              <div class="form-note">🔒 Secured · Processed by Pega Infinity 26</div>
+              <div class="form-note">🔒 Secured · Processed by Pega Infinity 26.1</div>
               <div style="display:flex;gap:10px">
-                <button class="btn-cancel">Save Draft</button>
-                <button class="btn-submit" onclick="submitClaim()">Submit Claim →</button>
+                <button class="btn-cancel" id="btn-savedraft">Save Draft</button>
+                <button class="btn-submit" id="btn-submit" onclick="submitClaim()">Submit Claim →</button>
+                <button class="btn-submit" id="btn-runpipeline" style="display:none;background:#1D4ED8" onclick="openPipeline()">Run Fraud Detection →</button>
               </div>
             </div>
           </div>
@@ -689,7 +693,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   <div class="ov-card">
     <div class="ov-hdr">
       <div class="ov-hdr-ico">🏥</div>
-      <div><div class="ov-hdr-title">Pega Infinity 26 — Fraud Detection Pipeline</div><div class="ov-hdr-sub" id="ov-sub">Processing claim · AI-assisted analysis running</div><div class="ov-ref" id="ov-ref">CLM-2024-0841</div></div>
+      <div><div class="ov-hdr-title">Pega Infinity 26.1 — Fraud Detection Pipeline</div><div class="ov-hdr-sub" id="ov-sub">Processing claim · AI-assisted analysis running</div><div class="ov-ref" id="ov-ref">CLM-2024-0841</div></div>
       <div style="margin-left:auto;flex-shrink:0">
         <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
       </div>
@@ -760,13 +764,29 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 // ══════════════════════════════════════════════════════
 // DATA
 // ══════════════════════════════════════════════════════
+// Per-scenario pre-flight validation detail (shown before the pipeline opens)
+const PREFLIGHT=[
+  { doctype:'TAX INVOICE · Dental receipt · ADA item code schedule applies',
+    conf:'All critical fields above threshold · ProviderABN 0.97 · InvoiceTotal 0.95 · ServiceDate 0.92' },
+  { doctype:'TAX INVOICE · Optical receipt · MBS optical schedule applies',
+    conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93' },
+  { doctype:'TAX INVOICE · Physiotherapy receipt · Allied health schedule applies',
+    conf:'All critical fields above threshold · ProviderABN 0.95 · InvoiceTotal 0.96 · ServiceDate 0.94' },
+  { doctype:'TAX INVOICE · Dental receipt · ADA item code schedule applies',
+    conf:'All critical fields above threshold · ProviderABN 0.94 · InvoiceTotal 0.93 · ServiceDate 0.95' },
+  { doctype:'TAX INVOICE · Optical receipt · MBS optical schedule applies',
+    conf:'All critical fields above threshold · ProviderABN 0.97 · InvoiceTotal 0.95 · ServiceDate 0.91' },
+  { doctype:'TAX INVOICE · Physiotherapy receipt · Allied health schedule applies',
+    conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93' },
+];
+
 const S=[
   {id:'CLM-2024-0841',mbr:'MBR-33291',joined:'Mar 2019',suburb:'Carlton VIC 3053',contact:'Email',member:'James Kowalski',ini:'JK',pol:'POL-2021-44210',cov:'Gold Hospital + Extras',cnt:3,amt:'$847.00',ben:'$1,153',type:'Dental (Extras)',date:'12 Jul 2026',prov:'Bright Smile Dental',abn:'42 198 776 334',clamt:'$312.00',codes:'011, 022, 114',file:'dental_receipt_MBR33291.pdf',fsz:'284 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'clean',
     preview:{icon:'✅',label:'Scenario 1 of 6 — Clean Claim',title:'A legitimate dental claim — watch how all three phases clear',body:'James lodges a routine dental claim from Bright Smile Dental. The receipt is genuine, the provider is registered and there are no suspicious patterns. This shows what a clean run looks like end-to-end.'}},
   {id:'CLM-2024-0842',mbr:'MBR-44712',joined:'Aug 2021',suburb:'Footscray VIC 3011',contact:'Email',member:'Sarah Nguyen',ini:'SN',pol:'POL-2019-88821',cov:'Silver Hospital + Extras',cnt:5,amt:'$1,240.00',ben:'$960',type:'Optical (Extras)',date:'14 Jul 2026',prov:'Vision Direct Pty Ltd',abn:'51 234 567 891',clamt:'$487.50',codes:'10801, 10701, 10501',file:'optical_receipt_MBR44712.pdf',fsz:'391 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph1',
     preview:{icon:'🔍',label:'Scenario 2 of 6 — Document Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
   {id:'CLM-2024-0843',mbr:'MBR-77834',joined:'Jan 2024',suburb:'Dandenong VIC 3175',contact:'SMS',member:'David Okafor',ini:'DO',pol:'POL-2022-11092',cov:'Bronze Hospital + Extras',cnt:2,amt:'$390.00',ben:'$1,610',type:'Physiotherapy (Extras)',date:'11 Jul 2026',prov:'Active Rehab Centre',abn:'99 000 111 222',clamt:'$195.00',codes:'SP001, SP010',file:'physio_receipt_MBR77834.pdf',fsz:'212 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'fail-ph2',
-    preview:{icon:'🏢',label:'Scenario 3 of 6 — Phantom ABN',title:'A deregistered provider caught in Phase 2',body:'David\'s physio receipt looks fine — but the provider\'s ABN was cancelled in July 2024. Pega\'s ES-005 Event Strategy cross-references ASIC and ATO in real time and flags the claim before any benefit is paid.'}},
+    preview:{icon:'🏢',label:'Scenario 3 of 6 — Phantom ABN',title:'A deregistered provider caught in Phase 2',body:'David\'s physio receipt looks fine — but the provider\'s ABN was cancelled in July 2024. Pega\'s ES-005 Event Strategy cross-references the Australian Business Register and flags the claim before any benefit is paid.'}},
   {id:'CLM-2024-0844',mbr:'MBR-55901',joined:'Nov 2025',suburb:'Springvale VIC 3171',contact:'SMS',member:'Linda Pham',ini:'LP',pol:'POL-2020-73341',cov:'Gold Hospital + Extras',cnt:7,amt:'$2,100.00',ben:'$400',type:'Dental (Extras)',date:'13 Jul 2026',prov:'Metro Dental Group',abn:'77 345 678 012',clamt:'$264.00',codes:'011, 121',file:'dental_receipt_MBR55901.pdf',fsz:'267 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'fail-ph2',
     preview:{icon:'🔗',label:'Scenario 4 of 6 — Coordinated Cluster',title:'Part of a billing ring — detected by payment pattern analysis',body:'Linda\'s dental claim looks ordinary in isolation, but Pega\'s ES-006 Event Strategy spots that the same bank account has received payments from six other claims in the past eight days — same provider, same suburb. A coordinated cluster.'}},
   {id:'CLM-2024-0845',mbr:'MBR-29034',joined:'Jun 2018',suburb:'Brunswick VIC 3056',contact:'Email',member:'Michael Torres',ini:'MT',pol:'POL-2018-55601',cov:'Silver Hospital + Extras',cnt:4,amt:'$920.00',ben:'$580',type:'Optical (Extras)',date:'10 Jul 2026',prov:'ClearView Optometry',abn:'33 456 789 123',clamt:'$390.00',codes:'10801, 10712',file:'optical_receipt_MBR29034.pdf',fsz:'318 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph3',
@@ -791,7 +811,7 @@ const PHASE_DESC=[
   },
   { // CLM-0843
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies — including a live ASIC & ATO check on the provider\'s ABN.',
+    ph2:'Running the Pega Event Strategies — including an Australian Business Register check on the provider\'s ABN.',
     ph3:null,
   },
   { // CLM-0844
@@ -820,13 +840,13 @@ const PHASE_RESULT_DESC=[
   { ph1:'Document integrity confirmed — no tampering detected.',
     ph2:'ES-005 flagged the provider\'s ABN as deregistered in July 2024 — still being claimed under.' },
   { ph1:'Document integrity confirmed — no tampering detected.',
-    ph2:'ES-006 matched the payment account to six other claims in eight days — a coordinated cluster.' },
+    ph2:'ES-006 matched the payment account to six other claims in eight days — an unexplained repeat pattern.' },
   { ph1:'Document integrity confirmed — no tampering detected.',
     ph2:'All Event Strategies clear — only a minor velocity flag below threshold.',
     ph3:'91% similarity to four confirmed phantom-billing cases — same codes, same provider profile.' },
   { ph1:'Document integrity confirmed — no tampering detected.',
     ph2:'All Event Strategies clear — no flags raised.',
-    ph3:'3-hop link into a confirmed fraud community — 14 members, 3 providers.' },
+    ph3:'3-hop link into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
 ];
 
 const PHASES=[
@@ -840,7 +860,7 @@ const PHASES=[
     {ico:'⚡',name:'ES-002 Velocity Check',running:'Analysing claim submission frequency...',pass:'Claim frequency within normal parameters',result:'pass',d:4000},
     {ico:'🌐',name:'ES-003 IP Block Check',running:'Checking submission IP against fraud blocklist...',pass:'IP address clean — no blocklist match',result:'pass',d:6000},
     {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking waiver pattern across provider...',pass:'Waiver rate within normal range',result:'pass',d:8000},
-    {ico:'🏢',name:'ES-005 Phantom ABN',running:'Cross-referencing ABN with ASIC and ATO registries...',pass:'ABN 42 198 776 334 verified and active',result:'pass',d:10000},
+    {ico:'🏢',name:'ES-005 Phantom ABN',running:'Cross-referencing ABN against the Australian Business Register...',pass:'ABN 42 198 776 334 verified and active',result:'pass',d:10000},
     {ico:'🔗',name:'ES-006 Cluster Flag',running:'Detecting coordinated claim clusters...',pass:'No shared payment accounts or patterns detected',result:'pass',d:12000},
     {ico:'📊',name:'ES-007 Waiver Frequency',running:'Analysing 90-day waiver volume against capacity...',pass:'Waiver frequency within registered capacity',result:'pass',d:14000},
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes against ADA/MBS registry...',pass:'All ADA/MBS codes valid — 011 ✓  022 ✓  114 ✓',result:'pass',d:16000},
@@ -864,7 +884,7 @@ const PHASES=[
     {ico:'⚡',name:'ES-002 Velocity Check',running:'Checking frequency...',pass:'Normal submission pattern',result:'pass',d:4000},
     {ico:'🌐',name:'ES-003 IP Block Check',running:'Checking IP...',pass:'IP clean',result:'pass',d:6000},
     {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking waivers...',pass:'Within normal range',result:'pass',d:8000},
-    {ico:'🏢',name:'ES-005 Phantom ABN',running:'Cross-referencing ABN 99 000 111 222 with ASIC and ATO...',pass:'',fail:'ABN DEREGISTERED — Cancelled July 2024. Provider submitting claims under an invalid business number.',result:'fail',d:10000},
+    {ico:'🏢',name:'ES-005 Phantom ABN',running:'Cross-referencing ABN 99 000 111 222 against the Australian Business Register...',pass:'',fail:'ABN DEREGISTERED — Cancelled July 2024. Provider submitting claims under an invalid business number.',result:'fail',d:10000},
     {ico:'🔗',name:'ES-006 Cluster Flag',running:'Detecting clusters...',pass:'No cluster detected',result:'pass',d:12000},
     {ico:'📊',name:'ES-007 Waiver Frequency',running:'Checking waiver volume...',pass:'Within capacity',result:'pass',d:14000},
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All physio codes valid — SP001 ✓  SP010 ✓',result:'pass',d:16000},
@@ -880,7 +900,7 @@ const PHASES=[
     {ico:'🌐',name:'ES-003 IP Block Check',running:'Checking...',pass:'Clean',result:'pass',d:6000},
     {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking...',pass:'Normal',result:'pass',d:8000},
     {ico:'🏢',name:'ES-005 Phantom ABN',running:'Verifying...',pass:'ABN 77 345 678 012 active',result:'pass',d:10000},
-    {ico:'🔗',name:'ES-006 Cluster Flag',running:'Analysing payment account patterns across recent claims...',pass:'',fail:'Coordinated cluster — payment BSB/account matches 6 other claims in past 8 days, same provider, same suburb.',result:'fail',d:12000},
+    {ico:'🔗',name:'ES-006 Cluster Flag',running:'Analysing payment account patterns across recent claims...',pass:'',fail:'Repeat account — payment BSB/account recurs across 6 claims in 8 days, same provider, same suburb. Frequency only — no confirmed fraud link at this stage.',result:'fail',d:12000},
     {ico:'📊',name:'ES-007 Waiver Frequency',running:'Checking...',pass:'Normal',result:'pass',d:14000},
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All ADA/MBS codes valid — 011 ✓  121 ✓',result:'pass',d:16000},
   ]},ph3:null},
@@ -1221,9 +1241,12 @@ function setScenario(idx){
   txt('form-sub','Submit your '+s.type.split(' ')[0].toLowerCase()+' receipt for instant processing');
   const uz=$('upload-zone');
   uz.classList.remove('has-file');
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong>Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
+  // Reset action buttons to default state
+  if($('btn-submit')) $('btn-submit').style.display='';
+  if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
   closeOverlay();
   // Show preview banner in rolling mode
   const banner=$('scenario-banner');
@@ -1256,27 +1279,50 @@ function hideBanner(){ $('scenario-banner').style.display='none'; clearInterval(
 
 function simulateUpload(){
   hideBanner();
-  const s=S[curScenario], uz=$('upload-zone');
+  const s=S[curScenario], pf=PREFLIGHT[curScenario], uz=$('upload-zone');
   uz.innerHTML='<div class="upload-icon">⏫</div><div class="upload-text">Uploading...</div>';
   const vp=$('upload-validation'); vp.style.display='block';
-  [1,2,3].forEach(i=>{
+  // Reset all four rows to queued
+  [1,2,3,4].forEach(i=>{
     $('val-step-'+i).style.opacity=i===1?'1':'.3';
     $('val-step-'+i).className='val-step';
     $('val-ico-'+i).textContent=i===1?'🔄':'⏳';
-    $('val-res-'+i).textContent='';
-    txt('val-det-'+i,i===1?'Checking file is a valid receipt or invoice...':i===2?'Extracting provider, amounts and item codes...':'Confirming document is ready for forensic analysis...');
   });
-  setTimeout(()=>{ $('val-step-1').className='val-step done'; $('val-ico-1').textContent='✅'; txt('val-det-1','Valid '+s.type.split(' ')[0].toLowerCase()+' receipt detected'); $('val-res-1').textContent='✓'; $('val-step-2').style.opacity='1'; $('val-ico-2').textContent='🔄'; },1200);
-  setTimeout(()=>{ $('val-step-2').className='val-step done'; $('val-ico-2').textContent='✅'; txt('val-det-2','Extracted: '+s.prov+' · '+s.clamt+' · '+s.codes); $('val-res-2').textContent='✓'; $('val-step-3').style.opacity='1'; $('val-ico-3').textContent='🔄'; },2600);
+  txt('val-det-1','Checking document type...');
+  txt('val-det-2','Extracting provider, amounts and item codes...');
+  txt('val-det-3','Scoring extraction confidence per field...');
+  txt('val-det-4','Running disqualifying keyword gate...');
+
+  const done=(i,detail,nextIco)=>{
+    $('val-step-'+i).className='val-step done';
+    $('val-ico-'+i).textContent='✅';
+    txt('val-det-'+i,detail);
+    if(nextIco){ $('val-step-'+(i+1)).style.opacity='1'; $('val-ico-'+(i+1)).textContent='🔄'; }
+  };
+
+  // 1 — Document type (0.5s)
+  setTimeout(()=>done(1, pf.doctype, true), 500);
+  // 2 — Field extraction (1.5s)
+  setTimeout(()=>done(2, 'Provider: '+s.prov+' · Total: '+s.clamt+' · '+s.codes.split(',').length+' service lines · Item codes: '+s.codes+' · Member: '+s.mbr.replace('-',''), true), 1500);
+  // 3 — Confidence scoring (2.5s)
+  setTimeout(()=>done(3, pf.conf, true), 2500);
+  // 4 — Pre-flight gate (3.5s)
+  setTimeout(()=>done(4, 'No disqualifying keywords detected · Document type approved · Passing to Pega Document Agent for forensic authentication', false), 3500);
+
+  // Banner + file card (4.5s)
   setTimeout(()=>{
-    $('val-step-3').className='val-step done'; $('val-ico-3').textContent='✅';
-    txt('val-det-3','Document ready for forensic analysis — passing to Pega Document Agent');
     uz.classList.add('has-file');
-    uz.innerHTML='<div class="upload-icon">✅</div><div class="upload-text" style="color:var(--green-mid)"><strong>Receipt validated and ready</strong></div>';
+    uz.innerHTML='<div class="upload-icon">✅</div>'
+      +'<div class="upload-text" style="color:#16A34A"><strong>Receipt pre-validated — passing to forensic authentication</strong></div>'
+      +'<div style="font-size:11px;color:#4B7A5A;margin-top:4px;line-height:1.5">Document type confirmed · Fields extracted · Confidence thresholds met · No disqualifying content detected</div>';
     const rc=$('receipt-card'); rc.style.display='flex';
-    txt('r-name',s.file); txt('r-size',s.fsz+' · Validated PDF');
+    txt('r-name',s.file); txt('r-size',s.fsz+' · Validated · Pre-flight complete');
     uploaded=true;
-  },4200);
+    if(runMode!=='rolling'){
+      if($('btn-submit')) $('btn-submit').style.display='none';
+      if($('btn-runpipeline')) $('btn-runpipeline').style.display='';
+    }
+  },4500);
 }
 
 // ══════════════════════════════════════════════════════
@@ -1303,7 +1349,22 @@ function resetPhaseBlock(ph){
 }
 
 function submitClaim(){
-  if(!uploaded){ simulateUpload(); addTimer(submitClaim,4500); return; }
+  // Not yet uploaded — run the upload validation first.
+  if(!uploaded){
+    simulateUpload();
+    // In rolling mode, auto-continue into the pipeline once validation finishes.
+    if(runMode==='rolling') addTimer(openPipeline,5000);
+    return;
+  }
+  // Already uploaded (manual click of Submit after upload) — in rolling, go straight on.
+  if(runMode==='rolling'){ openPipeline(); return; }
+  // Manual mode: reveal the Run Fraud Detection button rather than opening immediately.
+  if($('btn-submit')) $('btn-submit').style.display='none';
+  if($('btn-runpipeline')) $('btn-runpipeline').style.display='';
+}
+
+function openPipeline(){
+  if(!uploaded){ simulateUpload(); addTimer(openPipeline,5000); return; }
   clearAllTimers();
   const s=S[curScenario], pl=PHASES[curScenario];
   [1,2,3].forEach(p=>resetPhaseBlock(p));
@@ -1488,9 +1549,11 @@ function closeOverlay(){
   clearAllTimers(); uploaded=false;
   const uz=$('upload-zone');
   uz.classList.remove('has-file');
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong>Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
+  if($('btn-submit')) $('btn-submit').style.display='';
+  if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
 }
 
 // ══════════════════════════════════════════════════════
