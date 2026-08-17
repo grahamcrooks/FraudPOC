@@ -283,6 +283,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .ov-hdr-title{font-size:20px;font-weight:800;color:#111827}
 .ov-hdr-sub{font-size:13px;color:#6B7280;margin-top:2px}
 .ov-ref{font-family:'Courier New',monospace;font-size:11px;font-weight:700;color:#DC2626;background:#FEF2F2;padding:3px 10px;border-radius:6px;display:inline-block;margin-top:4px;border:1px solid rgba(220,38,38,.2)}
+.ov-sim-marker{font-size:10px;font-weight:500;color:#9CA3AF;font-style:italic;letter-spacing:.2px}
 .phase-block{margin-bottom:10px;border-radius:12px;overflow:hidden;border:1px solid #E5E7EB;transition:all .4s;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .phase-collapsed{display:flex;align-items:center;gap:12px;padding:14px 18px}
 .phase-status-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;transition:all .3s}
@@ -292,6 +293,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .psi-fail{background:#FEE2E2}
 @keyframes pulse-blue{0%,100%{box-shadow:0 0 0 0 rgba(29,78,216,.3)}50%{box-shadow:0 0 0 6px rgba(29,78,216,0)}}
 .phase-name{font-size:16px;font-weight:700;color:#111827;flex:1}
+.phase-titlewrap{flex:1;display:flex;flex-direction:column;gap:2px;min-width:0}
+.phase-titlewrap .phase-name{flex:none}
+.phase-question{font-size:12px;font-weight:400;color:#6B7280;line-height:1.35}
 .phase-status-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
 .psb-queued{background:#F3F4F6;color:#9CA3AF;border:1px solid #E5E7EB}
 .psb-running{background:#EFF6FF;color:#1D4ED8;border:1px solid rgba(29,78,216,.2)}
@@ -693,7 +697,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   <div class="ov-card">
     <div class="ov-hdr">
       <div class="ov-hdr-ico">🏥</div>
-      <div><div class="ov-hdr-title">Pega Infinity 26.1 — Fraud Detection Pipeline</div><div class="ov-hdr-sub" id="ov-sub">Processing claim · AI-assisted analysis running</div><div class="ov-ref" id="ov-ref">CLM-2024-0841</div></div>
+      <div><div class="ov-hdr-title">Pega Infinity 26.1 — Fraud Detection Pipeline</div><div class="ov-hdr-sub" id="ov-sub">Processing claim · AI-assisted analysis running</div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px"><div class="ov-ref" id="ov-ref" style="margin-top:0">CLM-2024-0841</div><span class="ov-sim-marker">Simulated pipeline · illustrative scenario data</span></div></div>
       <div style="margin-left:auto;flex-shrink:0">
         <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
       </div>
@@ -702,7 +706,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       <div class="phase-collapsed"><div class="phase-status-ico psi-pass">📥</div><div class="phase-name">Claim Case Created · Valid Receipt Confirmed</div><span class="phase-status-badge psb-pass">✓ Complete</span></div>
     </div>
     <div class="phase-block" id="ph1-block">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph1-ico">🔍</div><div class="phase-name">Phase 1 — Document Forensics</div><span class="phase-status-badge psb-queued" id="ph1-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph1-ico">🔍</div><div class="phase-titlewrap"><div class="phase-name">Phase 1 — Document Forensics</div><div class="phase-question">Is this document real? Examining fonts, arithmetic, structure and provenance.</div></div><span class="phase-status-badge psb-queued" id="ph1-badge">Queued</span></div>
       <div class="phase-expanded" id="ph1-expanded">
         <div class="phase-info" id="ph1-info"><div class="phase-info-band" id="ph1-info-band"><div class="phase-info-txt" id="ph1-info-txt"></div></div></div>
         <div class="check-list" id="ph1-checks"></div>
@@ -716,7 +720,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       </div>
     </div>
     <div class="phase-block" id="ph2-block" style="display:none">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-name">Phase 2 — Event Strategy Detection</div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Event Strategy Detection</div><div class="phase-question">Does this claim make sense? Comparing against provider history, registers and recent claim patterns.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
@@ -730,7 +734,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       </div>
     </div>
     <div class="phase-block" id="ph3-block" style="display:none">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph3-ico">🧠</div><div class="phase-name">Phase 3 — Agentic Intelligence</div><span class="phase-status-badge psb-queued" id="ph3-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph3-ico">🧠</div><div class="phase-titlewrap"><div class="phase-name">Phase 3 — Agentic Intelligence</div><div class="phase-question">Who else is involved? Tracing connections to entities already confirmed fraudulent.</div></div><span class="phase-status-badge psb-queued" id="ph3-badge">Queued</span></div>
       <div class="phase-expanded" id="ph3-expanded">
         <div class="phase-info" id="ph3-info"><div class="phase-info-band" id="ph3-info-band"><div class="phase-info-txt" id="ph3-info-txt"></div></div></div>
         <div class="check-list" id="ph3-checks"></div>
@@ -837,15 +841,15 @@ const PHASE_RESULT_DESC=[
     ph2:'All Event Strategies clear — no fraudulent patterns.',
     ph3:'No similar fraud cases and no network connections found.' },
   { ph1:'Suspicious document — spliced typefaces and a Photoshop metadata trail dated after the service.' },
-  { ph1:'Document integrity confirmed — no tampering detected.',
+  { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
     ph2:'ES-005 flagged the provider\'s ABN as deregistered in July 2024 — still being claimed under.' },
-  { ph1:'Document integrity confirmed — no tampering detected.',
+  { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
     ph2:'ES-006 matched the payment account to six other claims in eight days — an unexplained repeat pattern.' },
-  { ph1:'Document integrity confirmed — no tampering detected.',
-    ph2:'All Event Strategies clear — only a minor velocity flag below threshold.',
+  { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
+    ph2:'All Event Strategies clear — only a minor velocity flag below threshold. Every strategy sees one claim at a time — no single claim contains the connection.',
     ph3:'91% similarity to four confirmed phantom-billing cases — same codes, same provider profile.' },
-  { ph1:'Document integrity confirmed — no tampering detected.',
-    ph2:'All Event Strategies clear — no flags raised.',
+  { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
+    ph2:'All Event Strategies clear — no flags raised. Every strategy sees one claim at a time — no single claim contains the connection.',
     ph3:'3-hop link into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
 ];
 
