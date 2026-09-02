@@ -274,8 +274,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .val-detail{font-size:11px;color:var(--text-3);margin-top:1px}
 .val-detail.ok{color:var(--green-mid)}
 .val-result{font-size:15px;flex-shrink:0}
+.dataset-intro{background:var(--lblue);border:1px solid rgba(0,31,95,.12);border-radius:8px;padding:10px 14px;margin-bottom:14px}
+.dataset-intro-title{font-size:11.5px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.dataset-intro-body{font-size:12px;color:var(--text-2);line-height:1.5}
 .form-footer{display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--border);margin-top:4px}
-.form-note{font-size:11px;color:var(--text-3)}
+.form-note{font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dataset-badge{font-size:10.5px;font-weight:700;color:#6D28D9;background:#EDE9FE;padding:2px 9px;border-radius:20px;border:1px solid rgba(109,40,217,.2)}
 .btn-submit{background:var(--red);color:#fff;border:none;padding:11px 26px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s}
 .btn-submit:hover{background:var(--red-dark)}
 .btn-cancel{background:transparent;color:var(--text-2);border:1.5px solid var(--border);padding:10px 16px;border-radius:7px;font-size:12px;cursor:pointer;font-family:var(--font)}
@@ -365,6 +369,15 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .rb-ico{font-size:30px}
 .rb-title{font-size:16px;font-weight:800;color:#111827}
 .rb-sub{font-size:12px;color:#6B7280;margin-top:3px}
+.discrepancy-panel{display:none;margin-top:12px;padding:16px 18px;border-radius:10px;background:#FEF2F2;border:1.5px solid rgba(220,38,38,.3)}
+.discrepancy-panel.show{display:block;animation:fadeUp .3s ease}
+.discrepancy-title{font-size:13px;font-weight:800;color:#991B1B;margin-bottom:12px;line-height:1.4}
+.discrepancy-rows{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.discrepancy-row{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:#374151}
+.discrepancy-row span:last-child{font-family:'Courier New',monospace;font-weight:600}
+.discrepancy-row.total{border-top:1px dashed rgba(220,38,38,.25);padding-top:7px;font-weight:700;color:#991B1B}
+.discrepancy-result{font-size:12.5px;font-weight:800;color:#991B1B;margin-bottom:4px;letter-spacing:.2px}
+.discrepancy-note{font-size:11.5px;color:#6B7280}
 .phase-btns{display:none;gap:10px;margin-top:14px}
 .phase-btns.show{display:flex}
 .btn-continue{background:#1D4ED8;color:#fff;border:none;padding:13px 0;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);flex:1;transition:all .2s;box-shadow:0 4px 14px rgba(29,78,216,.3)}
@@ -465,7 +478,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .fdb-th-sort{margin-left:4px;opacity:.4;font-size:9px}
 .fdb-th-sort.asc,.fdb-th-sort.desc{opacity:1}
 .fdb-tbody{max-height:600px;overflow-y:auto}
-.fdb-row{display:grid;grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 1.1fr 1.2fr;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center;font-size:12px}
+.fdb-row{display:grid;grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 100px 1.1fr 1.2fr;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center;font-size:12px}
 .fdb-row:hover{background:rgba(0,31,95,.02)}
 .fdb-row:last-child{border-bottom:none}
 .fdb-cell-claim{font-family:'Courier New',monospace;font-weight:600;color:var(--text)}
@@ -474,6 +487,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .fdb-cell-date{color:var(--text-3);font-size:11px}
 .fdb-cell-type{background:rgba(0,31,95,.08);color:var(--navy);padding:2px 8px;border-radius:4px;display:inline-block;font-size:10px;font-weight:600}
 .fdb-cell-score{font-family:'Courier New',monospace;font-weight:700}
+.fdb-cell-discrepancy{font-family:'Courier New',monospace;font-weight:700;text-align:right;color:#991B1B}
 .fdb-cell-outcome{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600}
 .fdb-outcome-clean{background:var(--green-bg);color:var(--green-mid)}
 .fdb-outcome-suspicious{background:#FEF3C7;color:#92400E}
@@ -810,7 +824,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     </div>
   </nav>
   <div class="ctx-strip">
-    <div class="ctx-tag"><div class="hero-dot"></div>Claim Portal — Active</div>
+    <div class="ctx-tag"><div class="hero-dot"></div>POC: Phase 1 Validation — Dataset Processing</div>
     <div class="ctx-sep"></div>
     <h1 class="ctx-h1" id="hero-h1">Lodge your dental claim</h1>
     <div class="ctx-spacer"></div>
@@ -853,16 +867,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         </div>
         <div class="lodge-section" style="height:100%">
           <div class="lodge-hdr">
-            <div><div class="lodge-hdr-title">Lodge a New Claim</div><div class="lodge-hdr-sub" id="form-sub">Submit your receipt for instant processing</div></div>
+            <div><div class="lodge-hdr-title">Phase 1 Dataset Analysis</div><div class="lodge-hdr-sub" id="form-sub">Validating member-entered data against historical receipts</div></div>
             <div class="lodge-active"><div class="lodge-active-dot"></div>AI Fraud Detection Active</div>
           </div>
           <div class="lodge-body">
             <div class="form-group full" style="margin-bottom:14px">
-              <label class="form-label">Upload Receipt <span class="req">*</span></label>
+              <label class="form-label">Document from Dataset <span class="req">*</span></label>
               <div class="upload-zone" id="upload-zone" onclick="simulateUpload()">
                 <div class="upload-icon">📎</div>
-                <div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div>
-                <div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>
+                <div class="upload-text"><strong style="color:var(--red)">Load Document</strong></div>
+                <div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>
               </div>
               <div id="upload-validation" style="display:none;margin-top:8px">
                 <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Document type confirmed</div><div class="val-detail" id="val-det-1">Checking document type...</div></div></div>
@@ -875,6 +889,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
                 <div><div style="font-size:12px;font-weight:600" id="r-name">receipt.pdf</div><div style="font-size:11px;color:var(--text-3)" id="r-size">Loading...</div></div>
                 <div class="receipt-check">✅</div>
               </div>
+            </div>
+            <div class="dataset-intro">
+              <div class="dataset-intro-title">Member-Entered Data (From Dataset)</div>
+              <div class="dataset-intro-body">Below shows data entered by the member when lodging the claim. Phase 1 validates: does this data match the actual receipt?</div>
             </div>
             <div class="form-row">
               <div class="form-group"><label class="form-label">Claim Type <span class="req">*</span></label><select class="form-select" id="f-type"><option id="f-type-opt"></option></select></div>
@@ -889,7 +907,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
               <div class="form-group"><label class="form-label">Item Codes</label><input class="form-input" id="f-codes" readonly placeholder="Read from receipt"></div>
             </div>
             <div class="form-footer">
-              <div class="form-note">🔒 Secured · Processed by Pega Infinity 26.1</div>
+              <div class="form-note">🔒 Secured · Processed by Pega Infinity 26.1 <span class="dataset-badge">🤖 Historical Dataset · Phase 1 Only</span></div>
               <div style="display:flex;gap:10px">
                 <button class="btn-cancel" id="btn-savedraft">Save Draft</button>
                 <button class="btn-submit" id="btn-submit" onclick="submitClaim()">Submit Claim →</button>
@@ -967,13 +985,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       </div>
       <div class="fdb-table">
         <div class="fdb-thead">
-          <div class="fdb-row" style="grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 1.1fr 1.2fr">
+          <div class="fdb-row" style="grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 100px 1.1fr 1.2fr">
             <div class="fdb-th" onclick="fdbSort('claim')">Claim Ref <span class="fdb-th-sort" id="sort-claim"></span></div>
             <div class="fdb-th" onclick="fdbSort('member')">Member <span class="fdb-th-sort" id="sort-member"></span></div>
             <div class="fdb-th" onclick="fdbSort('provider')">Provider <span class="fdb-th-sort" id="sort-provider"></span></div>
             <div class="fdb-th" onclick="fdbSort('date')">Date <span class="fdb-th-sort" id="sort-date"></span></div>
             <div class="fdb-th" onclick="fdbSort('type')">Type</div>
             <div class="fdb-th" onclick="fdbSort('amount')">Amount <span class="fdb-th-sort" id="sort-amount"></span></div>
+            <div class="fdb-th" style="text-align:right" onclick="fdbSort('discrepancy')">Discrepancy <span class="fdb-th-sort" id="sort-discrepancy"></span></div>
             <div class="fdb-th" onclick="fdbSort('score')">Fraud Score <span class="fdb-th-sort" id="sort-score"></span></div>
             <div class="fdb-th" onclick="fdbSort('outcome')">Outcome <span class="fdb-th-sort" id="sort-outcome"></span></div>
           </div>
@@ -1008,6 +1027,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         <div class="check-list" id="ph1-checks"></div>
         <div class="score-reveal" id="ph1-score"><div class="score-num" id="ph1-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Document Integrity Score</div><div class="score-verdict" id="ph1-score-verdict">Calculating...</div><div class="score-route" id="ph1-score-route"></div></div></div>
         <div class="result-badge" id="ph1-result"><div class="rb-ico" id="ph1-rb-ico">✅</div><div><div class="rb-title" id="ph1-rb-title">Phase 1 Passed</div><div class="rb-sub" id="ph1-rb-sub">Document integrity confirmed</div></div></div>
+        <div class="discrepancy-panel" id="ph1-discrepancy">
+          <div class="discrepancy-title">⚠️ Phase 1 Validation Failed — Member Claim vs Actual Receipt</div>
+          <div class="discrepancy-rows">
+            <div class="discrepancy-row"><span>Member Entered</span><span id="dp-entered"></span></div>
+            <div class="discrepancy-row"><span>Receipt Shows</span><span id="dp-receipt"></span></div>
+            <div class="discrepancy-row total"><span>Discrepancy</span><span id="dp-diff"></span></div>
+          </div>
+          <div class="discrepancy-result">Result: MISMATCH DETECTED</div>
+          <div class="discrepancy-note">This document would be escalated for investigator review.</div>
+        </div>
         <div class="phase-btns" id="ph1-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
           <button class="btn-continue" id="ph1-continue-btn" onclick="collapseAndContinue(1)">Continue to Phase 2 — Event Strategy Detection →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Auditable Pega Event Strategies evaluated in real time</div></button>
@@ -1086,6 +1115,7 @@ const S=[
   {id:'CLM-2024-0841',mbr:'MBR-33291',joined:'Mar 2019',suburb:'Carlton VIC 3053',contact:'Email',member:'James Kowalski',ini:'JK',pol:'POL-2021-44210',cov:'Gold Hospital + Extras',cnt:3,amt:'$847.00',ben:'$1,153',type:'Dental (Extras)',date:'12 Jul 2026',prov:'Bright Smile Dental',abn:'42 198 776 334',clamt:'$312.00',codes:'011, 022, 114',file:'dental_receipt_MBR33291.pdf',fsz:'284 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'clean',
     preview:{icon:'✅',label:'Scenario 1 of 6 — Clean Claim',title:'A legitimate dental claim — watch how all three phases clear',body:'James lodges a routine dental claim from Bright Smile Dental. The receipt is genuine, the provider is registered and there are no suspicious patterns. This shows what a clean run looks like end-to-end.'}},
   {id:'CLM-2024-0842',mbr:'MBR-44712',joined:'Aug 2021',suburb:'Footscray VIC 3011',contact:'Email',member:'Sarah Nguyen',ini:'SN',pol:'POL-2019-88821',cov:'Silver Hospital + Extras',cnt:5,amt:'$1,240.00',ben:'$960',type:'Optical (Extras)',date:'14 Jul 2026',prov:'Vision Direct Pty Ltd',abn:'51 234 567 891',clamt:'$487.50',codes:'10801, 10701, 10501',file:'optical_receipt_MBR44712.pdf',fsz:'391 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph1',
+    receiptMismatch:{entered:'$487.50',receipt:'$445.00',diff:'$42.50',pct:'10.8%'},
     preview:{icon:'🔍',label:'Scenario 2 of 6 — Document Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
   {id:'CLM-2024-0843',mbr:'MBR-77834',joined:'Jan 2024',suburb:'Dandenong VIC 3175',contact:'SMS',member:'David Okafor',ini:'DO',pol:'POL-2022-11092',cov:'Bronze Hospital + Extras',cnt:2,amt:'$390.00',ben:'$1,610',type:'Physiotherapy (Extras)',date:'11 Jul 2026',prov:'Active Rehab Centre',abn:'99 000 111 222',clamt:'$195.00',codes:'SP001, SP010',file:'physio_receipt_MBR77834.pdf',fsz:'212 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'fail-ph2',
     preview:{icon:'🏢',label:'Scenario 3 of 6 — Phantom ABN',title:'A deregistered provider caught in Phase 2',body:'David\'s physio receipt looks fine — but the provider\'s ABN was cancelled in July 2024. Pega\'s ES-005 Event Strategy cross-references the Australian Business Register and flags the claim before any benefit is paid.'}},
@@ -1179,6 +1209,7 @@ const PHASES=[
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts detected',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'',fail:'Authored in Adobe Photoshop, modified 16 Jul 2026 — two days after the service date, no practice software trail',result:'fail',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
+  /* Phase 2 & 3 hidden for the Phase 1 dataset-processing demo — CLM-0842 stops at Phase 1, ph2/ph3 stay null so their blocks never activate. Data kept, not deleted. */
   ]},ph2:null,ph3:null},
   {ph1:{pass:true,score:'0.83',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $195.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
@@ -1562,10 +1593,10 @@ function setScenario(idx){
   $('f-date').value=''; $('f-prov').value=''; $('f-abn').value='';
   $('f-amt').value=''; $('f-codes').value='';
   [ 'f-type','f-date','f-prov','f-abn','f-amt','f-codes' ].forEach(id=>$(id).classList.remove('ai-filled'));
-  txt('form-sub','Submit your '+s.type.split(' ')[0].toLowerCase()+' receipt for instant processing');
+  txt('form-sub','Validating member-entered data against historical receipts');
   const uz=$('upload-zone');
   uz.classList.remove('has-file');
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Document</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
   // Reset action buttons to default state
@@ -1695,6 +1726,7 @@ function resetPhaseBlock(ph){
   if($('ph'+ph+'-score')) $('ph'+ph+'-score').classList.remove('show');
   if($('ph'+ph+'-continue-btn')) $('ph'+ph+'-continue-btn').style.display='';
   if($('ph'+ph+'-aim-btn')) $('ph'+ph+'-aim-btn').style.display='none';
+  if(ph===1&&$('ph1-discrepancy')) $('ph1-discrepancy').classList.remove('show');
   if(ph===2||ph===3) $('ph'+ph+'-block').style.display='none';
 }
 
@@ -1800,7 +1832,14 @@ function activatePhase(ph,phData){
       $('ph'+ph+'-badge').className='phase-status-badge psb-fail';
       txt('ph'+ph+'-badge','✗ Suspicious');
       $('ph'+ph+'-block').style.background='#FEF2F2'; $('ph'+ph+'-block').style.borderColor='rgba(220,38,38,.3)'; $('ph'+ph+'-block').style.boxShadow='0 2px 8px rgba(220,38,38,.08)';
-      if(ph===1){ txt('ph1-rb-title','Phase 1 — Suspicious Document Detected'); txt('ph1-rb-sub','DocumentIntegrityScore below threshold · Routed to Investigator Queue · HIGH priority · SLA 4 hours'); }
+      if(ph===1){
+        txt('ph1-rb-title','Phase 1 — Suspicious Document Detected'); txt('ph1-rb-sub','DocumentIntegrityScore below threshold · Routed to Investigator Queue · HIGH priority · SLA 4 hours');
+        const rm=S[curScenario].receiptMismatch;
+        if(rm && $('ph1-discrepancy')){
+          txt('dp-entered',rm.entered); txt('dp-receipt',rm.receipt); txt('dp-diff',rm.diff+' (claimed amount exceeds receipt by '+rm.pct+')');
+          $('ph1-discrepancy').classList.add('show');
+        }
+      }
       if(ph===2){
         const isMed=phData.scoreColor==='#D97706';
         txt('ph2-rb-title','Phase 2 — Suspicious Pattern Identified');
@@ -1903,7 +1942,7 @@ function closeOverlay(){
   clearAllTimers(); uploaded=false; uploadCount=0;
   const uz=$('upload-zone');
   uz.classList.remove('has-file');
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Document</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
   if($('btn-submit')) $('btn-submit').style.display='';
@@ -1963,7 +2002,7 @@ function generateFraudDashboardData(){
   let data = [];
   const scenarios = [
     {claim:'CLM-2024-0841',member:'James Kowalski',provider:'Bright Smile Dental',date:'12 Jul 2026',type:'Dental',amount:312,score:8,outcome:'clean'},
-    {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,score:76,outcome:'high'},
+    {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,discrepancy:42.50,score:85,outcome:'high',outcomeLabel:'Mismatch Detected'},
     {claim:'CLM-2024-0843',member:'David Okafor',provider:'Active Rehab Centre',date:'11 Jul 2026',type:'Physio',amount:195,score:62,outcome:'suspicious'},
     {claim:'CLM-2024-0844',member:'Linda Pham',provider:'Metro Dental Group',date:'13 Jul 2026',type:'Dental',amount:264,score:58,outcome:'suspicious'},
     {claim:'CLM-2024-0845',member:'Michael Torres',provider:'ClearView Optometry',date:'10 Jul 2026',type:'Optical',amount:390,score:71,outcome:'high'},
@@ -2013,20 +2052,22 @@ function fdbUpdateTable(){
   });
   
   filtered.sort((a,b)=>{
-    let aVal = a[fdbSortBy];
-    let bVal = b[fdbSortBy];
+    let aVal = fdbSortBy==='discrepancy'?(a.discrepancy||0):a[fdbSortBy];
+    let bVal = fdbSortBy==='discrepancy'?(b.discrepancy||0):b[fdbSortBy];
     if(typeof aVal==='string') aVal = aVal.toLowerCase();
     if(typeof bVal==='string') bVal = bVal.toLowerCase();
     const cmp = aVal<bVal?-1:(aVal>bVal?1:0);
     return fdbSortAsc?cmp:-cmp;
   });
-  
+
   const tbody = document.getElementById('fdb-tbody');
   if(!tbody) return;
   tbody.innerHTML = filtered.map(row=>{
     const outcomeClass = row.outcome==='clean'?'fdb-outcome-clean':(row.outcome==='suspicious'?'fdb-outcome-suspicious':'fdb-outcome-high');
-    const outcomeLabel = row.outcome==='clean'?'Legitimate':(row.outcome==='suspicious'?'Suspicious':'High Risk');
+    const outcomeLabelDefault = row.outcome==='clean'?'Legitimate':(row.outcome==='suspicious'?'Suspicious':'High Risk');
+    const outcomeLabel = row.outcomeLabel || outcomeLabelDefault;
     const outcomeIcon = row.outcome==='clean'?'✓':(row.outcome==='suspicious'?'⚠':'🚨');
+    const discrepancyCell = row.discrepancy?`$${row.discrepancy.toFixed(2)} ↑`:'';
     return `<div class="fdb-row">
       <div class="fdb-cell-claim">${row.claim}</div>
       <div class="fdb-cell-member">${row.member}</div>
@@ -2034,6 +2075,7 @@ function fdbUpdateTable(){
       <div class="fdb-cell-date">${row.date}</div>
       <div><span class="fdb-cell-type">${row.type}</span></div>
       <div class="fdb-cell-score">$${row.amount.toFixed(2)}</div>
+      <div class="fdb-cell-discrepancy">${discrepancyCell}</div>
       <div class="fdb-cell-score">${row.score}%</div>
       <div><span class="fdb-cell-outcome ${outcomeClass}">${outcomeIcon} ${outcomeLabel}</span></div>
     </div>`;
@@ -2051,7 +2093,7 @@ function fdbSort(col){
   if(fdbSortBy===col) fdbSortAsc = !fdbSortAsc;
   else {fdbSortBy=col; fdbSortAsc=true;}
   
-  ['claim','member','provider','date','type','amount','score','outcome'].forEach(c=>{
+  ['claim','member','provider','date','type','amount','discrepancy','score','outcome'].forEach(c=>{
     const el = document.getElementById('sort-'+c);
     if(el) el.textContent = c===col?(fdbSortAsc?'▲':'▼'):'';
   });
