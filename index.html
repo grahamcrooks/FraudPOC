@@ -3,16 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Health Insurance Fraud Detection — Pega Infinity 26.1</title>
+<title>Bupa Fraud Detection — Pega Infinity 26.1</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#001F5F;--blue:#334190;--lblue:#ECF0F9;
   --teal:#10A5AC;--gold:#FFC836;--orange:#F76923;--purple:#5F67B9;
-  --red:#C8102E;--red-dark:#A00D24;--red-light:#FDEEF1;
-  --text:#1A0A0A;--text-2:#4A3030;--text-3:#8A7070;--text-4:#BBA0A0;
-  --border:#E8D8D8;--canvas:#F9F4F4;--white:#FFFFFF;
+  /* Bupa brand blue — these three vars kept their old --red* names for a
+     minimal diff, but now hold Bupa's blue accent, not red. */
+  --red:#0079C8;--red-dark:#005A94;--red-light:#E3F1FB;
+  --text:#14202E;--text-2:#3A4756;--text-3:#71808F;--text-4:#A9B4C0;
+  --border:#DDE4EC;--canvas:#F4F7FA;--white:#FFFFFF;
   --green:#166534;--green-bg:#DCFCE7;--green-mid:#16A34A;
   --amber-mid:#D97706;--blue-bg:#EFF6FF;--pblue:#1D4ED8;
   --font:'Inter',-apple-system,sans-serif;
@@ -231,17 +233,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 #demo-screen{background:var(--white);overflow-y:auto}
 .page{padding-top:0;min-height:calc(100vh - 36px);display:flex;flex-direction:column}
 .nav{height:58px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.logo{display:flex;align-items:center;gap:2px;font-size:19px;font-weight:700;color:var(--text)}
-.logo-plus{color:var(--red);font-size:21px;font-weight:800}
+.logo{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800;color:var(--red)}
+.logo-pulse{color:var(--red);flex-shrink:0}
 .nav-links{display:flex;gap:28px;margin-left:40px}
 .nav-link{font-size:13px;color:var(--text-2);text-decoration:none}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .member-avatar{width:32px;height:32px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700}
 .member-name{font-size:12px;font-weight:500}
 .member-greeting{font-size:10px;color:var(--text-3)}
-.ctx-strip{background:linear-gradient(135deg,#FFF4F5 0%,#FDE8EC 100%);padding:0 40px;display:flex;align-items:center;gap:16px;height:56px;flex-shrink:0;border-bottom:1px solid rgba(200,16,46,.08)}
-.ctx-tag{display:inline-flex;align-items:center;gap:6px;background:var(--red-light);color:var(--red);font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;border:1px solid rgba(200,16,46,.15);flex-shrink:0}
-.ctx-sep{width:1px;height:22px;background:rgba(200,16,46,.15);flex-shrink:0}
+.ctx-strip{background:linear-gradient(135deg,#F0F8FE 0%,#E6F3FC 100%);padding:0 40px;display:flex;align-items:center;gap:16px;height:56px;flex-shrink:0;border-bottom:1px solid rgba(0,121,200,.08)}
+.ctx-tag{display:inline-flex;align-items:center;gap:6px;background:var(--red-light);color:var(--red);font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;border:1px solid rgba(0,121,200,.15);flex-shrink:0}
+.ctx-sep{width:1px;height:22px;background:rgba(0,121,200,.15);flex-shrink:0}
 .ctx-h1{font-size:19px;font-weight:800;color:var(--text);line-height:1.2;white-space:nowrap}
 .ctx-spacer{flex:1}
 .ctx-sub{font-size:12px;color:var(--text-2);flex-shrink:0}
@@ -852,7 +854,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           <text x="120" y="76" class="bk-nbadge" text-anchor="middle">14 members · 3 providers</text>
         </g>
       </svg>
-      <div class="bk-note">Adapted from a standard identity-graph pattern used for fraud-ring detection · this is the target schema we'd build with H+'s data, not a claim that it's already running.</div>
+      <div class="bk-note">Adapted from a standard identity-graph pattern used for fraud-ring detection · this is the target schema we'd build with Bupa's data, not a claim that it's already running.</div>
       <div class="slide-nav"><button class="snav" onclick="goSlide(4)">← Back to Presentation</button></div>
     </div>
   </div>
@@ -862,7 +864,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="screen" id="demo-screen">
 <div class="page">
   <nav class="nav">
-    <div class="logo"><span class="logo-plus">H+</span>Health Insurance Co</div>
+    <div class="logo"><svg class="logo-pulse" width="26" height="14" viewBox="0 0 40 16" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="0,8 11,8 14,2 18,14 21,8 40,8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Bupa</div>
     <div class="nav-links">
       <a class="nav-link" href="#">My Cover</a>
       <a class="nav-link" href="#">Claims</a>
@@ -976,7 +978,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="screen" id="fraud-dashboard">
 <div class="page">
   <nav class="nav">
-    <div class="logo"><span class="logo-plus">H+</span>Health Insurance Co</div>
+    <div class="logo"><svg class="logo-pulse" width="26" height="14" viewBox="0 0 40 16" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="0,8 11,8 14,2 18,14 21,8 40,8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Bupa</div>
     <div class="nav-links">
       <a class="nav-link" href="#">My Cover</a>
       <a class="nav-link" href="#">Claims</a>
@@ -2280,7 +2282,7 @@ showFinalState = function(clean){
         <div class="aim-evidence">
           <div class="aim-evidence-title">Knowledge Buddy (RAG) — Pattern Similarity Match</div>
           <div class="aim-evidence-list">
-            <div class="aim-evidence-item"><strong>91% similarity match</strong> to four confirmed phantom billing cases in H+ fraud library</div>
+            <div class="aim-evidence-item"><strong>91% similarity match</strong> to four confirmed phantom billing cases in Bupa fraud library</div>
             <div class="aim-evidence-item"><strong>Matching patterns:</strong> Item codes 10801, 10712 — optical supplies only, no lens fitting or consultation</div>
             <div class="aim-evidence-item"><strong>Provider profile match:</strong> ClearView Optometry flagged in five prior claims with identical code patterns and amounts</div>
             <div class="aim-evidence-item"><strong>Timeline anomaly:</strong> Three claims from this provider in seven days — exceeds normal business capacity for solo practice</div>
