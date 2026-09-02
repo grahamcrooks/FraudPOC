@@ -96,7 +96,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 /* Auto-progress bar */
 .slide-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--teal);transition:none;z-index:20}
 
-/* ── SLIDE 1 — THE PROBLEM ── */
+/* ── SLIDE 2 — THE PROBLEM ── */
 .s1-headline{font-weight:800;line-height:1.15;margin-bottom:8px}
 .dark .s1-headline{color:#fff;font-size:clamp(34px,3.6vw,54px)}
 .light .s1-headline{color:var(--navy);font-size:clamp(34px,3.6vw,54px)}
@@ -125,8 +125,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .s1-sub b{color:var(--gold)}
 .light .s1-sub b{color:var(--teal)}
 
-/* ── SLIDE 2 — THREE PHASES ── */
-#ps1,#ps2{justify-content:flex-start}
+/* ── SLIDE 3 — THREE PHASES ── */
+#ps2,#ps3{justify-content:flex-start}
 .s2-headline{font-size:clamp(28px,3.1vw,46px);font-weight:800;margin-bottom:4px}
 .dark .s2-headline{color:#fff}
 .light .s2-headline{color:var(--navy)}
@@ -157,7 +157,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .s2-aim{background:rgba(0,31,95,.6);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.1)}
 .light .s2-aim{background:var(--navy);color:rgba(255,255,255,.9)}
 
-/* ── SLIDE 3 — POWERED BY PEGA ── */
+/* ── SLIDE 4 — POWERED BY PEGA ── */
 .s3-headline{font-size:clamp(34px,3.8vw,56px);font-weight:800;margin-bottom:6px}
 .dark .s3-headline{color:#fff}
 .light .s3-headline{color:var(--navy)}
@@ -176,8 +176,32 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .s3-body{color:var(--lblue)}
 .light .s3-body{color:var(--blue)}
 
-/* ── SLIDE 4 — LAUNCH ── */
-#ps3{justify-content:center}
+/* ── SLIDE 1 — INTRO / BUSINESS CASE — reuses .s3-* card styling ── */
+.s0-steps{display:flex;flex-direction:column;gap:7px;margin-top:2px}
+.s0-step{display:flex;align-items:baseline;gap:8px;font-size:clamp(11.5px,1.28vw,14.5px);line-height:1.4}
+.dark .s0-step{color:#fff}
+.light .s0-step{color:var(--blue)}
+.s0-step-num{font-weight:800;color:var(--teal);flex-shrink:0;font-family:'Courier New',monospace;font-size:11px}
+.s0-metrics{display:flex;flex-direction:column;margin-top:2px}
+.s0-metric{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.12)}
+.light .s0-metric{border-bottom-color:rgba(0,31,95,.12)}
+.s0-metric:last-child{border-bottom:none}
+.s0-metric-lbl{font-size:clamp(11px,1.2vw,13.5px)}
+.dark .s0-metric-lbl{color:#9FB4D4}
+.light .s0-metric-lbl{color:#7B9FC4}
+.s0-metric-val{font-weight:800;font-family:'Courier New',monospace;color:var(--gold);white-space:nowrap}
+.light .s0-metric-val{color:var(--navy)}
+.s0-asks{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:2px}
+.s0-asks li{font-size:clamp(11px,1.22vw,14px);line-height:1.35;display:flex;gap:7px}
+.dark .s0-asks li{color:#fff}
+.light .s0-asks li{color:var(--blue)}
+.s0-asks li::before{content:'✓';color:var(--teal);flex-shrink:0;font-weight:700}
+.s0-note{font-size:clamp(11px,1.2vw,13.5px);font-style:italic;margin-top:2px}
+.dark .s0-note{color:#6B84A8}
+.light .s0-note{color:#7B9FC4}
+
+/* ── SLIDE 5 — LAUNCH ── */
+#ps4{justify-content:center}
 .s4-main{font-size:clamp(48px,6.5vw,96px);font-weight:800;line-height:1.05;margin-bottom:28px}
 .dark .s4-main{color:#fff}
 .light .s4-main{color:var(--navy)}
@@ -512,11 +536,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   <div class="ctrl-sep"></div>
   <span class="ctrl-lbl" id="ctrl-context">Slides</span>
   <div id="slide-btns" style="display:flex;gap:4px">
-    <button class="sc slide-on" onclick="goSlide(0)" id="sb0">① Problem</button>
-    <button class="sc" onclick="goSlide(1)" id="sb1">② Three Phases</button>
-    <button class="sc" onclick="goSlide(2)" id="sb2">③ Why Pega</button>
-    <button class="sc" onclick="goSlide(3)" id="sb3">④ Launch</button>
-    <button class="sc" onclick="goSlide(4)" id="sb4" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧 Backup</button>
+    <button class="sc slide-on" onclick="goSlide(0)" id="sb0">① Business Case</button>
+    <button class="sc" onclick="goSlide(1)" id="sb1">② Problem</button>
+    <button class="sc" onclick="goSlide(2)" id="sb2">③ Three Phases</button>
+    <button class="sc" onclick="goSlide(3)" id="sb3">④ Why Pega</button>
+    <button class="sc" onclick="goSlide(4)" id="sb4">⑤ Launch</button>
+    <button class="sc" onclick="goSlide(5)" id="sb5" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧 Backup</button>
   </div>
   <div id="demo-btns" style="display:none;gap:4px">
     <button class="sc" onclick="setScenario(0)" id="sc0"><span class="dot-indicator dg"></span>CLM-0841 · Clean</button>
@@ -555,12 +580,60 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     <div class="slide-progress" id="slide-progress" style="width:0"></div>
     <button class="skip-demo-btn" onclick="goDemo()">Skip to Demo →</button>
 
-    <!-- SLIDE 1 — THE PROBLEM -->
+    <!-- SLIDE 1 — INTRO / BUSINESS CASE -->
     <div class="pslide dark active" id="ps0">
-      <div class="s1-headline">From Recovery to <span class="s1-gold">Prevention.</span></div>
+      <div class="s3-headline">The Business Case for Prevention</div>
+      <div class="s3-sub">What this proof of concept sets out to prove, how it will run, and what we're asking for to get started</div>
+      <div class="s3-grid">
+        <div class="s3-card" id="i0" style="border-left-color:#FFC836">
+          <div class="s3-title">🕰️ Background</div>
+          <div class="s3-body">Health insurers have traditionally caught fraud, waste and abuse after a claim is paid — through audits and recoveries. This proof of concept tests whether the same detection can happen before payment, using AI to review documents and patterns at scale.</div>
+        </div>
+        <div class="s3-card" id="i1" style="border-left-color:#10A5AC">
+          <div class="s3-title">🗂️ What the POC Will Entail</div>
+          <div class="s3-body">Extract and analyse approximately 10,000 historical claims receipts, replaying them through the same three-phase detection pipeline demonstrated in this walkthrough.</div>
+        </div>
+        <div class="s3-card" id="i2" style="border-left-color:#5F67B9">
+          <div class="s3-title">⚙️ How the POC Will Work</div>
+          <div class="s0-steps">
+            <div class="s0-step"><span class="s0-step-num">01</span>Extract — OCR and structured data pulled from every receipt</div>
+            <div class="s0-step"><span class="s0-step-num">02</span>Analyse — checked against the fraud signal library across all three phases</div>
+            <div class="s0-step"><span class="s0-step-num">03</span>Classify — scored and grouped by risk level</div>
+            <div class="s0-step"><span class="s0-step-num">04</span>Route — clean claims pass; flagged claims go to an investigator</div>
+          </div>
+        </div>
+        <div class="s3-card" id="i3" style="border-left-color:#F76923">
+          <div class="s3-title">🎯 What Is the Expected Outcome</div>
+          <div class="s0-metrics">
+            <div class="s0-metric"><span class="s0-metric-lbl">Fraud detection capability</span><span class="s0-metric-val">[X]%</span></div>
+            <div class="s0-metric"><span class="s0-metric-lbl">Cases for investigator review</span><span class="s0-metric-val">est. [Z]</span></div>
+            <div class="s0-metric"><span class="s0-metric-lbl">Recovery potential</span><span class="s0-metric-val">£[X]</span></div>
+          </div>
+        </div>
+        <div class="s3-card" id="i4" style="border-left-color:#10A5AC">
+          <div class="s3-title">📈 If We Scale</div>
+          <div class="s3-body">Processing an extended volume of claims could identify between £[X] and £[Y] in fraud savings.</div>
+          <div class="s0-note">Figures to be confirmed against the Phase 1 POC results.</div>
+        </div>
+        <div class="s3-card" id="i5" style="border-left-color:#334190">
+          <div class="s3-title">🤝 What's Needed</div>
+          <ul class="s0-asks">
+            <li>Executive project owner to authorise Phase 1 POC with historical claims dataset</li>
+            <li>AI Council approval on detection methodology and governance framework</li>
+            <li>Resource and budget commitment for Phase 1 build</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sdots"><div class="sdot on" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
+      <div class="slide-nav"><button class="snav primary" onclick="nextSlide()">Next →</button></div>
+    </div>
+
+    <!-- SLIDE 2 — THE PROBLEM -->
+    <div class="pslide dark" id="ps1">
+      <div class="s1-headline">From Detection to <span class="s1-gold">Prevention.</span></div>
       <div class="s1-rows" id="s1-rows">
         <div class="s1-row" id="r0">
-          <div class="s1-stat-box"><div class="s1-stat" style="color:#FFC836">3–10%</div></div>
+          <div class="s1-stat-box"><div class="s1-stat" style="color:#FFC836">1–3%</div></div>
           <div class="s1-bar" style="background:#FFC836"></div>
           <div class="s1-content">
             <div class="s1-desc">of health insurance claims contain fraud, waste or abuse — at 6% global average that's over $1.1B in Australia annually</div>
@@ -585,19 +658,19 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         </div>
       </div>
       <div class="s1-sub">The scale is real. &nbsp;The risk is invisible. &nbsp;<b>Prevention starts here.</b></div>
-      <div class="sdots"><div class="sdot on" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
-      <div class="slide-nav"><button class="snav primary" onclick="nextSlide()">Next →</button></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
+      <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
-    <!-- SLIDE 2 — THREE PHASES -->
-    <div class="pslide dark" id="ps1">
+    <!-- SLIDE 3 — THREE PHASES -->
+    <div class="pslide dark" id="ps2">
       <div class="s2-headline">One Intelligent Pipeline.</div>
       <div class="s2-sub">One Problem. Three Layers of Defence.</div>
       <div class="s2-grid">
         <div class="s2-col" id="c0">
           <div class="s2-bar" style="background:#F76923"></div>
           <div class="s2-body">
-            <div class="s2-title">Document Fraud</div>
+            <div class="s2-title">Document Forensics</div>
             <span class="s2-tag" style="background:#F76923">Is this document real and valid?</span>
             <div class="s2-signals">8 Fraud Signals</div>
             <ul class="s2-pts">
@@ -648,12 +721,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       <div class="s2-aim" id="aim">
         🛡️ &nbsp;<strong>Pega Alerts & Investigations Management (AIM)</strong> — Every AI signal reviewed by a human investigator · AI assists, humans decide · Full audit trail on every case
       </div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
-    <!-- SLIDE 3 — POWERED BY PEGA -->
-    <div class="pslide dark" id="ps2">
+    <!-- SLIDE 4 — POWERED BY PEGA -->
+    <div class="pslide dark" id="ps3">
       <div class="s3-headline">Powered by Pega</div>
       <div class="s3-sub">The Enterprise AI Platform Transforming Healthcare Operations</div>
       <div class="s3-grid">
@@ -664,12 +737,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         <div class="s3-card" id="p4" style="border-left-color:#10A5AC"><div class="s3-title">⚡ Fast to Deploy</div><div class="s3-body">Orchestrated end-to-end by Pega Infinity 26.1. No new platforms to build or infrastructure to own</div></div>
         <div class="s3-card" id="p5" style="border-left-color:#334190"><div class="s3-title">👤 Human Oversight</div><div class="s3-body">Every AI determination reviewed by a named human investigator. Full audit trail on every case</div></div>
       </div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
-    <!-- SLIDE 4 — LAUNCH -->
-    <div class="pslide dark" id="ps3">
+    <!-- SLIDE 5 — LAUNCH -->
+    <div class="pslide dark" id="ps4">
       <div class="s4-main">From Claim to Cleared —<br><span class="s4-gold">or Caught.</span></div>
       <div class="s4-pts">
         <div class="s4-pt">Six fraud scenarios modelled on real patterns — clean claims and caught fraud</div>
@@ -679,12 +752,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       </div>
       <div class="s4-sub">What follows is the pipeline running across six claim scenarios — the seconds between a claim arriving and its outcome being determined.</div>
       <div class="s4-pulse"><div class="s4-pdot"></div><span class="s4-ptxt">Pega Infinity 26.1 · Simulated Pipeline · Illustrative Scenarios</span></div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot on" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="goDemo()">Launch Demo →</button></div>
     </div>
 
-    <!-- SLIDE 5 — BACKUP: IDENTITY GRAPH (manual access only, not in main sequence or rolling loop) -->
-    <div class="pslide dark" id="ps4">
+    <!-- SLIDE 6 — BACKUP: IDENTITY GRAPH (manual access only, not in main sequence or rolling loop) -->
+    <div class="pslide dark" id="ps5">
       <div class="bk-eyebrow">Backup — technical detail</div>
       <div class="bk-title">What "Three Hops" Actually Means</div>
       <div class="bk-sub">The entity model Phase 3 is designed against — real relationship types, not just a diagram.</div>
@@ -741,7 +814,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         </g>
       </svg>
       <div class="bk-note">Adapted from a standard identity-graph pattern used for fraud-ring detection · this is the target schema we'd build with H+'s data, not a claim that it's already running.</div>
-      <div class="slide-nav"><button class="snav" onclick="goSlide(3)">← Back to Launch</button></div>
+      <div class="slide-nav"><button class="snav" onclick="goSlide(4)">← Back to Launch</button></div>
     </div>
   </div>
 </div>
@@ -1252,18 +1325,23 @@ function goSlide(n){
 
 function animateSlide(n){
   if(n===0){
+    ['i0','i1','i2','i3','i4','i5'].forEach((id,i)=>{
+      const el=$(id); el.classList.remove('visible');
+      setTimeout(()=>el.classList.add('visible'),80+i*100);
+    });
+  } else if(n===1){
     ['r0','r1','r2'].forEach((id,i)=>{
       const el=$(id); el.classList.remove('visible');
       setTimeout(()=>el.classList.add('visible'),150+i*350);
     });
-  } else if(n===1){
+  } else if(n===2){
     ['c0','c1','c2'].forEach((id,i)=>{
       const el=$(id); el.classList.remove('visible');
       setTimeout(()=>el.classList.add('visible'),100+i*180);
     });
     const aim=$('aim'); aim.classList.remove('visible');
     setTimeout(()=>aim.classList.add('visible'),700);
-  } else if(n===2){
+  } else if(n===3){
     ['p0','p1','p2','p3','p4','p5'].forEach((id,i)=>{
       const el=$(id); el.classList.remove('visible');
       setTimeout(()=>el.classList.add('visible'),80+i*100);
@@ -1277,7 +1355,7 @@ function updateSlideDots(n){
   });
 }
 
-function nextSlide(){ if(curSlide<3) goSlide(curSlide+1); else goDemo(); }
+function nextSlide(){ if(curSlide<4) goSlide(curSlide+1); else goDemo(); }
 function prevSlide(){ if(curSlide>0) goSlide(curSlide-1); }
 
 function startSlideTimer(){
@@ -1289,7 +1367,7 @@ function startSlideTimer(){
     prog.style.width='100%';
   }));
   slideTimer=setTimeout(()=>{
-    if(curSlide<3) goSlide(curSlide+1);
+    if(curSlide<4) goSlide(curSlide+1);
     else { clearSlideProgress(); launchRollingDemo(); }
   },11000);
 }
@@ -1875,7 +1953,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='r'||e.key==='R'){ toggleRolling(); return; }
   if(e.key==='p'||e.key==='P'){ toggleStepByStep(); return; }
   if(e.key==='s'||e.key==='S'){ goSlides(); return; }
-  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ goSlides(); goSlide(4); return; }
+  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ goSlides(); goSlide(5); return; }
   if(e.key==='d'||e.key==='D'){ goDemo(); return; }
   if(e.key===' '){
     e.preventDefault();
