@@ -3,16 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Health Insurance Fraud Detection — Pega Infinity 26.1</title>
+<title>Bupa Fraud Detection — Pega Infinity 26.1</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#001F5F;--blue:#334190;--lblue:#ECF0F9;
   --teal:#10A5AC;--gold:#FFC836;--orange:#F76923;--purple:#5F67B9;
-  --red:#C8102E;--red-dark:#A00D24;--red-light:#FDEEF1;
-  --text:#1A0A0A;--text-2:#4A3030;--text-3:#8A7070;--text-4:#BBA0A0;
-  --border:#E8D8D8;--canvas:#F9F4F4;--white:#FFFFFF;
+  /* Bupa brand blue — these three vars kept their old --red* names for a
+     minimal diff, but now hold Bupa's blue accent, not red. */
+  --red:#0079C8;--red-dark:#005A94;--red-light:#E3F1FB;
+  --text:#14202E;--text-2:#3A4756;--text-3:#71808F;--text-4:#A9B4C0;
+  --border:#DDE4EC;--canvas:#F4F7FA;--white:#FFFFFF;
   --green:#166534;--green-bg:#DCFCE7;--green-mid:#16A34A;
   --amber-mid:#D97706;--blue-bg:#EFF6FF;--pblue:#1D4ED8;
   --font:'Inter',-apple-system,sans-serif;
@@ -92,11 +94,28 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .light .snav.primary{background:var(--navy);border-color:var(--navy);color:#fff}
 .skip-demo-btn{position:absolute;top:16px;right:72px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);padding:5px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:var(--font);transition:all .2s;z-index:10}
 .skip-demo-btn:hover{color:#fff;background:rgba(255,255,255,.12)}
+.slide-logo{position:absolute;top:16px;left:72px;z-index:10}
+.slide-logo .logo-badge{width:34px;height:34px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 
 /* Auto-progress bar */
 .slide-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--teal);transition:none;z-index:20}
 
-/* ── SLIDE 1 — THE PROBLEM ── */
+/* ── SLIDE 1 — AGENDA ── */
+.agenda-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;flex:1;align-content:start;margin-top:12px}
+.agenda-card{border-radius:12px;padding:28px 22px;border-top-width:4px;border-top-style:solid;opacity:0;transform:translateY(8px);transition:all .4s ease;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
+.agenda-card.visible{opacity:1;transform:translateY(0)}
+.dark .agenda-card{background:rgba(255,255,255,.05);border-left:1px solid rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
+.light .agenda-card{background:#fff;border-left:1px solid rgba(0,31,95,.08);border-right:1px solid rgba(0,31,95,.08);border-bottom:1px solid rgba(0,31,95,.08);box-shadow:0 2px 10px rgba(0,31,95,.06)}
+.agenda-num{font-family:'Courier New',monospace;font-weight:800;font-size:13px;color:var(--teal)}
+.agenda-ico{font-size:34px}
+.agenda-title{font-size:clamp(15px,1.6vw,19px);font-weight:800}
+.dark .agenda-title{color:#fff}
+.light .agenda-title{color:var(--navy)}
+.agenda-body{font-size:clamp(12px,1.2vw,14px);line-height:1.5}
+.dark .agenda-body{color:var(--lblue)}
+.light .agenda-body{color:var(--blue)}
+
+/* ── SLIDE 2 — THE PROBLEM ── */
 .s1-headline{font-weight:800;line-height:1.15;margin-bottom:8px}
 .dark .s1-headline{color:#fff;font-size:clamp(34px,3.6vw,54px)}
 .light .s1-headline{color:var(--navy);font-size:clamp(34px,3.6vw,54px)}
@@ -107,9 +126,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .s1-row.visible{opacity:1;transform:translateX(0)}
 .dark .s1-row{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
 .light .s1-row{background:#fff;border:1px solid rgba(0,31,95,.1);box-shadow:0 2px 12px rgba(0,31,95,.08)}
-.s1-stat-box{width:200px;min-width:200px;display:flex;align-items:center;justify-content:center;padding:20px;flex-shrink:0;align-self:stretch}
+.s1-stat-box{width:200px;min-width:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px;flex-shrink:0;align-self:stretch}
 .dark .s1-stat-box{background:rgba(255,255,255,.04)}
 .light .s1-stat-box{background:rgba(0,31,95,.04)}
+.s1-icon{font-size:22px;line-height:1}
 .s1-stat{font-size:clamp(24px,2.8vw,38px);font-weight:800;text-align:center;line-height:1.1;white-space:nowrap}
 .s1-bar{width:4px;flex-shrink:0;align-self:stretch}
 .s1-content{flex:1;padding:20px 28px;display:flex;flex-direction:column;justify-content:center;gap:8px}
@@ -125,8 +145,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .s1-sub b{color:var(--gold)}
 .light .s1-sub b{color:var(--teal)}
 
-/* ── SLIDE 2 — THREE PHASES ── */
-#ps1,#ps2{justify-content:flex-start}
+/* ── SLIDE 4 — THREE PHASES ── */
+#ps3,#ps4{justify-content:flex-start}
 .s2-headline{font-size:clamp(28px,3.1vw,46px);font-weight:800;margin-bottom:4px}
 .dark .s2-headline{color:#fff}
 .light .s2-headline{color:var(--navy)}
@@ -147,8 +167,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .s2-signals{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-top:5px}
 .dark .s2-signals{color:#7C93B8}
 .light .s2-signals{color:var(--text-3)}
-.s2-pts{list-style:none;display:flex;flex-direction:column;gap:5px;margin-top:3px}
-.s2-pts li{font-size:clamp(11px,1.22vw,15.5px);line-height:1.3;display:flex;gap:6px}
+.s2-pts{list-style:none;display:flex;flex-direction:column;gap:13px;margin-top:6px}
+.s2-pts li{font-size:clamp(11px,1.22vw,15.5px);line-height:1.45;display:flex;gap:6px}
 .dark .s2-pts li{color:#fff}
 .light .s2-pts li{color:var(--blue)}
 .s2-pts li::before{content:'·';opacity:.7;flex-shrink:0}
@@ -157,7 +177,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .s2-aim{background:rgba(0,31,95,.6);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.1)}
 .light .s2-aim{background:var(--navy);color:rgba(255,255,255,.9)}
 
-/* ── SLIDE 3 — POWERED BY PEGA ── */
+/* ── SLIDE 5 — POWERED BY PEGA ── */
 .s3-headline{font-size:clamp(34px,3.8vw,56px);font-weight:800;margin-bottom:6px}
 .dark .s3-headline{color:#fff}
 .light .s3-headline{color:var(--navy)}
@@ -176,19 +196,31 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .s3-body{color:var(--lblue)}
 .light .s3-body{color:var(--blue)}
 
-/* ── SLIDE 4 — LAUNCH ── */
-#ps3{justify-content:center}
-.s4-main{font-size:clamp(48px,6.5vw,96px);font-weight:800;line-height:1.05;margin-bottom:28px}
-.dark .s4-main{color:#fff}
-.light .s4-main{color:var(--navy)}
-.s4-gold{color:var(--gold)}
-.light .s4-gold{color:var(--teal)}
-.s4-pts{margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
-.s4-pt{font-size:clamp(18px,2.2vw,28px);display:flex;align-items:center;gap:10px}
-.dark .s4-pt{color:var(--lblue)}
-.light .s4-pt{color:var(--blue)}
-.s4-pt::before{content:'›';font-size:1.3em;font-weight:700;color:var(--teal);flex-shrink:0}
-.s4-sub{font-size:clamp(14px,1.6vw,20px);line-height:1.6;max-width:800px;color:var(--teal)}
+/* ── SLIDE 3 — INTRO / BUSINESS CASE — reuses .s3-* card styling ── */
+.s0-steps{display:flex;flex-direction:column;gap:7px;margin-top:2px}
+.s0-step{display:flex;align-items:baseline;gap:8px;font-size:clamp(13px,1.5vw,18px);line-height:1.5}
+.dark .s0-step{color:#fff}
+.light .s0-step{color:var(--blue)}
+.s0-step-num{font-weight:800;color:var(--teal);flex-shrink:0;font-family:'Courier New',monospace;font-size:11px}
+.s0-metrics{display:flex;flex-direction:column;margin-top:2px}
+.s0-metric{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.12)}
+.light .s0-metric{border-bottom-color:rgba(0,31,95,.12)}
+.s0-metric:last-child{border-bottom:none}
+.s0-metric-lbl{font-size:clamp(13px,1.5vw,18px)}
+.dark .s0-metric-lbl{color:#9FB4D4}
+.light .s0-metric-lbl{color:#7B9FC4}
+.s0-metric-val{font-size:clamp(13px,1.5vw,18px);font-weight:800;font-family:'Courier New',monospace;color:var(--gold);white-space:nowrap}
+.light .s0-metric-val{color:var(--navy)}
+.s0-asks{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:2px}
+.s0-asks li{font-size:clamp(13px,1.5vw,18px);line-height:1.5;display:flex;gap:7px}
+.dark .s0-asks li{color:#fff}
+.light .s0-asks li{color:var(--blue)}
+.s0-asks li::before{content:'✓';color:var(--teal);flex-shrink:0;font-weight:700}
+.s0-note{font-size:clamp(13px,1.5vw,18px);font-style:italic;margin-top:2px}
+.dark .s0-note{color:#6B84A8}
+.light .s0-note{color:#7B9FC4}
+
+/* ── "Simulated Pipeline · Illustrative Scenarios" pulse indicator — now shown at the foot of the Why Pega slide ── */
 .s4-pulse{display:flex;align-items:center;gap:10px;margin-top:24px}
 .s4-pdot{width:10px;height:10px;border-radius:50%;background:var(--teal);animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
@@ -203,17 +235,19 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 #demo-screen{background:var(--white);overflow-y:auto}
 .page{padding-top:0;min-height:calc(100vh - 36px);display:flex;flex-direction:column}
 .nav{height:58px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.logo{display:flex;align-items:center;gap:2px;font-size:19px;font-weight:700;color:var(--text)}
-.logo-plus{color:var(--red);font-size:21px;font-weight:800}
+.logo{display:flex;align-items:center}
+.logo-badge{width:38px;height:38px;border-radius:8px;background:var(--red);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:5px 6px;flex-shrink:0}
+.logo-badge-text{color:#fff;font-weight:800;font-size:13px;line-height:1;font-family:var(--font);letter-spacing:.2px}
+.logo-badge-pulse{width:100%;height:auto;display:block}
 .nav-links{display:flex;gap:28px;margin-left:40px}
 .nav-link{font-size:13px;color:var(--text-2);text-decoration:none}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .member-avatar{width:32px;height:32px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700}
 .member-name{font-size:12px;font-weight:500}
 .member-greeting{font-size:10px;color:var(--text-3)}
-.ctx-strip{background:linear-gradient(135deg,#FFF4F5 0%,#FDE8EC 100%);padding:0 40px;display:flex;align-items:center;gap:16px;height:56px;flex-shrink:0;border-bottom:1px solid rgba(200,16,46,.08)}
-.ctx-tag{display:inline-flex;align-items:center;gap:6px;background:var(--red-light);color:var(--red);font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;border:1px solid rgba(200,16,46,.15);flex-shrink:0}
-.ctx-sep{width:1px;height:22px;background:rgba(200,16,46,.15);flex-shrink:0}
+.ctx-strip{background:linear-gradient(135deg,#F0F8FE 0%,#E6F3FC 100%);padding:0 40px;display:flex;align-items:center;gap:16px;height:56px;flex-shrink:0;border-bottom:1px solid rgba(0,121,200,.08)}
+.ctx-tag{display:inline-flex;align-items:center;gap:6px;background:var(--red-light);color:var(--red);font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;border:1px solid rgba(0,121,200,.15);flex-shrink:0}
+.ctx-sep{width:1px;height:22px;background:rgba(0,121,200,.15);flex-shrink:0}
 .ctx-h1{font-size:19px;font-weight:800;color:var(--text);line-height:1.2;white-space:nowrap}
 .ctx-spacer{flex:1}
 .ctx-sub{font-size:12px;color:var(--text-2);flex-shrink:0}
@@ -261,8 +295,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .val-detail{font-size:11px;color:var(--text-3);margin-top:1px}
 .val-detail.ok{color:var(--green-mid)}
 .val-result{font-size:15px;flex-shrink:0}
+.dataset-intro{background:var(--lblue);border:1px solid rgba(0,31,95,.12);border-radius:8px;padding:10px 14px;margin-bottom:14px}
+.dataset-intro-title{font-size:11.5px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+.dataset-intro-body{font-size:12px;color:var(--text-2);line-height:1.5}
 .form-footer{display:flex;justify-content:space-between;align-items:center;padding-top:16px;border-top:1px solid var(--border);margin-top:4px}
-.form-note{font-size:11px;color:var(--text-3)}
+.form-note{font-size:11px;color:var(--text-3);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.dataset-badge{font-size:10.5px;font-weight:700;color:#6D28D9;background:#EDE9FE;padding:2px 9px;border-radius:20px;border:1px solid rgba(109,40,217,.2)}
 .btn-submit{background:var(--red);color:#fff;border:none;padding:11px 26px;border-radius:7px;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font);transition:all .2s}
 .btn-submit:hover{background:var(--red-dark)}
 .btn-cancel{background:transparent;color:var(--text-2);border:1.5px solid var(--border);padding:10px 16px;border-radius:7px;font-size:12px;cursor:pointer;font-family:var(--font)}
@@ -352,6 +390,15 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .rb-ico{font-size:30px}
 .rb-title{font-size:16px;font-weight:800;color:#111827}
 .rb-sub{font-size:12px;color:#6B7280;margin-top:3px}
+.discrepancy-panel{display:none;margin-top:12px;padding:16px 18px;border-radius:10px;background:#FEF2F2;border:1.5px solid rgba(220,38,38,.3)}
+.discrepancy-panel.show{display:block;animation:fadeUp .3s ease}
+.discrepancy-title{font-size:13px;font-weight:800;color:#991B1B;margin-bottom:12px;line-height:1.4}
+.discrepancy-rows{display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+.discrepancy-row{display:flex;justify-content:space-between;gap:12px;font-size:12.5px;color:#374151}
+.discrepancy-row span:last-child{font-family:'Courier New',monospace;font-weight:600}
+.discrepancy-row.total{border-top:1px dashed rgba(220,38,38,.25);padding-top:7px;font-weight:700;color:#991B1B}
+.discrepancy-result{font-size:12.5px;font-weight:800;color:#991B1B;margin-bottom:4px;letter-spacing:.2px}
+.discrepancy-note{font-size:11.5px;color:#6B7280}
 .phase-btns{display:none;gap:10px;margin-top:14px}
 .phase-btns.show{display:flex}
 .btn-continue{background:#1D4ED8;color:#fff;border:none;padding:13px 0;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);flex:1;transition:all .2s;box-shadow:0 4px 14px rgba(29,78,216,.3)}
@@ -452,7 +499,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .fdb-th-sort{margin-left:4px;opacity:.4;font-size:9px}
 .fdb-th-sort.asc,.fdb-th-sort.desc{opacity:1}
 .fdb-tbody{max-height:600px;overflow-y:auto}
-.fdb-row{display:grid;grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 1.1fr 1.2fr;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center;font-size:12px}
+.fdb-row{display:grid;grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 100px 1.1fr 1.2fr;gap:10px;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center;font-size:12px}
 .fdb-row:hover{background:rgba(0,31,95,.02)}
 .fdb-row:last-child{border-bottom:none}
 .fdb-cell-claim{font-family:'Courier New',monospace;font-weight:600;color:var(--text)}
@@ -461,6 +508,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .fdb-cell-date{color:var(--text-3);font-size:11px}
 .fdb-cell-type{background:rgba(0,31,95,.08);color:var(--navy);padding:2px 8px;border-radius:4px;display:inline-block;font-size:10px;font-weight:600}
 .fdb-cell-score{font-family:'Courier New',monospace;font-weight:700}
+.fdb-cell-discrepancy{font-family:'Courier New',monospace;font-weight:700;text-align:right;color:#991B1B}
 .fdb-cell-outcome{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600}
 .fdb-outcome-clean{background:var(--green-bg);color:var(--green-mid)}
 .fdb-outcome-suspicious{background:#FEF3C7;color:#92400E}
@@ -512,11 +560,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   <div class="ctrl-sep"></div>
   <span class="ctrl-lbl" id="ctrl-context">Slides</span>
   <div id="slide-btns" style="display:flex;gap:4px">
-    <button class="sc slide-on" onclick="goSlide(0)" id="sb0">① Problem</button>
-    <button class="sc" onclick="goSlide(1)" id="sb1">② Three Phases</button>
-    <button class="sc" onclick="goSlide(2)" id="sb2">③ Why Pega</button>
-    <button class="sc" onclick="goSlide(3)" id="sb3">④ Launch</button>
-    <button class="sc" onclick="goSlide(4)" id="sb4" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧 Backup</button>
+    <button class="sc slide-on" onclick="goSlide(0)" id="sb0">① Agenda</button>
+    <button class="sc" onclick="goSlide(1)" id="sb1">② Problem</button>
+    <button class="sc" onclick="goSlide(2)" id="sb2">③ Business Case</button>
+    <button class="sc" onclick="goSlide(3)" id="sb3">④ Three Phases</button>
+    <button class="sc" onclick="goSlide(4)" id="sb4">⑤ Why Pega</button>
+    <button class="sc" onclick="goSlide(5)" id="sb5" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧 Backup</button>
   </div>
   <div id="demo-btns" style="display:none;gap:4px">
     <button class="sc" onclick="setScenario(0)" id="sc0"><span class="dot-indicator dg"></span>CLM-0841 · Clean</button>
@@ -554,21 +603,56 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   <div class="slide-wrap" id="slide-wrap">
     <div class="slide-progress" id="slide-progress" style="width:0"></div>
     <button class="skip-demo-btn" onclick="goDemo()">Skip to Demo →</button>
+    <div class="slide-logo"><div class="logo-badge"><span class="logo-badge-text">Bupa</span><svg class="logo-badge-pulse" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,7 C1.5,4 3,4 3.5,7 C4,10 5,10 5,7 L8,7 L10,3 L12,10 L14,6 L40,6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
 
-    <!-- SLIDE 1 — THE PROBLEM -->
+    <!-- SLIDE 1 — AGENDA -->
     <div class="pslide dark active" id="ps0">
-      <div class="s1-headline">From Recovery to <span class="s1-gold">Prevention.</span></div>
+      <div class="s3-headline">Agenda</div>
+      <div class="s3-sub">What we'll cover today</div>
+      <div class="agenda-grid">
+        <div class="agenda-card" id="ag0" style="border-top-color:#FFC836">
+          <div class="agenda-num">01</div>
+          <div class="agenda-ico">🕰️</div>
+          <div class="agenda-title">Background</div>
+          <div class="agenda-body">Why prevention, not just recovery</div>
+        </div>
+        <div class="agenda-card" id="ag1" style="border-top-color:#10A5AC">
+          <div class="agenda-num">02</div>
+          <div class="agenda-ico">📊</div>
+          <div class="agenda-title">Quantify Bupa Fraud POC</div>
+          <div class="agenda-body">Sizing the problem in Bupa's own claims</div>
+        </div>
+        <div class="agenda-card" id="ag2" style="border-top-color:#F76923">
+          <div class="agenda-num">03</div>
+          <div class="agenda-ico">🎯</div>
+          <div class="agenda-title">Target Outcome</div>
+          <div class="agenda-body">What success looks like for Phase 1</div>
+        </div>
+        <div class="agenda-card" id="ag3" style="border-top-color:#5F67B9">
+          <div class="agenda-num">04</div>
+          <div class="agenda-ico">🤝</div>
+          <div class="agenda-title">Requirements</div>
+          <div class="agenda-body">What we're asking for to get started</div>
+        </div>
+      </div>
+      <div class="sdots"><div class="sdot on" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
+      <div class="slide-nav"><button class="snav primary" onclick="nextSlide()">Next →</button></div>
+    </div>
+
+    <!-- SLIDE 2 — THE PROBLEM -->
+    <div class="pslide dark" id="ps1">
+      <div class="s1-headline">From Detection to <span class="s1-gold">Prevention.</span></div>
       <div class="s1-rows" id="s1-rows">
         <div class="s1-row" id="r0">
-          <div class="s1-stat-box"><div class="s1-stat" style="color:#FFC836">3–10%</div></div>
+          <div class="s1-stat-box"><div class="s1-icon">📊</div><div class="s1-stat" style="color:#FFC836">1–3%</div></div>
           <div class="s1-bar" style="background:#FFC836"></div>
           <div class="s1-content">
-            <div class="s1-desc">of health insurance claims contain fraud, waste or abuse — at 6% global average that's over $1.1B in Australia annually</div>
-            <div class="s1-src">Source: PKF Littlejohn / Centre for Counter Fraud Studies (CCFS) · APRA private health benefits 2024 ($18.7B paid)</div>
+            <div class="s1-desc">of Bupa's claims are estimated to contain fraud, waste or abuse — a conservative estimate, held well below the global industry benchmark</div>
+            <div class="s1-src">Conservative internal estimate · benchmarked against PKF Littlejohn / Centre for Counter Fraud Studies (CCFS) global range of 3–10%</div>
           </div>
         </div>
         <div class="s1-row" id="r1">
-          <div class="s1-stat-box"><div class="s1-stat" style="color:#F76923">Invisible</div></div>
+          <div class="s1-stat-box"><div class="s1-icon">🚨</div><div class="s1-stat" style="color:#F76923">Invisible</div></div>
           <div class="s1-bar" style="background:#F76923"></div>
           <div class="s1-content">
             <div class="s1-desc">Healthcare is Australia's #1 most targeted sector for data breaches — creating the infrastructure for large-scale insurance fraud rings</div>
@@ -576,7 +660,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           </div>
         </div>
         <div class="s1-row" id="r2">
-          <div class="s1-stat-box"><div class="s1-stat" style="color:#10A5AC;font-size:28px">Prevention</div></div>
+          <div class="s1-stat-box"><div class="s1-icon">🛡️</div><div class="s1-stat" style="color:#10A5AC;font-size:28px">Prevention</div></div>
           <div class="s1-bar" style="background:#10A5AC"></div>
           <div class="s1-content">
             <div class="s1-desc">Recovery happens after a claim is paid. Prevention happens before. AI is what makes that shift possible.</div>
@@ -585,24 +669,73 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         </div>
       </div>
       <div class="s1-sub">The scale is real. &nbsp;The risk is invisible. &nbsp;<b>Prevention starts here.</b></div>
-      <div class="sdots"><div class="sdot on" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
-      <div class="slide-nav"><button class="snav primary" onclick="nextSlide()">Next →</button></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
+      <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
-    <!-- SLIDE 2 — THREE PHASES -->
-    <div class="pslide dark" id="ps1">
+    <!-- SLIDE 3 — INTRO / BUSINESS CASE -->
+    <div class="pslide dark" id="ps2">
+      <div class="s3-headline">The Business Case for Prevention</div>
+      <div class="s3-sub">What this proof of concept sets out to prove, how it will run, and what we're asking for to get started</div>
+      <div class="s3-grid">
+        <div class="s3-card" id="i0" style="border-left-color:#FFC836">
+          <div class="s3-title">🕰️ Background</div>
+          <div class="s3-body">Bupa has traditionally caught fraud after a claim is paid, through audits and recoveries. This proof of concept tests whether the same detection can happen before payment, using AI to review documents and patterns at scale.</div>
+        </div>
+        <div class="s3-card" id="i1" style="border-left-color:#10A5AC">
+          <div class="s3-title">🗂️ What the POC Will Entail</div>
+          <div class="s3-body">Extract and analyse approximately 10,000 historical claims receipts, replaying them initially through Phase 1, with future phases to follow.</div>
+        </div>
+        <div class="s3-card" id="i2" style="border-left-color:#5F67B9">
+          <div class="s3-title">⚙️ How the POC Will Work</div>
+          <div class="s0-steps">
+            <div class="s0-step"><span class="s0-step-num">01</span>Extract — AI extracts text and structured data from every receipt</div>
+            <div class="s0-step"><span class="s0-step-num">02</span>Analyse — checked against configured rules based on signals</div>
+            <div class="s0-step"><span class="s0-step-num">03</span>Classify — scored and grouped by risk level</div>
+            <div class="s0-step"><span class="s0-step-num">04</span>Route — clean claims pass; flagged claims go to an investigator</div>
+            <div class="s0-step"><span class="s0-step-num">05</span>Validate — suspicious claims validated by the fraud team</div>
+          </div>
+        </div>
+        <div class="s3-card" id="i3" style="border-left-color:#F76923">
+          <div class="s3-title">🎯 What Is the Expected Outcome</div>
+          <div class="s0-metrics">
+            <div class="s0-metric"><span class="s0-metric-lbl">Fraud detection capability</span><span class="s0-metric-val">[X]%</span></div>
+            <div class="s0-metric"><span class="s0-metric-lbl">Cases for investigator review</span><span class="s0-metric-val">est. [Z]</span></div>
+            <div class="s0-metric"><span class="s0-metric-lbl">Recovery potential</span><span class="s0-metric-val">$[X]</span></div>
+          </div>
+        </div>
+        <div class="s3-card" id="i4" style="border-left-color:#10A5AC">
+          <div class="s3-title">📈 If We Scale</div>
+          <div class="s3-body">Processing an extended volume of claims could identify between $[X] and $[Y] in fraud savings.</div>
+          <div class="s0-note">Figures to be confirmed against the Phase 1 POC results.</div>
+        </div>
+        <div class="s3-card" id="i5" style="border-left-color:#334190">
+          <div class="s3-title">🤝 What's Needed</div>
+          <ul class="s0-asks">
+            <li>Executive project owner to authorise Phase 1 POC with historical claims dataset</li>
+            <li>AI Council approval on detection methodology and governance framework</li>
+            <li>Resource and budget commitment for Phase 1 build</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
+      <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
+    </div>
+
+    <!-- SLIDE 4 — THREE PHASES -->
+    <div class="pslide dark" id="ps3">
       <div class="s2-headline">One Intelligent Pipeline.</div>
       <div class="s2-sub">One Problem. Three Layers of Defence.</div>
       <div class="s2-grid">
         <div class="s2-col" id="c0">
           <div class="s2-bar" style="background:#F76923"></div>
           <div class="s2-body">
-            <div class="s2-title">Document Fraud</div>
+            <div class="s2-title">🔍 Document Forensics</div>
             <span class="s2-tag" style="background:#F76923">Is this document real and valid?</span>
             <div class="s2-signals">8 Fraud Signals</div>
             <ul class="s2-pts">
               <li>Claim-to-receipt match — verifies amount, provider, date and codes against the receipt</li>
-              <li>OCR extracts the text — Pega Agentic AI interrogates the entire document</li>
+              <li>AI extracts the text — Pega Agentic AI interrogates the entire document</li>
               <li>Duplicate detection — receipt fingerprinted against every claim already submitted</li>
               <li>Document type classification & confidence scoring — scored against threshold</li>
               <li>Font consistency analysis — spliced typefaces</li>
@@ -615,7 +748,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         <div class="s2-col" id="c1">
           <div class="s2-bar" style="background:#10A5AC"></div>
           <div class="s2-body">
-            <div class="s2-title">Provider & Pattern Fraud</div>
+            <div class="s2-title">⚡ Provider & Pattern Fraud</div>
             <span class="s2-tag" style="background:#10A5AC">Does this claim make sense?</span>
             <div class="s2-signals">7 Fraud Signals</div>
             <ul class="s2-pts">
@@ -632,7 +765,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         <div class="s2-col" id="c2">
           <div class="s2-bar" style="background:#5F67B9"></div>
           <div class="s2-body">
-            <div class="s2-title">Organised Ring Fraud</div>
+            <div class="s2-title">🧠 Organised Ring Fraud</div>
             <span class="s2-tag" style="background:#5F67B9">Who else is involved?</span>
             <div class="s2-signals">5 Fraud Signals</div>
             <ul class="s2-pts">
@@ -648,12 +781,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       <div class="s2-aim" id="aim">
         🛡️ &nbsp;<strong>Pega Alerts & Investigations Management (AIM)</strong> — Every AI signal reviewed by a human investigator · AI assists, humans decide · Full audit trail on every case
       </div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
-    <!-- SLIDE 3 — POWERED BY PEGA -->
-    <div class="pslide dark" id="ps2">
+    <!-- SLIDE 5 — POWERED BY PEGA -->
+    <div class="pslide dark" id="ps4">
       <div class="s3-headline">Powered by Pega</div>
       <div class="s3-sub">The Enterprise AI Platform Transforming Healthcare Operations</div>
       <div class="s3-grid">
@@ -664,27 +797,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         <div class="s3-card" id="p4" style="border-left-color:#10A5AC"><div class="s3-title">⚡ Fast to Deploy</div><div class="s3-body">Orchestrated end-to-end by Pega Infinity 26.1. No new platforms to build or infrastructure to own</div></div>
         <div class="s3-card" id="p5" style="border-left-color:#334190"><div class="s3-title">👤 Human Oversight</div><div class="s3-body">Every AI determination reviewed by a named human investigator. Full audit trail on every case</div></div>
       </div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
-      <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
-    </div>
-
-    <!-- SLIDE 4 — LAUNCH -->
-    <div class="pslide dark" id="ps3">
-      <div class="s4-main">From Claim to Cleared —<br><span class="s4-gold">or Caught.</span></div>
-      <div class="s4-pts">
-        <div class="s4-pt">Six fraud scenarios modelled on real patterns — clean claims and caught fraud</div>
-        <div class="s4-pt">Three layers detecting fraud in real time</div>
-        <div class="s4-pt">AI assists — human decides · Full audit trail on every case</div>
-        <div class="s4-pt">Every number traces to a named check — no black-box scoring</div>
-      </div>
-      <div class="s4-sub">What follows is the pipeline running across six claim scenarios — the seconds between a claim arriving and its outcome being determined.</div>
-      <div class="s4-pulse"><div class="s4-pdot"></div><span class="s4-ptxt">Pega Infinity 26.1 · Simulated Pipeline · Illustrative Scenarios</span></div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div></div>
+      <div class="s4-pulse" style="margin-top:14px"><div class="s4-pdot"></div><span class="s4-ptxt">Pega Infinity 26.1 · Simulated Pipeline · Illustrative Scenarios</span></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot on" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="goDemo()">Launch Demo →</button></div>
     </div>
 
-    <!-- SLIDE 5 — BACKUP: IDENTITY GRAPH (manual access only, not in main sequence or rolling loop) -->
-    <div class="pslide dark" id="ps4">
+    <!-- SLIDE 6 — BACKUP: IDENTITY GRAPH (manual access only, not in main sequence or rolling loop) -->
+    <div class="pslide dark" id="ps5">
       <div class="bk-eyebrow">Backup — technical detail</div>
       <div class="bk-title">What "Three Hops" Actually Means</div>
       <div class="bk-sub">The entity model Phase 3 is designed against — real relationship types, not just a diagram.</div>
@@ -740,8 +859,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           <text x="120" y="76" class="bk-nbadge" text-anchor="middle">14 members · 3 providers</text>
         </g>
       </svg>
-      <div class="bk-note">Adapted from a standard identity-graph pattern used for fraud-ring detection · this is the target schema we'd build with H+'s data, not a claim that it's already running.</div>
-      <div class="slide-nav"><button class="snav" onclick="goSlide(3)">← Back to Launch</button></div>
+      <div class="bk-note">Adapted from a standard identity-graph pattern used for fraud-ring detection · this is the target schema we'd build with Bupa's data, not a claim that it's already running.</div>
+      <div class="slide-nav"><button class="snav" onclick="goSlide(4)">← Back to Presentation</button></div>
     </div>
   </div>
 </div>
@@ -750,7 +869,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="screen" id="demo-screen">
 <div class="page">
   <nav class="nav">
-    <div class="logo"><span class="logo-plus">H+</span>Health Insurance Co</div>
+    <div class="logo"><div class="logo-badge"><span class="logo-badge-text">Bupa</span><svg class="logo-badge-pulse" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,7 C1.5,4 3,4 3.5,7 C4,10 5,10 5,7 L8,7 L10,3 L12,10 L14,6 L40,6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
     <div class="nav-links">
       <a class="nav-link" href="#">My Cover</a>
       <a class="nav-link" href="#">Claims</a>
@@ -763,7 +882,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     </div>
   </nav>
   <div class="ctx-strip">
-    <div class="ctx-tag"><div class="hero-dot"></div>Claim Portal — Active</div>
+    <div class="ctx-tag"><div class="hero-dot"></div>POC: Phase 1 Validation — Dataset Processing</div>
     <div class="ctx-sep"></div>
     <h1 class="ctx-h1" id="hero-h1">Lodge your dental claim</h1>
     <div class="ctx-spacer"></div>
@@ -806,16 +925,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         </div>
         <div class="lodge-section" style="height:100%">
           <div class="lodge-hdr">
-            <div><div class="lodge-hdr-title">Lodge a New Claim</div><div class="lodge-hdr-sub" id="form-sub">Submit your receipt for instant processing</div></div>
+            <div><div class="lodge-hdr-title">Phase 1 Dataset Analysis</div><div class="lodge-hdr-sub" id="form-sub">Validating member-entered data against historical receipts</div></div>
             <div class="lodge-active"><div class="lodge-active-dot"></div>AI Fraud Detection Active</div>
           </div>
           <div class="lodge-body">
             <div class="form-group full" style="margin-bottom:14px">
-              <label class="form-label">Upload Receipt <span class="req">*</span></label>
+              <label class="form-label">Document from Dataset <span class="req">*</span></label>
               <div class="upload-zone" id="upload-zone" onclick="simulateUpload()">
                 <div class="upload-icon">📎</div>
-                <div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div>
-                <div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>
+                <div class="upload-text"><strong style="color:var(--red)">Load Document</strong></div>
+                <div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>
               </div>
               <div id="upload-validation" style="display:none;margin-top:8px">
                 <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Document type confirmed</div><div class="val-detail" id="val-det-1">Checking document type...</div></div></div>
@@ -828,6 +947,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
                 <div><div style="font-size:12px;font-weight:600" id="r-name">receipt.pdf</div><div style="font-size:11px;color:var(--text-3)" id="r-size">Loading...</div></div>
                 <div class="receipt-check">✅</div>
               </div>
+            </div>
+            <div class="dataset-intro">
+              <div class="dataset-intro-title">Member-Entered Data (From Dataset)</div>
+              <div class="dataset-intro-body">Below shows data entered by the member when lodging the claim. Phase 1 validates: does this data match the actual receipt?</div>
             </div>
             <div class="form-row">
               <div class="form-group"><label class="form-label">Claim Type <span class="req">*</span></label><select class="form-select" id="f-type"><option id="f-type-opt"></option></select></div>
@@ -842,7 +965,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
               <div class="form-group"><label class="form-label">Item Codes</label><input class="form-input" id="f-codes" readonly placeholder="Read from receipt"></div>
             </div>
             <div class="form-footer">
-              <div class="form-note">🔒 Secured · Processed by Pega Infinity 26.1</div>
+              <div class="form-note">🔒 Secured · Processed by Pega Infinity 26.1 <span class="dataset-badge">🤖 Historical Dataset · Phase 1 Only</span></div>
               <div style="display:flex;gap:10px">
                 <button class="btn-cancel" id="btn-savedraft">Save Draft</button>
                 <button class="btn-submit" id="btn-submit" onclick="submitClaim()">Submit Claim →</button>
@@ -860,7 +983,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="screen" id="fraud-dashboard">
 <div class="page">
   <nav class="nav">
-    <div class="logo"><span class="logo-plus">H+</span>Health Insurance Co</div>
+    <div class="logo"><div class="logo-badge"><span class="logo-badge-text">Bupa</span><svg class="logo-badge-pulse" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,7 C1.5,4 3,4 3.5,7 C4,10 5,10 5,7 L8,7 L10,3 L12,10 L14,6 L40,6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
     <div class="nav-links">
       <a class="nav-link" href="#">My Cover</a>
       <a class="nav-link" href="#">Claims</a>
@@ -920,13 +1043,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       </div>
       <div class="fdb-table">
         <div class="fdb-thead">
-          <div class="fdb-row" style="grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 1.1fr 1.2fr">
+          <div class="fdb-row" style="grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 100px 1.1fr 1.2fr">
             <div class="fdb-th" onclick="fdbSort('claim')">Claim Ref <span class="fdb-th-sort" id="sort-claim"></span></div>
             <div class="fdb-th" onclick="fdbSort('member')">Member <span class="fdb-th-sort" id="sort-member"></span></div>
             <div class="fdb-th" onclick="fdbSort('provider')">Provider <span class="fdb-th-sort" id="sort-provider"></span></div>
             <div class="fdb-th" onclick="fdbSort('date')">Date <span class="fdb-th-sort" id="sort-date"></span></div>
             <div class="fdb-th" onclick="fdbSort('type')">Type</div>
             <div class="fdb-th" onclick="fdbSort('amount')">Amount <span class="fdb-th-sort" id="sort-amount"></span></div>
+            <div class="fdb-th" style="text-align:right" onclick="fdbSort('discrepancy')">Discrepancy <span class="fdb-th-sort" id="sort-discrepancy"></span></div>
             <div class="fdb-th" onclick="fdbSort('score')">Fraud Score <span class="fdb-th-sort" id="sort-score"></span></div>
             <div class="fdb-th" onclick="fdbSort('outcome')">Outcome <span class="fdb-th-sort" id="sort-outcome"></span></div>
           </div>
@@ -961,6 +1085,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         <div class="check-list" id="ph1-checks"></div>
         <div class="score-reveal" id="ph1-score"><div class="score-num" id="ph1-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Document Integrity Score</div><div class="score-verdict" id="ph1-score-verdict">Calculating...</div><div class="score-route" id="ph1-score-route"></div></div></div>
         <div class="result-badge" id="ph1-result"><div class="rb-ico" id="ph1-rb-ico">✅</div><div><div class="rb-title" id="ph1-rb-title">Phase 1 Passed</div><div class="rb-sub" id="ph1-rb-sub">Document integrity confirmed</div></div></div>
+        <div class="discrepancy-panel" id="ph1-discrepancy">
+          <div class="discrepancy-title">⚠️ Phase 1 Validation Failed — Member Claim vs Actual Receipt</div>
+          <div class="discrepancy-rows">
+            <div class="discrepancy-row"><span>Member Entered</span><span id="dp-entered"></span></div>
+            <div class="discrepancy-row"><span>Receipt Shows</span><span id="dp-receipt"></span></div>
+            <div class="discrepancy-row total"><span>Discrepancy</span><span id="dp-diff"></span></div>
+          </div>
+          <div class="discrepancy-result">Result: MISMATCH DETECTED</div>
+          <div class="discrepancy-note">This document would be escalated for investigator review.</div>
+        </div>
         <div class="phase-btns" id="ph1-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
           <button class="btn-continue" id="ph1-continue-btn" onclick="collapseAndContinue(1)">Continue to Phase 2 — Event Strategy Detection →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Auditable Pega Event Strategies evaluated in real time</div></button>
@@ -1039,6 +1173,7 @@ const S=[
   {id:'CLM-2024-0841',mbr:'MBR-33291',joined:'Mar 2019',suburb:'Carlton VIC 3053',contact:'Email',member:'James Kowalski',ini:'JK',pol:'POL-2021-44210',cov:'Gold Hospital + Extras',cnt:3,amt:'$847.00',ben:'$1,153',type:'Dental (Extras)',date:'12 Jul 2026',prov:'Bright Smile Dental',abn:'42 198 776 334',clamt:'$312.00',codes:'011, 022, 114',file:'dental_receipt_MBR33291.pdf',fsz:'284 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'clean',
     preview:{icon:'✅',label:'Scenario 1 of 6 — Clean Claim',title:'A legitimate dental claim — watch how all three phases clear',body:'James lodges a routine dental claim from Bright Smile Dental. The receipt is genuine, the provider is registered and there are no suspicious patterns. This shows what a clean run looks like end-to-end.'}},
   {id:'CLM-2024-0842',mbr:'MBR-44712',joined:'Aug 2021',suburb:'Footscray VIC 3011',contact:'Email',member:'Sarah Nguyen',ini:'SN',pol:'POL-2019-88821',cov:'Silver Hospital + Extras',cnt:5,amt:'$1,240.00',ben:'$960',type:'Optical (Extras)',date:'14 Jul 2026',prov:'Vision Direct Pty Ltd',abn:'51 234 567 891',clamt:'$487.50',codes:'10801, 10701, 10501',file:'optical_receipt_MBR44712.pdf',fsz:'391 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph1',
+    receiptMismatch:{entered:'$487.50',receipt:'$445.00',diff:'$42.50',pct:'10.8%'},
     preview:{icon:'🔍',label:'Scenario 2 of 6 — Document Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
   {id:'CLM-2024-0843',mbr:'MBR-77834',joined:'Jan 2024',suburb:'Dandenong VIC 3175',contact:'SMS',member:'David Okafor',ini:'DO',pol:'POL-2022-11092',cov:'Bronze Hospital + Extras',cnt:2,amt:'$390.00',ben:'$1,610',type:'Physiotherapy (Extras)',date:'11 Jul 2026',prov:'Active Rehab Centre',abn:'99 000 111 222',clamt:'$195.00',codes:'SP001, SP010',file:'physio_receipt_MBR77834.pdf',fsz:'212 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'fail-ph2',
     preview:{icon:'🏢',label:'Scenario 3 of 6 — Phantom ABN',title:'A deregistered provider caught in Phase 2',body:'David\'s physio receipt looks fine — but the provider\'s ABN was cancelled in July 2024. Pega\'s ES-005 Event Strategy cross-references the Australian Business Register and flags the claim before any benefit is paid.'}},
@@ -1132,6 +1267,7 @@ const PHASES=[
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts detected',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'',fail:'Authored in Adobe Photoshop, modified 16 Jul 2026 — two days after the service date, no practice software trail',result:'fail',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
+  /* Phase 2 & 3 hidden for the Phase 1 dataset-processing demo — CLM-0842 stops at Phase 1, ph2/ph3 stay null so their blocks never activate. Data kept, not deleted. */
   ]},ph2:null,ph3:null},
   {ph1:{pass:true,score:'0.83',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $195.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
@@ -1252,18 +1388,28 @@ function goSlide(n){
 
 function animateSlide(n){
   if(n===0){
+    ['ag0','ag1','ag2','ag3'].forEach((id,i)=>{
+      const el=$(id); el.classList.remove('visible');
+      setTimeout(()=>el.classList.add('visible'),80+i*120);
+    });
+  } else if(n===1){
     ['r0','r1','r2'].forEach((id,i)=>{
       const el=$(id); el.classList.remove('visible');
       setTimeout(()=>el.classList.add('visible'),150+i*350);
     });
-  } else if(n===1){
+  } else if(n===2){
+    ['i0','i1','i2','i3','i4','i5'].forEach((id,i)=>{
+      const el=$(id); el.classList.remove('visible');
+      setTimeout(()=>el.classList.add('visible'),80+i*100);
+    });
+  } else if(n===3){
     ['c0','c1','c2'].forEach((id,i)=>{
       const el=$(id); el.classList.remove('visible');
       setTimeout(()=>el.classList.add('visible'),100+i*180);
     });
     const aim=$('aim'); aim.classList.remove('visible');
     setTimeout(()=>aim.classList.add('visible'),700);
-  } else if(n===2){
+  } else if(n===4){
     ['p0','p1','p2','p3','p4','p5'].forEach((id,i)=>{
       const el=$(id); el.classList.remove('visible');
       setTimeout(()=>el.classList.add('visible'),80+i*100);
@@ -1277,7 +1423,7 @@ function updateSlideDots(n){
   });
 }
 
-function nextSlide(){ if(curSlide<3) goSlide(curSlide+1); else goDemo(); }
+function nextSlide(){ if(curSlide<4) goSlide(curSlide+1); else goDemo(); }
 function prevSlide(){ if(curSlide>0) goSlide(curSlide-1); }
 
 function startSlideTimer(){
@@ -1289,7 +1435,7 @@ function startSlideTimer(){
     prog.style.width='100%';
   }));
   slideTimer=setTimeout(()=>{
-    if(curSlide<3) goSlide(curSlide+1);
+    if(curSlide<4) goSlide(curSlide+1);
     else { clearSlideProgress(); launchRollingDemo(); }
   },11000);
 }
@@ -1510,10 +1656,10 @@ function setScenario(idx){
   $('f-date').value=''; $('f-prov').value=''; $('f-abn').value='';
   $('f-amt').value=''; $('f-codes').value='';
   [ 'f-type','f-date','f-prov','f-abn','f-amt','f-codes' ].forEach(id=>$(id).classList.remove('ai-filled'));
-  txt('form-sub','Submit your '+s.type.split(' ')[0].toLowerCase()+' receipt for instant processing');
+  txt('form-sub','Validating member-entered data against historical receipts');
   const uz=$('upload-zone');
   uz.classList.remove('has-file');
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Document</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
   // Reset action buttons to default state
@@ -1643,6 +1789,7 @@ function resetPhaseBlock(ph){
   if($('ph'+ph+'-score')) $('ph'+ph+'-score').classList.remove('show');
   if($('ph'+ph+'-continue-btn')) $('ph'+ph+'-continue-btn').style.display='';
   if($('ph'+ph+'-aim-btn')) $('ph'+ph+'-aim-btn').style.display='none';
+  if(ph===1&&$('ph1-discrepancy')) $('ph1-discrepancy').classList.remove('show');
   if(ph===2||ph===3) $('ph'+ph+'-block').style.display='none';
 }
 
@@ -1748,7 +1895,14 @@ function activatePhase(ph,phData){
       $('ph'+ph+'-badge').className='phase-status-badge psb-fail';
       txt('ph'+ph+'-badge','✗ Suspicious');
       $('ph'+ph+'-block').style.background='#FEF2F2'; $('ph'+ph+'-block').style.borderColor='rgba(220,38,38,.3)'; $('ph'+ph+'-block').style.boxShadow='0 2px 8px rgba(220,38,38,.08)';
-      if(ph===1){ txt('ph1-rb-title','Phase 1 — Suspicious Document Detected'); txt('ph1-rb-sub','DocumentIntegrityScore below threshold · Routed to Investigator Queue · HIGH priority · SLA 4 hours'); }
+      if(ph===1){
+        txt('ph1-rb-title','Phase 1 — Suspicious Document Detected'); txt('ph1-rb-sub','DocumentIntegrityScore below threshold · Routed to Investigator Queue · HIGH priority · SLA 4 hours');
+        const rm=S[curScenario].receiptMismatch;
+        if(rm && $('ph1-discrepancy')){
+          txt('dp-entered',rm.entered); txt('dp-receipt',rm.receipt); txt('dp-diff',rm.diff+' (claimed amount exceeds receipt by '+rm.pct+')');
+          $('ph1-discrepancy').classList.add('show');
+        }
+      }
       if(ph===2){
         const isMed=phData.scoreColor==='#D97706';
         txt('ph2-rb-title','Phase 2 — Suspicious Pattern Identified');
@@ -1841,8 +1995,7 @@ function showFinalState(clean){
 
 function restartDemo(){
   stopRolling();
-  closeOverlay();
-  curScenario=0;
+  setScenario(0);
   goSlides();
   goSlide(0);
 }
@@ -1852,7 +2005,7 @@ function closeOverlay(){
   clearAllTimers(); uploaded=false; uploadCount=0;
   const uz=$('upload-zone');
   uz.classList.remove('has-file');
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Document</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
   if($('btn-submit')) $('btn-submit').style.display='';
@@ -1875,7 +2028,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='r'||e.key==='R'){ toggleRolling(); return; }
   if(e.key==='p'||e.key==='P'){ toggleStepByStep(); return; }
   if(e.key==='s'||e.key==='S'){ goSlides(); return; }
-  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ goSlides(); goSlide(4); return; }
+  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ goSlides(); goSlide(5); return; }
   if(e.key==='d'||e.key==='D'){ goDemo(); return; }
   if(e.key===' '){
     e.preventDefault();
@@ -1912,7 +2065,7 @@ function generateFraudDashboardData(){
   let data = [];
   const scenarios = [
     {claim:'CLM-2024-0841',member:'James Kowalski',provider:'Bright Smile Dental',date:'12 Jul 2026',type:'Dental',amount:312,score:8,outcome:'clean'},
-    {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,score:76,outcome:'high'},
+    {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,discrepancy:42.50,score:85,outcome:'high',outcomeLabel:'Mismatch Detected'},
     {claim:'CLM-2024-0843',member:'David Okafor',provider:'Active Rehab Centre',date:'11 Jul 2026',type:'Physio',amount:195,score:62,outcome:'suspicious'},
     {claim:'CLM-2024-0844',member:'Linda Pham',provider:'Metro Dental Group',date:'13 Jul 2026',type:'Dental',amount:264,score:58,outcome:'suspicious'},
     {claim:'CLM-2024-0845',member:'Michael Torres',provider:'ClearView Optometry',date:'10 Jul 2026',type:'Optical',amount:390,score:71,outcome:'high'},
@@ -1962,20 +2115,22 @@ function fdbUpdateTable(){
   });
   
   filtered.sort((a,b)=>{
-    let aVal = a[fdbSortBy];
-    let bVal = b[fdbSortBy];
+    let aVal = fdbSortBy==='discrepancy'?(a.discrepancy||0):a[fdbSortBy];
+    let bVal = fdbSortBy==='discrepancy'?(b.discrepancy||0):b[fdbSortBy];
     if(typeof aVal==='string') aVal = aVal.toLowerCase();
     if(typeof bVal==='string') bVal = bVal.toLowerCase();
     const cmp = aVal<bVal?-1:(aVal>bVal?1:0);
     return fdbSortAsc?cmp:-cmp;
   });
-  
+
   const tbody = document.getElementById('fdb-tbody');
   if(!tbody) return;
   tbody.innerHTML = filtered.map(row=>{
     const outcomeClass = row.outcome==='clean'?'fdb-outcome-clean':(row.outcome==='suspicious'?'fdb-outcome-suspicious':'fdb-outcome-high');
-    const outcomeLabel = row.outcome==='clean'?'Legitimate':(row.outcome==='suspicious'?'Suspicious':'High Risk');
+    const outcomeLabelDefault = row.outcome==='clean'?'Legitimate':(row.outcome==='suspicious'?'Suspicious':'High Risk');
+    const outcomeLabel = row.outcomeLabel || outcomeLabelDefault;
     const outcomeIcon = row.outcome==='clean'?'✓':(row.outcome==='suspicious'?'⚠':'🚨');
+    const discrepancyCell = row.discrepancy?`$${row.discrepancy.toFixed(2)} ↑`:'';
     return `<div class="fdb-row">
       <div class="fdb-cell-claim">${row.claim}</div>
       <div class="fdb-cell-member">${row.member}</div>
@@ -1983,6 +2138,7 @@ function fdbUpdateTable(){
       <div class="fdb-cell-date">${row.date}</div>
       <div><span class="fdb-cell-type">${row.type}</span></div>
       <div class="fdb-cell-score">$${row.amount.toFixed(2)}</div>
+      <div class="fdb-cell-discrepancy">${discrepancyCell}</div>
       <div class="fdb-cell-score">${row.score}%</div>
       <div><span class="fdb-cell-outcome ${outcomeClass}">${outcomeIcon} ${outcomeLabel}</span></div>
     </div>`;
@@ -2000,7 +2156,7 @@ function fdbSort(col){
   if(fdbSortBy===col) fdbSortAsc = !fdbSortAsc;
   else {fdbSortBy=col; fdbSortAsc=true;}
   
-  ['claim','member','provider','date','type','amount','score','outcome'].forEach(c=>{
+  ['claim','member','provider','date','type','amount','discrepancy','score','outcome'].forEach(c=>{
     const el = document.getElementById('sort-'+c);
     if(el) el.textContent = c===col?(fdbSortAsc?'▲':'▼'):'';
   });
@@ -2131,7 +2287,7 @@ showFinalState = function(clean){
         <div class="aim-evidence">
           <div class="aim-evidence-title">Knowledge Buddy (RAG) — Pattern Similarity Match</div>
           <div class="aim-evidence-list">
-            <div class="aim-evidence-item"><strong>91% similarity match</strong> to four confirmed phantom billing cases in H+ fraud library</div>
+            <div class="aim-evidence-item"><strong>91% similarity match</strong> to four confirmed phantom billing cases in Bupa fraud library</div>
             <div class="aim-evidence-item"><strong>Matching patterns:</strong> Item codes 10801, 10712 — optical supplies only, no lens fitting or consultation</div>
             <div class="aim-evidence-item"><strong>Provider profile match:</strong> ClearView Optometry flagged in five prior claims with identical code patterns and amounts</div>
             <div class="aim-evidence-item"><strong>Timeline anomaly:</strong> Three claims from this provider in seven days — exceeds normal business capacity for solo practice</div>
