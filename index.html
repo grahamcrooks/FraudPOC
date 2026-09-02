@@ -94,6 +94,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .light .snav.primary{background:var(--navy);border-color:var(--navy);color:#fff}
 .skip-demo-btn{position:absolute;top:16px;right:72px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);padding:5px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:var(--font);transition:all .2s;z-index:10}
 .skip-demo-btn:hover{color:#fff;background:rgba(255,255,255,.12)}
+.slide-logo{position:absolute;top:16px;left:72px;z-index:10}
+.slide-logo .logo-badge{width:34px;height:34px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 
 /* Auto-progress bar */
 .slide-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--teal);transition:none;z-index:20}
@@ -233,8 +235,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 #demo-screen{background:var(--white);overflow-y:auto}
 .page{padding-top:0;min-height:calc(100vh - 36px);display:flex;flex-direction:column}
 .nav{height:58px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.logo{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:800;color:var(--red)}
-.logo-pulse{color:var(--red);flex-shrink:0}
+.logo{display:flex;align-items:center}
+.logo-badge{width:38px;height:38px;border-radius:8px;background:var(--red);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:5px 6px;flex-shrink:0}
+.logo-badge-text{color:#fff;font-weight:800;font-size:13px;line-height:1;font-family:var(--font);letter-spacing:.2px}
+.logo-badge-pulse{width:100%;height:auto;display:block}
 .nav-links{display:flex;gap:28px;margin-left:40px}
 .nav-link{font-size:13px;color:var(--text-2);text-decoration:none}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
@@ -599,6 +603,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   <div class="slide-wrap" id="slide-wrap">
     <div class="slide-progress" id="slide-progress" style="width:0"></div>
     <button class="skip-demo-btn" onclick="goDemo()">Skip to Demo →</button>
+    <div class="slide-logo"><div class="logo-badge"><span class="logo-badge-text">Bupa</span><svg class="logo-badge-pulse" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,7 C1.5,4 3,4 3.5,7 C4,10 5,10 5,7 L8,7 L10,3 L12,10 L14,6 L40,6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
 
     <!-- SLIDE 1 — AGENDA -->
     <div class="pslide dark active" id="ps0">
@@ -864,7 +869,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="screen" id="demo-screen">
 <div class="page">
   <nav class="nav">
-    <div class="logo"><svg class="logo-pulse" width="26" height="14" viewBox="0 0 40 16" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="0,8 11,8 14,2 18,14 21,8 40,8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Bupa</div>
+    <div class="logo"><div class="logo-badge"><span class="logo-badge-text">Bupa</span><svg class="logo-badge-pulse" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,7 C1.5,4 3,4 3.5,7 C4,10 5,10 5,7 L8,7 L10,3 L12,10 L14,6 L40,6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
     <div class="nav-links">
       <a class="nav-link" href="#">My Cover</a>
       <a class="nav-link" href="#">Claims</a>
@@ -978,7 +983,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="screen" id="fraud-dashboard">
 <div class="page">
   <nav class="nav">
-    <div class="logo"><svg class="logo-pulse" width="26" height="14" viewBox="0 0 40 16" fill="none" xmlns="http://www.w3.org/2000/svg"><polyline points="0,8 11,8 14,2 18,14 21,8 40,8" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>Bupa</div>
+    <div class="logo"><div class="logo-badge"><span class="logo-badge-text">Bupa</span><svg class="logo-badge-pulse" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,7 C1.5,4 3,4 3.5,7 C4,10 5,10 5,7 L8,7 L10,3 L12,10 L14,6 L40,6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
     <div class="nav-links">
       <a class="nav-link" href="#">My Cover</a>
       <a class="nav-link" href="#">Claims</a>
