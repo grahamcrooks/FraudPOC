@@ -107,9 +107,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .s1-row.visible{opacity:1;transform:translateX(0)}
 .dark .s1-row{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
 .light .s1-row{background:#fff;border:1px solid rgba(0,31,95,.1);box-shadow:0 2px 12px rgba(0,31,95,.08)}
-.s1-stat-box{width:200px;min-width:200px;display:flex;align-items:center;justify-content:center;padding:20px;flex-shrink:0;align-self:stretch}
+.s1-stat-box{width:200px;min-width:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px;flex-shrink:0;align-self:stretch}
 .dark .s1-stat-box{background:rgba(255,255,255,.04)}
 .light .s1-stat-box{background:rgba(0,31,95,.04)}
+.s1-icon{font-size:22px;line-height:1}
 .s1-stat{font-size:clamp(24px,2.8vw,38px);font-weight:800;text-align:center;line-height:1.1;white-space:nowrap}
 .s1-bar{width:4px;flex-shrink:0;align-self:stretch}
 .s1-content{flex:1;padding:20px 28px;display:flex;flex-direction:column;justify-content:center;gap:8px}
@@ -147,8 +148,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .s2-signals{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-top:5px}
 .dark .s2-signals{color:#7C93B8}
 .light .s2-signals{color:var(--text-3)}
-.s2-pts{list-style:none;display:flex;flex-direction:column;gap:5px;margin-top:3px}
-.s2-pts li{font-size:clamp(11px,1.22vw,15.5px);line-height:1.3;display:flex;gap:6px}
+.s2-pts{list-style:none;display:flex;flex-direction:column;gap:13px;margin-top:6px}
+.s2-pts li{font-size:clamp(11px,1.22vw,15.5px);line-height:1.45;display:flex;gap:6px}
 .dark .s2-pts li{color:#fff}
 .light .s2-pts li{color:var(--blue)}
 .s2-pts li::before{content:'·';opacity:.7;flex-shrink:0}
@@ -200,19 +201,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .s0-note{color:#6B84A8}
 .light .s0-note{color:#7B9FC4}
 
-/* ── SLIDE 5 — LAUNCH ── */
-#ps4{justify-content:center}
-.s4-main{font-size:clamp(48px,6.5vw,96px);font-weight:800;line-height:1.05;margin-bottom:28px}
-.dark .s4-main{color:#fff}
-.light .s4-main{color:var(--navy)}
-.s4-gold{color:var(--gold)}
-.light .s4-gold{color:var(--teal)}
-.s4-pts{margin-bottom:24px;display:flex;flex-direction:column;gap:10px}
-.s4-pt{font-size:clamp(18px,2.2vw,28px);display:flex;align-items:center;gap:10px}
-.dark .s4-pt{color:var(--lblue)}
-.light .s4-pt{color:var(--blue)}
-.s4-pt::before{content:'›';font-size:1.3em;font-weight:700;color:var(--teal);flex-shrink:0}
-.s4-sub{font-size:clamp(14px,1.6vw,20px);line-height:1.6;max-width:800px;color:var(--teal)}
+/* ── "Simulated Pipeline · Illustrative Scenarios" pulse indicator — now shown at the foot of the Why Pega slide ── */
 .s4-pulse{display:flex;align-items:center;gap:10px;margin-top:24px}
 .s4-pdot{width:10px;height:10px;border-radius:50%;background:var(--teal);animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
@@ -540,8 +529,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     <button class="sc" onclick="goSlide(1)" id="sb1">② Problem</button>
     <button class="sc" onclick="goSlide(2)" id="sb2">③ Three Phases</button>
     <button class="sc" onclick="goSlide(3)" id="sb3">④ Why Pega</button>
-    <button class="sc" onclick="goSlide(4)" id="sb4">⑤ Launch</button>
-    <button class="sc" onclick="goSlide(5)" id="sb5" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧 Backup</button>
+    <button class="sc" onclick="goSlide(4)" id="sb4" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧 Backup</button>
   </div>
   <div id="demo-btns" style="display:none;gap:4px">
     <button class="sc" onclick="setScenario(0)" id="sc0"><span class="dot-indicator dg"></span>CLM-0841 · Clean</button>
@@ -607,12 +595,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           <div class="s0-metrics">
             <div class="s0-metric"><span class="s0-metric-lbl">Fraud detection capability</span><span class="s0-metric-val">[X]%</span></div>
             <div class="s0-metric"><span class="s0-metric-lbl">Cases for investigator review</span><span class="s0-metric-val">est. [Z]</span></div>
-            <div class="s0-metric"><span class="s0-metric-lbl">Recovery potential</span><span class="s0-metric-val">£[X]</span></div>
+            <div class="s0-metric"><span class="s0-metric-lbl">Recovery potential</span><span class="s0-metric-val">$[X]</span></div>
           </div>
         </div>
         <div class="s3-card" id="i4" style="border-left-color:#10A5AC">
           <div class="s3-title">📈 If We Scale</div>
-          <div class="s3-body">Processing an extended volume of claims could identify between £[X] and £[Y] in fraud savings.</div>
+          <div class="s3-body">Processing an extended volume of claims could identify between $[X] and $[Y] in fraud savings.</div>
           <div class="s0-note">Figures to be confirmed against the Phase 1 POC results.</div>
         </div>
         <div class="s3-card" id="i5" style="border-left-color:#334190">
@@ -624,7 +612,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           </ul>
         </div>
       </div>
-      <div class="sdots"><div class="sdot on" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
+      <div class="sdots"><div class="sdot on" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
       <div class="slide-nav"><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
@@ -633,7 +621,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       <div class="s1-headline">From Detection to <span class="s1-gold">Prevention.</span></div>
       <div class="s1-rows" id="s1-rows">
         <div class="s1-row" id="r0">
-          <div class="s1-stat-box"><div class="s1-stat" style="color:#FFC836">1–3%</div></div>
+          <div class="s1-stat-box"><div class="s1-icon">📊</div><div class="s1-stat" style="color:#FFC836">1–3%</div></div>
           <div class="s1-bar" style="background:#FFC836"></div>
           <div class="s1-content">
             <div class="s1-desc">of Bupa's claims are estimated to contain fraud, waste or abuse — a conservative estimate, held well below the global industry benchmark</div>
@@ -641,7 +629,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           </div>
         </div>
         <div class="s1-row" id="r1">
-          <div class="s1-stat-box"><div class="s1-stat" style="color:#F76923">Invisible</div></div>
+          <div class="s1-stat-box"><div class="s1-icon">🚨</div><div class="s1-stat" style="color:#F76923">Invisible</div></div>
           <div class="s1-bar" style="background:#F76923"></div>
           <div class="s1-content">
             <div class="s1-desc">Healthcare is Australia's #1 most targeted sector for data breaches — creating the infrastructure for large-scale insurance fraud rings</div>
@@ -649,7 +637,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           </div>
         </div>
         <div class="s1-row" id="r2">
-          <div class="s1-stat-box"><div class="s1-stat" style="color:#10A5AC;font-size:28px">Prevention</div></div>
+          <div class="s1-stat-box"><div class="s1-icon">🛡️</div><div class="s1-stat" style="color:#10A5AC;font-size:28px">Prevention</div></div>
           <div class="s1-bar" style="background:#10A5AC"></div>
           <div class="s1-content">
             <div class="s1-desc">Recovery happens after a claim is paid. Prevention happens before. AI is what makes that shift possible.</div>
@@ -658,7 +646,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         </div>
       </div>
       <div class="s1-sub">The scale is real. &nbsp;The risk is invisible. &nbsp;<b>Prevention starts here.</b></div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
@@ -721,7 +709,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       <div class="s2-aim" id="aim">
         🛡️ &nbsp;<strong>Pega Alerts & Investigations Management (AIM)</strong> — Every AI signal reviewed by a human investigator · AI assists, humans decide · Full audit trail on every case
       </div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
@@ -737,27 +725,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         <div class="s3-card" id="p4" style="border-left-color:#10A5AC"><div class="s3-title">⚡ Fast to Deploy</div><div class="s3-body">Orchestrated end-to-end by Pega Infinity 26.1. No new platforms to build or infrastructure to own</div></div>
         <div class="s3-card" id="p5" style="border-left-color:#334190"><div class="s3-title">👤 Human Oversight</div><div class="s3-body">Every AI determination reviewed by a named human investigator. Full audit trail on every case</div></div>
       </div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
-      <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
-    </div>
-
-    <!-- SLIDE 5 — LAUNCH -->
-    <div class="pslide dark" id="ps4">
-      <div class="s4-main">From Claim to Cleared —<br><span class="s4-gold">or Caught.</span></div>
-      <div class="s4-pts">
-        <div class="s4-pt">Six fraud scenarios modelled on real patterns — clean claims and caught fraud</div>
-        <div class="s4-pt">Three layers detecting fraud in real time</div>
-        <div class="s4-pt">AI assists — human decides · Full audit trail on every case</div>
-        <div class="s4-pt">Every number traces to a named check — no black-box scoring</div>
-      </div>
-      <div class="s4-sub">What follows is the pipeline running across six claim scenarios — the seconds between a claim arriving and its outcome being determined.</div>
-      <div class="s4-pulse"><div class="s4-pdot"></div><span class="s4-ptxt">Pega Infinity 26.1 · Simulated Pipeline · Illustrative Scenarios</span></div>
-      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot on" onclick="goSlide(4)"></div></div>
+      <div class="s4-pulse" style="margin-top:14px"><div class="s4-pdot"></div><span class="s4-ptxt">Pega Infinity 26.1 · Simulated Pipeline · Illustrative Scenarios</span></div>
+      <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="goDemo()">Launch Demo →</button></div>
     </div>
 
-    <!-- SLIDE 6 — BACKUP: IDENTITY GRAPH (manual access only, not in main sequence or rolling loop) -->
-    <div class="pslide dark" id="ps5">
+    <!-- SLIDE 5 — BACKUP: IDENTITY GRAPH (manual access only, not in main sequence or rolling loop) -->
+    <div class="pslide dark" id="ps4">
       <div class="bk-eyebrow">Backup — technical detail</div>
       <div class="bk-title">What "Three Hops" Actually Means</div>
       <div class="bk-sub">The entity model Phase 3 is designed against — real relationship types, not just a diagram.</div>
@@ -814,7 +788,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         </g>
       </svg>
       <div class="bk-note">Adapted from a standard identity-graph pattern used for fraud-ring detection · this is the target schema we'd build with H+'s data, not a claim that it's already running.</div>
-      <div class="slide-nav"><button class="snav" onclick="goSlide(4)">← Back to Launch</button></div>
+      <div class="slide-nav"><button class="snav" onclick="goSlide(3)">← Back to Presentation</button></div>
     </div>
   </div>
 </div>
@@ -1355,7 +1329,7 @@ function updateSlideDots(n){
   });
 }
 
-function nextSlide(){ if(curSlide<4) goSlide(curSlide+1); else goDemo(); }
+function nextSlide(){ if(curSlide<3) goSlide(curSlide+1); else goDemo(); }
 function prevSlide(){ if(curSlide>0) goSlide(curSlide-1); }
 
 function startSlideTimer(){
@@ -1367,7 +1341,7 @@ function startSlideTimer(){
     prog.style.width='100%';
   }));
   slideTimer=setTimeout(()=>{
-    if(curSlide<4) goSlide(curSlide+1);
+    if(curSlide<3) goSlide(curSlide+1);
     else { clearSlideProgress(); launchRollingDemo(); }
   },11000);
 }
@@ -1953,7 +1927,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='r'||e.key==='R'){ toggleRolling(); return; }
   if(e.key==='p'||e.key==='P'){ toggleStepByStep(); return; }
   if(e.key==='s'||e.key==='S'){ goSlides(); return; }
-  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ goSlides(); goSlide(5); return; }
+  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ goSlides(); goSlide(4); return; }
   if(e.key==='d'||e.key==='D'){ goDemo(); return; }
   if(e.key===' '){
     e.preventDefault();
