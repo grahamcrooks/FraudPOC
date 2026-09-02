@@ -57,9 +57,21 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .slide-wrap{flex:1;display:flex;align-items:stretch;justify-content:stretch;overflow:hidden;position:relative}
 
 /* Each slide */
-.pslide{width:100%;position:absolute;inset:0;overflow:hidden;display:none;flex-direction:column;justify-content:flex-start;padding:44px 72px 80px}
+.pslide{width:100%;position:absolute;inset:0;overflow:hidden;display:none;flex-direction:column;justify-content:flex-start;padding:36px 72px 54px}
 .pslide.active{display:flex}
 .pslide.dark{background:linear-gradient(145deg,#020B18 0%,#051428 60%,#040F1E 100%)}
+.bk-eyebrow{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#F76923;margin-bottom:10px}
+.bk-title{font-size:clamp(26px,3.4vw,40px);font-weight:800;color:#fff;margin-bottom:8px}
+.bk-sub{font-size:clamp(13px,1.3vw,16px);color:#9FB4D4;margin-bottom:18px}
+.bk-svg{width:100%;flex:1;max-height:480px}
+.bk-ntitle{font-family:'Inter',sans-serif;font-size:15px;font-weight:700;fill:#fff}
+.bk-nsub{font-family:'Inter',sans-serif;font-size:11.5px;fill:#9FB4D4}
+.bk-nbadge{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;fill:#FFE8C2}
+.bk-elbl{font-family:'Courier New',monospace;font-size:11px;fill:#7C93B8;text-anchor:middle}
+.bk-elbl-hot{fill:#FFC836;font-weight:700}
+.bk-elbl-warm{fill:#F76923;font-weight:700;text-anchor:start}
+.bk-hop{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;fill:#4A6488;text-anchor:middle}
+.bk-note{font-size:11.5px;color:#6B84A8;font-style:italic;margin-top:6px;max-width:900px}
 .pslide.light{background:linear-gradient(145deg,#F0F4FF 0%,#E8EEF8 60%,#EDF2FF 100%)}
 
 /* Progress dots */
@@ -115,10 +127,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 
 /* ── SLIDE 2 — THREE PHASES ── */
 #ps1,#ps2{justify-content:flex-start}
-.s2-headline{font-size:clamp(30px,3.4vw,50px);font-weight:800;margin-bottom:6px}
+.s2-headline{font-size:clamp(28px,3.1vw,46px);font-weight:800;margin-bottom:4px}
 .dark .s2-headline{color:#fff}
 .light .s2-headline{color:var(--navy)}
-.s2-sub{font-size:clamp(16px,1.9vw,24px);font-weight:500;margin-bottom:24px}
+.s2-sub{font-size:clamp(15px,1.7vw,21px);font-weight:500;margin-bottom:14px}
 .dark .s2-sub{color:var(--gold)}
 .light .s2-sub{color:var(--teal)}
 .s2-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;flex:1;min-height:0}
@@ -127,16 +139,19 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .s2-col{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
 .light .s2-col{background:#fff;border:1px solid rgba(0,31,95,.1);box-shadow:0 2px 12px rgba(0,31,95,.07)}
 .s2-bar{height:5px;flex-shrink:0}
-.s2-body{padding:24px 24px 26px;flex:1;display:flex;flex-direction:column;gap:10px}
+.s2-body{padding:16px 24px 16px;flex:1;display:flex;flex-direction:column;gap:6px}
 .s2-title{font-size:clamp(16px,1.8vw,22px);font-weight:800}
 .dark .s2-title{color:#fff}
 .light .s2-title{color:var(--navy)}
 .s2-tag{display:inline-block;font-size:clamp(11px,1.1vw,14px);font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:2px;color:#fff}
-.s2-pts{list-style:none;display:flex;flex-direction:column;gap:8px;margin-top:8px}
-.s2-pts li{font-size:clamp(12px,1.35vw,17px);line-height:1.42;display:flex;gap:7px}
-.dark .s2-pts li{color:var(--lblue)}
+.s2-signals{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-top:5px}
+.dark .s2-signals{color:#7C93B8}
+.light .s2-signals{color:var(--text-3)}
+.s2-pts{list-style:none;display:flex;flex-direction:column;gap:5px;margin-top:3px}
+.s2-pts li{font-size:clamp(11px,1.22vw,15.5px);line-height:1.3;display:flex;gap:6px}
+.dark .s2-pts li{color:#fff}
 .light .s2-pts li{color:var(--blue)}
-.s2-pts li::before{content:'·';opacity:.5;flex-shrink:0}
+.s2-pts li::before{content:'·';opacity:.7;flex-shrink:0}
 .s2-aim{border-radius:10px;padding:14px 24px;text-align:center;font-size:clamp(12px,1.3vw,16px);line-height:1.6;margin-top:16px;opacity:0;transition:opacity .5s .6s}
 .s2-aim.visible{opacity:1}
 .dark .s2-aim{background:rgba(0,31,95,.6);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.1)}
@@ -222,6 +237,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .form-group{display:flex;flex-direction:column;gap:4px}
 .form-group.full{grid-column:1/-1}
+.form-input::placeholder{color:var(--text-4);font-style:italic;font-size:12px}
+.form-input.ai-filled,.form-select.ai-filled{animation:aiFillFlash 1.3s ease}
+@keyframes aiFillFlash{0%{background:#DCFCE7;border-color:#16A34A}70%{background:#DCFCE7;border-color:#16A34A}100%{background:#fff;border-color:var(--border)}}
 .form-label{font-size:12px;font-weight:600;color:var(--text-2)}
 .req{color:var(--red)}
 .form-input{padding:8px 12px;border:1.5px solid var(--border);border-radius:6px;font-size:12px;color:var(--text);font-family:var(--font);background:var(--white);outline:none}
@@ -338,7 +356,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .phase-btns.show{display:flex}
 .btn-continue{background:#1D4ED8;color:#fff;border:none;padding:13px 0;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);flex:1;transition:all .2s;box-shadow:0 4px 14px rgba(29,78,216,.3)}
 .btn-continue:hover{background:#1E40AF;transform:translateY(-1px)}
-.btn-aim{background:var(--red);color:#fff;border:none;padding:13px 0;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);flex:1;transition:all .2s;box-shadow:0 4px 14px rgba(200,16,46,.25)}
+.btn-aim{background:#DC2626;color:#fff;border:none;padding:13px 0;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font);width:100%;transition:all .2s;box-shadow:0 4px 14px rgba(220,38,38,.3)}.btn-aim:hover{background:#991B1B;transform:translateY(-1px)}
 .btn-aim:hover{background:var(--red-dark);transform:translateY(-1px)}
 .btn-back{background:#F3F4F6;color:#374151;border:1px solid #E5E7EB;padding:13px 22px;border-radius:9px;font-size:14px;font-weight:500;cursor:pointer;font-family:var(--font);transition:all .15s}
 .btn-back:hover{background:#E5E7EB;color:#111827}
@@ -375,6 +393,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .ae-sub{font-size:11px;color:#6B7280;margin-top:2px}
 .ae-badge{margin-left:auto;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:rgba(220,38,38,.15);color:#991B1B;border:1px solid rgba(220,38,38,.3);white-space:nowrap}
 .ae-detail{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 20px}
+.ae-stages{padding:9px 20px;font-size:11px;color:#6B7280;border-bottom:1px solid rgba(220,38,38,.10);display:flex;align-items:center;gap:7px;flex-wrap:wrap;background:rgba(220,38,38,.03)}
+.ae-stages strong{color:#111827;font-weight:700}
+.ae-arrow{color:#D1D5DB;font-weight:400}
+.ae-pending{color:#9CA3AF;font-style:italic;font-weight:400}
+.ae-evidence{padding:2px 20px 14px}
+.ae-evidence-title{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:#9CA3AF;font-weight:700;margin-bottom:5px}
+#ae-evidence-body{font-size:12px;color:#374151;line-height:1.6}
 .downstream-label{font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:.7px;font-weight:600;margin:14px 0 5px;padding-left:2px}
 .mcp-tag{font-size:10px;font-weight:700;color:#6D28D9;background:#EDE9FE;padding:1px 6px;border-radius:10px;margin-left:6px;border:1px solid rgba(109,40,217,.2)}
 ::-webkit-scrollbar{width:5px;height:5px}
@@ -406,6 +431,76 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .pause-banner.show{display:flex}
 .pause-banner button{background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.3);color:#fff;padding:4px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font)}
 .pause-banner button:hover{background:rgba(255,255,255,.35)}
+
+/* FRAUD DASHBOARD */
+#fraud-dashboard{display:none;flex:1;overflow:hidden;flex-direction:column}
+#fraud-dashboard.active{display:flex}
+.fdb-content{padding:20px 40px}
+.fdb-filters{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:20px;padding:16px;background:#F9FAFB;border-radius:10px}
+.fdb-filter{display:flex;flex-direction:column;gap:4px}
+.fdb-filter-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px}
+.fdb-filter-input{padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:var(--font);color:var(--text)}
+.fdb-filter-input::placeholder{color:var(--text-4)}
+.fdb-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
+.fdb-stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px}
+.fdb-stat-value{font-size:24px;font-weight:700;color:var(--text)}
+.fdb-stat-label{font-size:11px;color:var(--text-3);margin-top:6px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
+.fdb-table{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.fdb-thead{background:linear-gradient(135deg,#F9FAFB 0%,#F3F4F6 100%);border-bottom:1px solid var(--border)}
+.fdb-th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.4px;cursor:pointer;user-select:none;transition:all .2s}
+.fdb-th:hover{background:rgba(0,0,0,.02)}
+.fdb-th-sort{margin-left:4px;opacity:.4;font-size:9px}
+.fdb-th-sort.asc,.fdb-th-sort.desc{opacity:1}
+.fdb-tbody{max-height:600px;overflow-y:auto}
+.fdb-row{display:grid;grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 1.1fr 1.2fr;padding:12px 16px;border-bottom:1px solid var(--border);align-items:center;font-size:12px}
+.fdb-row:hover{background:rgba(0,31,95,.02)}
+.fdb-row:last-child{border-bottom:none}
+.fdb-cell-claim{font-family:'Courier New',monospace;font-weight:600;color:var(--text)}
+.fdb-cell-member{color:var(--text)}
+.fdb-cell-provider{color:var(--text-2);font-size:11px}
+.fdb-cell-date{color:var(--text-3);font-size:11px}
+.fdb-cell-type{background:rgba(0,31,95,.08);color:var(--navy);padding:2px 8px;border-radius:4px;display:inline-block;font-size:10px;font-weight:600}
+.fdb-cell-score{font-family:'Courier New',monospace;font-weight:700}
+.fdb-cell-outcome{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:20px;font-size:10px;font-weight:600}
+.fdb-outcome-clean{background:var(--green-bg);color:var(--green-mid)}
+.fdb-outcome-suspicious{background:#FEF3C7;color:#92400E}
+.fdb-outcome-high{background:#FEE2E2;color:#991B1B}
+
+.aim-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:3000;align-items:center;justify-content:center;padding:20px}
+.aim-modal.show{display:flex;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.aim-modal-content{background:var(--white);border-radius:14px;max-width:700px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.aim-modal-hdr{display:flex;align-items:center;gap:14px;padding:20px;border-bottom:1px solid var(--border)}
+.aim-modal-icon{font-size:32px}
+.aim-modal-titles{flex:1}
+.aim-modal-title{font-size:16px;font-weight:700;color:var(--text)}
+.aim-modal-sub{font-size:12px;color:var(--text-3);margin-top:2px}
+.aim-modal-close{width:32px;height:32px;border-radius:8px;border:none;background:transparent;cursor:pointer;font-size:18px;color:var(--text-3);transition:all .2s;display:flex;align-items:center;justify-content:center}
+.aim-modal-close:hover{background:rgba(0,0,0,.05);color:var(--text)}
+.aim-modal-body{padding:20px}
+.aim-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--border)}
+.aim-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.aim-section-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
+.aim-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.aim-field{display:flex;flex-direction:column;gap:3px}
+.aim-label{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px}
+.aim-value{font-size:13px;font-weight:600;color:var(--text)}
+.aim-value.mono{font-family:'Courier New',monospace}
+.aim-phases{display:flex;flex-direction:column;gap:8px}
+.aim-phase-row{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:8px;background:#F9FAFB;border:1px solid var(--border)}
+.aim-phase-ico{font-size:18px;width:28px;text-align:center;flex-shrink:0}
+.aim-phase-name{flex:1;font-size:12px;font-weight:600;color:var(--text)}
+.aim-phase-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:12px}
+.aim-phase-pass{background:var(--green-bg);color:var(--green-mid)}
+.aim-phase-fail{background:#FEE2E2;color:#991B1B}
+.aim-evidence{background:linear-gradient(135deg,rgba(79,70,229,.03) 0%,rgba(139,92,246,.03) 100%);border:1px solid rgba(99,102,241,.2);border-radius:8px;padding:14px}
+.aim-evidence-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:10px}
+.aim-evidence-list{display:flex;flex-direction:column;gap:8px}
+.aim-evidence-item{font-size:11px;color:var(--text-2);padding-left:12px;position:relative}
+.aim-evidence-item::before{content:'·';position:absolute;left:0;color:var(--purple)}
+.aim-buttons{display:flex;gap:10px;justify-content:flex-end;padding:20px;border-top:1px solid var(--border)}
+.btn-aim-close{background:#F3F4F6;color:var(--text-2);border:1px solid var(--border);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all .15s}
+.btn-aim-close:hover{background:var(--white);border-color:var(--text-3)}
 </style>
 </head>
 <body>
@@ -421,6 +516,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     <button class="sc" onclick="goSlide(1)" id="sb1">② Three Phases</button>
     <button class="sc" onclick="goSlide(2)" id="sb2">③ Why Pega</button>
     <button class="sc" onclick="goSlide(3)" id="sb3">④ Launch</button>
+    <button class="sc" onclick="goSlide(4)" id="sb4" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧 Backup</button>
   </div>
   <div id="demo-btns" style="display:none;gap:4px">
     <button class="sc" onclick="setScenario(0)" id="sc0"><span class="dot-indicator dg"></span>CLM-0841 · Clean</button>
@@ -437,6 +533,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   <div class="ctrl-sep"></div>
   <button class="cbtn" onclick="goSlides()" id="slides-nav-btn">◀ Slides</button>
   <button class="cbtn" onclick="goDemo()" id="demo-nav-btn">Demo ▶</button>
+  <div class="ctrl-sep"></div>
+  <button class="cbtn on" id="tab-portal-btn" onclick="goPortal()" title="Active claim portal">📋 Portal</button>
+  <button class="cbtn" id="tab-dashboard-btn" onclick="goReport()" title="Fraud dashboard">📊 Report</button>
   <div class="ctrl-sep"></div>
   <button class="cbtn" id="tdark" onclick="setTheme('dark')" class="on">◼ Dark</button>
   <button class="cbtn" id="tlight" onclick="setTheme('light')">◻ Light</button>
@@ -458,7 +557,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 
     <!-- SLIDE 1 — THE PROBLEM -->
     <div class="pslide dark active" id="ps0">
-      <div class="s1-headline">Health Insurance Fraud is Draining<br><span class="s1-gold">Billions from Australia's Health System</span></div>
+      <div class="s1-headline">From Recovery to <span class="s1-gold">Prevention.</span></div>
       <div class="s1-rows" id="s1-rows">
         <div class="s1-row" id="r0">
           <div class="s1-stat-box"><div class="s1-stat" style="color:#FFC836">3–10%</div></div>
@@ -469,14 +568,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           </div>
         </div>
         <div class="s1-row" id="r1">
-          <div class="s1-stat-box"><div class="s1-stat" style="color:#10A5AC">3 Types</div></div>
-          <div class="s1-bar" style="background:#10A5AC"></div>
-          <div class="s1-content">
-            <div class="s1-desc">Medical billing fraud · Organised criminal rings · Identity theft & credential fraud against health funds</div>
-            <div class="s1-src">Source: RSM Australia Healthcare Fraud White Paper 2024 · Australian Criminal Intelligence Commission</div>
-          </div>
-        </div>
-        <div class="s1-row" id="r2">
           <div class="s1-stat-box"><div class="s1-stat" style="color:#F76923">Invisible</div></div>
           <div class="s1-bar" style="background:#F76923"></div>
           <div class="s1-content">
@@ -484,8 +575,16 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
             <div class="s1-src">Source: Office of the Australian Information Commissioner — Notifiable Data Breaches Report Jan–Jun 2023</div>
           </div>
         </div>
+        <div class="s1-row" id="r2">
+          <div class="s1-stat-box"><div class="s1-stat" style="color:#10A5AC;font-size:28px">Prevention</div></div>
+          <div class="s1-bar" style="background:#10A5AC"></div>
+          <div class="s1-content">
+            <div class="s1-desc">Recovery happens after a claim is paid. Prevention happens before. AI is what makes that shift possible.</div>
+            <div class="s1-src">The premise behind everything that follows.</div>
+          </div>
+        </div>
       </div>
-      <div class="s1-sub">Three distinct fraud types. &nbsp;Three detection gaps. &nbsp;<b>One intelligent solution.</b></div>
+      <div class="s1-sub">The scale is real. &nbsp;The risk is invisible. &nbsp;<b>Prevention starts here.</b></div>
       <div class="sdots"><div class="sdot on" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div></div>
       <div class="slide-nav"><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
@@ -499,10 +598,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           <div class="s2-bar" style="background:#F76923"></div>
           <div class="s2-body">
             <div class="s2-title">Document Fraud</div>
-            <span class="s2-tag" style="background:#F76923">Is this document real?</span>
+            <span class="s2-tag" style="background:#F76923">Is this document real and valid?</span>
+            <div class="s2-signals">8 Fraud Signals</div>
             <ul class="s2-pts">
-              <li>Document type classification & confidence scoring — every field scored against threshold before forensics</li>
+              <li>Claim-to-receipt match — verifies amount, provider, date and codes against the receipt</li>
               <li>OCR extracts the text — Pega Agentic AI interrogates the entire document</li>
+              <li>Duplicate detection — receipt fingerprinted against every claim already submitted</li>
+              <li>Document type classification & confidence scoring — scored against threshold</li>
               <li>Font consistency analysis — spliced typefaces</li>
               <li>Stamp & colour forgery detection</li>
               <li>AI-generated receipt detection — flags artefacts from AI image generators</li>
@@ -515,6 +617,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           <div class="s2-body">
             <div class="s2-title">Provider & Pattern Fraud</div>
             <span class="s2-tag" style="background:#10A5AC">Does this claim make sense?</span>
+            <div class="s2-signals">7 Fraud Signals</div>
             <ul class="s2-pts">
               <li>Every strategy named, explainable and entirely auditable</li>
               <li>Phantom ABN detection — checked against the Australian Business Register</li>
@@ -522,7 +625,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
               <li>Claim velocity — submission frequency across rolling windows</li>
               <li>Shared submission origin — unrelated members, one source</li>
               <li>Waiver abuse & 90-day volume — scope being confirmed</li>
-              <li>New strategies added in days — no custom code, just Pega configuration</li>
+              <li>New strategies added in days — no custom code</li>
             </ul>
           </div>
         </div>
@@ -531,11 +634,12 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
           <div class="s2-body">
             <div class="s2-title">Organised Ring Fraud</div>
             <span class="s2-tag" style="background:#5F67B9">Who else is involved?</span>
+            <div class="s2-signals">5 Fraud Signals</div>
             <ul class="s2-pts">
               <li>Invisible to conventional systems</li>
               <li>Network graph intelligence — 3-hop traversal catches connections invisible to direct-link analysis</li>
               <li>Fraud community mapping — links an account or provider to fraud already confirmed, not just to itself</li>
-              <li>Knowledge Buddy RAG — pattern similarity against confirmed fraud case library</li>
+              <li>Knowledge Buddy RAG — fuzzy pattern similarity to confirmed fraud cases, where no exact identifier matches</li>
               <li>Early warning before fraud accumulates</li>
             </ul>
           </div>
@@ -553,10 +657,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       <div class="s3-headline">Powered by Pega</div>
       <div class="s3-sub">The Enterprise AI Platform Transforming Healthcare Operations</div>
       <div class="s3-grid">
-        <div class="s3-card" id="p0" style="border-left-color:#FFC836"><div class="s3-title">🏆 Proven Platform</div><div class="s3-body">Recognised by industry analysts as a leader in intelligent automation, deployed across healthcare organisations globally</div></div>
+        <div class="s3-card" id="p0" style="border-left-color:#FFC836"><div class="s3-title">🏆 Proven Platform</div><div class="s3-body">Predictable, governed workflows. AI agents harnessed inside proven case management — not bolted on.</div></div>
         <div class="s3-card" id="p1" style="border-left-color:#10A5AC"><div class="s3-title">💰 Predictable Cost</div><div class="s3-body">Flat per-case pricing. No AI token tax. Costs scale with claims volume — not with AI usage</div></div>
         <div class="s3-card" id="p2" style="border-left-color:#5F67B9"><div class="s3-title">🧠 Self-Improving</div><div class="s3-body">Every investigator decision feeds back. The longer it runs, the more accurate it gets</div></div>
-        <div class="s3-card" id="p3" style="border-left-color:#F76923"><div class="s3-title">✅ APRA CPS 230</div><div class="s3-body">Claims management is a named critical operation under APRA's operational risk standard. Built for the audit trail, resilience and accountability that requires<div class="s1-src" style="margin-top:8px">Source: APRA Prudential Standard CPS 230 Operational Risk Management</div></div></div>
+        <div class="s3-card" id="p3" style="border-left-color:#F76923"><div class="s3-title">✅ APRA CPS 230</div><div class="s3-body">Claims management is a named critical operation under APRA's operational risk standard. Built for the audit trail, resilience and accountability it requires<div class="s1-src" style="margin-top:8px">Source: APRA Prudential Standard CPS 230 Operational Risk Management</div></div></div>
         <div class="s3-card" id="p4" style="border-left-color:#10A5AC"><div class="s3-title">⚡ Fast to Deploy</div><div class="s3-body">Orchestrated end-to-end by Pega Infinity 26.1. No new platforms to build or infrastructure to own</div></div>
         <div class="s3-card" id="p5" style="border-left-color:#334190"><div class="s3-title">👤 Human Oversight</div><div class="s3-body">Every AI determination reviewed by a named human investigator. Full audit trail on every case</div></div>
       </div>
@@ -577,6 +681,67 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       <div class="s4-pulse"><div class="s4-pdot"></div><span class="s4-ptxt">Pega Infinity 26.1 · Simulated Pipeline · Illustrative Scenarios</span></div>
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="goDemo()">Launch Demo →</button></div>
+    </div>
+
+    <!-- SLIDE 5 — BACKUP: IDENTITY GRAPH (manual access only, not in main sequence or rolling loop) -->
+    <div class="pslide dark" id="ps4">
+      <div class="bk-eyebrow">Backup — technical detail</div>
+      <div class="bk-title">What "Three Hops" Actually Means</div>
+      <div class="bk-sub">The entity model Phase 3 is designed against — real relationship types, not just a diagram.</div>
+      <svg class="bk-svg" viewBox="0 0 1400 460" xmlns="http://www.w3.org/2000/svg">
+        <!-- edges: origin -> satellites -->
+        <line x1="230" y1="230" x2="400" y2="120" stroke="#3A5578" stroke-width="1.5"/>
+        <line x1="230" y1="230" x2="400" y2="340" stroke="#3A5578" stroke-width="1.5"/>
+        <!-- edges: satellites -> confirmed fraud claim (the "aha" edges) -->
+        <line x1="560" y1="120" x2="760" y2="200" stroke="#FFC836" stroke-width="2" stroke-dasharray="6,5"/>
+        <line x1="560" y1="340" x2="760" y2="260" stroke="#FFC836" stroke-width="2" stroke-dasharray="6,5"/>
+        <!-- edge: confirmed claim -> fraud ring -->
+        <line x1="960" y1="230" x2="1080" y2="230" stroke="#F76923" stroke-width="2.5"/>
+
+        <!-- edge labels -->
+        <text x="300" y="160" class="bk-elbl">CURRENT_DEVICE</text>
+        <text x="300" y="300" class="bk-elbl">CURRENT_ACCOUNT</text>
+        <text x="640" y="145" class="bk-elbl bk-elbl-hot">SHARED_DEVICE_WITH</text>
+        <text x="640" y="320" class="bk-elbl bk-elbl-hot">SHARED_ACCOUNT_WITH</text>
+        <text x="965" y="215" class="bk-elbl bk-elbl-warm">IS_MEMBER_OF</text>
+
+        <!-- hop markers -->
+        <text x="480" y="400" class="bk-hop">HOP 1</text>
+        <text x="850" y="400" class="bk-hop">HOP 2</text>
+        <text x="1130" y="400" class="bk-hop">HOP 3</text>
+
+        <!-- node: origin claim -->
+        <g transform="translate(40,200)">
+          <rect width="190" height="60" rx="14" fill="#0D2B52" stroke="#334190" stroke-width="1.5"/>
+          <text x="95" y="26" class="bk-ntitle" text-anchor="middle">CLM-2024-0846</text>
+          <text x="95" y="44" class="bk-nsub" text-anchor="middle">Claim under review</text>
+        </g>
+        <!-- node: device -->
+        <g transform="translate(400,92)">
+          <rect width="160" height="52" rx="26" fill="#3D3210" stroke="#FFC836" stroke-width="1.5"/>
+          <text x="80" y="32" class="bk-ntitle" text-anchor="middle" fill="#FFE08A">Device</text>
+        </g>
+        <!-- node: bank account -->
+        <g transform="translate(400,314)">
+          <rect width="160" height="52" rx="26" fill="#3D3210" stroke="#FFC836" stroke-width="1.5"/>
+          <text x="80" y="32" class="bk-ntitle" text-anchor="middle" fill="#FFE08A">Bank Account</text>
+        </g>
+        <!-- node: confirmed fraud claim -->
+        <g transform="translate(760,175)">
+          <rect width="200" height="60" rx="14" fill="#3D0F16" stroke="#C8102E" stroke-width="1.5"/>
+          <text x="100" y="26" class="bk-ntitle" text-anchor="middle" fill="#FFC3CE">CLM-2024-0733</text>
+          <text x="100" y="44" class="bk-nsub" text-anchor="middle" fill="#E89AA5">Confirmed fraud</text>
+        </g>
+        <!-- node: fraud ring -->
+        <g transform="translate(1080,182)">
+          <rect width="240" height="96" rx="16" fill="#402B08" stroke="#F76923" stroke-width="2"/>
+          <text x="120" y="34" class="bk-ntitle" text-anchor="middle" fill="#FFD199">FraudRing</text>
+          <text x="120" y="54" class="bk-nsub" text-anchor="middle" fill="#FFD199">Community #47</text>
+          <text x="120" y="76" class="bk-nbadge" text-anchor="middle">14 members · 3 providers</text>
+        </g>
+      </svg>
+      <div class="bk-note">Adapted from a standard identity-graph pattern used for fraud-ring detection · this is the target schema we'd build with H+'s data, not a claim that it's already running.</div>
+      <div class="slide-nav"><button class="snav" onclick="goSlide(3)">← Back to Launch</button></div>
     </div>
   </div>
 </div>
@@ -645,19 +810,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
             <div class="lodge-active"><div class="lodge-active-dot"></div>AI Fraud Detection Active</div>
           </div>
           <div class="lodge-body">
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Claim Type <span class="req">*</span></label><select class="form-select" id="f-type"><option id="f-type-opt"></option></select></div>
-              <div class="form-group"><label class="form-label">Service Date <span class="req">*</span></label><input class="form-input" id="f-date" readonly></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Provider Name <span class="req">*</span></label><input class="form-input" id="f-prov" readonly></div>
-              <div class="form-group"><label class="form-label">Provider ABN</label><input class="form-input" id="f-abn" readonly></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label class="form-label">Claim Amount <span class="req">*</span></label><input class="form-input" id="f-amt" readonly></div>
-              <div class="form-group"><label class="form-label">Item Codes</label><input class="form-input" id="f-codes" readonly></div>
-            </div>
-            <div class="form-group full" style="margin-bottom:10px">
+            <div class="form-group full" style="margin-bottom:14px">
               <label class="form-label">Upload Receipt <span class="req">*</span></label>
               <div class="upload-zone" id="upload-zone" onclick="simulateUpload()">
                 <div class="upload-icon">📎</div>
@@ -676,6 +829,18 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
                 <div class="receipt-check">✅</div>
               </div>
             </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Claim Type <span class="req">*</span></label><select class="form-select" id="f-type"><option id="f-type-opt"></option></select></div>
+              <div class="form-group"><label class="form-label">Service Date <span class="req">*</span></label><input class="form-input" id="f-date" readonly placeholder="Read from receipt"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Provider Name <span class="req">*</span></label><input class="form-input" id="f-prov" readonly placeholder="Read from receipt"></div>
+              <div class="form-group"><label class="form-label">Provider ABN</label><input class="form-input" id="f-abn" readonly placeholder="Read from receipt"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label class="form-label">Claim Amount <span class="req">*</span></label><input class="form-input" id="f-amt" readonly placeholder="Read from receipt"></div>
+              <div class="form-group"><label class="form-label">Item Codes</label><input class="form-input" id="f-codes" readonly placeholder="Read from receipt"></div>
+            </div>
             <div class="form-footer">
               <div class="form-note">🔒 Secured · Processed by Pega Infinity 26.1</div>
               <div style="display:flex;gap:10px">
@@ -688,7 +853,91 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
         </div>
       </div>
     </div>
+</div>
+</div>
+</div>
+  <!-- FRAUD DASHBOARD SCREEN -->
+<div class="screen" id="fraud-dashboard">
+<div class="page">
+  <nav class="nav">
+    <div class="logo"><span class="logo-plus">H+</span>Health Insurance Co</div>
+    <div class="nav-links">
+      <a class="nav-link" href="#">My Cover</a>
+      <a class="nav-link" href="#">Claims</a>
+      <a class="nav-link" href="#">Find a Provider</a>
+      <a class="nav-link" href="#">Wellness</a>
+    </div>
+    <div class="nav-right">
+      <div class="member-avatar">🔍</div>
+      <div><div class="member-greeting">Fraud Detection</div><div class="member-name">Dashboard</div></div>
+    </div>
+  </nav>
+  <div class="ctx-strip" style="background:linear-gradient(135deg,#FEE2E2 0%,#FEF2F2 100%)">
+    <div class="ctx-tag" style="background:rgba(200,16,46,.1);color:#991B1B"><div class="hero-dot"></div>Fraud Monitoring — Active</div>
+    <div class="ctx-sep" style="background:rgba(200,16,46,.15)"></div>
+    <h1 class="ctx-h1">Accumulated Fraud Investigation Cases</h1>
+    <div class="ctx-spacer"></div>
+    <div class="ctx-sub">Real-time monitoring and analytics</div>
   </div>
+  <div class="dashboard" style="background:var(--canvas)">
+    <div class="fdb-content">
+      <div class="fdb-filters">
+        <div class="fdb-filter">
+          <label class="fdb-filter-label">Member Name</label>
+          <input type="text" class="fdb-filter-input" placeholder="Filter by member..." id="fdb-member-filter" onkeyup="fdbUpdateTable()">
+        </div>
+        <div class="fdb-filter">
+          <label class="fdb-filter-label">Provider</label>
+          <input type="text" class="fdb-filter-input" placeholder="Filter by provider..." id="fdb-provider-filter" onkeyup="fdbUpdateTable()">
+        </div>
+        <div class="fdb-filter">
+          <label class="fdb-filter-label">Date Range</label>
+          <input type="date" class="fdb-filter-input" id="fdb-date-filter" onchange="fdbUpdateTable()">
+        </div>
+        <div class="fdb-filter">
+          <label class="fdb-filter-label">Outcome</label>
+          <select class="fdb-filter-input" id="fdb-outcome-filter" onchange="fdbUpdateTable()">
+            <option value="">All outcomes</option>
+            <option value="clean">Legitimate</option>
+            <option value="suspicious">Suspicious</option>
+            <option value="high">High Risk</option>
+          </select>
+        </div>
+      </div>
+      <div class="fdb-summary">
+        <div class="fdb-stat">
+          <div class="fdb-stat-value" id="fdb-total-cases">0</div>
+          <div class="fdb-stat-label">Total Cases</div>
+        </div>
+        <div class="fdb-stat">
+          <div class="fdb-stat-value" id="fdb-high-priority" style="color:#991B1B">0</div>
+          <div class="fdb-stat-label">High Priority</div>
+        </div>
+        <div class="fdb-stat">
+          <div class="fdb-stat-value" id="fdb-avg-score">0%</div>
+          <div class="fdb-stat-label">Average Fraud Score</div>
+        </div>
+      </div>
+      <div class="fdb-table">
+        <div class="fdb-thead">
+          <div class="fdb-row" style="grid-template-columns:1.1fr 1.2fr 1.4fr 1.1fr 1fr 1.1fr 1.1fr 1.2fr">
+            <div class="fdb-th" onclick="fdbSort('claim')">Claim Ref <span class="fdb-th-sort" id="sort-claim"></span></div>
+            <div class="fdb-th" onclick="fdbSort('member')">Member <span class="fdb-th-sort" id="sort-member"></span></div>
+            <div class="fdb-th" onclick="fdbSort('provider')">Provider <span class="fdb-th-sort" id="sort-provider"></span></div>
+            <div class="fdb-th" onclick="fdbSort('date')">Date <span class="fdb-th-sort" id="sort-date"></span></div>
+            <div class="fdb-th" onclick="fdbSort('type')">Type</div>
+            <div class="fdb-th" onclick="fdbSort('amount')">Amount <span class="fdb-th-sort" id="sort-amount"></span></div>
+            <div class="fdb-th" onclick="fdbSort('score')">Fraud Score <span class="fdb-th-sort" id="sort-score"></span></div>
+            <div class="fdb-th" onclick="fdbSort('outcome')">Outcome <span class="fdb-th-sort" id="sort-outcome"></span></div>
+          </div>
+        </div>
+        <div class="fdb-tbody" id="fdb-tbody"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
 </div>
 </div>
 
@@ -706,7 +955,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       <div class="phase-collapsed"><div class="phase-status-ico psi-pass">📥</div><div class="phase-name">Claim Case Created · Valid Receipt Confirmed</div><span class="phase-status-badge psb-pass">✓ Complete</span></div>
     </div>
     <div class="phase-block" id="ph1-block">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph1-ico">🔍</div><div class="phase-titlewrap"><div class="phase-name">Phase 1 — Document Forensics</div><div class="phase-question">Is this document real? Examining fonts, arithmetic, structure and provenance.</div></div><span class="phase-status-badge psb-queued" id="ph1-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph1-ico">🔍</div><div class="phase-titlewrap"><div class="phase-name">Phase 1 — Document Forensics</div><div class="phase-question">Is this document real and valid? Examining fonts, structure, provenance and claim consistency.</div></div><span class="phase-status-badge psb-queued" id="ph1-badge">Queued</span></div>
       <div class="phase-expanded" id="ph1-expanded">
         <div class="phase-info" id="ph1-info"><div class="phase-info-band" id="ph1-info-band"><div class="phase-info-txt" id="ph1-info-txt"></div></div></div>
         <div class="check-list" id="ph1-checks"></div>
@@ -758,7 +1007,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     </div>
     <div class="aim-escalation" id="aim-escalation" style="display:none">
       <div class="ae-hdr"><span style="font-size:26px">🚨</span><div><div class="ae-title">Pega Alerts & Investigations Management</div><div class="ae-sub" id="ae-sub">Case escalated to investigator queue</div></div><span class="ae-badge" id="ae-badge">SUSPICIOUS — HIGH PRIORITY</span></div>
+      <div class="ae-stages"><span>🔔 Alert Triage</span><span class="ae-arrow">→</span><strong>🖥️ Investigator Workbench</strong><span class="ae-arrow">→</span><span>👤 Human Determination <span class="ae-pending">(pending)</span></span></div>
       <div class="ae-detail"><div class="ce-field"><span class="ce-lbl">Investigation</span><span class="ce-val" id="ae-ref">INV-2024-0842</span></div><div class="ce-field"><span class="ce-lbl">Queue</span><span class="ce-val" id="ae-queue">SIU Queue</span></div><div class="ce-field"><span class="ce-lbl">SLA</span><span class="ce-val" id="ae-sla">4 hours — Priority</span></div><div class="ce-field"><span class="ce-lbl">Assigned To</span><span class="ce-val">Next available investigator</span></div></div>
+      <div class="ae-evidence"><div class="ae-evidence-title">Evidence package — assembled into one screen, zero re-keying</div><div id="ae-evidence-body">—</div></div>
       <div style="padding:0 20px 16px"><button class="btn-back" style="width:100%" onclick="closeOverlay()">✕ Close</button></div>
     </div>
   </div>
@@ -855,10 +1106,12 @@ const PHASE_RESULT_DESC=[
 
 const PHASES=[
   {ph1:{pass:true,score:'0.91',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
-    {ico:'🔤',name:'Font Consistency',running:'Scanning document typefaces...',pass:'Single uniform typeface throughout — Arial 9pt',result:'pass',d:2200},
-    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays and stamp manipulation...',pass:'No overlay detected — StampDetectedFlag: FALSE',result:'pass',d:5000},
-    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts — generative signature score 0.02',result:'pass',d:7800},
-    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'Authored by clinic practice software 12 Jul 2026 — matches service date',result:'pass',d:10600},
+    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $312.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
+    {ico:'🔤',name:'Font Consistency',running:'Scanning document typefaces...',pass:'Single uniform typeface throughout — Arial 9pt',result:'pass',d:5000},
+    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays and stamp manipulation...',pass:'No overlay detected — StampDetectedFlag: FALSE',result:'pass',d:7800},
+    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts — generative signature score 0.02',result:'pass',d:10600},
+    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'Authored by clinic practice software 12 Jul 2026 — matches service date',result:'pass',d:13200},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:{pass:true,score:'0.04',scoreColor:'#16A34A',verdict:'CLEAN — No flags raised',route:'Confirmed Clean → Phase 3 Agent Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Check',running:'Verifying provider location against member address...',pass:'Provider within expected geographic range',result:'pass',d:2000},
     {ico:'⚡',name:'ES-002 Velocity Check',running:'Analysing claim submission frequency...',pass:'Claim frequency within normal parameters',result:'pass',d:4000},
@@ -873,16 +1126,20 @@ const PHASES=[
     {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal from member node...',pass:'No ring connections detected — graph clear',result:'pass',d:5800,isMCP:true},
   ]}},
   {ph1:{pass:false,score:'0.28',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Below threshold',route:'Routing to Investigator Queue · HIGH priority · SLA 4 hours',checks:[
-    {ico:'🔤',name:'Font Consistency',running:'Scanning document typefaces...',pass:'',fail:'3 different typefaces detected — Arial 9pt + Helvetica 10pt + Times New Roman 8pt',result:'fail',d:2200},
-    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays...',pass:'No overlay — StampDetectedFlag: FALSE',result:'pass',d:5000},
-    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts detected',result:'pass',d:7800},
-    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'',fail:'Authored in Adobe Photoshop, modified 16 Jul 2026 — two days after the service date, no practice software trail',result:'fail',d:10600},
+    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $487.50 does not match receipt total $445.00 — $42.50 discrepancy flagged for review',result:'warn',d:2200},
+    {ico:'🔤',name:'Font Consistency',running:'Scanning document typefaces...',pass:'',fail:'3 different typefaces detected — Arial 9pt + Helvetica 10pt + Times New Roman 8pt',result:'fail',d:5000},
+    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays...',pass:'No overlay — StampDetectedFlag: FALSE',result:'pass',d:7800},
+    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts detected',result:'pass',d:10600},
+    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'',fail:'Authored in Adobe Photoshop, modified 16 Jul 2026 — two days after the service date, no practice software trail',result:'fail',d:13200},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:null,ph3:null},
   {ph1:{pass:true,score:'0.83',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
-    {ico:'🔤',name:'Font Consistency',running:'Scanning typefaces...',pass:'Calibri 10pt — consistent',result:'pass',d:2200},
-    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting overlays...',pass:'StampDetectedFlag: FALSE',result:'pass',d:5000},
-    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.04',result:'pass',d:7800},
-    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 11 Jul 2026 — matches service date',result:'pass',d:10600},
+    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $195.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
+    {ico:'🔤',name:'Font Consistency',running:'Scanning typefaces...',pass:'Calibri 10pt — consistent',result:'pass',d:5000},
+    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting overlays...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
+    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.04',result:'pass',d:10600},
+    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 11 Jul 2026 — matches service date',result:'pass',d:13200},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:{pass:false,score:'0.81',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Phantom ABN detected',route:'Routing to SIU Queue · HIGH priority · SLA 4 hours',checks:[
     {ico:'📍',name:'ES-001 Distance Check',running:'Verifying location...',pass:'Within expected range',result:'pass',d:2000},
     {ico:'⚡',name:'ES-002 Velocity Check',running:'Checking frequency...',pass:'Normal submission pattern',result:'pass',d:4000},
@@ -894,10 +1151,12 @@ const PHASES=[
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All physio codes valid — SP001 ✓  SP010 ✓',result:'pass',d:16000},
   ]},ph3:null},
   {ph1:{pass:true,score:'0.78',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
-    {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Times New Roman 10pt — consistent',result:'pass',d:2200},
-    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:5000},
-    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.03',result:'pass',d:7800},
-    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 13 Jul 2026 — matches service date',result:'pass',d:10600},
+    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $264.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
+    {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Times New Roman 10pt — consistent',result:'pass',d:5000},
+    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
+    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.03',result:'pass',d:10600},
+    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 13 Jul 2026 — matches service date',result:'pass',d:13200},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:{pass:false,score:'0.65',scoreColor:'#D97706',verdict:'SUSPICIOUS — Coordinated cluster detected',route:'Routing to Standard Review Queue · MEDIUM priority · SLA 24 hours',checks:[
     {ico:'📍',name:'ES-001 Distance Check',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'⚡',name:'ES-002 Velocity Check',running:'Checking...',pass:'Normal',result:'pass',d:4000},
@@ -909,10 +1168,12 @@ const PHASES=[
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All ADA/MBS codes valid — 011 ✓  121 ✓',result:'pass',d:16000},
   ]},ph3:null},
   {ph1:{pass:true,score:'0.82',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
-    {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Helvetica 9pt — consistent',result:'pass',d:2200},
-    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:5000},
-    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.05',result:'pass',d:7800},
-    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by practice software 10 Jul 2026 — matches service date',result:'pass',d:10600},
+    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $390.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
+    {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Helvetica 9pt — consistent',result:'pass',d:5000},
+    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
+    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.05',result:'pass',d:10600},
+    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by practice software 10 Jul 2026 — matches service date',result:'pass',d:13200},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:{pass:true,score:'0.14',scoreColor:'#16A34A',verdict:'LOW RISK — Minor velocity flag only',route:'Proceeding to Phase 3 Agent Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Check',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'⚡',name:'ES-002 Velocity Check',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
@@ -927,10 +1188,12 @@ const PHASES=[
     {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal...',pass:'No direct ring connections found',result:'pass',d:7200,isMCP:true},
   ]}},
   {ph1:{pass:true,score:'0.79',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
-    {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Arial 10pt — consistent',result:'pass',d:2200},
-    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:5000},
-    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.02',result:'pass',d:7800},
-    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 15 Jul 2026 — matches service date',result:'pass',d:10600},
+    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $230.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
+    {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Arial 10pt — consistent',result:'pass',d:5000},
+    {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
+    {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.02',result:'pass',d:10600},
+    {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 15 Jul 2026 — matches service date',result:'pass',d:13200},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — All strategies clear',route:'Proceeding to Phase 3 Agent Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Check',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'⚡',name:'ES-002 Velocity Check',running:'Checking...',pass:'Normal',result:'pass',d:4000},
@@ -949,7 +1212,7 @@ const PHASES=[
 // ══════════════════════════════════════════════════════
 // STATE
 // ══════════════════════════════════════════════════════
-let curSlide=0, curScenario=0, uploaded=false;
+let curSlide=0, curScenario=0, uploaded=false, uploadCount=0;
 let timers=[], slideTimer=null;
 // Run modes: 'manual' | 'stepbystep' | 'rolling'
 let runMode='manual';
@@ -1042,6 +1305,7 @@ function goSlides(){
   clearSlideTimer();
   $('slides-screen').classList.add('active');
   $('demo-screen').classList.remove('active');
+  $('fraud-dashboard').classList.remove('active');
   $('slide-btns').style.display='flex';
   $('demo-btns').style.display='none';
   txt('ctrl-context','Slides');
@@ -1054,10 +1318,13 @@ function goSlides(){
 function goDemo(){
   clearSlideTimer();
   $('demo-screen').classList.add('active');
+  $('fraud-dashboard').classList.remove('active');
   $('slides-screen').classList.remove('active');
   $('slide-btns').style.display='none';
   $('demo-btns').style.display='flex';
   txt('ctrl-context','Demo');
+  $('tab-portal-btn').classList.add('on');
+  $('tab-dashboard-btn').classList.remove('on');
   $('slides-nav-btn').style.opacity='1';
   $('demo-nav-btn').style.opacity='.4';
   // In rolling mode, launch the demo sequence
@@ -1183,7 +1450,7 @@ function launchRollingDemo(){
   for(let i=0;i<6;i++) $('sc'+i).classList.toggle('on',i===curScenario);
   // Let audience see the portal/member for 3s, then start upload, then submit
   addTimer(()=>{ if(rollingOK()) simulateUpload(); },9000);
-  addTimer(()=>{ if(rollingOK()) submitClaim(); },14000);
+  addTimer(()=>{ if(rollingOK()) submitClaim(); },19500);
 }
 
 function rollingOK(){ return runMode==='rolling'&&!rollingPaused; }
@@ -1231,7 +1498,7 @@ function rollingAdvanceAfterPhase(){
 // SCENARIO & PORTAL
 // ══════════════════════════════════════════════════════
 function setScenario(idx){
-  clearAllTimers(); uploaded=false; curScenario=idx;
+  clearAllTimers(); uploaded=false; uploadCount=0; uploadCount=0; curScenario=idx;
   for(let i=0;i<6;i++) $('sc'+i).classList.toggle('on',i===idx);
   const s=S[idx];
   $('m-av').textContent=s.ini; txt('m-name',s.member);
@@ -1239,9 +1506,10 @@ function setScenario(idx){
   txt('st-pol',s.pol); txt('st-cov',s.cov);
   txt('st-cnt',s.cnt); txt('st-amt',s.amt+' claimed to date'); txt('st-ben',s.ben);
   txt('md-mbr',s.mbr); txt('md-joined',s.joined); txt('md-suburb',s.suburb); txt('md-contact',s.contact);
-  $('f-type-opt').textContent=s.type; $('f-type-opt').value=s.type;
-  $('f-date').value=s.date; $('f-prov').value=s.prov; $('f-abn').value=s.abn;
-  $('f-amt').value=s.clamt; $('f-codes').value=s.codes;
+  $('f-type-opt').textContent=''; $('f-type-opt').value='';
+  $('f-date').value=''; $('f-prov').value=''; $('f-abn').value='';
+  $('f-amt').value=''; $('f-codes').value='';
+  [ 'f-type','f-date','f-prov','f-abn','f-amt','f-codes' ].forEach(id=>$(id).classList.remove('ai-filled'));
   txt('form-sub','Submit your '+s.type.split(' ')[0].toLowerCase()+' receipt for instant processing');
   const uz=$('upload-zone');
   uz.classList.remove('has-file');
@@ -1285,7 +1553,8 @@ function simulateUpload(){
   hideBanner();
   const s=S[curScenario], pf=PREFLIGHT[curScenario], uz=$('upload-zone');
   uz.innerHTML='<div class="upload-icon">⏫</div><div class="upload-text">Uploading...</div>';
-  const vp=$('upload-validation'); vp.style.display='block';
+  uploadCount++;
+  const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none';
   // Reset all four rows to queued
   [1,2,3,4].forEach(i=>{
     $('val-step-'+i).style.opacity=i===1?'1':'.3';
@@ -1304,17 +1573,42 @@ function simulateUpload(){
     if(nextIco){ $('val-step-'+(i+1)).style.opacity='1'; $('val-ico-'+(i+1)).textContent='🔄'; }
   };
 
-  // 1 — Document type (0.5s)
-  setTimeout(()=>done(1, pf.doctype, true), 500);
-  // 2 — Field extraction (1.5s)
-  setTimeout(()=>done(2, 'Provider: '+s.prov+' · Total: '+s.clamt+' · '+s.codes.split(',').length+' service lines · Item codes: '+s.codes+' · Member: '+s.mbr.replace('-',''), true), 1500);
-  // 3 — Confidence scoring (2.5s)
-  setTimeout(()=>done(3, pf.conf, true), 2500);
-  // 4 — Pre-flight gate (3.5s)
-  setTimeout(()=>done(4, 'No disqualifying keywords detected · Document type approved · Passing to Pega Document Agent for forensic authentication', false), 3500);
+  const fillFields=()=>{
+    // Just fill the data (no animation delays here)
+    $('f-type-opt').textContent=s.type; $('f-type-opt').value=s.type;
+    $('f-date').value=s.date; $('f-prov').value=s.prov; $('f-abn').value=s.abn;
+    $('f-amt').value=s.clamt; $('f-codes').value=s.codes;
+  };
 
-  // Banner + file card (4.5s)
-  setTimeout(()=>{
+  // All steps below are routed through addTimer (not bare setTimeout) so
+  // that switching scenario or restarting mid-upload — which calls
+  // clearAllTimers() — cancels them instead of letting them fire later
+  // and collide with the next scenario's sequence.
+  // 1 — Document type (0.8s)
+  addTimer(()=>done(1, pf.doctype, true), 800);
+  // 2 — Field extraction (3.0s) — populate form fields
+  addTimer(()=>{ done(2, 'Provider: '+s.prov+' · Total: '+s.clamt+' · '+s.codes.split(',').length+' service lines · Item codes: '+s.codes+' · Member: '+s.mbr.replace('-',''), true); fillFields(); }, 3000);
+  // 3 — Confidence scoring (5.2s)
+  addTimer(()=>done(3, pf.conf, true), 5200);
+
+  // Animate fields ONE BY ONE starting at 8.2s (3 second pause after phase 3)
+  if(uploadCount===1){
+    const fields = ['f-type','f-date','f-prov','f-abn','f-amt','f-codes'];
+    fields.forEach((id, idx) => {
+      const animStart = 8200 + (idx * 200); // 200ms between each
+      addTimer(() => {
+        const el=$(id);
+        el.classList.add('ai-filled');
+        addTimer(() => { el.classList.remove('ai-filled'); }, 800);
+      }, animStart);
+    });
+  }
+
+  // 4 — Pre-flight gate (10.0s - after all fields complete). Banner + file
+  // card fire in the same callback so the "no disqualifying content"
+  // message can't appear before the check that establishes it has run.
+  addTimer(()=>{
+    done(4, 'No disqualifying keywords detected · Document type approved · Passing to Pega Document Agent for forensic authentication', false);
     uz.classList.add('has-file');
     uz.innerHTML='<div class="upload-icon">✅</div>'
       +'<div class="upload-text" style="color:#16A34A"><strong>Receipt pre-validated — passing to forensic authentication</strong></div>'
@@ -1326,7 +1620,7 @@ function simulateUpload(){
       if($('btn-submit')) $('btn-submit').style.display='none';
       if($('btn-runpipeline')) $('btn-runpipeline').style.display='';
     }
-  },4500);
+  },10000);
 }
 
 // ══════════════════════════════════════════════════════
@@ -1356,8 +1650,8 @@ function submitClaim(){
   // Not yet uploaded — run the upload validation first.
   if(!uploaded){
     simulateUpload();
-    // In rolling mode, auto-continue into the pipeline once validation finishes.
-    if(runMode==='rolling') addTimer(openPipeline,5000);
+    // In rolling mode, auto-continue into the pipeline once validation finishes (upload sequence ends at 10.0s — give it a beat).
+    if(runMode==='rolling') addTimer(openPipeline,10500);
     return;
   }
   // Already uploaded (manual click of Submit after upload) — in rolling, go straight on.
@@ -1368,7 +1662,7 @@ function submitClaim(){
 }
 
 function openPipeline(){
-  if(!uploaded){ simulateUpload(); addTimer(openPipeline,5000); return; }
+  if(!uploaded){ simulateUpload(); addTimer(openPipeline,10500); return; }
   clearAllTimers();
   const s=S[curScenario], pl=PHASES[curScenario];
   [1,2,3].forEach(p=>resetPhaseBlock(p));
@@ -1535,6 +1829,11 @@ function showFinalState(clean){
     txt('ae-queue',isHigh?'SIU Queue — Specialist Fraud Team':'Standard Review Queue');
     txt('ae-sla',isHigh?'4 hours — Priority':'24 hours — Standard');
     txt('ae-sub','Investigation '+S[curScenario].id.replace('CLM','INV')+' opened · Investigator briefing assembled by Pega Agent');
+    const ev=[];
+    ev.push('Phase 1 — '+(pl.ph1.pass?('Clean, integrity score '+pl.ph1.score):('Flagged — '+pl.ph1.verdict)));
+    ev.push('Phase 2 — '+(pl.ph2?(pl.ph2.pass?'Clear':'Flagged — '+pl.ph2.verdict):'Not reached'));
+    ev.push('Phase 3 — '+(pl.ph3?(pl.ph3.pass?'Clear':'Flagged — '+pl.ph3.verdict):'Not reached'));
+    txt('ae-evidence-body',ev.join(' · '));
   }
   $('fraud-summary').scrollIntoView({behavior:'smooth',block:'nearest'});
   if(runMode==='rolling'&&!rollingPaused) rollingAdvanceAfterPhase();
@@ -1550,7 +1849,7 @@ function restartDemo(){
 
 function closeOverlay(){
   $('overlay').classList.remove('show');
-  clearAllTimers(); uploaded=false;
+  clearAllTimers(); uploaded=false; uploadCount=0;
   const uz=$('upload-zone');
   uz.classList.remove('has-file');
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
@@ -1576,6 +1875,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='r'||e.key==='R'){ toggleRolling(); return; }
   if(e.key==='p'||e.key==='P'){ toggleStepByStep(); return; }
   if(e.key==='s'||e.key==='S'){ goSlides(); return; }
+  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ goSlides(); goSlide(4); return; }
   if(e.key==='d'||e.key==='D'){ goDemo(); return; }
   if(e.key===' '){
     e.preventDefault();
@@ -1596,6 +1896,262 @@ setScenario(0);
 $('slides-nav-btn').style.opacity='.4';
 $('demo-nav-btn').style.opacity='1';
 $('tdark').classList.add('on');
+
+// FRAUD DASHBOARD DATA & FUNCTIONS
+let fdbAllData = [];
+let fdbSortBy = 'claim';
+let fdbSortAsc = true;
+
+function initFraudDashboard(){
+  fdbAllData = generateFraudDashboardData();
+  fdbUpdateTable();
+}
+
+function generateFraudDashboardData(){
+  const baseDate = new Date('2026-07-15');
+  let data = [];
+  const scenarios = [
+    {claim:'CLM-2024-0841',member:'James Kowalski',provider:'Bright Smile Dental',date:'12 Jul 2026',type:'Dental',amount:312,score:8,outcome:'clean'},
+    {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,score:76,outcome:'high'},
+    {claim:'CLM-2024-0843',member:'David Okafor',provider:'Active Rehab Centre',date:'11 Jul 2026',type:'Physio',amount:195,score:62,outcome:'suspicious'},
+    {claim:'CLM-2024-0844',member:'Linda Pham',provider:'Metro Dental Group',date:'13 Jul 2026',type:'Dental',amount:264,score:58,outcome:'suspicious'},
+    {claim:'CLM-2024-0845',member:'Michael Torres',provider:'ClearView Optometry',date:'10 Jul 2026',type:'Optical',amount:390,score:71,outcome:'high'},
+    {claim:'CLM-2024-0846',member:'Angela Wu',provider:'Prime Physio & Sports',date:'15 Jul 2026',type:'Physio',amount:230,score:79,outcome:'high'},
+  ];
+  data = data.concat(scenarios);
+  
+  const providers = ['Bright Smile Dental','Vision Direct Pty Ltd','Active Rehab Centre','Metro Dental Group','ClearView Optometry','Prime Physio & Sports','North Shore Medical','Southside Clinic','Wellness Hub','Central Physio'];
+  const members = ['Anna Liu','Brian Chen','Catherine Lee','Daniel Park','Emily Zhang','Francis Wong','Grace Martinez','Henry Patel','Isabella Rodriguez','James Kim'];
+  const types = ['Dental','Optical','Physio','Dental','Optical','Physio'];
+  
+  for(let i=0;i<18;i++){
+    const daysAgo = Math.floor(Math.random()*30);
+    const d = new Date(baseDate);
+    d.setDate(d.getDate() - daysAgo);
+    
+    const scoreRand = Math.random();
+    let score, outcome;
+    if(scoreRand<0.65){score=Math.random()*25; outcome='clean';}
+    else if(scoreRand<0.85){score=30+Math.random()*35; outcome='suspicious';}
+    else{score=65+Math.random()*35; outcome='high';}
+    
+    data.push({
+      claim:'CLM-2024-'+(847+i).toString().padStart(4,'0'),
+      member:members[Math.floor(Math.random()*members.length)],
+      provider:providers[Math.floor(Math.random()*providers.length)],
+      date:d.toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'}),
+      type:types[Math.floor(Math.random()*types.length)],
+      amount:Math.round((100+Math.random()*400)*100)/100,
+      score:Math.round(score),
+      outcome:outcome
+    });
+  }
+  return data;
+}
+
+function fdbUpdateTable(){
+  let filtered = fdbAllData.filter(row=>{
+    const memberFilter = (document.getElementById('fdb-member-filter') || {}).value.toLowerCase() || '';
+    const providerFilter = (document.getElementById('fdb-provider-filter') || {}).value.toLowerCase() || '';
+    const outcomeFilter = (document.getElementById('fdb-outcome-filter') || {}).value || '';
+    
+    if(memberFilter && !row.member.toLowerCase().includes(memberFilter)) return false;
+    if(providerFilter && !row.provider.toLowerCase().includes(providerFilter)) return false;
+    if(outcomeFilter && row.outcome!==outcomeFilter) return false;
+    return true;
+  });
+  
+  filtered.sort((a,b)=>{
+    let aVal = a[fdbSortBy];
+    let bVal = b[fdbSortBy];
+    if(typeof aVal==='string') aVal = aVal.toLowerCase();
+    if(typeof bVal==='string') bVal = bVal.toLowerCase();
+    const cmp = aVal<bVal?-1:(aVal>bVal?1:0);
+    return fdbSortAsc?cmp:-cmp;
+  });
+  
+  const tbody = document.getElementById('fdb-tbody');
+  if(!tbody) return;
+  tbody.innerHTML = filtered.map(row=>{
+    const outcomeClass = row.outcome==='clean'?'fdb-outcome-clean':(row.outcome==='suspicious'?'fdb-outcome-suspicious':'fdb-outcome-high');
+    const outcomeLabel = row.outcome==='clean'?'Legitimate':(row.outcome==='suspicious'?'Suspicious':'High Risk');
+    const outcomeIcon = row.outcome==='clean'?'✓':(row.outcome==='suspicious'?'⚠':'🚨');
+    return `<div class="fdb-row">
+      <div class="fdb-cell-claim">${row.claim}</div>
+      <div class="fdb-cell-member">${row.member}</div>
+      <div class="fdb-cell-provider">${row.provider}</div>
+      <div class="fdb-cell-date">${row.date}</div>
+      <div><span class="fdb-cell-type">${row.type}</span></div>
+      <div class="fdb-cell-score">$${row.amount.toFixed(2)}</div>
+      <div class="fdb-cell-score">${row.score}%</div>
+      <div><span class="fdb-cell-outcome ${outcomeClass}">${outcomeIcon} ${outcomeLabel}</span></div>
+    </div>`;
+  }).join('');
+  
+  const stats = document.getElementById('fdb-total-cases');
+  if(stats) document.getElementById('fdb-total-cases').textContent = filtered.length;
+  const highCount = filtered.filter(r=>r.outcome==='high').length;
+  if(document.getElementById('fdb-high-priority')) document.getElementById('fdb-high-priority').textContent = highCount;
+  const avgScore = filtered.length>0?Math.round(filtered.reduce((sum,r)=>sum+r.score,0)/filtered.length):0;
+  if(document.getElementById('fdb-avg-score')) document.getElementById('fdb-avg-score').textContent = avgScore+'%';
+}
+
+function fdbSort(col){
+  if(fdbSortBy===col) fdbSortAsc = !fdbSortAsc;
+  else {fdbSortBy=col; fdbSortAsc=true;}
+  
+  ['claim','member','provider','date','type','amount','score','outcome'].forEach(c=>{
+    const el = document.getElementById('sort-'+c);
+    if(el) el.textContent = c===col?(fdbSortAsc?'▲':'▼'):'';
+  });
+  
+  fdbUpdateTable();
+}
+
+// REPORT SCREEN NAVIGATION
+function goReport(){
+  document.getElementById('demo-screen').classList.remove('active');
+  document.getElementById('fraud-dashboard').classList.add('active');
+  document.getElementById('tab-portal-btn').classList.remove('on');
+  document.getElementById('tab-dashboard-btn').classList.add('on');
+  initFraudDashboard();
+}
+
+function goPortal(){
+  document.getElementById('fraud-dashboard').classList.remove('active');
+  document.getElementById('demo-screen').classList.add('active');
+  document.getElementById('tab-portal-btn').classList.add('on');
+  document.getElementById('tab-dashboard-btn').classList.remove('on');
+}
+
+// AIM MODAL
+function openAIMModal(){
+  document.getElementById('aim-modal').classList.add('show');
+}
+
+function closeAIMModal(){
+  document.getElementById('aim-modal').classList.remove('show');
+}
+
+// Hook into showFinalState to add AIM button for CLM-0845
+const origShowFinalState = showFinalState;
+showFinalState = function(clean){
+  origShowFinalState(clean);
+  // Add AIM button for CLM-0845 (index 4)
+  if(!clean && curScenario===4){
+    const ae = document.getElementById('aim-escalation');
+    if(ae && !ae.querySelector('.btn-open-aim')){
+      // Create a clean button container matching the Close button style
+      const btnContainer = document.createElement('div');
+      btnContainer.style.padding = '0 20px 16px';
+      
+      const btnAIM = document.createElement('button');
+      btnAIM.className = 'btn-aim btn-open-aim';
+      btnAIM.textContent = 'Open Alert & Investigation Manager';
+      btnAIM.onclick = openAIMModal;
+      btnAIM.style.width = '100%';
+      
+      btnContainer.appendChild(btnAIM);
+      ae.appendChild(btnContainer);
+    }
+  }
+};
 </script>
+<!-- AIM MODAL FOR CLM-0845 -->
+<div class="aim-modal" id="aim-modal">
+  <div class="aim-modal-content">
+    <div class="aim-modal-hdr">
+      <div class="aim-modal-icon">🚨</div>
+      <div class="aim-modal-titles">
+        <div class="aim-modal-title">Pega Alerts & Investigations Management</div>
+        <div class="aim-modal-sub" id="aim-modal-sub">Investigation INV-2024-0845 · Michael Torres · Optical claim</div>
+      </div>
+      <button class="aim-modal-close" onclick="closeAIMModal()">✕</button>
+    </div>
+    <div class="aim-modal-body">
+      <div class="aim-section">
+        <div class="aim-section-title">Case Details</div>
+        <div class="aim-grid">
+          <div class="aim-field">
+            <div class="aim-label">Investigation Ref</div>
+            <div class="aim-value mono">INV-2024-0845</div>
+          </div>
+          <div class="aim-field">
+            <div class="aim-label">Claim Reference</div>
+            <div class="aim-value mono">CLM-2024-0845</div>
+          </div>
+          <div class="aim-field">
+            <div class="aim-label">Member</div>
+            <div class="aim-value">Michael Torres</div>
+          </div>
+          <div class="aim-field">
+            <div class="aim-label">Provider</div>
+            <div class="aim-value">ClearView Optometry</div>
+          </div>
+          <div class="aim-field">
+            <div class="aim-label">Claim Amount</div>
+            <div class="aim-value">$390.00</div>
+          </div>
+          <div class="aim-field">
+            <div class="aim-label">Queue</div>
+            <div class="aim-value">SIU Queue</div>
+          </div>
+          <div class="aim-field">
+            <div class="aim-label">SLA</div>
+            <div class="aim-value">4 hours</div>
+          </div>
+          <div class="aim-field">
+            <div class="aim-label">Priority</div>
+            <div class="aim-value" style="color:#991B1B;font-weight:700">HIGH</div>
+          </div>
+        </div>
+      </div>
+      <div class="aim-section">
+        <div class="aim-section-title">Pipeline Results</div>
+        <div class="aim-phases">
+          <div class="aim-phase-row">
+            <div class="aim-phase-ico">🔍</div>
+            <div class="aim-phase-name">Phase 1 — Document Forensics</div>
+            <div class="aim-phase-status aim-phase-pass">✓ Passed</div>
+          </div>
+          <div class="aim-phase-row">
+            <div class="aim-phase-ico">⚡</div>
+            <div class="aim-phase-name">Phase 2 — Event Strategies</div>
+            <div class="aim-phase-status aim-phase-pass">✓ Passed</div>
+          </div>
+          <div class="aim-phase-row">
+            <div class="aim-phase-ico">🧠</div>
+            <div class="aim-phase-name">Phase 3 — Agentic Intelligence</div>
+            <div class="aim-phase-status aim-phase-fail">✗ Flagged — RAG Match</div>
+          </div>
+        </div>
+      </div>
+      <div class="aim-section">
+        <div class="aim-section-title">Evidence Package</div>
+        <div class="aim-evidence">
+          <div class="aim-evidence-title">Knowledge Buddy (RAG) — Pattern Similarity Match</div>
+          <div class="aim-evidence-list">
+            <div class="aim-evidence-item"><strong>91% similarity match</strong> to four confirmed phantom billing cases in H+ fraud library</div>
+            <div class="aim-evidence-item"><strong>Matching patterns:</strong> Item codes 10801, 10712 — optical supplies only, no lens fitting or consultation</div>
+            <div class="aim-evidence-item"><strong>Provider profile match:</strong> ClearView Optometry flagged in five prior claims with identical code patterns and amounts</div>
+            <div class="aim-evidence-item"><strong>Timeline anomaly:</strong> Three claims from this provider in seven days — exceeds normal business capacity for solo practice</div>
+            <div class="aim-evidence-item"><strong>Confirmed cases:</strong> CLM-2024-0701 (Confirmed fraud, Mar 2024), CLM-2024-0558 (Confirmed fraud, Jan 2024), CLM-2024-0334 (Confirmed fraud, Oct 2023), CLM-2024-0189 (Confirmed fraud, Aug 2023)</div>
+          </div>
+        </div>
+      </div>
+      <div class="aim-section">
+        <div class="aim-section-title">Investigator Briefing</div>
+        <div style="font-size:12px;line-height:1.6;color:var(--text-2)">
+          This claim presents a compelling match to known phantom billing patterns. While the individual claim passes document and pattern validation, the similarity to confirmed fraud cases suggests a high probability of fabricated billing. The provider has shown this pattern in prior claims, and the timeline suggests a coordinated submission pattern.
+          <br><br>
+          <strong>Recommended action:</strong> Initiate full provider investigation and member contact. Request itemized records from provider. Cross-check with practitioner availability.
+        </div>
+      </div>
+    </div>
+    <div class="aim-buttons">
+      <button class="btn-aim-close" onclick="closeAIMModal()">Close</button>
+    </div>
+  </div>
+</div>
 </body>
 </html>
