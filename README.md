@@ -87,3 +87,19 @@ User selects one
 └─ Form captures full Provider reference (ID + Name + all details)
 
 ==========================================
+
+Member Number* (text input — manual entry for testing)
+Claim Type* (local list dropdown)
+Service Date* (date picker — dd/mm/yy)
+Practice* (reference dropdown — existing field)
+Practitioner* (reference dropdown — existing field)
+
+
+SECTION B: Line Items (Repeating Table)
+
+Item Code, Quantity, Item Charge, Date
+[+ Add Another Item] button
+
+SECTION C: SUMMARY
+
+Total Amount (auto-calculated)
