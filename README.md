@@ -103,3 +103,22 @@ Item Code, Quantity, Item Charge, Date
 SECTION C: SUMMARY
 
 Total Amount (auto-calculated)
+
+
+
+PRACTICES TABLE
+Practice Name	Provider ID	ABN	Type	Address	Phone	City
+Brighton Dental Care	1948302K	74 291 836 540	Dental	12 Bay St, Brighton VIC 3186	(03) 9592 3344	Brighton
+Valley Physio & Rehab Centre	7291048H	91 632 847 501	Physio	47 Railway Parade, Ferntree Gully VIC 3156	(03) 9758 4429	Ferntree Gully
+ABC Dentistry	1948302K	11711111111	Dental	Level 1, 179 Turbot St, Brisbane QLD 4000	(07) 6557 3975	Brisbane
+QML Pathology	2376344T	(not shown)	Pathology	QML Pathology	(not shown)	Brisbane
+Best Remedial Services Chermside	C207589	65075978526	Massage/Remedial	Shop 104, 25 Brisbane Street Chermside QLD 4012	0478 254 235	Chermside
+Dr Rachel Nowland Medical	123456AB	(not shown)	Medical	Suite 1, 11 Digital Street, Melbourne VIC 3000	(not shown)	Melbourne
+PRACTITIONERS TABLE
+Practitioner Name	Credentials	AHPRA/Registration	Associated Practice	Type
+Dr. Wendy Kostadinov	BDS	(not shown)	Brighton Dental Care	Dentist
+Amy Tran	B.Physio, APA	PHY0004827193	Valley Physio & Rehab Centre	Physiotherapist
+Margaret Simpson	(not shown)	(not shown)	ABC Dentistry	Dentist
+Dr Renu Vohra	(not shown)	(not shown)	QML Pathology	Pathologist
+(Massage Therapist - name not shown)	(not shown)	(not shown)	Best Remedial Services Chermside	Massage Therapist
+Dr Rachel Nowland	(not shown)	(not shown)	Dr Rachel Nowland Medical	Medical Practitioner
