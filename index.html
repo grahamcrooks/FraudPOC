@@ -941,6 +941,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
                 <div class="val-step" id="val-step-2" style="opacity:.3"><div class="val-ico" id="val-ico-2">⏳</div><div class="val-content"><div class="val-name">Field extraction complete</div><div class="val-detail" id="val-det-2">Extracting provider, amounts and item codes...</div></div></div>
                 <div class="val-step" id="val-step-3" style="opacity:.3"><div class="val-ico" id="val-ico-3">⏳</div><div class="val-content"><div class="val-name">Confidence scoring complete</div><div class="val-detail" id="val-det-3">Scoring extraction confidence per field...</div></div></div>
                 <div class="val-step" id="val-step-4" style="opacity:.3"><div class="val-ico" id="val-ico-4">⏳</div><div class="val-content"><div class="val-name">Pre-flight gate passed</div><div class="val-detail" id="val-det-4">Running disqualifying keyword gate...</div></div></div>
+                <div class="val-step" id="val-step-5" style="opacity:.3"><div class="val-ico" id="val-ico-5">⏳</div><div class="val-content"><div class="val-name">Device &amp; location captured</div><div class="val-detail" id="val-det-5">Capturing submission device and geolocation...</div></div></div>
               </div>
               <div class="receipt-card" id="receipt-card">
                 <div class="receipt-pdf">📄</div>
@@ -1156,17 +1157,23 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 // Per-scenario pre-flight validation detail (shown before the pipeline opens)
 const PREFLIGHT=[
   { doctype:'TAX INVOICE · Healthcare Receipt (Dental) · ADA item code schedule applies',
-    conf:'All critical fields above threshold · ProviderABN 0.97 · InvoiceTotal 0.95 · ServiceDate 0.92' },
+    conf:'All critical fields above threshold · ProviderABN 0.97 · InvoiceTotal 0.95 · ServiceDate 0.92',
+    deviceGeo:'Device DEV-2291 · Bupa App v4.2 (iOS) · Geo: Carlton VIC — 0.4km from member address · Consistent with last 3 sessions' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Optical) · MBS optical schedule applies',
-    conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93' },
+    conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93',
+    deviceGeo:'Device DEV-5820 · Bupa App v4.0 (Android) · Geo: Footscray VIC — matches member address · First session on this device' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Physiotherapy) · Allied health schedule applies',
-    conf:'All critical fields above threshold · ProviderABN 0.95 · InvoiceTotal 0.96 · ServiceDate 0.94' },
+    conf:'All critical fields above threshold · ProviderABN 0.95 · InvoiceTotal 0.96 · ServiceDate 0.94',
+    deviceGeo:'Device DEV-3387 · Member Web Portal · Geo: Dandenong VIC — matches member address · Consistent with last 2 sessions' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Dental) · ADA item code schedule applies',
-    conf:'All critical fields above threshold · ProviderABN 0.94 · InvoiceTotal 0.93 · ServiceDate 0.95' },
+    conf:'All critical fields above threshold · ProviderABN 0.94 · InvoiceTotal 0.93 · ServiceDate 0.95',
+    deviceGeo:'Device DEV-6142 · Member Web Portal · Geo: Springvale VIC — matches member address · Same device fingerprint seen on 2 other claims in the past 30 days' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Optical) · MBS optical schedule applies',
-    conf:'All critical fields above threshold · ProviderABN 0.97 · InvoiceTotal 0.95 · ServiceDate 0.91' },
+    conf:'All critical fields above threshold · ProviderABN 0.97 · InvoiceTotal 0.95 · ServiceDate 0.91',
+    deviceGeo:'Device DEV-9014 · Bupa App v4.2 (iOS) · Geo: Brunswick VIC — matches member address · Consistent with last 6 sessions' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Physiotherapy) · Allied health schedule applies',
-    conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93' },
+    conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93',
+    deviceGeo:'Device DEV-1178 · Member Web Portal · Geo: Sunshine VIC — matches member address · IP 203.0.113.44 also seen on 3 other member accounts in the past 14 days' },
 ];
 
 const S=[
@@ -1206,7 +1213,7 @@ const PHASE_DESC=[
   },
   { // CLM-0844
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies — including payment-account pattern analysis across recent claims.',
+    ph2:'Running the Pega Event Strategies — including payment-account and device-fingerprint clustering across recent claims.',
     ph3:null,
   },
   { // CLM-0845
@@ -1217,7 +1224,7 @@ const PHASE_DESC=[
   { // CLM-0846
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
     ph2:'Running the Pega Event Strategies across provider location, ABN, claim velocity and payment patterns.',
-    ph3:'Tracing the provider\'s network up to 3 hops out, looking for links into known fraud communities.',
+    ph3:'Tracing the provider\'s network up to 3 hops out — using the device and geolocation signals captured at submission — looking for links into known fraud communities.',
   },
 ];
 
@@ -1230,13 +1237,13 @@ const PHASE_RESULT_DESC=[
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
     ph2:'ES-005 flagged the provider\'s ABN as deregistered in July 2024 — still being claimed under.' },
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
-    ph2:'ES-006 matched the payment account to six other claims in eight days — an unexplained repeat pattern.' },
+    ph2:'ES-006 matched the payment account and device fingerprint to six other claims in eight days — an unexplained repeat pattern.' },
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
     ph2:'All Event Strategies clear — only a minor velocity flag below threshold. Every strategy sees one claim at a time — no single claim contains the connection.',
     ph3:'91% similarity to four confirmed phantom-billing cases — same codes, same provider profile.' },
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
     ph2:'All Event Strategies clear — no flags raised. Every strategy sees one claim at a time — no single claim contains the connection.',
-    ph3:'3-hop link into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
+    ph3:'3-hop link via the shared submission IP into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
 ];
 
 const PHASES=[
@@ -1299,7 +1306,7 @@ const PHASES=[
     {ico:'🌐',name:'ES-003 IP Block Check',running:'Checking...',pass:'Clean',result:'pass',d:6000},
     {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking...',pass:'Normal',result:'pass',d:8000},
     {ico:'🏢',name:'ES-005 Phantom ABN',running:'Verifying...',pass:'ABN 77 345 678 012 active',result:'pass',d:10000},
-    {ico:'🔗',name:'ES-006 Cluster Flag',running:'Analysing payment account patterns across recent claims...',pass:'',fail:'Repeat account — payment BSB/account recurs across 6 claims in 8 days, same provider, same suburb. Frequency only — no confirmed fraud link at this stage.',result:'fail',d:12000},
+    {ico:'🔗',name:'ES-006 Cluster Flag',running:'Analysing payment account and device-fingerprint patterns across recent claims...',pass:'',fail:'Repeat account — payment BSB/account and device fingerprint (DEV-6142) recur across 6 claims in 8 days, same provider, same suburb. Frequency only — no confirmed fraud link at this stage.',result:'fail',d:12000},
     {ico:'📊',name:'ES-007 Waiver Frequency',running:'Checking...',pass:'Normal',result:'pass',d:14000},
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All ADA/MBS codes valid — 011 ✓  121 ✓',result:'pass',d:16000},
   ]},ph3:null},
@@ -1341,7 +1348,7 @@ const PHASES=[
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All physio codes valid — SP001 ✓  SP015 ✓',result:'pass',d:16000},
   ]},ph3:{pass:false,score:'3',scoreColor:'#DC2626',scoreLabel:'Hops to Confirmed Fraud Node',verdict:'RING DETECTED — Community #47',route:'14 members · 3 providers · Routing to SIU Queue · HIGH priority',checks:[
     {ico:'🔍',name:'Knowledge Buddy RAG',running:'Searching Fraud Case Library...',pass:'Low similarity — 0.18 — No significant match',result:'pass',d:3200},
-    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via shared IP → Provider ABC → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
+    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.44 (captured at Phase 1 submission) → Provider ABC → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
   ]}},
 ];
 
@@ -1701,8 +1708,8 @@ function simulateUpload(){
   uz.innerHTML='<div class="upload-icon">⏫</div><div class="upload-text">Uploading...</div>';
   uploadCount++;
   const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none';
-  // Reset all four rows to queued
-  [1,2,3,4].forEach(i=>{
+  // Reset all five rows to queued
+  [1,2,3,4,5].forEach(i=>{
     $('val-step-'+i).style.opacity=i===1?'1':'.3';
     $('val-step-'+i).className='val-step';
     $('val-ico-'+i).textContent=i===1?'🔄':'⏳';
@@ -1711,6 +1718,7 @@ function simulateUpload(){
   txt('val-det-2','Extracting provider, amounts and item codes...');
   txt('val-det-3','Scoring extraction confidence per field...');
   txt('val-det-4','Running disqualifying keyword gate...');
+  txt('val-det-5','Capturing submission device and geolocation...');
 
   const done=(i,detail,nextIco)=>{
     $('val-step-'+i).className='val-step done';
@@ -1750,15 +1758,21 @@ function simulateUpload(){
     });
   }
 
-  // 4 — Pre-flight gate (10.0s - after all fields complete). Banner + file
-  // card fire in the same callback so the "no disqualifying content"
-  // message can't appear before the check that establishes it has run.
+  // 4 — Pre-flight gate (10.0s - after all fields complete).
   addTimer(()=>{
-    done(4, 'No disqualifying keywords detected · Document type approved · Passing to Pega Document Agent for forensic authentication', false);
+    done(4, 'No disqualifying keywords detected · Document type approved', true);
+  },10000);
+
+  // 5 — Device & geolocation capture (10.8s). Feeds Phase 2 pattern/cluster
+  // strategies and the Phase 3 network graph traversal. Banner + file card
+  // fire in the same callback so the "ready" message can't appear before
+  // the check that establishes it has run.
+  addTimer(()=>{
+    done(5, pf.deviceGeo+' · Feeds Phase 2 clustering and Phase 3 network graph', false);
     uz.classList.add('has-file');
     uz.innerHTML='<div class="upload-icon">✅</div>'
       +'<div class="upload-text" style="color:#16A34A"><strong>Receipt pre-validated — passing to forensic authentication</strong></div>'
-      +'<div style="font-size:11px;color:#4B7A5A;margin-top:4px;line-height:1.5">Document type confirmed · Fields extracted · Confidence thresholds met · No disqualifying content detected</div>';
+      +'<div style="font-size:11px;color:#4B7A5A;margin-top:4px;line-height:1.5">Document type confirmed · Fields extracted · Confidence thresholds met · Device &amp; location captured · No disqualifying content detected</div>';
     const rc=$('receipt-card'); rc.style.display='flex';
     txt('r-name',s.file); txt('r-size',s.fsz+' · Validated · Pre-flight complete');
     uploaded=true;
@@ -1766,7 +1780,7 @@ function simulateUpload(){
       if($('btn-submit')) $('btn-submit').style.display='none';
       if($('btn-runpipeline')) $('btn-runpipeline').style.display='';
     }
-  },10000);
+  },10800);
 }
 
 // ══════════════════════════════════════════════════════
