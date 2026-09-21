@@ -122,3 +122,36 @@ Margaret Simpson	(not shown)	(not shown)	ABC Dentistry	Dentist
 Dr Renu Vohra	(not shown)	(not shown)	QML Pathology	Pathologist
 (Massage Therapist - name not shown)	(not shown)	(not shown)	Best Remedial Services Chermside	Massage Therapist
 Dr Rachel Nowland	(not shown)	(not shown)	Dr Rachel Nowland Medical	Medical Practitioner
+
+
+Name: GeoSession
+Type: Data Object
+Scope: Embedded in Claim (scoped)
+
+Properties:
+  - GeoSessionID               [key]
+  - IPAddress                  [string]
+  - Latitude                   [decimal]
+  - Longitude                  [decimal]
+  - Suburb                     [string]
+  - Postcode                   [string]
+  - CountryCode                [string, "AU"]
+  - StateCode                  [string, "VIC"]
+  - LocationAccuracy           [integer, meters]
+  - DistanceFromMemberAddress  [decimal, km]
+  - GeofenceRiskLevel          [enum: LOW, MEDIUM, HIGH]
+  - AnomalyFlags               [text: DISTANCE_ANOMALY | TIMEZONE_MISMATCH | IMPOSSIBLE_TRAVEL]
+  - CapturedDateTime           [datetime, UTC]
+  - CapturedBy                 [string, "system" or user ID]
+
+Property Name: GeoSession
+Type: Data Object
+Data Object Type: GeoSession (the object you just created)
+Embedded: Yes
+Cardinality: 1:1
+
+Property Name: DeviceSession
+Type: Data Object
+Data Object Type: DeviceSession (the object you just created)
+Embedded: Yes
+Cardinality: 1:1
