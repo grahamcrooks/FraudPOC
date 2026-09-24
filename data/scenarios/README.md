@@ -30,6 +30,10 @@ A scenario with no session block hides the chip. It never inherits another scena
 - Several members on one device ID is reserved for the ring scenario, where it is the thing that fires. It is never the default.
 - Use values from the test pack (`members.csv`, `manifest.json`) so members, suburbs, device IDs and IPs stay consistent, and IPs are documentation-range addresses that geolocate to the suburb in the manifest.
 
+## Scene pace
+
+The sign-in scene runs at pace 2 by default (about 12 seconds) so a presenter can talk through each beat. Add `?pace=1` to the address for the original 6-second version, or up to `?pace=4` for slower. Rolling mode waits for the scene before starting the upload.
+
 ## Replaying part of the scene
 
 `SessionScene.play(session, { beats: ['particles', 'land'], memberNo, frame })` replays only the particle and landing beats, with the device already signed in. Frames are registered in `SESSION_FRAMES` in `index.html`; particles and the handoff outline take their origin and shape from the active frame, so the ring scenario's browser frame needs its markup and one registry entry, not a rebuild. A scenario can use this to show several members submitting from one device: pass a session with a different `member` and the same `deviceId`, and the chip's device slot stays on that ID while the other slots update.
