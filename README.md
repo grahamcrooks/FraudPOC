@@ -18,6 +18,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 - Create fraud session data objects, run in order:
   1. [GeoSession](prompts/create-fraud-session-data-objects/01-geo-session.md): creates the object that captures where a claim was submitted from.
   2. [DeviceSession](prompts/create-fraud-session-data-objects/02-device-session.md): creates the object that captures the submitting device and browser.
+  3. [Claim](prompts/create-fraud-session-data-objects/03-claim.md): embeds both session objects in the Claim and adds the geocode and fingerprint fields that ES-001 and ES-002 need.
 
 ## Docs
 

@@ -1,6 +1,6 @@
 # Create DeviceSession data object
 
-Step 2 of 2. Creates the DeviceSession data object, which captures the device and browser a claim was submitted from and the resulting device anomaly flags.
+Step 2 of 3. Creates the DeviceSession data object, which captures the device and browser a claim was submitted from and the resulting device anomaly flags.
 
 ```text
 Name: DeviceSession
