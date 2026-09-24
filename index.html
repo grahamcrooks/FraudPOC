@@ -659,7 +659,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .sig.open .sig-body{display:block}
 .sig-lines{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;font-size:13px;line-height:1.35}
 /* At rest all checks are open: trim spacing so all seven fit where possible */
-.sig-list.at-rest{gap:4px}
+/* At rest: two columns of checks, so all seven fit open on a 1080p screen */
+.sig-list.at-rest{display:grid;grid-template-columns:1fr 1fr;gap:6px;align-items:start}
+.sig-list.at-rest .sig-name{font-size:13px}
 .sig-list.at-rest .sig-head{padding-top:5px}
 .sig-list.at-rest .sig-concl{padding-bottom:5px}
 .sig-lines dt{color:var(--text-3);font-weight:600;white-space:nowrap}
@@ -689,6 +691,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .pf-item b{display:block;font-size:13px;margin-bottom:2px}
 .sig-hint{font-size:11px;color:var(--text-3);margin:2px 2px 0}
 @media (prefers-reduced-motion:reduce){.sig,.sig-chev{transition:none}}
+@media (max-width:900px){.sig-list.at-rest{grid-template-columns:1fr}}
 @media (max-width:560px){
   .sig-body,.sig-concl{padding-left:12px}
   .sig-lines{grid-template-columns:1fr;gap:0}
