@@ -184,5 +184,76 @@
       }
     ],
     "action": "Receipt clean. A clean receipt is not a clean claim — continuing to Phase 2 event strategies."
+  },
+  "phase2": [
+    {
+      "id": "ES-001",
+      "name": "ES-001 Distance anomaly",
+      "summary": "about 16 km from registered address · threshold 500 km",
+      "cost": "rule",
+      "delay": 4000,
+      "lookedAt": "Submission IP geolocation against the member's registered address",
+      "rule": "Graded — over 500 km moderate, over 1,500 km high, overseas critical",
+      "found": "Submitted from Preston VIC, registered address Sunshine VIC 3020 — about 16 km",
+      "verdict": "pass",
+      "conclusion": "Within normal range. No distance signal"
+    },
+    {
+      "id": "ES-002",
+      "name": "ES-002 Device ring",
+      "summary": "1 member on this device · threshold 3",
+      "cost": "rule",
+      "delay": 10000,
+      "lookedAt": "Distinct members submitting from device DEV-2740 in the last 72 hours",
+      "rule": "Three or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
+      "found": "1 member on this device — Angela Wu only",
+      "verdict": "pass",
+      "conclusion": "No device ring"
+    },
+    {
+      "id": "ES-003",
+      "name": "ES-003 Bank account ring",
+      "summary": "1 practice on this account · threshold 3",
+      "cost": "rule",
+      "delay": 16000,
+      "lookedAt": "Distinct practice ABNs paying into this account in the last 30 days",
+      "rule": "Three or more unrelated practices converging on one account",
+      "found": "1 practice — Prime Physio & Sports, ABN 55 678 901 234, its own registered account",
+      "verdict": "pass",
+      "conclusion": "No account convergence"
+    }
+  ],
+  "phase2Result": {
+    "action": "No signal raised. Continuing to Phase 3."
+  },
+  "phase3": [
+    {
+      "id": "P3-RAG",
+      "name": "Knowledge Buddy RAG",
+      "summary": "highest match 0.18 · threshold 0.85",
+      "cost": "ai",
+      "delay": 3200,
+      "lookedAt": "This claim's pattern against the confirmed fraud case library",
+      "rule": "Similarity at or above 0.85 to a confirmed case",
+      "found": "Highest match 0.18",
+      "verdict": "pass",
+      "conclusion": "No similar confirmed case"
+    },
+    {
+      "id": "P3-GRAPH",
+      "name": "Network graph",
+      "tag": "MCP · Graph",
+      "summary": "3-hop path into Community #47 · 14 members, 3 providers",
+      "cost": "ai",
+      "delay": 7800,
+      "lookedAt": "Graph traversal up to 3 hops from the member, using the device and payment links captured at submission",
+      "rule": "Any path reaching a confirmed fraud community",
+      "found": "3-hop path: this claim's submission IP 203.0.113.91 → Provider ABC → confirmed fraud member MBR-99112, in Community #47 of 14 members and 3 providers",
+      "verdict": "fail",
+      "conclusion": "Connected to a confirmed fraud community"
+    }
+  ],
+  "phase3Result": {
+    "action": "3-hop path into Community #47 — 14 members, 3 providers. Claim referred to the SIU queue, HIGH priority."
   }
 };

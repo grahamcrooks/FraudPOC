@@ -184,5 +184,46 @@
       }
     ],
     "action": "Receipt clean. A clean receipt is not a clean claim — continuing to Phase 2 event strategies."
+  },
+  "phase2": [
+    {
+      "id": "ES-001",
+      "name": "ES-001 Distance anomaly",
+      "summary": "about 26 km from registered address · threshold 500 km",
+      "cost": "rule",
+      "delay": 4000,
+      "lookedAt": "Submission IP geolocation against the member's registered address",
+      "rule": "Graded — over 500 km moderate, over 1,500 km high, overseas critical",
+      "found": "Submitted from Richmond VIC, registered address Dandenong VIC 3175 — about 26 km",
+      "verdict": "pass",
+      "conclusion": "Within normal range. No distance signal"
+    },
+    {
+      "id": "ES-002",
+      "name": "ES-002 Device ring",
+      "summary": "1 member on this device · threshold 3",
+      "cost": "rule",
+      "delay": 10000,
+      "lookedAt": "Distinct members submitting from device DEV-8823 in the last 72 hours",
+      "rule": "Three or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
+      "found": "1 member on this device — David Okafor only",
+      "verdict": "pass",
+      "conclusion": "No device ring"
+    },
+    {
+      "id": "ES-003",
+      "name": "ES-003 Bank account ring",
+      "summary": "4 practices on one account · threshold 3",
+      "cost": "rule",
+      "delay": 16000,
+      "lookedAt": "Distinct practice ABNs paying into this account in the last 30 days",
+      "rule": "Three or more unrelated practices converging on one account",
+      "found": "4 practices paying into BSB 083-147 / 441820937 in 22 days — Active Rehab Centre, Southbank Physio Rooms, Westgate Allied Health, Keilor Road Physio. The account name matches none of them",
+      "verdict": "fail",
+      "conclusion": "Four unrelated practices converging on one account"
+    }
+  ],
+  "phase2Result": {
+    "action": "Claim marked suspicious and referred to AIM. A network assessment is raised against account BSB 083-147 / 441820937."
   }
 };

@@ -184,5 +184,76 @@
       }
     ],
     "action": "Receipt clean. A clean receipt is not a clean claim — continuing to Phase 2 event strategies."
+  },
+  "phase2": [
+    {
+      "id": "ES-001",
+      "name": "ES-001 Distance anomaly",
+      "summary": "about 15 km from registered address · threshold 500 km",
+      "cost": "rule",
+      "delay": 4000,
+      "lookedAt": "Submission IP geolocation against the member's registered address",
+      "rule": "Graded — over 500 km moderate, over 1,500 km high, overseas critical",
+      "found": "Submitted from Box Hill VIC, registered address Brunswick VIC 3056 — about 15 km",
+      "verdict": "pass",
+      "conclusion": "Within normal range. No distance signal"
+    },
+    {
+      "id": "ES-002",
+      "name": "ES-002 Device ring",
+      "summary": "1 member on this device · threshold 3",
+      "cost": "rule",
+      "delay": 10000,
+      "lookedAt": "Distinct members submitting from device DEV-6305 in the last 72 hours",
+      "rule": "Three or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
+      "found": "1 member on this device — Michael Torres only",
+      "verdict": "pass",
+      "conclusion": "No device ring"
+    },
+    {
+      "id": "ES-003",
+      "name": "ES-003 Bank account ring",
+      "summary": "1 practice on this account · threshold 3",
+      "cost": "rule",
+      "delay": 16000,
+      "lookedAt": "Distinct practice ABNs paying into this account in the last 30 days",
+      "rule": "Three or more unrelated practices converging on one account",
+      "found": "1 practice — ClearView Optometry, ABN 33 456 789 123, its own registered account",
+      "verdict": "pass",
+      "conclusion": "No account convergence"
+    }
+  ],
+  "phase2Result": {
+    "action": "No signal raised. Continuing to Phase 3."
+  },
+  "phase3": [
+    {
+      "id": "P3-RAG",
+      "name": "Knowledge Buddy RAG",
+      "summary": "highest match 0.91 · threshold 0.85",
+      "cost": "ai",
+      "delay": 3600,
+      "lookedAt": "This claim's pattern against the confirmed fraud case library",
+      "rule": "Similarity at or above 0.85 to a confirmed case",
+      "found": "Highest match 0.91 — 4 confirmed phantom-billing cases: same item codes, similar provider profile",
+      "verdict": "fail",
+      "conclusion": "Closely matches confirmed phantom billing"
+    },
+    {
+      "id": "P3-GRAPH",
+      "name": "Network graph",
+      "tag": "MCP · Graph",
+      "summary": "0 connections within 3 hops",
+      "cost": "ai",
+      "delay": 7200,
+      "lookedAt": "Graph traversal up to 3 hops from the member, using the device and payment links captured at submission",
+      "rule": "Any path reaching a confirmed fraud community",
+      "found": "0 connections within 3 hops",
+      "verdict": "pass",
+      "conclusion": "Graph clear"
+    }
+  ],
+  "phase3Result": {
+    "action": "Similarity 0.91 to 4 confirmed phantom-billing cases. Claim referred to the investigation queue with the matched cases attached."
   }
 };
