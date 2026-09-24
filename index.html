@@ -2413,9 +2413,11 @@ function showFinalState(clean){
 
 function restartDemo(){
   stopRolling();
-  setScenario(0);
+  // Slides first, then reset the scenario: with the demo screen hidden, the
+  // sign-in scene is held back and plays again when the demo is entered.
   goSlides();
   goSlide(0);
+  setScenario(0);
 }
 
 function closeOverlay(){
