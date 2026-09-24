@@ -165,6 +165,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .s2-signals{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-top:5px}
 .dark .s2-signals{color:#7C93B8}
 .light .s2-signals{color:var(--text-3)}
+.s2-layer{margin-top:14px}
+.s2-pts.s2-pts-tight{gap:8px}
+@media (max-height:820px){.s2-signals.s2-layer{margin-top:6px}.s2-pts.s2-pts-tight{gap:3px;margin-top:3px}.s2-pts.s2-pts-tight li{font-size:clamp(11px,.95vw,14px);line-height:1.3}#c0 .s2-body{gap:4px}}
 .s2-pts{list-style:none;display:flex;flex-direction:column;gap:13px;margin-top:6px}
 .s2-pts li{font-size:clamp(11px,1.22vw,15.5px);line-height:1.45;display:flex;gap:6px}
 .dark .s2-pts li{color:#fff}
@@ -940,17 +943,22 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
           <div class="s2-bar" style="background:#F76923"></div>
           <div class="s2-body">
             <div class="s2-title">🔍 Receipt Forensics</div>
-            <span class="s2-tag" style="background:#F76923">Is this document real and valid?</span>
-            <div class="s2-signals">8 Fraud Signals</div>
-            <ul class="s2-pts">
-              <li>Claim-to-receipt match — verifies amount, provider, date and codes against the receipt</li>
-              <li>AI extracts the text — Pega Agentic AI interrogates the entire document</li>
-              <li>Duplicate detection — receipt fingerprinted against every claim already submitted</li>
-              <li>Document type classification & confidence scoring — scored against threshold</li>
-              <li>Font consistency analysis — spliced typefaces</li>
-              <li>Stamp & colour forgery detection</li>
-              <li>AI-generated receipt detection — flags artefacts from AI image generators</li>
-              <li>File history & authoring trail — made by clinic software, or edited after the service date?</li>
+            <span class="s2-tag" style="background:#F76923">Is this receipt real and valid?</span>
+            <div class="s2-signals">Pre-flight — one AI read, then business rules at no AI cost</div>
+            <ul class="s2-pts s2-pts-tight">
+              <li>Receipt type and field extraction with per-field confidence</li>
+              <li>Disqualifying content — quotations, proformas, voids, non-medical</li>
+              <li>Receipt completeness — paid in full, ABN, itemised, signed</li>
+              <li>Claim value against the high-value threshold</li>
+            </ul>
+            <div class="s2-signals s2-layer">Forensic analysis — runs only on receipts that clear pre-flight</div>
+            <ul class="s2-pts s2-pts-tight">
+              <li>Claim-to-receipt match</li>
+              <li>Font consistency — spliced typefaces</li>
+              <li>Colour and stamp analysis — digital overlays</li>
+              <li>AI-generated receipt detection</li>
+              <li>Metadata and authoring trail</li>
+              <li>Duplicate detection — fingerprinted against every prior claim</li>
             </ul>
           </div>
         </div>
@@ -959,7 +967,6 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
           <div class="s2-body">
             <div class="s2-title">⚡ Cross-Claim Signals</div>
             <span class="s2-tag" style="background:#10A5AC">Does this claim make sense?</span>
-            <div class="s2-signals">3 Fraud Signals</div>
             <ul class="s2-pts">
               <li>ES-001 Distance anomaly — lodged far from the member's registered address</li>
               <li>ES-002 Device ring — unrelated members submitting from one device</li>
@@ -973,7 +980,6 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
           <div class="s2-body">
             <div class="s2-title">🧠 Network Intelligence</div>
             <span class="s2-tag" style="background:#5F67B9">Who else is involved?</span>
-            <div class="s2-signals">5 Fraud Signals</div>
             <ul class="s2-pts">
               <li>Invisible to conventional systems</li>
               <li>Network graph intelligence — 3-hop traversal catches connections invisible to direct-link analysis</li>
