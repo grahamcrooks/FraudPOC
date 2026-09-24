@@ -28,7 +28,7 @@
       "name": "Field extraction",
       "summary": "11 of 11 fields · $390.00 · items 10801, 10712",
       "cost": "ai",
-      "lookedAt": "Full document",
+      "lookedAt": "Full receipt",
       "rule": "Extract provider, ABN, service date, line items and total",
       "found": "ClearView Optometry · items 10801, 10712 · $390.00 · 10 Jul 2026",
       "verdict": "pass",

@@ -1,4 +1,4 @@
-// Scenario data for CLM-2024-0842 (Sarah Nguyen, optical claim, Phase 1 document failure).
+// Scenario data for CLM-2024-0842 (Sarah Nguyen, optical claim, Phase 1 receipt failure).
 // Loaded by index.html with a plain <script> tag, so the demo still runs from
 // file:// with no server. Keep the object literal valid JSON.
 (window.SCENARIO_DATA = window.SCENARIO_DATA || {})['CLM-2024-0842'] = {
@@ -28,7 +28,7 @@
       "name": "Field extraction",
       "summary": "11 of 11 fields · $445.00 · items 10801, 10701, 10501",
       "cost": "ai",
-      "lookedAt": "Full document",
+      "lookedAt": "Full receipt",
       "rule": "Extract provider, ABN, service date, line items and total",
       "found": "Vision Direct Pty Ltd · items 10801, 10701, 10501 · $445.00 · 14 Jul 2026",
       "verdict": "pass",

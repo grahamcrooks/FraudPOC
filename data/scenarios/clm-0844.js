@@ -43,7 +43,7 @@
     },
     "cost:ai": {
       "tag": "Pre-flight · AI",
-      "text": "AI reads the receipt: document type, fields and confidence"
+      "text": "AI reads the receipt: receipt type, fields and confidence"
     },
     "cost:rule": {
       "tag": "Pre-flight · Rules",
@@ -123,7 +123,7 @@
       "name": "Field extraction",
       "summary": "11 of 11 fields · $264.00 · items 011, 121",
       "cost": "ai",
-      "lookedAt": "Full document",
+      "lookedAt": "Full receipt",
       "rule": "Extract provider, ABN, service date, line items and total",
       "found": "Metro Dental Group · items 011, 121 · $264.00 · 13 Jul 2026",
       "verdict": "pass",

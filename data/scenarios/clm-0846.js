@@ -28,7 +28,7 @@
       "name": "Field extraction",
       "summary": "11 of 11 fields · $230.00 · items SP001, SP015",
       "cost": "ai",
-      "lookedAt": "Full document",
+      "lookedAt": "Full receipt",
       "rule": "Extract provider, ABN, service date, line items and total",
       "found": "Prime Physio & Sports · items SP001, SP015 · $230.00 · 15 Jul 2026",
       "verdict": "pass",
