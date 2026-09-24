@@ -178,5 +178,46 @@
     },
     "adjustments": [],
     "action": "Below threshold. Claim referred to the investigator queue, HIGH priority, 4-hour SLA. Phases 2 and 3 do not run."
+  },
+  "phase2": [
+    {
+      "id": "ES-001",
+      "name": "ES-001 Distance anomaly",
+      "summary": "not run",
+      "cost": "rule",
+      "delay": 4000,
+      "lookedAt": "Submission IP geolocation against the member's registered address",
+      "rule": "Graded — over 500 km moderate, over 1,500 km high, overseas critical",
+      "found": "Not run — Phase 1 stopped the claim",
+      "verdict": "skipped",
+      "conclusion": "Not run — Phase 1 stopped the claim"
+    },
+    {
+      "id": "ES-002",
+      "name": "ES-002 Device ring",
+      "summary": "not run",
+      "cost": "rule",
+      "delay": 10000,
+      "lookedAt": "Distinct members submitting from device DEV-4417 in the last 72 hours",
+      "rule": "Three or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
+      "found": "Not run — Phase 1 stopped the claim",
+      "verdict": "skipped",
+      "conclusion": "Not run — Phase 1 stopped the claim"
+    },
+    {
+      "id": "ES-003",
+      "name": "ES-003 Bank account ring",
+      "summary": "not run",
+      "cost": "rule",
+      "delay": 16000,
+      "lookedAt": "Distinct practice ABNs paying into this account in the last 30 days",
+      "rule": "Three or more unrelated practices converging on one account",
+      "found": "Not run — Phase 1 stopped the claim",
+      "verdict": "skipped",
+      "conclusion": "Not run — Phase 1 stopped the claim"
+    }
+  ],
+  "phase2Result": {
+    "action": "Not run — Phase 1 stopped the claim."
   }
 };

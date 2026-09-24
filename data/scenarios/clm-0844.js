@@ -184,5 +184,46 @@
       }
     ],
     "action": "Receipt clean. A clean receipt is not a clean claim — continuing to Phase 2 event strategies."
+  },
+  "phase2": [
+    {
+      "id": "ES-001",
+      "name": "ES-001 Distance anomaly",
+      "summary": "about 28 km from registered address · threshold 500 km",
+      "cost": "rule",
+      "delay": 4000,
+      "lookedAt": "Submission IP geolocation against the member's registered address",
+      "rule": "Graded — over 500 km moderate, over 1,500 km high, overseas critical",
+      "found": "Submitted from Footscray VIC, registered address Springvale VIC 3171 — about 28 km",
+      "verdict": "pass",
+      "conclusion": "Within normal range. No distance signal"
+    },
+    {
+      "id": "ES-002",
+      "name": "ES-002 Device ring",
+      "summary": "5 members on one device in 26 hours · threshold 3",
+      "cost": "rule",
+      "delay": 10000,
+      "lookedAt": "Distinct members submitting from device DEV-1196 in the last 72 hours",
+      "rule": "Three or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
+      "found": "5 distinct members on DEV-1196 in 26 hours — 5 different surnames, 5 different addresses, 5 different policies",
+      "verdict": "fail",
+      "conclusion": "Five unrelated members on one device"
+    },
+    {
+      "id": "ES-003",
+      "name": "ES-003 Bank account ring",
+      "summary": "1 practice on this account · threshold 3",
+      "cost": "rule",
+      "delay": 16000,
+      "lookedAt": "Distinct practice ABNs paying into this account in the last 30 days",
+      "rule": "Three or more unrelated practices converging on one account",
+      "found": "1 practice — Metro Dental Group, ABN 77 345 678 012, its own registered account",
+      "verdict": "pass",
+      "conclusion": "No account convergence"
+    }
+  ],
+  "phase2Result": {
+    "action": "Claim marked suspicious and referred to AIM. A network assessment is raised against device DEV-1196."
   }
 };

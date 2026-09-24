@@ -697,6 +697,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .p1c-verdict{margin-top:6px;font-size:14px;font-weight:800}
 .p1-calc.ok .p1c-verdict{color:var(--green-mid)}
 .p1-calc.bad .p1c-verdict{color:#DC2626}
+.p2-planned{display:none;margin-top:8px;font-size:12.5px;font-style:italic;color:var(--text-3)}
+.p2-planned.show{display:block}
+.p2c-row{grid-template-columns:minmax(200px,280px) 1fr}
+.p2c-s{font-weight:700}
 .p1c-action{margin-top:4px;font-size:13px;font-weight:600;color:var(--text)}
 /* Pre-flight terminal outcomes: a fail or flag stops the flow before the pipeline */
 .upload-zone.pf-stop{cursor:default;text-align:left;padding:16px 18px}
@@ -756,8 +760,8 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
   <div id="demo-btns" style="display:none;gap:4px">
     <button class="sc" onclick="setScenario(0)" id="sc0"><span class="dot-indicator dg"></span>CLM-0841 · Clean</button>
     <button class="sc" onclick="setScenario(1)" id="sc1"><span class="dot-indicator dr"></span>CLM-0842 · Ph.1 Doc</button>
-    <button class="sc" onclick="setScenario(2)" id="sc2"><span class="dot-indicator dr"></span>CLM-0843 · Ph.2 ABN</button>
-    <button class="sc" onclick="setScenario(3)" id="sc3"><span class="dot-indicator da"></span>CLM-0844 · Ph.2 Cluster</button>
+    <button class="sc" onclick="setScenario(2)" id="sc2"><span class="dot-indicator dr"></span>CLM-0843 · Ph.2 Account</button>
+    <button class="sc" onclick="setScenario(3)" id="sc3"><span class="dot-indicator da"></span>CLM-0844 · Ph.2 Device</button>
     <button class="sc" onclick="setScenario(4)" id="sc4"><span class="dot-indicator da"></span>CLM-0845 · Ph.3 RAG</button>
     <button class="sc" onclick="setScenario(5)" id="sc5"><span class="dot-indicator dr"></span>CLM-0846 · Ph.3 Network</button>
   </div>
@@ -1303,6 +1307,8 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
+        <div class="p2-planned" id="ph2-planned">Further strategies — phantom ABN, waiver abuse, item code validation — are planned and not in this build.</div>
+        <div class="p1-calc" id="ph2-calc"></div>
         <div class="score-reveal" id="ph2-score"><div class="score-num" id="ph2-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Fraud Score</div><div class="score-verdict" id="ph2-score-verdict">Calculating...</div><div class="score-route" id="ph2-score-route"></div></div></div>
         <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No fraudulent patterns detected</div></div></div>
         <div class="phase-btns" id="ph2-btns">
@@ -1317,6 +1323,7 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
       <div class="phase-expanded" id="ph3-expanded">
         <div class="phase-info" id="ph3-info"><div class="phase-info-band" id="ph3-info-band"><div class="phase-info-txt" id="ph3-info-txt"></div></div></div>
         <div class="check-list" id="ph3-checks"></div>
+        <div class="p1-calc" id="ph3-calc"></div>
         <div class="score-reveal" id="ph3-score"><div class="score-num" id="ph3-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label" id="ph3-score-label">Network Analysis</div><div class="score-verdict" id="ph3-score-verdict">Calculating...</div><div class="score-route" id="ph3-score-route"></div></div></div>
         <div class="result-badge" id="ph3-result"><div class="rb-ico" id="ph3-rb-ico">✅</div><div><div class="rb-title" id="ph3-rb-title">Phase 3 Complete</div><div class="rb-sub" id="ph3-rb-sub">No suspicious activity detected</div></div></div>
         <div class="phase-btns" id="ph3-btns">
@@ -1410,9 +1417,9 @@ const S=[
     receiptMismatch:{entered:'$487.50',receipt:'$445.00',diff:'$42.50',pct:'10.8%'},
     preview:{icon:'🔍',label:'Scenario 2 of 6 — Document Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
   {id:'CLM-2024-0843',mbr:'MBR-77834',joined:'Jan 2024',suburb:'Dandenong VIC 3175',contact:'SMS',member:'David Okafor',ini:'DO',pol:'POL-2022-11092',cov:'Bronze Hospital + Extras',cnt:2,amt:'$390.00',ben:'$1,610',type:'Physiotherapy (Extras)',date:'11 Jul 2026',prov:'Active Rehab Centre',abn:'99 000 111 222',clamt:'$195.00',codes:'SP001, SP010',file:'physio_receipt_MBR77834.pdf',fsz:'212 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'fail-ph2',
-    preview:{icon:'🏢',label:'Scenario 3 of 6 — Phantom ABN',title:'A deregistered provider caught in Phase 2',body:'David\'s physio receipt looks fine — but the provider\'s ABN was cancelled in July 2024. Pega\'s ES-005 Event Strategy cross-references the Australian Business Register and flags the claim before any benefit is paid.'}},
+    preview:{icon:'🏦',label:'Scenario 3 of 6 — Bank Account Ring',title:'Four practices, one bank account — caught in Phase 2',body:'David\'s physio receipt is genuine and his claim looks ordinary. But ES-003 sees that four unrelated practices have paid into the same bank account in 22 days, and the account name matches none of them.'}},
   {id:'CLM-2024-0844',mbr:'MBR-55901',joined:'Nov 2025',suburb:'Springvale VIC 3171',contact:'SMS',member:'Linda Pham',ini:'LP',pol:'POL-2020-73341',cov:'Gold Hospital + Extras',cnt:7,amt:'$2,100.00',ben:'$400',type:'Dental (Extras)',date:'13 Jul 2026',prov:'Metro Dental Group',abn:'77 345 678 012',clamt:'$264.00',codes:'011, 121',file:'dental_receipt_MBR55901.pdf',fsz:'267 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'fail-ph2',
-    preview:{icon:'🔗',label:'Scenario 4 of 6 — Coordinated Cluster',title:'Part of a billing ring — detected by payment pattern analysis',body:'Linda\'s dental claim looks ordinary in isolation, but Pega\'s ES-006 Event Strategy spots that the same bank account has received payments from six other claims in the past eight days — same provider, same suburb. A coordinated cluster.'}},
+    preview:{icon:'📱',label:'Scenario 4 of 6 — Device Ring',title:'Five members, one device — caught in Phase 2',body:'Linda\'s dental claim looks ordinary on its own. But ES-002 sees five unrelated members lodging from the same device in 26 hours — different surnames, addresses and policies. Her claim is the one that tips it over the threshold.'}},
   {id:'CLM-2024-0845',mbr:'MBR-29034',joined:'Jun 2018',suburb:'Brunswick VIC 3056',contact:'Email',member:'Michael Torres',ini:'MT',pol:'POL-2018-55601',cov:'Silver Hospital + Extras',cnt:4,amt:'$920.00',ben:'$580',type:'Optical (Extras)',date:'10 Jul 2026',prov:'ClearView Optometry',abn:'33 456 789 123',clamt:'$390.00',codes:'10801, 10712',file:'optical_receipt_MBR29034.pdf',fsz:'318 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph3',
     preview:{icon:'🧠',label:'Scenario 5 of 6 — Phantom Billing Pattern',title:'Passes Phases 1 & 2 — caught by AI case library in Phase 3',body:'Michael\'s optical claim clears document forensics and all Pega Event Strategies. But Knowledge Buddy finds a 91% similarity match to four confirmed phantom billing cases — same item codes, same provider profile type.'}},
   {id:'CLM-2024-0846',mbr:'MBR-61203',joined:'Feb 2026',suburb:'Sunshine VIC 3020',contact:'SMS',member:'Angela Wu',ini:'AW',pol:'POL-2023-98811',cov:'Gold Hospital + Extras',cnt:1,amt:'$195.00',ben:'$1,805',type:'Physiotherapy (Extras)',date:'15 Jul 2026',prov:'Prime Physio & Sports',abn:'55 678 901 234',clamt:'$230.00',codes:'SP001, SP015',file:'physio_receipt_MBR61203.pdf',fsz:'198 KB',h1:'Lodge your physio claim',hs:'Treatment sessions · assessed on submission',outcome:'fail-ph3',
@@ -1425,7 +1432,7 @@ const S=[
 const PHASE_DESC=[
   { // CLM-0841
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies across submission location, shared devices, shared bank accounts, ABN and payment patterns.',
+    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
     ph3:'Searching the fraud case library for similar cases and tracing the provider\'s network for hidden connections.',
   },
   { // CLM-0842
@@ -1435,22 +1442,22 @@ const PHASE_DESC=[
   },
   { // CLM-0843
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies — including an Australian Business Register check on the provider\'s ABN.',
+    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
     ph3:null,
   },
   { // CLM-0844
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies — including payment-account and device-fingerprint clustering across recent claims.',
+    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
     ph3:null,
   },
   { // CLM-0845
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies across submission location, shared devices, shared bank accounts, ABN and payment patterns.',
+    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
     ph3:'Knowledge Buddy compares this claim against the library of confirmed fraud cases for similarity.',
   },
   { // CLM-0846
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies across submission location, shared devices, shared bank accounts, ABN and payment patterns.',
+    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
     ph3:'Tracing the provider\'s network up to 3 hops out — using the device and geolocation signals captured at submission — looking for links into known fraud communities.',
   },
 ];
@@ -1458,18 +1465,18 @@ const PHASE_DESC=[
 // Shown in the band AFTER a phase resolves — states the finding.
 const PHASE_RESULT_DESC=[
   { ph1:'Document integrity confirmed — no tampering detected.',
-    ph2:'All Event Strategies clear — no fraudulent patterns.',
+    ph2:'All three event strategies clear — no signal raised.',
     ph3:'No similar fraud cases and no network connections found.' },
   { ph1:'Suspicious document — spliced typefaces and a Photoshop metadata trail dated after the service.' },
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
-    ph2:'ES-005 flagged the provider\'s ABN as deregistered in July 2024 — still being claimed under.' },
+    ph2:'ES-003 found four unrelated practices paying into one account in 22 days — and the account name matches none of them.' },
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
-    ph2:'ES-006 matched the payment account to six other claims in eight days — an unexplained repeat pattern.' },
+    ph2:'ES-002 found five unrelated members on one device in 26 hours. The ring was detected by this claim: the earlier four were assessed and cleared before there was anything to see, so the alert is raised against the device, not the claim.' },
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
-    ph2:'All Event Strategies clear — only a minor device-ring flag below threshold. Every strategy sees one claim at a time — no single claim contains the connection.',
+    ph2:'All three event strategies clear. Every strategy sees one claim at a time — no single claim contains the connection.',
     ph3:'91% similarity to four confirmed phantom-billing cases — same codes, same provider profile.' },
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
-    ph2:'All Event Strategies clear — no flags raised. Every strategy sees one claim at a time — no single claim contains the connection.',
+    ph2:'All three event strategies clear — no signal raised. Every strategy sees one claim at a time — no single claim contains the connection.',
     ph3:'3-hop link via the shared submission IP into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
 ];
 
@@ -1485,11 +1492,6 @@ const PHASES=[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission IP location against the member\'s registered address...',pass:'Lodged near the registered address — no distance grade raised',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Counting distinct members submitting from this device fingerprint...',pass:'No unrelated members on this device in the window',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Counting distinct practices paying into this bank account...',pass:'Account receives payments from a single practice only',result:'pass',d:6000},
-    {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking waiver pattern across provider...',pass:'Waiver rate within normal range',result:'pass',d:8000},
-    {ico:'🏢',name:'ES-005 Phantom ABN',running:'Cross-referencing ABN against the Australian Business Register...',pass:'ABN 42 198 776 334 verified and active',result:'pass',d:10000},
-    {ico:'🔗',name:'ES-006 Cluster Flag',running:'Detecting coordinated claim clusters...',pass:'No shared payment accounts or patterns detected',result:'pass',d:12000},
-    {ico:'📊',name:'ES-007 Waiver Frequency',running:'Analysing 90-day waiver volume against capacity...',pass:'Waiver frequency within registered capacity',result:'pass',d:14000},
-    {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes against ADA/MBS registry...',pass:'All ADA/MBS codes valid — 011 ✓  022 ✓  114 ✓',result:'pass',d:16000},
   ]},ph3:{pass:true,score:'0',scoreColor:'#16A34A',scoreLabel:'Network Connections Found',verdict:'CLEAR — No ring detected',route:'Graph traversal clear · No similarity match · Sent for Claim Adjudication',checks:[
     {ico:'🔍',name:'Knowledge Buddy RAG',running:'Searching Fraud Case Library for pattern matches...',pass:'Similarity score: 0.03 — No significant match found',result:'pass',d:2400},
     {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal from member node...',pass:'No ring connections detected — graph clear',result:'pass',d:5800,isMCP:true},
@@ -1510,15 +1512,10 @@ const PHASES=[
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.04',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 11 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:false,score:'0.81',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Phantom ABN detected',route:'Routing to SIU Queue · HIGH priority · SLA 4 hours',checks:[
+  ]},ph2:{pass:false,score:'0.81',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Bank account ring detected',route:'Routing to SIU Queue · HIGH priority · SLA 4 hours',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission location...',pass:'Within expected range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking device fingerprint...',pass:'No shared-device pattern',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking bank account...',pass:'Single practice',result:'pass',d:6000},
-    {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking waivers...',pass:'Within normal range',result:'pass',d:8000},
-    {ico:'🏢',name:'ES-005 Phantom ABN',running:'Cross-referencing ABN 99 000 111 222 against the Australian Business Register...',pass:'',fail:'ABN DEREGISTERED — Cancelled July 2024. Provider submitting claims under an invalid business number.',result:'fail',d:10000},
-    {ico:'🔗',name:'ES-006 Cluster Flag',running:'Detecting clusters...',pass:'No cluster detected',result:'pass',d:12000},
-    {ico:'📊',name:'ES-007 Waiver Frequency',running:'Checking waiver volume...',pass:'Within capacity',result:'pass',d:14000},
-    {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All physio codes valid — SP001 ✓  SP010 ✓',result:'pass',d:16000},
   ]},ph3:null},
   {ph1:{pass:true,score:'0.78',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $264.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
@@ -1527,15 +1524,10 @@ const PHASES=[
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.03',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 13 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:false,score:'0.65',scoreColor:'#D97706',verdict:'SUSPICIOUS — Coordinated cluster detected',route:'Routing to Standard Review Queue · MEDIUM priority · SLA 24 hours',checks:[
+  ]},ph2:{pass:false,score:'0.65',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Device ring detected',route:'Routing to SIU Queue · HIGH priority · SLA 4 hours',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
-    {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking...',pass:'Normal',result:'pass',d:8000},
-    {ico:'🏢',name:'ES-005 Phantom ABN',running:'Verifying...',pass:'ABN 77 345 678 012 active',result:'pass',d:10000},
-    {ico:'🔗',name:'ES-006 Cluster Flag',running:'Analysing payment account and device-fingerprint patterns across recent claims...',pass:'',fail:'Repeat account — payment BSB/account recurs across 6 claims in 8 days, same provider, same suburb. Frequency only — no confirmed fraud link at this stage.',result:'fail',d:12000},
-    {ico:'📊',name:'ES-007 Waiver Frequency',running:'Checking...',pass:'Normal',result:'pass',d:14000},
-    {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All ADA/MBS codes valid — 011 ✓  121 ✓',result:'pass',d:16000},
   ]},ph3:null},
   {ph1:{pass:true,score:'0.82',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $390.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
@@ -1544,15 +1536,10 @@ const PHASES=[
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.05',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by practice software 10 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:true,score:'0.14',scoreColor:'#16A34A',verdict:'LOW RISK — Minor device-ring flag only',route:'Proceeding to Phase 3 Organised Ring',checks:[
+  ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — No signal raised',route:'Proceeding to Phase 3 Organised Ring',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
-    {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking...',pass:'Normal',result:'pass',d:8000},
-    {ico:'🏢',name:'ES-005 Phantom ABN',running:'Verifying...',pass:'33 456 789 123 verified',result:'pass',d:10000},
-    {ico:'🔗',name:'ES-006 Cluster Flag',running:'Checking...',pass:'No cluster',result:'pass',d:12000},
-    {ico:'📊',name:'ES-007 Waiver Frequency',running:'Checking...',pass:'Normal',result:'pass',d:14000},
-    {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All optical codes valid — 10801 ✓  10712 ✓',result:'pass',d:16000},
   ]},ph3:{pass:false,score:'91%',scoreColor:'#DC2626',scoreLabel:'Similarity to Confirmed Fraud',verdict:'HIGH MATCH — Phantom billing pattern',route:'4 matching cases in fraud library · Routing to Investigation Queue',checks:[
     {ico:'🔍',name:'Knowledge Buddy RAG',running:'Searching Fraud Case Library for pattern matches...',pass:'',fail:'91% similarity match — Pattern closely resembles 4 confirmed phantom billing cases. Same item codes, similar provider profile.',result:'fail',d:3600},
     {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal...',pass:'No direct ring connections found',result:'pass',d:7200,isMCP:true},
@@ -1568,11 +1555,6 @@ const PHASES=[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
-    {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking...',pass:'Normal',result:'pass',d:8000},
-    {ico:'🏢',name:'ES-005 Phantom ABN',running:'Verifying...',pass:'55 678 901 234 verified',result:'pass',d:10000},
-    {ico:'🔗',name:'ES-006 Cluster Flag',running:'Checking...',pass:'No cluster',result:'pass',d:12000},
-    {ico:'📊',name:'ES-007 Waiver Frequency',running:'Checking...',pass:'Normal',result:'pass',d:14000},
-    {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All physio codes valid — SP001 ✓  SP015 ✓',result:'pass',d:16000},
   ]},ph3:{pass:false,score:'3',scoreColor:'#DC2626',scoreLabel:'Hops to Confirmed Fraud Node',verdict:'RING DETECTED — Community #47',route:'14 members · 3 providers · Routing to SIU Queue · HIGH priority',checks:[
     {ico:'🔍',name:'Knowledge Buddy RAG',running:'Searching Fraud Case Library...',pass:'Low similarity — 0.18 — No significant match',result:'pass',d:3200},
     {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Provider ABC → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
@@ -2068,7 +2050,39 @@ const SIGNAL_VERDICT={
 
 function scenarioSignals(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&Array.isArray(d.signals)&&d.signals.length)?d.signals:null; }
 
-function scenarioPhase1(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&Array.isArray(d.phase1)&&d.phase1.length)?d.phase1:null; }
+function scenarioPhase1(s){ return scenarioPhaseChecks(s,1); }
+function scenarioPhaseChecks(s,ph){ const d=s&&SCENARIO_DATA[s.id], a=d&&d['phase'+ph]; return (Array.isArray(a)&&a.length)?a:null; }
+
+// ══════════════════════════════════════════════════════
+// PHASE 2 AND 3 SIGNALS — not a weighted score but a count: each check
+// either raises a signal (fail or flag) or doesn't. The block lists every
+// check, the count, and one line saying what the result causes
+// (data.phase2Result / phase3Result .action).
+// ══════════════════════════════════════════════════════
+const PhaseSignals={
+  render(ph,s,checks,phData){
+    const box=$('ph'+ph+'-calc'); if(!box) return false;
+    const d=SCENARIO_DATA[s.id]||{}, res=d['phase'+ph+'Result']||{};
+    const esc=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    const raised=c=>c.verdict==='fail'||c.verdict==='flag';
+    const n=checks.filter(raised).length;
+    // The stored flow flag must agree with the checks; warn loudly if not.
+    if((n===0)!==!!phData.pass) console.warn('Phase',ph,'signals',n,'disagree with PHASES pass flag',phData.pass);
+    const what=c=>String(c.summary||'').split(' · threshold')[0];
+    const row=c=>{
+      const st=raised(c)?'SIGNAL — '+what(c):c.verdict==='skipped'?'not run':'no signal';
+      return '<div class="p1c-row p2c-row"><span class="p1c-l">'+esc(c.name)+'</span><span class="p2c-s '+(raised(c)?'p1c-fail':'p1c-pass')+'">'+esc(st)+'</span></div>';
+    };
+    box.className='p1-calc show '+(n?'bad':'ok');
+    box.innerHTML='<div class="p1c-title">'+(ph===2?'Event strategy signals':'Organised ring signals')+' <span>— each check raises a signal or it doesn\'t</span></div>'
+      +checks.map(row).join('')
+      +'<div class="p1c-rule"></div>'
+      +'<div class="p1c-row p2c-row p1c-total"><span class="p1c-l">Signals raised</span><span class="p2c-s">'+n+' of '+checks.length+'</span></div>'
+      +(res.action?'<div class="p1c-verdict">'+esc(res.action)+'</div>':'');
+    setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'end'}),150);
+    return true;
+  }
+};
 
 // ══════════════════════════════════════════════════════
 // PHASE 1 SCORE — the integrity score shown as its arithmetic: start at
@@ -2147,6 +2161,7 @@ const SignalPanel={
         +'<div class="sig-body"><dl class="sig-lines"></dl></div>'
         +'<div class="sig-concl"></div>';
       el.querySelector('.sig-nm').textContent=sig.name;
+      if(sig.tag){ const t=document.createElement('span'); t.className='mcp-tag'; t.textContent=sig.tag; el.querySelector('.sig-nm').after(t); }
       el.querySelector('.sig-cost').textContent=cost.label;
       const dl=el.querySelector('.sig-lines');
       this.lines(sig,s).forEach(([k,v],j)=>{
@@ -2315,7 +2330,8 @@ function resetPhaseBlock(ph){
   if($('ph'+ph+'-continue-btn')) $('ph'+ph+'-continue-btn').style.display='';
   if($('ph'+ph+'-aim-btn')) $('ph'+ph+'-aim-btn').style.display='none';
   if(ph===1&&$('ph1-discrepancy')) $('ph1-discrepancy').classList.remove('show');
-  if(ph===1&&$('ph1-calc')){ $('ph1-calc').classList.remove('show'); $('ph1-calc').innerHTML=''; }
+  if($('ph'+ph+'-calc')){ $('ph'+ph+'-calc').classList.remove('show'); $('ph'+ph+'-calc').innerHTML=''; }
+  if($('ph'+ph+'-planned')) $('ph'+ph+'-planned').classList.remove('show');
   if(ph===2||ph===3) $('ph'+ph+'-block').style.display='none';
 }
 
@@ -2373,15 +2389,16 @@ function activatePhase(ph,phData){
     infoEl.classList.remove('show');
   }
   const container=$('ph'+ph+'-checks');
-  const p1=ph===1?scenarioPhase1(S[curScenario]):null;
+  const p1=scenarioPhaseChecks(S[curScenario],ph);
   let maxD;
+  if($('ph'+ph+'-planned')) $('ph'+ph+'-planned').classList.toggle('show',!!p1);
   if(p1){
-    // Phase 1 on the shared renderer: single column, each check showing
-    // Looked at / Rule / Found / conclusion, all open at rest.
+    // Shared renderer: single column, each check showing Looked at / Rule /
+    // Found / conclusion, all open at rest. Same per-check delays as before.
     container.classList.remove('two-col');
     const sch=p1.map(c=>({start:c.delay, done:c.delay+1200}));
     maxD=Math.max(...p1.map(c=>c.delay))+1600;
-    SignalPanel.run(S[curScenario],p1,{mount:container,schedule:sch,restAt:maxD-300,restClass:'rested',caption:sig=>'phase1:'+sig.id});
+    SignalPanel.run(S[curScenario],p1,{mount:container,schedule:sch,restAt:maxD-300,restClass:'rested',caption:sig=>'phase'+ph+':'+sig.id});
   } else {
   container.classList.toggle('two-col', phData.checks.length>4);
   phData.checks.forEach((c,i)=>{
@@ -2404,7 +2421,7 @@ function activatePhase(ph,phData){
   maxD=Math.max(...phData.checks.map(c=>c.d))+1600;
   }
   addTimer(()=>{
-    if(p1&&Phase1Score.render(S[curScenario],p1,phData)){
+    if(p1&&(ph===1?Phase1Score.render(S[curScenario],p1,phData):PhaseSignals.render(ph,S[curScenario],p1,phData))){
       // the arithmetic replaces the bare score
     } else if(phData.score&&$('ph'+ph+'-score')){
       const sc=$('ph'+ph+'-score'); sc.classList.add('show');

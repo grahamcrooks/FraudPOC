@@ -124,3 +124,19 @@ Captions for each check use the key `phase1:<check id>`, for example `phase1:SIG
 | `action` | One line saying what the verdict causes, shown under the score |
 
 The total is computed from these deductions, never typed in, so the displayed score always reconciles with the lines above it. If the result disagrees with the scenario's pass/fail flag in `PHASES`, the page logs a console warning.
+
+## Phase 2 and Phase 3 arrays
+
+`phase2` (provider and pattern) and `phase3` (organised ring) use the same shape as `phase1`, on the same renderer: single column, every check open at rest. Phase 2 holds the three Pega Event Strategies in this build (`ES-001` distance anomaly, `ES-002` device ring, `ES-003` bank account ring), all cost `rule`. Phase 3 holds `P3-RAG` (similar-case search) and `P3-GRAPH` (network graph), both cost `ai`. An optional `tag` adds a pill after the check name, for example `"MCP · Graph"`. A check that didn't run has `"verdict": "skipped"`.
+
+Captions for each check use the key `phase2:<check id>` or `phase3:<check id>`, for example `phase2:ES-003`.
+
+## Phase 2 and Phase 3 results
+
+These phases count signals rather than score. Under the checks the modal lists each one as no signal, SIGNAL or not run, then "Signals raised n of N", then the `action` line from `phase2Result` or `phase3Result`:
+
+```json
+"phase2Result": { "action": "No signal raised. Continuing to Phase 3." }
+```
+
+If the signal count disagrees with the scenario's pass/fail flag in `PHASES`, the page logs a console warning. Scenarios without a `phase2` or `phase3` array fall back to the `PHASES` array in `index.html`.
