@@ -603,6 +603,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .sig-verdict.pass{display:inline-block;background:var(--green-bg);color:var(--green)}
 .sig-verdict.flag{display:inline-block;background:#FEF3C7;color:#92400E}
 .sig-verdict.fail{display:inline-block;background:var(--red);color:#fff}
+.sig-verdict.skipped{display:inline-block;background:var(--canvas);color:var(--text-3);border:1px dashed var(--text-4)}
+.sig[data-verdict="skipped"]{opacity:.6;border-style:dashed}
+.sig[data-verdict="skipped"] .sig-concl{color:var(--text-3)}
 .sig-chev{font-size:11px;color:var(--text-3);transition:transform .2s;flex-shrink:0}
 .sig.open .sig-chev{transform:rotate(90deg)}
 .sig-body{display:none;padding:2px 12px 2px 44px}
@@ -619,6 +622,20 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .sig[data-verdict="flag"] .sig-concl{color:#92400E}
 .sig[data-verdict="fail"] .sig-concl{color:var(--red)}
 .sig[data-verdict="capture"] .sig-concl{color:var(--blue)}
+/* Pre-flight terminal outcomes: a fail or flag stops the flow before the pipeline */
+.upload-zone.pf-stop{cursor:default;text-align:left;padding:16px 18px}
+.upload-zone.pf-reject{border:2px solid var(--red);background:var(--red-light)}
+.upload-zone.pf-review{border:2px solid var(--amber-mid);background:#FFFBEB}
+.pf-head{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800}
+.pf-reject .pf-head{color:var(--red)}
+.pf-review .pf-head{color:#92400E}
+.pf-reason{font-size:14px;font-weight:600;color:var(--text);margin:6px 0 8px 32px}
+.pf-meta{display:flex;flex-wrap:wrap;gap:6px;margin-left:32px}
+.pf-pill{font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px;background:var(--white);border:1px solid var(--border);color:var(--text-2)}
+.pf-note{font-size:12px;color:var(--text-2);margin:8px 0 0 32px}
+.pf-items{margin:8px 0 0 32px;display:flex;flex-direction:column;gap:6px}
+.pf-item{background:var(--white);border:1px solid rgba(217,119,6,.4);border-radius:8px;padding:7px 10px;font-size:12px;color:var(--text)}
+.pf-item b{display:block;font-size:13px;margin-bottom:2px}
 .sig-hint{font-size:11px;color:var(--text-3);margin:2px 2px 0}
 @media (prefers-reduced-motion:reduce){.sig,.sig-chev{transition:none}}
 @media (max-width:560px){
@@ -1384,6 +1401,7 @@ const PHASES=[
 // STATE
 // ══════════════════════════════════════════════════════
 let curSlide=0, curScenario=0, uploaded=false, uploadCount=0;
+let preflightStopped=null;   // 'reject' | 'review' when pre-flight ends the claim
 let timers=[], slideTimer=null;
 // Run modes: 'manual' | 'stepbystep' | 'rolling'
 let runMode='manual';
@@ -1685,7 +1703,7 @@ function setScenario(idx){
   [ 'f-type','f-date','f-prov','f-abn','f-amt','f-codes' ].forEach(id=>$(id).classList.remove('ai-filled'));
   txt('form-sub','Submit your '+s.type.split(' ')[0].toLowerCase()+' receipt for instant processing');
   const uz=$('upload-zone');
-  uz.classList.remove('has-file');
+  uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
@@ -1794,6 +1812,20 @@ function simulateUpload(){
   addTimer(()=>{
     // Back to the top so the session chip and this summary are both in view.
     if(sigs) $('demo-screen').scrollTo({top:0,behavior:reducedMotion()?'auto':'smooth'});
+    const out=sigs?SignalPanel.outcome(sigs):{kind:'pass'};
+    if(out.kind!=='pass'){
+      // Stop: no pipeline. The claim ends here in Reject Document or Needs Review.
+      preflightStopped=out.kind;
+      SignalPanel.renderStop(uz,s,out);
+      const rc=$('receipt-card'); rc.style.display='flex';
+      txt('r-name',s.file); txt('r-size',s.fsz+' · '+(out.kind==='reject'?'Rejected at pre-flight':'Held for review at pre-flight'));
+      uploaded=true;
+      if($('btn-submit')) $('btn-submit').style.display='none';
+      if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
+      // Rolling demo: hold on the outcome, then move to the next scenario.
+      if(runMode==='rolling') addTimer(()=>{ if(!rollingOK()) return; curScenario=(curScenario+1)%S.length; launchRollingDemo(); },9000);
+      return;
+    }
     const summary=sigs?SignalPanel.summary(sigs)
       :'Document type confirmed · Fields extracted · Confidence thresholds met · No disqualifying content detected';
     uz.classList.add('has-file');
@@ -1820,10 +1852,11 @@ function simulateUpload(){
 const SIGNAL_COST={
   ai:     {label:'AI call',                   cls:'ai'},
   rule:   {label:'Business rule — no AI cost', cls:'rule'},
-  capture:{label:'Captured — no evaluation',  cls:'capture'}
+  capture:{label:'Captured for later evaluation', cls:'capture'}
 };
 const SIGNAL_VERDICT={
-  pass:{label:'Pass',ico:'✅'}, flag:{label:'Flag',ico:'⚠️'}, fail:{label:'Fail',ico:'⛔'}
+  pass:{label:'Pass',ico:'✅'}, flag:{label:'Flag',ico:'⚠️'}, fail:{label:'Fail',ico:'⛔'},
+  skipped:{label:'Not run',ico:'⏭️'}
 };
 
 function scenarioSignals(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&Array.isArray(d.signals)&&d.signals.length)?d.signals:null; }
@@ -1894,6 +1927,7 @@ const SignalPanel={
     el.dataset.state='done';
     el.dataset.verdict=isCapture?'capture':(sig.verdict||'pass');
     el.querySelector('.sig-ico').textContent=isCapture?'📥':v.ico;
+    if(sig.verdict==='skipped') el.querySelectorAll('dd.pending').forEach(dd=>{ dd.dataset.value='Not run'; });
     const vb=el.querySelector('.sig-verdict');
     if(v){ vb.className='sig-verdict '+(sig.verdict||'pass'); vb.textContent=v.label; }
     el.querySelectorAll('dd.pending').forEach(dd=>{ dd.textContent=dd.dataset.value; dd.classList.remove('pending'); });
@@ -1921,6 +1955,46 @@ const SignalPanel={
     if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&hooks&&hooks.onExtracted) addTimer(hooks.onExtracted,3000);
   },
 
+  // Routing, as in the build: any fail → Reject Document; else any flag →
+  // Needs Review; else on to the pipeline. The forensic phases never run on
+  // a document that was never claimable.
+  outcome(sigs){
+    const decided=sigs.filter(x=>x.cost!=='capture');
+    const fails=decided.filter(x=>x.verdict==='fail'), flags=decided.filter(x=>x.verdict==='flag');
+    if(fails.length) return {kind:'reject',items:fails};
+    if(flags.length) return {kind:'review',items:flags};
+    return {kind:'pass',items:[]};
+  },
+
+  // Terminal panel in place of the pipeline. Headline and reason can be set
+  // per scenario (data.outcome); otherwise they come from the deciding checks.
+  renderStop(uz,s,out){
+    const d=SCENARIO_DATA[s.id]||{}, o=d.outcome||{};
+    const reject=out.kind==='reject';
+    const headline=o.headline||(reject?'Claim rejected — not a claimable document':'Claim held for review — '+out.items.length+' item'+(out.items.length===1?'':'s')+' flagged');
+    const reason=o.reason||out.items.map(x=>x.conclusion).join(' · ');
+    const stage=reject?'Reject Document':'Needs Review', status=reject?'Resolved-Rejected':'Pending-Review';
+    const note=o.note||(reject?'No forensic analysis was run. No referral to the fraud team.'
+                              :'No forensic analysis has run. A reviewer checks the flagged items before the claim can continue.');
+    uz.classList.remove('has-file'); uz.classList.add('pf-stop',reject?'pf-reject':'pf-review');
+    uz.innerHTML='<div class="pf-head"><span></span><span class="pf-h"></span></div><div class="pf-reason"></div>'
+      +'<div class="pf-meta"><span class="pf-pill pf-stage"></span><span class="pf-pill pf-status"></span></div>'
+      +(reject?'':'<div class="pf-items"></div>')+'<div class="pf-note"></div>';
+    uz.querySelector('.pf-head span').textContent=reject?'⛔':'⚠️';
+    uz.querySelector('.pf-h').textContent=headline;
+    uz.querySelector('.pf-reason').textContent=reason;
+    uz.querySelector('.pf-stage').textContent='Stage: '+stage;
+    uz.querySelector('.pf-status').textContent='Status: '+status;
+    uz.querySelector('.pf-note').textContent=note;
+    if(!reject){
+      // Reviewer screen: what was flagged, the rule and what was found.
+      const box=uz.querySelector('.pf-items');
+      out.items.forEach(x=>{ const it=document.createElement('div'); it.className='pf-item';
+        const b=document.createElement('b'); b.textContent=x.name+' — '+x.conclusion;
+        it.append(b, document.createTextNode('Rule: '+x.rule+' · Found: '+x.found)); box.appendChild(it); });
+    }
+  },
+
   // One line for the upload zone once pre-flight completes.
   summary(sigs){
     const decided=sigs.filter(x=>x.cost!=='capture');
@@ -1929,6 +2003,7 @@ const SignalPanel={
     if(count('flag')) parts.push(count('flag')+' flagged');
     if(count('fail')) parts.push(count('fail')+' failed');
     const ai=decided.filter(x=>x.cost==='ai').length, rules=decided.filter(x=>x.cost==='rule').length;
+    if(count('skipped')) parts.push(count('skipped')+' not run');
     parts.push(ai+' AI call'+(ai===1?'':'s')+' · '+rules+' business rule'+(rules===1?'':'s'));
     const caps=sigs.length-decided.length;
     if(caps) parts.push(caps+' capture recorded');
@@ -1960,6 +2035,7 @@ function resetPhaseBlock(ph){
 }
 
 function submitClaim(){
+  if(preflightStopped) return;   // pre-flight failed or flagged: the pipeline never runs
   // Not yet uploaded — run the upload validation first.
   if(!uploaded){
     simulateUpload();
@@ -1975,6 +2051,7 @@ function submitClaim(){
 }
 
 function openPipeline(){
+  if(preflightStopped) return;
   if(!uploaded){ simulateUpload(); addTimer(openPipeline,10500); return; }
   clearAllTimers();
   const s=S[curScenario], pl=PHASES[curScenario];
@@ -2164,7 +2241,7 @@ function closeOverlay(){
   $('overlay').classList.remove('show');
   clearAllTimers(); uploaded=false; uploadCount=0;
   const uz=$('upload-zone');
-  uz.classList.remove('has-file');
+  uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Click to upload</strong> or drag and drop</div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';

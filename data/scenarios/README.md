@@ -50,11 +50,11 @@ The `signals` array drives the Phase 1 panel on the claim lodgement screen. Each
 | --- | --- | --- |
 | `id` | string | Stable ID, for example `SIG-DOC-TYPE`. `SIG-FIELD-EXTRACTION` also fills the claim form when it completes. |
 | `name` | string | Check name. |
-| `cost` | `"ai"`, `"rule"` or `"capture"` | Badge: "AI call", "Business rule — no AI cost" or "Captured — no evaluation". This shows why cheap deterministic checks run before model calls. |
+| `cost` | `"ai"`, `"rule"` or `"capture"` | Badge: "AI call", "Business rule — no AI cost" or "Captured for later evaluation". This shows why cheap deterministic checks run before model calls. |
 | `lookedAt` | string | What was examined. |
 | `rule` | string | The rule applied. State the threshold wherever one exists ("at or above 0.70", "$5,000 or above"); never "above threshold" on its own. |
 | `found` | string | What was actually found. Hidden until the check completes. |
-| `verdict` | `"pass"`, `"flag"` or `"fail"` | Shown as a word (Pass, Flag, Fail) as well as colour. Flags and fails stay expanded when the panel finishes. |
+| `verdict` | `"pass"`, `"flag"`, `"fail"` or `"skipped"` | Shown as a word (Pass, Flag, Fail, Not run) as well as colour. Flags and fails stay expanded when the panel finishes. Use `skipped` for checks that didn't run because an earlier one stopped the claim. |
 | `conclusion` | string | Shown after an arrow; always visible once the check completes. |
 | `detail` | object | Optional. Extra label and value pairs, shown under Found when the check is expanded. |
 
@@ -67,4 +67,18 @@ A `capture` records data rather than deciding anything. It has no verdict and us
 
 The checks play in array order across the same 10 seconds as the upload. The running check expands to show its working and collapses when the next one starts. Any check can be clicked open again.
 
-Scenarios without a `signals` array fall back to the original four verdict-only rows. At present only CLM-0841 has one.
+## Routing after pre-flight
+
+Pre-flight decides whether the claim reaches the pipeline at all, as in the build:
+
+| Verdicts | What happens |
+| --- | --- |
+| Any check fails | Stop. No pipeline. Terminal panel: Stage Reject Document, Status Resolved-Rejected, reason shown. "No forensic analysis was run. No referral to the fraud team." |
+| Any check flags (and none fail) | Stop. No pipeline. Terminal panel: Stage Needs Review, Status Pending-Review, with the flagged checks' rule and finding for the reviewer. |
+| All pass | Continue to the pipeline. |
+
+Submit, Run Fraud Detection and the rolling demo all respect the stop; in rolling mode the demo holds on the outcome for nine seconds, then moves to the next scenario.
+
+The terminal panel's headline and reason come from the deciding checks' conclusions. A scenario can override them with an optional top-level `outcome` object: `{ "headline": "…", "reason": "…", "note": "…" }`.
+
+Scenarios without a `signals` array fall back to the original four verdict-only rows and always continue to the pipeline. At present only CLM-0841 has signals.
