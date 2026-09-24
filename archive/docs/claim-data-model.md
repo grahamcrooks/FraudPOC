@@ -1,6 +1,6 @@
 # Claim data model
 
-Target structure of the ClaimHeader, showing which fields the member selects or enters, which are read-only lookups from a reference, and which are captured or calculated automatically. The GeoSession and DeviceSession objects are created by the [create fraud session data objects](../prompts/create-fraud-session-data-objects/) prompts.
+Target structure of the ClaimHeader, showing which fields the member selects or enters, which are read-only lookups from a reference, and which are captured or calculated automatically. The GeoSession and DeviceSession objects are created by the [create fraud session data objects](../../prompts/create-fraud-session-data-objects/) prompts.
 
 ```text
 ClaimHeader (Data Object)

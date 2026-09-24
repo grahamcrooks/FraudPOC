@@ -1,6 +1,6 @@
 # Create GeoSession data object
 
-Step 1 of 3. Creates the GeoSession data object, which captures where a claim was submitted from (IP address, location, distance from the member's address) and the resulting location anomaly flags.
+Step 1 of 2. Creates the GeoSession data object, which captures where a claim was submitted from (IP address, location, distance from the member's address) and the resulting location anomaly flags.
 
 ```text
 Name: GeoSession

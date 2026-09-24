@@ -1,6 +1,6 @@
 # Reference data
 
-Practice and practitioner records used as test data for the claim form's Practice and Practitioner dropdowns (see [claim data model](claim-data-model.md)). The first two practices match the test providers in [configure provider data object](../prompts/configure-provider-data-object.md).
+Practice and practitioner records used as test data for the claim form's Practice and Practitioner dropdowns. The first two practices match the test providers in [configure provider data object](../prompts/configure-provider-data-object.md).
 
 Values marked "(not shown)" were not available in the source material.
 

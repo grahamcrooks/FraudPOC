@@ -18,11 +18,9 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 - Create fraud session data objects, run in order:
   1. [GeoSession](prompts/create-fraud-session-data-objects/01-geo-session.md): creates the object that captures where a claim was submitted from.
   2. [DeviceSession](prompts/create-fraud-session-data-objects/02-device-session.md): creates the object that captures the submitting device and browser.
-  3. [Claim](prompts/create-fraud-session-data-objects/03-claim.md): embeds both session objects in the Claim.
 
 ## Docs
 
-- [Claim data model](docs/claim-data-model.md): target ClaimHeader structure and where each field comes from.
 - [Reference data](docs/reference-data.md): test practices and practitioners for the claim form dropdowns.
 - [Pega Blueprint export](docs/blueprint/README.md): the application's Blueprint file and how to use it.
 
