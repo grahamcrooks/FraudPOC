@@ -35,7 +35,7 @@
     },
     "handoff": {
       "tag": "Session capture",
-      "text": "A device Linda has never used before. The session travels with the claim"
+      "text": "A device this claimant has never used before. The session data stays with the claim"
     },
     "upload": {
       "tag": "Lodgement",

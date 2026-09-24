@@ -116,7 +116,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 
 ### Step 2: The claim portal
 
-- **Say**: James is now in the H+ member portal. His policy, claims history and member details are on the left, and the session he signed in with is in the header.
+- **Say**: The claimant, James, is now in the H+ member portal. The policy, claims history and member details are on the left, and the session the claimant signed in with is in the header.
 - **Under the hood**:
   - The portal is the member's view of the Claim case.
   - Member data (membership number, suburb, policy) comes from the Member record.
@@ -128,7 +128,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 
 ### Step 3: Upload and pre-flight
 
-- **Say**: James uploads his dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules do the rest at no AI cost. A quotation, a proforma or an unpaid invoice stops here.
+- **Say**: The claimant uploads a dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules do the rest at no AI cost. A quotation, a proforma or an unpaid invoice stops here.
 - **Under the hood**: Seven checks in order, over about 10 seconds. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge.
 
   | Check | Cost | Rule |
@@ -219,7 +219,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ### CLM-0842, Sarah Nguyen: tampered receipt (stops in Phase 1)
 
-- **Say**: Sarah's optical receipt looks fine at a glance and passes pre-flight. Forensics finds three typefaces spliced into the amount and date, and a file made in Photoshop two days after the service. She also keyed $42.50 more than the receipt shows. No single finding is conclusive; together they take the score to 0.28.
+- **Say**: Sarah's optical receipt looks fine at a glance and passes pre-flight. Forensics finds three typefaces spliced into the amount and date, and a file made in Photoshop two days after the service. The claimant also keyed $42.50 more than the receipt shows. No single finding is conclusive; together they take the score to 0.28.
 - **Under the hood**:
   - Match flag −0.07: keyed $487.50 against a receipt of $445.00.
   - Font fail −0.40: Arial 9pt, Helvetica 10pt and Times New Roman 8pt.
@@ -233,7 +233,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ### CLM-0843, David Okafor: bank account ring (stops in Phase 2, ES-003)
 
-- **Say**: David's physio receipt is genuine and his claim is ordinary. But four unrelated practices have been paid into the same bank account in 22 days, and the account name matches none of them.
+- **Say**: David's physio receipt is genuine and the claim is ordinary. But four unrelated practices have been paid into the same bank account in 22 days, and the account name matches none of them.
 - **Under the hood**:
   - ES-003 aggregates payment accounts over 30 days.
   - It found Active Rehab Centre, Southbank Physio Rooms, Westgate Allied Health and Keilor Road Physio, all paying into BSB 083-147 / 441820937. Four is above the threshold of three.
@@ -245,7 +245,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ### CLM-0844, Linda Pham: device ring (stops in Phase 2, ES-002)
 
-- **Say**: Linda's claim is lodged through the H+ website on a Windows laptop she's never used before. Five unrelated members have lodged from that laptop in 26 hours. Her claim is the one that tips it over the threshold. The four earlier claims were cleared, because until now there was no pattern to see.
+- **Say**: Linda's claim is lodged through the H+ website on a Windows laptop the claimant has never used before. Five unrelated members have lodged from that laptop in 26 hours. This claim is the one that tips it over the threshold. The four earlier claims were cleared, because until now there was no pattern to see.
 - **Under the hood**:
   - The session is `Web · Chrome (Windows)` on a new device, DEV-1196, in Footscray. Linda's registered address is in Springvale.
   - ES-002 found 5 distinct members on DEV-1196 in 26 hours: different surnames, addresses and policies.
@@ -258,7 +258,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ### CLM-0845, Michael Torres: shared practitioner (stops in Phase 3)
 
-- **Say**: Michael's optical claim clears forensics and all three strategies. But the optometrist on his claim at ClearView Optometry also bills through two practices already under investigation. The risk isn't in the claim; it's in who delivered the service.
+- **Say**: Michael's optical claim clears forensics and all three strategies. But the optometrist on the claim at ClearView Optometry also bills through two practices already under investigation. The risk isn't in the claim; it's in who delivered the service.
 - **Under the hood**:
   - P3-GRAPH found a 2-hop path: member MBR-29034 → ClearView Optometry → optometrist PR-5518.
   - PR-5518 also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation.
@@ -287,7 +287,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ### CLM-0847, Priya Raman: quotation (stops in pre-flight)
 
-- **Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work she hasn't had done, and nothing has been paid. Pre-flight catches it with business rules, so no forensic AI is spent and nothing reaches the fraud team. This is the case for cheap checks first.
+- **Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work the claimant hasn't had done, and nothing has been paid. Pre-flight catches it with business rules, so no forensic AI is spent and nothing reaches the fraud team. This is the case for cheap checks first.
 - **Under the hood**:
   - The first four checks pass: the layout reads as a receipt, 11 of 11 fields, confidence 0.94.
   - Disqualifying content fails: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, 2 of 10 terms.
