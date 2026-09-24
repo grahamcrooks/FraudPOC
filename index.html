@@ -1258,13 +1258,13 @@ body.cap-on .overlay{padding-bottom:130px}
         </div>
         <div class="phase-btns" id="ph1-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
-          <button class="btn-continue" id="ph1-continue-btn" onclick="collapseAndContinue(1)">Continue to Phase 2 — Event Strategy Detection →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Auditable Pega Event Strategies evaluated in real time</div></button>
+          <button class="btn-continue" id="ph1-continue-btn" onclick="collapseAndContinue(1)">Continue to Phase 2 — Provider and Pattern →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Auditable Pega Event Strategies evaluated in real time</div></button>
           <button class="btn-aim" id="ph1-aim-btn" style="display:none" onclick="showFinalAndAIM()">View Fraud Detection Summary →</button>
         </div>
       </div>
     </div>
     <div class="phase-block" id="ph2-block" style="display:none">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Event Strategy Detection</div><div class="phase-question">Does this claim make sense? Comparing against provider history, registers and recent claim patterns.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Provider and Pattern</div><div class="phase-question">Does this claim make sense? Comparing against provider history, registers and recent claim patterns.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
@@ -1272,13 +1272,13 @@ body.cap-on .overlay{padding-bottom:130px}
         <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No fraudulent patterns detected</div></div></div>
         <div class="phase-btns" id="ph2-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
-          <button class="btn-continue" id="ph2-continue-btn" onclick="collapseAndContinue(2)">Continue to Phase 3 — Agentic Intelligence →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Knowledge Buddy RAG similarity search and network graph ring detection</div></button>
+          <button class="btn-continue" id="ph2-continue-btn" onclick="collapseAndContinue(2)">Continue to Phase 3 — Organised Ring →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Knowledge Buddy RAG similarity search and network graph ring detection</div></button>
           <button class="btn-aim" id="ph2-aim-btn" style="display:none" onclick="showFinalAndAIM()">View Fraud Detection Summary →</button>
         </div>
       </div>
     </div>
     <div class="phase-block" id="ph3-block" style="display:none">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph3-ico">🧠</div><div class="phase-titlewrap"><div class="phase-name">Phase 3 — Agentic Intelligence</div><div class="phase-question">Who else is involved? Tracing connections to entities already confirmed fraudulent.</div></div><span class="phase-status-badge psb-queued" id="ph3-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph3-ico">🧠</div><div class="phase-titlewrap"><div class="phase-name">Phase 3 — Organised Ring</div><div class="phase-question">Who else is involved? Tracing connections to entities already confirmed fraudulent.</div></div><span class="phase-status-badge psb-queued" id="ph3-badge">Queued</span></div>
       <div class="phase-expanded" id="ph3-expanded">
         <div class="phase-info" id="ph3-info"><div class="phase-info-band" id="ph3-info-band"><div class="phase-info-txt" id="ph3-info-txt"></div></div></div>
         <div class="check-list" id="ph3-checks"></div>
@@ -1439,14 +1439,14 @@ const PHASE_RESULT_DESC=[
 ];
 
 const PHASES=[
-  {ph1:{pass:true,score:'0.91',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
+  {ph1:{pass:true,score:'0.91',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $312.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning document typefaces...',pass:'Single uniform typeface throughout — Arial 9pt',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays and stamp manipulation...',pass:'No overlay detected — StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts — generative signature score 0.02',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'Authored by clinic practice software 12 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:true,score:'0.04',scoreColor:'#16A34A',verdict:'CLEAN — No flags raised',route:'Confirmed Clean → Phase 3 Agent Intelligence',checks:[
+  ]},ph2:{pass:true,score:'0.04',scoreColor:'#16A34A',verdict:'CLEAN — No flags raised',route:'Confirmed Clean → Phase 3 Organised Ring',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission IP location against the member\'s registered address...',pass:'Lodged near the registered address — no distance grade raised',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Counting distinct members submitting from this device fingerprint...',pass:'No unrelated members on this device in the window',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Counting distinct practices paying into this bank account...',pass:'Account receives payments from a single practice only',result:'pass',d:6000},
@@ -1468,7 +1468,7 @@ const PHASES=[
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   /* Phase 2 & 3 hidden for the Phase 1 dataset-processing demo — CLM-0842 stops at Phase 1, ph2/ph3 stay null so their blocks never activate. Data kept, not deleted. */
   ]},ph2:null,ph3:null},
-  {ph1:{pass:true,score:'0.83',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
+  {ph1:{pass:true,score:'0.83',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $195.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning typefaces...',pass:'Calibri 10pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting overlays...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
@@ -1485,7 +1485,7 @@ const PHASES=[
     {ico:'📊',name:'ES-007 Waiver Frequency',running:'Checking waiver volume...',pass:'Within capacity',result:'pass',d:14000},
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All physio codes valid — SP001 ✓  SP010 ✓',result:'pass',d:16000},
   ]},ph3:null},
-  {ph1:{pass:true,score:'0.78',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
+  {ph1:{pass:true,score:'0.78',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $264.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Times New Roman 10pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
@@ -1502,14 +1502,14 @@ const PHASES=[
     {ico:'📊',name:'ES-007 Waiver Frequency',running:'Checking...',pass:'Normal',result:'pass',d:14000},
     {ico:'📋',name:'ES-008 Item Code Validation',running:'Validating item codes...',pass:'All ADA/MBS codes valid — 011 ✓  121 ✓',result:'pass',d:16000},
   ]},ph3:null},
-  {ph1:{pass:true,score:'0.82',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
+  {ph1:{pass:true,score:'0.82',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $390.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Helvetica 9pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.05',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by practice software 10 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:true,score:'0.14',scoreColor:'#16A34A',verdict:'LOW RISK — Minor device-ring flag only',route:'Proceeding to Phase 3 Agent Intelligence',checks:[
+  ]},ph2:{pass:true,score:'0.14',scoreColor:'#16A34A',verdict:'LOW RISK — Minor device-ring flag only',route:'Proceeding to Phase 3 Organised Ring',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
@@ -1522,14 +1522,14 @@ const PHASES=[
     {ico:'🔍',name:'Knowledge Buddy RAG',running:'Searching Fraud Case Library for pattern matches...',pass:'',fail:'91% similarity match — Pattern closely resembles 4 confirmed phantom billing cases. Same item codes, similar provider profile.',result:'fail',d:3600},
     {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal...',pass:'No direct ring connections found',result:'pass',d:7200,isMCP:true},
   ]}},
-  {ph1:{pass:true,score:'0.79',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Event Strategies',checks:[
+  {ph1:{pass:true,score:'0.79',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $230.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Arial 10pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.02',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 15 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — All strategies clear',route:'Proceeding to Phase 3 Agent Intelligence',checks:[
+  ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — All strategies clear',route:'Proceeding to Phase 3 Organised Ring',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
@@ -2301,8 +2301,8 @@ function activatePhase(ph,phData){
       $('ph'+ph+'-badge').className='phase-status-badge psb-pass';
       txt('ph'+ph+'-badge','✓ '+(ph===3?'Detection Complete':'Passed'));
       $('ph'+ph+'-block').style.background='#F0FDF4'; $('ph'+ph+'-block').style.borderColor='rgba(22,163,74,.3)'; $('ph'+ph+'-block').style.boxShadow='0 2px 8px rgba(22,163,74,.08)';
-      if(ph===1){ txt('ph1-rb-title','Phase 1 Passed — Document Clean'); txt('ph1-rb-sub','Receipt integrity confirmed · Proceeding to Phase 2 Event Strategies'); }
-      if(ph===2){ txt('ph2-rb-title','Phase 2 Passed — No Fraudulent Patterns Detected'); txt('ph2-rb-sub','All Pega Event Strategies evaluated · Proceeding to Phase 3 Agent Intelligence'); }
+      if(ph===1){ txt('ph1-rb-title','Phase 1 Passed — Document Clean'); txt('ph1-rb-sub','Receipt integrity confirmed · Proceeding to Phase 2 Provider and Pattern'); }
+      if(ph===2){ txt('ph2-rb-title','Phase 2 Passed — No Fraudulent Patterns Detected'); txt('ph2-rb-sub','All Pega Event Strategies evaluated · Proceeding to Phase 3 Organised Ring'); }
       if(ph===3){ txt('ph3-rb-title','Phase 3 Complete — No Suspicious Activity'); txt('ph3-rb-sub','All fraud detection phases passed · Sent for Claim Adjudication'); if($('ph3-aim-btn')){ $('ph3-aim-btn').style.display=''; $('ph3-aim-btn').textContent='View Fraud Detection Summary →'; } }
     } else {
       rb.className='result-badge show fail'; rbI.textContent='❌';
@@ -2374,8 +2374,8 @@ function showFinalState(clean){
   }
   const phases=[
     {ico:'🔍',name:'Phase 1 — Document Forensics',pass:ph1pass,skip:false},
-    {ico:'⚡',name:'Phase 2 — Event Strategies',pass:ph2pass,skip:!pl.ph2},
-    {ico:'🧠',name:'Phase 3 — Agentic Intelligence',pass:ph3pass,skip:!pl.ph3},
+    {ico:'⚡',name:'Phase 2 — Provider and Pattern',pass:ph2pass,skip:!pl.ph2},
+    {ico:'🧠',name:'Phase 3 — Organised Ring',pass:ph3pass,skip:!pl.ph3},
   ];
   $('fs-phases').innerHTML=phases.map(p=>{
     let cls,lbl;
@@ -3026,12 +3026,12 @@ showFinalState = function(clean){
           </div>
           <div class="aim-phase-row">
             <div class="aim-phase-ico">⚡</div>
-            <div class="aim-phase-name">Phase 2 — Event Strategies</div>
+            <div class="aim-phase-name">Phase 2 — Provider and Pattern</div>
             <div class="aim-phase-status aim-phase-pass">✓ Passed</div>
           </div>
           <div class="aim-phase-row">
             <div class="aim-phase-ico">🧠</div>
-            <div class="aim-phase-name">Phase 3 — Agentic Intelligence</div>
+            <div class="aim-phase-name">Phase 3 — Organised Ring</div>
             <div class="aim-phase-status aim-phase-fail">✗ Flagged — RAG Match</div>
           </div>
         </div>
