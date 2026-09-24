@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bupa Fraud Detection — Pega Infinity 26.1</title>
+<title>Health Insurance Fraud Detection — Pega Infinity 26.1</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#001F5F;--blue:#334190;--lblue:#ECF0F9;
   --teal:#10A5AC;--gold:#FFC836;--orange:#F76923;--purple:#5F67B9;
-  /* Bupa brand blue — these three vars kept their old --red* names for a
-     minimal diff, but now hold Bupa's blue accent, not red. */
-  --red:#0079C8;--red-dark:#005A94;--red-light:#E3F1FB;
+  /* Brand accent: the deck's Pega palette (indigo / navy / light). The vars
+     keep their old --red* names for a minimal diff; they are not red. */
+  --red:#334190;--red-dark:#001F5F;--red-light:#ECF0F9;
   --text:#14202E;--text-2:#3A4756;--text-3:#71808F;--text-4:#A9B4C0;
   --border:#DDE4EC;--canvas:#F4F7FA;--white:#FFFFFF;
   --green:#166534;--green-bg:#DCFCE7;--green-mid:#16A34A;
@@ -94,8 +94,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .light .snav.primary{background:var(--navy);border-color:var(--navy);color:#fff}
 .skip-demo-btn{position:absolute;top:16px;right:72px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);padding:5px 14px;border-radius:20px;font-size:11px;cursor:pointer;font-family:var(--font);transition:all .2s;z-index:10}
 .skip-demo-btn:hover{color:#fff;background:rgba(255,255,255,.12)}
-.slide-logo{position:absolute;top:16px;left:72px;z-index:10}
-.slide-logo .logo-badge{width:34px;height:34px;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 
 /* Auto-progress bar */
 .slide-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--teal);transition:none;z-index:20}
@@ -235,10 +233,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 #demo-screen{background:var(--white);overflow-y:auto}
 .page{padding-top:0;min-height:calc(100vh - 36px);display:flex;flex-direction:column}
 .nav{height:58px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.logo{display:flex;align-items:center}
-.logo-badge{width:38px;height:38px;border-radius:8px;background:var(--red);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:2px;padding:5px 6px;flex-shrink:0}
-.logo-badge-text{color:#fff;font-weight:800;font-size:13px;line-height:1;font-family:var(--font);letter-spacing:.2px}
-.logo-badge-pulse{width:100%;height:auto;display:block}
+.logo{display:flex;align-items:center;gap:2px;font-size:19px;font-weight:700;color:var(--text)}
+.logo-plus{color:var(--red);font-size:21px;font-weight:800}
 .nav-links{display:flex;gap:28px;margin-left:40px}
 .nav-link{font-size:13px;color:var(--text-2);text-decoration:none}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
@@ -603,7 +599,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   <div class="slide-wrap" id="slide-wrap">
     <div class="slide-progress" id="slide-progress" style="width:0"></div>
     <button class="skip-demo-btn" onclick="goDemo()">Skip to Demo →</button>
-    <div class="slide-logo"><div class="logo-badge"><span class="logo-badge-text">Bupa</span><svg class="logo-badge-pulse" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,7 C1.5,4 3,4 3.5,7 C4,10 5,10 5,7 L8,7 L10,3 L12,10 L14,6 L40,6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
 
     <!-- SLIDE 1 — AGENDA -->
     <div class="pslide dark active" id="ps0">
@@ -869,7 +864,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="screen" id="demo-screen">
 <div class="page">
   <nav class="nav">
-    <div class="logo"><div class="logo-badge"><span class="logo-badge-text">Bupa</span><svg class="logo-badge-pulse" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,7 C1.5,4 3,4 3.5,7 C4,10 5,10 5,7 L8,7 L10,3 L12,10 L14,6 L40,6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="logo"><span class="logo-plus">H+</span>Health Insurance Co</div>
     <div class="nav-links">
       <a class="nav-link" href="#">My Cover</a>
       <a class="nav-link" href="#">Claims</a>
@@ -984,7 +979,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="screen" id="fraud-dashboard">
 <div class="page">
   <nav class="nav">
-    <div class="logo"><div class="logo-badge"><span class="logo-badge-text">Bupa</span><svg class="logo-badge-pulse" viewBox="0 0 40 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M0,7 C1.5,4 3,4 3.5,7 C4,10 5,10 5,7 L8,7 L10,3 L12,10 L14,6 L40,6" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+    <div class="logo"><span class="logo-plus">H+</span>Health Insurance Co</div>
     <div class="nav-links">
       <a class="nav-link" href="#">My Cover</a>
       <a class="nav-link" href="#">Claims</a>
@@ -1158,10 +1153,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 const PREFLIGHT=[
   { doctype:'TAX INVOICE · Healthcare Receipt (Dental) · ADA item code schedule applies',
     conf:'All critical fields above threshold · ProviderABN 0.97 · InvoiceTotal 0.95 · ServiceDate 0.92',
-    deviceGeo:'Device DEV-2291 · Bupa App v4.2 (iOS) · Geo: Carlton VIC — 0.4km from member address · Consistent with last 3 sessions' },
+    deviceGeo:'Device DEV-2291 · H+ App v4.2 (iOS) · Geo: Carlton VIC — 0.4km from member address · Consistent with last 3 sessions' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Optical) · MBS optical schedule applies',
     conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93',
-    deviceGeo:'Device DEV-5820 · Bupa App v4.0 (Android) · Geo: Footscray VIC — matches member address · First session on this device' },
+    deviceGeo:'Device DEV-5820 · H+ App v4.0 (Android) · Geo: Footscray VIC — matches member address · First session on this device' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Physiotherapy) · Allied health schedule applies',
     conf:'All critical fields above threshold · ProviderABN 0.95 · InvoiceTotal 0.96 · ServiceDate 0.94',
     deviceGeo:'Device DEV-3387 · Member Web Portal · Geo: Dandenong VIC — matches member address · Consistent with last 2 sessions' },
@@ -1170,7 +1165,7 @@ const PREFLIGHT=[
     deviceGeo:'Device DEV-6142 · Member Web Portal · Geo: Springvale VIC — matches member address · Same device fingerprint seen on 2 other claims in the past 30 days' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Optical) · MBS optical schedule applies',
     conf:'All critical fields above threshold · ProviderABN 0.97 · InvoiceTotal 0.95 · ServiceDate 0.91',
-    deviceGeo:'Device DEV-9014 · Bupa App v4.2 (iOS) · Geo: Brunswick VIC — matches member address · Consistent with last 6 sessions' },
+    deviceGeo:'Device DEV-9014 · H+ App v4.2 (iOS) · Geo: Brunswick VIC — matches member address · Consistent with last 6 sessions' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Physiotherapy) · Allied health schedule applies',
     conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93',
     deviceGeo:'Device DEV-1178 · Member Web Portal · Geo: Sunshine VIC — matches member address · IP 203.0.113.44 also seen on 3 other member accounts in the past 14 days' },
@@ -2301,7 +2296,7 @@ showFinalState = function(clean){
         <div class="aim-evidence">
           <div class="aim-evidence-title">Knowledge Buddy (RAG) — Pattern Similarity Match</div>
           <div class="aim-evidence-list">
-            <div class="aim-evidence-item"><strong>91% similarity match</strong> to four confirmed phantom billing cases in Bupa fraud library</div>
+            <div class="aim-evidence-item"><strong>91% similarity match</strong> to four confirmed phantom billing cases in the fraud case library</div>
             <div class="aim-evidence-item"><strong>Matching patterns:</strong> Item codes 10801, 10712 — optical supplies only, no lens fitting or consultation</div>
             <div class="aim-evidence-item"><strong>Provider profile match:</strong> ClearView Optometry flagged in five prior claims with identical code patterns and amounts</div>
             <div class="aim-evidence-item"><strong>Timeline anomaly:</strong> Three claims from this provider in seven days — exceeds normal business capacity for solo practice</div>
