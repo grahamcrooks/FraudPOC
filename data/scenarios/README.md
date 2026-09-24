@@ -55,6 +55,7 @@ The `signals` array drives the Phase 1 panel on the claim lodgement screen. Each
 | --- | --- | --- |
 | `id` | string | Stable ID, for example `SIG-DOC-TYPE`. `SIG-FIELD-EXTRACTION` also fills the claim form when it completes. |
 | `name` | string | Check name. |
+| `summary` | string | One line kept beside the name once the check completes, so a collapsed check still shows how it was decided: the deciding figure and, wherever the rule has one, its threshold ("lowest 0.92 (ServiceDate) · threshold 0.70"). If absent, it is derived from the first figure in `found` plus the rule's threshold. |
 | `cost` | `"ai"`, `"rule"` or `"capture"` | Badge: "AI call", "Business rule — no AI cost" or "Captured for later evaluation". This shows why cheap deterministic checks run before model calls. |
 | `lookedAt` | string | What was examined. |
 | `rule` | string | The rule applied. State the threshold wherever one exists ("at or above 0.70", "$5,000 or above"); never "above threshold" on its own. |
@@ -70,7 +71,7 @@ A `capture` records data rather than deciding anything. It has no verdict and us
 | `captured` | The captured values, or `"session"` to build them from this file's session block (device ID · profile · IP · location), so the panel can't disagree with the session chip. |
 | `usedBy` | Which later strategies use the data. |
 
-The checks play in array order across the same 10 seconds as the upload. The running check expands to show its working and collapses when the next one starts. Any check can be clicked open again.
+The checks play in array order across the same 10 seconds as the upload. The running check expands to show its working and collapses to its summary when the next one starts. When pre-flight completes, every check opens and stays open, so the resting state (a booth loop, a pause, a screenshot) shows how every verdict was reached. Clicking a check still toggles it.
 
 ## Routing after pre-flight
 
@@ -86,7 +87,7 @@ Submit, Run Fraud Detection and the rolling demo all respect the stop; in rollin
 
 The terminal panel's headline and reason come from the deciding checks' conclusions. A scenario can override them with an optional top-level `outcome` object: `{ "headline": "…", "reason": "…", "note": "…" }`.
 
-Scenarios without a `signals` array fall back to the original four verdict-only rows and always continue to the pipeline. At present only CLM-0841 has signals.
+Scenarios without a `signals` array fall back to the original four verdict-only rows and always continue to the pipeline. All six scenarios (CLM-0841 to CLM-0846) have signals; every pre-flight check passes, since their stories fail or flag later in the pipeline.
 
 ## Captions
 

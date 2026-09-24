@@ -16,6 +16,7 @@
     {
       "id": "SIG-DOC-TYPE",
       "name": "Document type",
+      "summary": "TAX INVOICE · ABN and AHPRA present",
       "cost": "ai",
       "lookedAt": "Header, footer and declaration text",
       "rule": "Must be a tax invoice from a registered health provider",
@@ -26,6 +27,7 @@
     {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
+      "summary": "11 of 11 fields · $312.00 · items 011, 022, 114",
       "cost": "ai",
       "lookedAt": "Full document, 1,204 characters",
       "rule": "Extract provider, ABN, service date, line items and total",
@@ -36,6 +38,7 @@
     {
       "id": "SIG-EXTRACTION-CONFIDENCE",
       "name": "Extraction confidence",
+      "summary": "lowest 0.92 (ServiceDate) · threshold 0.70",
       "cost": "ai",
       "lookedAt": "Per-field extraction confidence",
       "rule": "Every critical field at or above 0.70, or the claim goes to human review",
@@ -46,6 +49,7 @@
     {
       "id": "SIG-INVALID-KEYWORDS",
       "name": "Invalid document keywords",
+      "summary": "10 terms checked · none found",
       "cost": "rule",
       "lookedAt": "Extracted receipt text",
       "rule": "Disqualifying terms — quotation, proforma, void, non-medical, balance outstanding",
@@ -56,6 +60,7 @@
     {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Document completeness",
+      "summary": "$312.00 paid of $312.00 · ABN ✓ · 3 lines · signed",
       "cost": "rule",
       "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
       "rule": "Paid in full, valid tax invoice, itemised, signed",
@@ -66,6 +71,7 @@
     {
       "id": "SIG-CLAIM-VALUE",
       "name": "Claim value",
+      "summary": "$312.00 claimable · threshold $5,000",
       "cost": "rule",
       "lookedAt": "Claimable line items",
       "rule": "Flag at $5,000 or above",
@@ -76,6 +82,7 @@
     {
       "id": "SIG-DEVICE-LOCATION",
       "name": "Device and location",
+      "summary": "DEV-2291 · Carlton VIC · captured at sign-in",
       "cost": "capture",
       "captured": "session",
       "usedBy": "ES-001 distance anomaly, ES-002 device ring",
