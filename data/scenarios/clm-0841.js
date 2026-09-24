@@ -104,19 +104,19 @@
     },
     "particle:location": {
       "tag": "Session capture · Location",
-      "text": "Where James signed in, from his IP. ES-001 checks the distance from home"
+      "text": "Where the claimant signed in, from the IP. ES-001 checks the distance from home"
     },
     "particle:session": {
       "tag": "Session capture · Session",
-      "text": "When he signed in. The claim stays tied to this session"
+      "text": "When the claimant signed in. The claim stays tied to this session"
     },
     "handoff": {
       "tag": "Session capture",
-      "text": "That session travels with him into the claim portal"
+      "text": "The session data stays with the claim through every step of processing"
     },
     "upload": {
       "tag": "Lodgement",
-      "text": "James uploads his dental receipt"
+      "text": "The claimant uploads a dental receipt"
     },
     "cost:ai": {
       "tag": "Pre-flight · AI",
@@ -168,7 +168,7 @@
     },
     "phase2:ES-001": {
       "tag": "Phase 2 · Cross-claim signals",
-      "text": "Where James lodged from is measured against his home address"
+      "text": "Where the claimant lodged from is measured against the registered address"
     },
     "phase2:ES-002": {
       "tag": "Phase 2 · Cross-claim signals",
