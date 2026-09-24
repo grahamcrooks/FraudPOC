@@ -1,4 +1,4 @@
-# H+ Health Insurance Co: Pega Infinity 26.1 Fraud Detection Demo
+# Bupa: Pega Infinity 26.1 Fraud Detection Demo
 
 Complete Guide with Step-by-Step Explanations
 
@@ -44,11 +44,12 @@ evidence package.
   - Confidence scoring (Are critical fields above our confidence thresholds?)
   - Disqualifying content (Does it contain warnings like "CANCELLED" or "VOID"?)
   - Font consistency (Do suspicious patterns suggest manipulation?)
-  - Claim-to-Receipt Match (Does the claimed amount match the receipt amount?)
+  - Claim-to-Receipt Match (Does the claimed amount match the receipt amount? A mismatch — like CLM-0842 — surfaces a dedicated panel showing member-entered vs receipt figures and the exact discrepancy)
 
 Result: PASS or FAIL
 
-PASS → Continue to Phase 2 \| FAIL → Reject immediately, route to SIU
+PASS → Continue to Phase 2 \| FAIL → Escalate to investigator queue
+(HIGH priority, 4-hour SLA) — Phases 2 and 3 don't run
 
 ### Phase 2: Event Strategies ⚡
 
@@ -58,7 +59,7 @@ PASS → Continue to Phase 2 \| FAIL → Reject immediately, route to SIU
   - Repeat-account clustering (Is one payment account appearing across multiple claims?)
   - Claim velocity (Are claims being submitted too fast? Too many in a timeframe?)
   - Shared submission origin (Do unrelated members submit from the same source?)
-  - Dark web credential exposure (Member/provider credentials in known breach databases?)
+  - Item code validation (Are the claimed procedure codes valid for this provider type?)
 
 Result: PASS or MEDIUM RISK or FAIL
 
@@ -93,7 +94,7 @@ PASS → Send for normal adjudication \| FLAGGED → HIGH PRIORITY → SIU
 - Phase 2: N/A
 - Phase 3: N/A
 - Outcome: Caught in Phase 1 (Claim-to-Receipt mismatch)
-- Demo Point: Shows document forensics catching a discrepancy
+- Demo Point: Shows document forensics catching a discrepancy — a dedicated panel shows Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) with "Result: MISMATCH DETECTED"
 
 ### CLM-0843 — David Okafor
 
@@ -136,11 +137,11 @@ PASS → Send for normal adjudication \| FLAGGED → HIGH PRIORITY → SIU
 ### Control Bar (Top)
 
 - ▶ Rolling Demo - Automatically play all scenarios in sequence
-- ↩ Restart - Stop everything and return to first slide
+- ↩ Restart - Stop everything, clear the claim form and return to Slide 1
 - CLM-0841 through CLM-0846 - Click to jump to a specific scenario
 - ⌨ Presenting - Shows you're in presentation mode
 - ◀ Slides \| Demo ▶ - Toggle between slides and demo mode
-- 📋 Portal - Active claim portal (default)
+- 📋 Portal - Phase 1 Dataset Analysis tool (default) - validates member-entered data against historical receipts
 - 📊 Report - Fraud dashboard with all 24 cases
 
 ### Document Validation Sequence
@@ -157,6 +158,7 @@ Click the 📊 Report tab to access the accumulated fraud case database.
 - Shows:
   - 24 fraud cases (6 demo + 18 realistic examples)
   - Filters for member, provider, date, outcome
+  - Discrepancy column - flags claimed-vs-receipt mismatches (e.g. CLM-0842: \$42.50 ↑, 85%, "Mismatch Detected"); blank for clean claims
   - Sortable columns
   - Summary statistics
 
@@ -174,13 +176,14 @@ CLM-0845 only: Click "Open Alert & Investigation Manager" after Phase 3
 ## 7. Presentation Flow
 
 1. Recommended Demo Sequence:
-   1. Show Slides 1-4
-   2. Click "Demo ▶"
+   1. Show Slides 1-5 (Agenda, Problem, Business Case, Three Phases, Why Pega)
+   2. Click "Launch Demo →" (or press D)
    3. Run CLM-0841 (clean baseline)
    4. Run CLM-0842 (Phase 1 failure)
    5. Run CLM-0843 (Phase 2 ABN)
-   6. Run CLM-0845 (Phase 3 RAG) → Show AIM modal
-   7. Click 📊 Report tab (show dashboard)
+   6. Run CLM-0844 (Phase 2 clustering) - optional
+   7. Run CLM-0845 (Phase 3 RAG) → Show AIM modal
+   8. Click 📊 Report tab (show dashboard)
 
 ### Key Talking Points
 
@@ -191,6 +194,10 @@ CLM-0845 only: Click "Open Alert & Investigation Manager" after Phase 3
 ### Keyboard Shortcuts
 
 - 1-6 = Jump to scenarios
+- 0 = Restart demo
 - D = Demo mode
 - S = Slides mode
+- R = Toggle Rolling Demo
+- P = Toggle Step-by-Step mode
+- B = Jump to Backup slide (manual mode only)
 - F = Fullscreen

@@ -22,6 +22,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 ## Docs
 
+- [The three phases](docs/three-phases-fraud-signals.md): each phase's fraud signals, explained one by one (original Word file in `docs/_source/`).
 - [Reference data](docs/reference-data.md): test practices and practitioners for the claim form dropdowns.
 - [Pega Blueprint export](docs/blueprint/README.md): the application's Blueprint file and how to use it.
 

@@ -3,13 +3,16 @@
 ## Keyboard Shortcuts
 
 - 1-6 → Jump to CLM-0841 through CLM-0846
+- 0 → Restart demo (returns to Slide 1, clears the claim form)
 - D → Go to Demo mode
 - S → Go to Slides mode
 - R → Toggle Rolling Demo
-- Space → Next slide / Advance phase
+- Space → Next slide (Slides screen) / Pause-Resume (Rolling Demo)
+- ← → → Previous / Next slide (Slides screen only)
 - F → Toggle Fullscreen
 - P → Toggle Step-by-Step mode
-- Esc → Exit fullscreen
+- B → Jump to the Backup slide (manual mode only)
+- Esc → Exit fullscreen (standard browser behaviour)
 - L → Replay the sign-in scene (or click the session chip in the portal header)
 
 ### Sign-in scene
@@ -33,7 +36,7 @@
 
 **Question:** Does this claim make sense?
 
-- Checks: Phantom ABN, account clustering, velocity, shared origin, credential exposure
+- Checks: Phantom ABN, account clustering, distance/velocity/IP, waiver analysis, item code validation (8 Event Strategies, ES-001 to ES-008)
 - Result: PASS or MEDIUM RISK or FAIL
 
 ### Phase 3: Agentic Intelligence 🧠
@@ -63,7 +66,7 @@
 
 ## Presentation Flow (15-20 minutes)
 
-1. **Slides 1-4 (5-7 min):** The problem, solution, why it matters
+1. **Slides 1-5 (6-8 min):** Agenda, the problem, the business case, the three-phase pipeline, why Pega
 2. **CLM-0841 (2-3 min):** Show clean baseline
 3. **CLM-0842 (2 min):** Show Phase 1 catch (amount mismatch)
 4. **CLM-0843 (2 min):** Show Phase 2 catch (fake provider)
@@ -83,13 +86,13 @@
 - Pause and explain each phase as it runs
 - Point out the checks inside each phase (animated icons)
 - For CLM-0845, definitely show the AIM modal - thats the wow moment
-- Use Space key if a phase takes too long - manually advance
-- If stuck, press R (Restart) and try the scenario again
+- Phases run and resolve on their own - click Continue (or View Fraud Detection Summary on a fail) to move to the next one; there's no keyboard shortcut for this
+- If stuck, press 0 (Restart) and try the scenario again
 
 ## If Something Goes Wrong
 
-- Scenario wont load → Press ↩ Restart, then try again
-- Stuck on a phase → Press Space to manually advance
+- Scenario wont load → Press ↩ Restart (or the 0 key), then try again
+- Stuck on a phase → Click Continue / View Fraud Detection Summary - phases don't auto-advance on a keypress
 - Want to go back → Press S for Slides, then use Space
 - AIM button not showing → Make sure youre on CLM-0845
 - Dashboard not responding → Try clicking Portal tab first, then Report
