@@ -622,8 +622,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
               <li>Every strategy named, explainable and entirely auditable</li>
               <li>Phantom ABN detection — checked against the Australian Business Register</li>
               <li>Repeat-account clustering — one payment account recurring across claims</li>
-              <li>Claim velocity — submission frequency across rolling windows</li>
-              <li>Shared submission origin — unrelated members, one source</li>
+              <li>Claim velocity (planned) — submission frequency across rolling windows</li>
+              <li>Device ring — unrelated members submitting from one device</li>
               <li>Waiver abuse & 90-day volume — scope being confirmed</li>
               <li>New strategies added in days — no custom code</li>
             </ul>
@@ -1056,7 +1056,7 @@ const S=[
 const PHASE_DESC=[
   { // CLM-0841
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies across provider location, ABN, claim velocity and payment patterns.',
+    ph2:'Running the Pega Event Strategies across submission location, shared devices, shared bank accounts, ABN and payment patterns.',
     ph3:'Searching the fraud case library for similar cases and tracing the provider\'s network for hidden connections.',
   },
   { // CLM-0842
@@ -1076,12 +1076,12 @@ const PHASE_DESC=[
   },
   { // CLM-0845
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies across provider location, ABN, claim velocity and payment patterns.',
+    ph2:'Running the Pega Event Strategies across submission location, shared devices, shared bank accounts, ABN and payment patterns.',
     ph3:'Knowledge Buddy compares this claim against the library of confirmed fraud cases for similarity.',
   },
   { // CLM-0846
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the Pega Event Strategies across provider location, ABN, claim velocity and payment patterns.',
+    ph2:'Running the Pega Event Strategies across submission location, shared devices, shared bank accounts, ABN and payment patterns.',
     ph3:'Tracing the provider\'s network up to 3 hops out, looking for links into known fraud communities.',
   },
 ];
@@ -1097,7 +1097,7 @@ const PHASE_RESULT_DESC=[
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
     ph2:'ES-006 matched the payment account to six other claims in eight days — an unexplained repeat pattern.' },
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
-    ph2:'All Event Strategies clear — only a minor velocity flag below threshold. Every strategy sees one claim at a time — no single claim contains the connection.',
+    ph2:'All Event Strategies clear — only a minor device-ring flag below threshold. Every strategy sees one claim at a time — no single claim contains the connection.',
     ph3:'91% similarity to four confirmed phantom-billing cases — same codes, same provider profile.' },
   { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
     ph2:'All Event Strategies clear — no flags raised. Every strategy sees one claim at a time — no single claim contains the connection.',
@@ -1113,9 +1113,9 @@ const PHASES=[
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'Authored by clinic practice software 12 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:{pass:true,score:'0.04',scoreColor:'#16A34A',verdict:'CLEAN — No flags raised',route:'Confirmed Clean → Phase 3 Agent Intelligence',checks:[
-    {ico:'📍',name:'ES-001 Distance Check',running:'Verifying provider location against member address...',pass:'Provider within expected geographic range',result:'pass',d:2000},
-    {ico:'⚡',name:'ES-002 Velocity Check',running:'Analysing claim submission frequency...',pass:'Claim frequency within normal parameters',result:'pass',d:4000},
-    {ico:'🌐',name:'ES-003 IP Block Check',running:'Checking submission IP against fraud blocklist...',pass:'IP address clean — no blocklist match',result:'pass',d:6000},
+    {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission IP location against the member\'s registered address...',pass:'Lodged near the registered address — no distance grade raised',result:'pass',d:2000},
+    {ico:'📱',name:'ES-002 Device Ring',running:'Counting distinct members submitting from this device fingerprint...',pass:'No unrelated members on this device in the window',result:'pass',d:4000},
+    {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Counting distinct practices paying into this bank account...',pass:'Account receives payments from a single practice only',result:'pass',d:6000},
     {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking waiver pattern across provider...',pass:'Waiver rate within normal range',result:'pass',d:8000},
     {ico:'🏢',name:'ES-005 Phantom ABN',running:'Cross-referencing ABN against the Australian Business Register...',pass:'ABN 42 198 776 334 verified and active',result:'pass',d:10000},
     {ico:'🔗',name:'ES-006 Cluster Flag',running:'Detecting coordinated claim clusters...',pass:'No shared payment accounts or patterns detected',result:'pass',d:12000},
@@ -1141,9 +1141,9 @@ const PHASES=[
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 11 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:{pass:false,score:'0.81',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Phantom ABN detected',route:'Routing to SIU Queue · HIGH priority · SLA 4 hours',checks:[
-    {ico:'📍',name:'ES-001 Distance Check',running:'Verifying location...',pass:'Within expected range',result:'pass',d:2000},
-    {ico:'⚡',name:'ES-002 Velocity Check',running:'Checking frequency...',pass:'Normal submission pattern',result:'pass',d:4000},
-    {ico:'🌐',name:'ES-003 IP Block Check',running:'Checking IP...',pass:'IP clean',result:'pass',d:6000},
+    {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission location...',pass:'Within expected range',result:'pass',d:2000},
+    {ico:'📱',name:'ES-002 Device Ring',running:'Checking device fingerprint...',pass:'No shared-device pattern',result:'pass',d:4000},
+    {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking bank account...',pass:'Single practice',result:'pass',d:6000},
     {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking waivers...',pass:'Within normal range',result:'pass',d:8000},
     {ico:'🏢',name:'ES-005 Phantom ABN',running:'Cross-referencing ABN 99 000 111 222 against the Australian Business Register...',pass:'',fail:'ABN DEREGISTERED — Cancelled July 2024. Provider submitting claims under an invalid business number.',result:'fail',d:10000},
     {ico:'🔗',name:'ES-006 Cluster Flag',running:'Detecting clusters...',pass:'No cluster detected',result:'pass',d:12000},
@@ -1158,9 +1158,9 @@ const PHASES=[
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 13 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:{pass:false,score:'0.65',scoreColor:'#D97706',verdict:'SUSPICIOUS — Coordinated cluster detected',route:'Routing to Standard Review Queue · MEDIUM priority · SLA 24 hours',checks:[
-    {ico:'📍',name:'ES-001 Distance Check',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
-    {ico:'⚡',name:'ES-002 Velocity Check',running:'Checking...',pass:'Normal',result:'pass',d:4000},
-    {ico:'🌐',name:'ES-003 IP Block Check',running:'Checking...',pass:'Clean',result:'pass',d:6000},
+    {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
+    {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
+    {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
     {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking...',pass:'Normal',result:'pass',d:8000},
     {ico:'🏢',name:'ES-005 Phantom ABN',running:'Verifying...',pass:'ABN 77 345 678 012 active',result:'pass',d:10000},
     {ico:'🔗',name:'ES-006 Cluster Flag',running:'Analysing payment account patterns across recent claims...',pass:'',fail:'Repeat account — payment BSB/account recurs across 6 claims in 8 days, same provider, same suburb. Frequency only — no confirmed fraud link at this stage.',result:'fail',d:12000},
@@ -1174,10 +1174,10 @@ const PHASES=[
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.05',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by practice software 10 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:true,score:'0.14',scoreColor:'#16A34A',verdict:'LOW RISK — Minor velocity flag only',route:'Proceeding to Phase 3 Agent Intelligence',checks:[
-    {ico:'📍',name:'ES-001 Distance Check',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
-    {ico:'⚡',name:'ES-002 Velocity Check',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
-    {ico:'🌐',name:'ES-003 IP Block Check',running:'Checking...',pass:'Clean',result:'pass',d:6000},
+  ]},ph2:{pass:true,score:'0.14',scoreColor:'#16A34A',verdict:'LOW RISK — Minor device-ring flag only',route:'Proceeding to Phase 3 Agent Intelligence',checks:[
+    {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
+    {ico:'📱',name:'ES-002 Device Ring',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
+    {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
     {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking...',pass:'Normal',result:'pass',d:8000},
     {ico:'🏢',name:'ES-005 Phantom ABN',running:'Verifying...',pass:'33 456 789 123 verified',result:'pass',d:10000},
     {ico:'🔗',name:'ES-006 Cluster Flag',running:'Checking...',pass:'No cluster',result:'pass',d:12000},
@@ -1195,9 +1195,9 @@ const PHASES=[
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 15 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — All strategies clear',route:'Proceeding to Phase 3 Agent Intelligence',checks:[
-    {ico:'📍',name:'ES-001 Distance Check',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
-    {ico:'⚡',name:'ES-002 Velocity Check',running:'Checking...',pass:'Normal',result:'pass',d:4000},
-    {ico:'🌐',name:'ES-003 IP Block Check',running:'Checking...',pass:'Clean',result:'pass',d:6000},
+    {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
+    {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
+    {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
     {ico:'📝',name:'ES-004 Waiver Abuse',running:'Checking...',pass:'Normal',result:'pass',d:8000},
     {ico:'🏢',name:'ES-005 Phantom ABN',running:'Verifying...',pass:'55 678 901 234 verified',result:'pass',d:10000},
     {ico:'🔗',name:'ES-006 Cluster Flag',running:'Checking...',pass:'No cluster',result:'pass',d:12000},
