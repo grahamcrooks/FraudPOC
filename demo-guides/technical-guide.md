@@ -39,7 +39,7 @@ claim portal
   - "Load Document" upload section (fake, instant completion)
   - Form fields for claim details
   - Three-phase pipeline display (real-time simulation)
-- Keyboard: D = Demo mode, 1-6 = select scenario
+- Keyboard: D = Demo mode, 1-7 = select scenario
 
 ### 3. Fraud Dashboard (Report)
 
@@ -79,7 +79,7 @@ Accumulated fraud case database
 - Type: Optical
 - Amount: \$487.50 (claimed) vs \$445.00 (receipt)
 - Result: FAILS - Claim-to-Receipt Match (amber warning) plus Font Consistency and Metadata & Provenance both fail (red); Phase 1 score 0.28. Phases 2 and 3 never run - this scenario is scoped to Phase 1 only.
-- Purpose: Show document forensics catching discrepancies - a dedicated panel appears under the Phase 1 result showing Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) and "Result: MISMATCH DETECTED"
+- Purpose: Show receipt forensics catching discrepancies - a dedicated panel appears under the Phase 1 result showing Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) and "Result: MISMATCH DETECTED"
 
 ### CLM-0843: Phase 2 ABN Failure
 
@@ -121,7 +121,7 @@ Accumulated fraud case database
 
 ## Phase Implementations
 
-### Phase 1: Document Forensics
+### Phase 1: Receipt Forensics
 
 - Simulated checks (with realistic timing):
   - Document type validation
@@ -188,7 +188,7 @@ Accumulated fraud case database
 
 - Top navigation with:
   - Play controls (Rolling Demo, Restart)
-  - Scenario buttons (1-6)
+  - Scenario buttons (1-7)
   - Mode toggles (Slides, Demo, Portal, Report)
   - Display options (Dark/Light, Fullscreen)
 
@@ -200,7 +200,7 @@ Accumulated fraud case database
   - 5.2s: Confidence scoring complete ✓
   - 8.2s-9.2s: form fields flash green, one at a time ✓
   - 10.0s: Pre-flight gate passed ✓
-- Phase 1 (Document Forensics, inside the pipeline modal):
+- Phase 1 (Receipt Forensics, inside the pipeline modal):
   - ~17s total (6 sequential checks, last one lands at 15.6s + 1.6s buffer)
 - Phase 2 (Event Strategies):
   - ~18s total (runs all 8 checks with staggered animation, last one lands at 16.0s + 1.6s buffer)

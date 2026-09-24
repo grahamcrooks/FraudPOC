@@ -4,12 +4,107 @@
 (window.SCENARIO_DATA = window.SCENARIO_DATA || {})['CLM-2024-0844'] = {
   "session": {
     "deviceId": "DEV-1196",
-    "deviceProfile": "H+ App v4.1 (iOS)",
+    "deviceProfile": "Web · Chrome (Windows)",
     "ipAddress": "203.0.113.19",
     "location": "Footscray VIC",
     "sessionTime": "2026-07-16T20:47:00+10:00",
     "deviceStatus": "new",
-    "showLogin": false
+    "frame": "browser",
+    "showLogin": true
+  },
+  "captions": {
+    "signin": {
+      "tag": "Session capture",
+      "text": "Linda's claim is lodged through the H+ website on a Windows laptop"
+    },
+    "particles": {
+      "tag": "Session capture",
+      "text": "The same three signals are captured at sign-in"
+    },
+    "particle:device": {
+      "tag": "Session capture · Device",
+      "text": "The laptop's fingerprint. ES-002 checks whether other members lodge from it"
+    },
+    "particle:location": {
+      "tag": "Session capture · Location",
+      "text": "Footscray, from the IP. Linda's registered address is in Springvale"
+    },
+    "particle:session": {
+      "tag": "Session capture · Session",
+      "text": "8:47 in the evening. The claim stays tied to this session"
+    },
+    "handoff": {
+      "tag": "Session capture",
+      "text": "A device Linda has never used before. The session travels with the claim"
+    },
+    "upload": {
+      "tag": "Lodgement",
+      "text": "Linda's dental receipt is uploaded"
+    },
+    "cost:ai": {
+      "tag": "Pre-flight · AI",
+      "text": "AI reads the receipt: document type, fields and confidence"
+    },
+    "cost:rule": {
+      "tag": "Pre-flight · Rules",
+      "text": "Business rules run next, at no AI cost"
+    },
+    "cost:capture": {
+      "tag": "Pre-flight",
+      "text": "The sign-in device and location are attached to the claim for later checks"
+    },
+    "preflightPassed": {
+      "tag": "Pre-flight passed",
+      "text": "Genuine, complete and claimable, so on to fraud detection"
+    },
+    "phase1": {
+      "tag": "Phase 1 · Receipt forensics",
+      "text": "Forensic checks look for tampering, forgery and AI-made receipts"
+    },
+    "phase1:SIG-P1-MATCH": {
+      "tag": "Phase 1 · Receipt forensics",
+      "text": "The keyed claim is checked against the receipt itself"
+    },
+    "phase1:SIG-P1-FONT": {
+      "tag": "Phase 1 · Receipt forensics",
+      "text": "One typeface throughout, so no text has been spliced in"
+    },
+    "phase1:SIG-P1-COLOUR": {
+      "tag": "Phase 1 · Receipt forensics",
+      "text": "No digital overlays or pasted stamps on the scan"
+    },
+    "phase1:SIG-P1-AIGEN": {
+      "tag": "Phase 1 · Receipt forensics",
+      "text": "The image is scored against AI image-generator signatures"
+    },
+    "phase1:SIG-P1-META": {
+      "tag": "Phase 1 · Receipt forensics",
+      "text": "Made by clinic software on the day of the service"
+    },
+    "phase1:SIG-P1-DUP": {
+      "tag": "Phase 1 · Receipt forensics",
+      "text": "This receipt has never been claimed before"
+    },
+    "phase2": {
+      "tag": "Phase 2 · Cross-claim signals",
+      "text": "The receipt is genuine. Now the claim is compared with other claims"
+    },
+    "phase2:ES-001": {
+      "tag": "Phase 2 · Cross-claim signals",
+      "text": "Footscray to Springvale is about 28 km, well inside the threshold"
+    },
+    "phase2:ES-002": {
+      "tag": "Phase 2 · Cross-claim signals",
+      "text": "Five unrelated members have lodged from this laptop in 26 hours"
+    },
+    "phase2:ES-003": {
+      "tag": "Phase 2 · Cross-claim signals",
+      "text": "The practice's bank account is its own, so no signal here"
+    },
+    "outcome": {
+      "tag": "Outcome",
+      "text": "This claim is referred, and the device gets its own network assessment"
+    }
   },
   "signals": [
     {
@@ -176,14 +271,7 @@
         "fail": 0.25
       }
     },
-    "adjustments": [
-      {
-        "label": "Extraction confidence",
-        "value": "0.93",
-        "deduct": 0.07
-      }
-    ],
-    "action": "Receipt clean. A clean receipt is not a clean claim — continuing to Phase 2 event strategies."
+    "action": "No adverse findings on the receipt. That does not make it a clean claim — continuing to Phase 2 cross-claim signals."
   },
   "phase2": [
     {
@@ -224,6 +312,6 @@
     }
   ],
   "phase2Result": {
-    "action": "Claim marked suspicious and referred to AIM. A network assessment is raised against device DEV-1196."
+    "action": "This claim is marked suspicious and referred. Separately, a network assessment is raised against device DEV-1196, covering the four earlier claims that were cleared before the pattern existed."
   }
 };

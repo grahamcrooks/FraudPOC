@@ -176,14 +176,7 @@
         "fail": 0.25
       }
     },
-    "adjustments": [
-      {
-        "label": "Extraction confidence",
-        "value": "0.93",
-        "deduct": 0.07
-      }
-    ],
-    "action": "Receipt clean. A clean receipt is not a clean claim — continuing to Phase 2 event strategies."
+    "action": "No adverse findings on the receipt. That does not make it a clean claim — continuing to Phase 2 cross-claim signals."
   },
   "phase2": [
     {

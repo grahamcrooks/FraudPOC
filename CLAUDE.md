@@ -21,9 +21,9 @@ A Claude Project syncs `demo-guides/` and `prompts/` through the GitHub integrat
 
 Use these names for the phases everywhere:
 
-- **Phase 1: document forensics**: is the claim document genuine and does it match the claim?
-- **Phase 2: provider and pattern**: is the provider real, and does the claim pattern make sense?
-- **Phase 3: organised ring**: is the claim connected to known fraud or an organised ring?
+- **Phase 1: receipt forensics**: is the receipt genuine and does it match the claim?
+- **Phase 2: cross-claim signals**: does this claim fit a pattern across other claims (submission distance, shared device, shared bank account)?
+- **Phase 3: network intelligence**: is the claim connected to known fraud or an organised ring?
 
 ## Conventions
 
