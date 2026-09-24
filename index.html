@@ -638,7 +638,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .sig[data-verdict="capture"]{border-color:rgba(51,65,144,.3)}
 .sig-head{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;width:100%;padding:7px 12px 2px;background:none;border:0;text-align:left;font-family:var(--font);cursor:pointer;color:var(--text)}
 .sig-ico{font-size:17px;width:22px;text-align:center;flex-shrink:0}
-.sig-name{font-size:14px;font-weight:700;flex:1;min-width:140px}
+.sig-name{font-size:14px;flex:1;min-width:140px}
+.sig-nm{font-weight:700}
+.sig-sum{font-weight:500;color:var(--text-2)}
 .sig-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .sig-cost,.sig-verdict{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
 .sig-cost.ai{background:#EEF0FB;color:var(--purple);border:1px solid rgba(95,103,185,.35)}
@@ -655,7 +657,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .sig.open .sig-chev{transform:rotate(90deg)}
 .sig-body{display:none;padding:2px 12px 2px 44px}
 .sig.open .sig-body{display:block}
-.sig-lines{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13px;line-height:1.45}
+.sig-lines{display:grid;grid-template-columns:auto 1fr;gap:1px 10px;font-size:13px;line-height:1.35}
+/* At rest all checks are open: trim spacing so all seven fit where possible */
+.sig-list.at-rest{gap:4px}
+.sig-list.at-rest .sig-head{padding-top:5px}
+.sig-list.at-rest .sig-concl{padding-bottom:5px}
 .sig-lines dt{color:var(--text-3);font-weight:600;white-space:nowrap}
 .sig-lines dd{color:var(--text)}
 .sig-lines dd.pending{color:var(--text-4);font-style:italic}
@@ -2052,19 +2058,19 @@ const SignalPanel={
   },
 
   build(s,sigs){
-    const list=$('sig-list'); list.innerHTML='';
+    const list=$('sig-list'); list.innerHTML=''; list.classList.remove('at-rest');
     return sigs.map((sig,i)=>{
       const el=document.createElement('div');
       el.className='sig'; el.dataset.state='queued'; el.id='sig-'+i;
       const cost=SIGNAL_COST[sig.cost]||SIGNAL_COST.rule;
       el.innerHTML=
         '<button type="button" class="sig-head" aria-expanded="false">'
-        +'<span class="sig-ico">⏳</span><span class="sig-name"></span>'
+        +'<span class="sig-ico">⏳</span><span class="sig-name"><b class="sig-nm"></b><span class="sig-sum"></span></span>'
         +'<span class="sig-badges"><span class="sig-cost '+cost.cls+'"></span><span class="sig-verdict"></span>'
         +'<span class="sig-chev" aria-hidden="true">▸</span></span></button>'
         +'<div class="sig-body"><dl class="sig-lines"></dl></div>'
         +'<div class="sig-concl"></div>';
-      el.querySelector('.sig-name').textContent=sig.name;
+      el.querySelector('.sig-nm').textContent=sig.name;
       el.querySelector('.sig-cost').textContent=cost.label;
       const dl=el.querySelector('.sig-lines');
       this.lines(sig,s).forEach(([k,v],j)=>{
@@ -2105,11 +2111,28 @@ const SignalPanel={
     if(v){ vb.className='sig-verdict '+(sig.verdict||'pass'); vb.textContent=v.label; }
     el.querySelectorAll('dd.pending').forEach(dd=>{ dd.textContent=dd.dataset.value; dd.classList.remove('pending'); });
     el.querySelector('.sig-concl').textContent='→ '+sig.conclusion;
+    // The deciding figure (and its threshold) stays on the one-line summary,
+    // so a collapsed check still shows how its verdict was reached.
+    const sum=this.summaryLine(sig,this.scenario);
+    el.querySelector('.sig-sum').textContent=sum?' · '+sum:'';
+  },
+
+  // summary from the data, or derived: key figure from 'found' plus the rule's threshold.
+  summaryLine(sig,s){
+    if(sig.summary) return sig.summary;
+    if(sig.cost==='capture'){
+      const ss=scenarioSession(s);
+      return ss?[ss.deviceId,ss.location,'captured at sign-in'].join(' · '):'';
+    }
+    const fig=String(sig.found||'').split(' · ')[0];
+    const th=String(sig.rule||'').match(/\$[\d,]+(?:\.\d+)?|\b\d+\.\d+\b/);
+    return th&&fig.indexOf(th[0])<0?fig+' · threshold '+th[0]:fig;
   },
 
   // Plays the checks across the same 10s window as before: each check opens
   // while it runs and closes when the next starts; flags and fails stay open.
   run(s,sigs,hooks){
+    this.scenario=s;
     const els=this.build(s,sigs), n=sigs.length;
     const doneAt=i=>n===1?5000:Math.round(800+i*(8400/(n-1)));
     this.start(els[0]); Captions.show('cost:'+sigs[0].cost);
@@ -2123,8 +2146,9 @@ const SignalPanel={
         }
       },doneAt(i));
     });
-    // Keep the last check open briefly, then leave only flags and fails open.
-    addTimer(()=>{ const last=sigs[n-1]; if(last.verdict!=='flag'&&last.verdict!=='fail') this.toggle(els[n-1],false); },9900);
+    // Resting state: every check open, showing its full working. Collapsing
+    // is for the run only; a click still toggles a check to tidy the view.
+    addTimer(()=>{ els.forEach(el=>this.toggle(el,true)); $('sig-list').classList.add('at-rest'); },9900);
     if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&hooks&&hooks.onExtracted) addTimer(hooks.onExtracted,3000);
   },
 
