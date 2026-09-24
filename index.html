@@ -687,6 +687,20 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   .sig-lines{grid-template-columns:1fr;gap:0}
   .sig-lines dd{margin-bottom:4px}
 }
+
+/* ══════════════════════════════════════════════════════
+   CAPTIONS — one line per beat for the unattended rolling
+   demo and muted video. Text from data/scenarios/ captions.
+══════════════════════════════════════════════════════ */
+.cap{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:640;max-width:min(92vw,1100px);display:flex;align-items:baseline;gap:14px;padding:12px 22px;border-radius:14px;background:rgba(0,31,95,.94);box-shadow:0 10px 30px rgba(0,0,0,.35);pointer-events:none;opacity:0;transition:opacity .35s}
+.cap.show{opacity:1}
+.cap-tag{flex-shrink:0;font-size:clamp(11px,.9vw,15px);font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+.cap-text{font-size:clamp(17px,1.55vw,28px);font-weight:600;line-height:1.3;color:#fff}
+/* Clear the sign-in stage's Simulated label; let the pipeline scroll clear of the caption */
+body.ls-on .cap{bottom:64px}
+body.cap-on .overlay{padding-bottom:130px}
+@media (prefers-reduced-motion:reduce){.cap{transition:none}}
+@media (max-width:700px){.cap{flex-direction:column;gap:2px;bottom:24px}}
 </style>
 </head>
 <body>
@@ -1326,6 +1340,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   <div class="ls-sim"><span class="ls-sim-pill">Simulated</span>Member sign-in on the H+ app · illustrative device and location data</div>
 </div>
 <div class="ls-fx" id="ls-fx"></div>
+<div class="cap" id="cap" role="status" aria-live="polite"><span class="cap-tag" id="cap-tag"></span><span class="cap-text" id="cap-text"></span></div>
 
 <script src="data/scenarios/clm-0841.js"></script>
 <script src="data/scenarios/clm-0842.js"></script>
@@ -1633,7 +1648,7 @@ function clearSlideProgress(){
 // SCREEN ROUTING
 // ══════════════════════════════════════════════════════
 function goSlides(){
-  SessionScene.finish();
+  SessionScene.finish(); Captions.hide();
   clearSlideTimer();
   $('slides-screen').classList.add('active');
   $('demo-screen').classList.remove('active');
@@ -1724,6 +1739,7 @@ function startRolling(){
 
 function stopRolling(){
   runMode='manual'; rollingPaused=false;
+  if(typeof Captions!=='undefined') Captions.render();   // captions are rolling-only unless switched on
   clearSlideTimer(); clearAllTimers();
   hideBanner();
   $('btn-rolling').classList.remove('rolling-on','paused-on');
@@ -1833,6 +1849,7 @@ function rollingAdvanceAfterPhase(){
 // SCENARIO & PORTAL
 // ══════════════════════════════════════════════════════
 function setScenario(idx){
+  Captions.hide();
   clearAllTimers(); uploaded=false; uploadCount=0; uploadCount=0; curScenario=idx;
   for(let i=0;i<6;i++) $('sc'+i).classList.toggle('on',i===idx);
   const s=S[idx];
@@ -1890,6 +1907,7 @@ function simulateUpload(){
   const s=S[curScenario], pf=PREFLIGHT[curScenario], uz=$('upload-zone');
   uz.innerHTML='<div class="upload-icon">⏫</div><div class="upload-text">Uploading...</div>';
   uploadCount++;
+  Captions.show('upload');
   const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none';
   // Scenarios with a signals array in data/scenarios/ get the self-describing
   // panel; the rest keep the original four verdict rows until they have one.
@@ -1968,6 +1986,7 @@ function simulateUpload(){
     if(out.kind!=='pass'){
       // Stop: no pipeline. The claim ends here in Reject Document or Needs Review.
       preflightStopped=out.kind;
+      Captions.show(out.kind==='reject'?'preflightRejected':'preflightReview');
       SignalPanel.renderStop(uz,s,out);
       const rc=$('receipt-card'); rc.style.display='flex';
       txt('r-name',s.file); txt('r-size',s.fsz+' · '+(out.kind==='reject'?'Rejected at pre-flight':'Held for review at pre-flight'));
@@ -1978,6 +1997,7 @@ function simulateUpload(){
       if(runMode==='rolling') addTimer(()=>{ if(!rollingOK()) return; curScenario=(curScenario+1)%S.length; launchRollingDemo(); },9000);
       return;
     }
+    Captions.show('preflightPassed');
     const summary=sigs?SignalPanel.summary(sigs)
       :'Document type confirmed · Fields extracted · Confidence thresholds met · Device & location captured · No disqualifying content detected';
     uz.classList.add('has-file');
@@ -2091,14 +2111,14 @@ const SignalPanel={
   run(s,sigs,hooks){
     const els=this.build(s,sigs), n=sigs.length;
     const doneAt=i=>n===1?5000:Math.round(800+i*(8400/(n-1)));
-    this.start(els[0]);
+    this.start(els[0]); Captions.show('cost:'+sigs[0].cost);
     sigs.forEach((sig,i)=>{
       addTimer(()=>{
         this.complete(els[i],sig);
         if(sig.id==='SIG-FIELD-EXTRACTION'&&hooks&&hooks.onExtracted) hooks.onExtracted();
         if(i+1<n){
           if(sig.verdict!=='flag'&&sig.verdict!=='fail') this.toggle(els[i],false);
-          this.start(els[i+1]);
+          this.start(els[i+1]); Captions.show('cost:'+sigs[i+1].cost);
         }
       },doneAt(i));
     });
@@ -2220,6 +2240,7 @@ function openPipeline(){
 }
 
 function activatePhase(ph,phData){
+  Captions.show('phase'+ph);
   const block=$('ph'+ph+'-block');
   block.style.display=''; block.classList.add('active');
   block.style.background='#EFF6FF'; block.style.borderColor='rgba(29,78,216,.3)'; block.style.boxShadow='0 2px 10px rgba(29,78,216,.1)';
@@ -2333,6 +2354,7 @@ function showFinalAndAIM(){
 }
 
 function showFinalState(clean){
+  Captions.show('outcome');
   [1,2,3].forEach(p=>collapsePhase(p));
   const pl=PHASES[curScenario];
   const ph1pass=pl.ph1?pl.ph1.pass:null;
@@ -2598,10 +2620,11 @@ const SessionScene={
     txt('ls-bio-txt','Face ID');
     ls.style.opacity='';
     Object.values(SESSION_FRAMES).forEach(f=>{ const el=$(f.el); el.style.display=f===this.frame?'':'none'; el.style.opacity=''; });
-    ls.classList.add('show');
+    ls.classList.add('show'); document.body.classList.add('ls-on');
 
     let t=0;
     if(beats.includes('login')){
+      Captions.show('signin');
       ls.classList.add('st-login');
       this.at(450, ()=>{ ls.classList.add('st-bio'); });
       this.at(1150,()=>{ ls.classList.replace('st-bio','st-ok'); txt('ls-bio-txt','Verified'); });
@@ -2621,6 +2644,7 @@ const SessionScene={
 
   // Beat 2: three labelled particles lift out of the phone and hold, readable.
   beatParticles(){
+    Captions.show('particles');
     const fx=$('ls-fx'), pr=$(this.frame.el).getBoundingClientRect();
     this.particles=sessionSignals(this.sess).map(sig=>{
       const el=document.createElement('div');
@@ -2653,6 +2677,7 @@ const SessionScene={
   // Beat 3: the portal fades up; the phone cross-fades to a plain outline,
   // and only the outline shrinks toward the top-right, so no screen text is scaled.
   beatHandoff(){
+    Captions.show('handoff');
     const ls=$('ls'), phone=$(this.frame.el), pr=phone.getBoundingClientRect();
     const target=SessionChip.rect('device');
     const o=document.createElement('div'); o.className='ls-outline '+this.frame.outline; document.body.appendChild(o); this.outline=o;
@@ -2689,7 +2714,7 @@ const SessionScene={
     });
   },
 
-  end(){ const sess=this.sess; if(sess) this.current=sess; this.stop(); if(sess) SessionChip.showNote(); },
+  end(){ const sess=this.sess; if(sess) this.current=sess; this.stop(); if(sess){ SessionChip.showNote(); Captions.show('handoff'); } },
   // Skip: jump straight to the landed state.
   finish(){ if(this.playing) this.end(); },
   // Tear down without populating (used when a new scenario replaces the scene).
@@ -2698,7 +2723,7 @@ const SessionScene={
     this.anims.forEach(a=>{ try{a.cancel();}catch(e){} }); this.anims=[];
     $('ls-fx').innerHTML=''; this.particles=[];
     if(this.outline){ this.outline.remove(); this.outline=null; }
-    const ls=$('ls'); ls.classList.remove('show'); ls.style.opacity='';
+    const ls=$('ls'); ls.classList.remove('show'); ls.style.opacity=''; document.body.classList.remove('ls-on');
     this.playing=false;
     if(this.current) SessionChip.set(this.current,false);
   },
@@ -2723,6 +2748,51 @@ window.addEventListener('keydown',e=>{
   }
   if((e.key==='l'||e.key==='L')&&!e.ctrlKey&&!e.metaKey&&!e.altKey){ e.preventDefault(); e.stopImmediatePropagation(); SessionScene.replay(); }
 },true);
+
+// ══════════════════════════════════════════════════════
+// CAPTIONS
+// One line per beat, for the unattended rolling demo and for muted video.
+// Keyed by beat in data/scenarios/<claim>.js → captions; a scenario without
+// a caption for a beat simply keeps the previous line. On by default in
+// rolling mode, off while presenting live; C toggles, and ?captions=on|off
+// on the address fixes the setting (for example for a recording).
+// ══════════════════════════════════════════════════════
+const Captions={
+  pref:(()=>{ const v=(new URLSearchParams(location.search).get('captions')||'').toLowerCase(); return v==='on'||v==='off'?v:'auto'; })(),
+  current:null, toastTimer:null, shownAt:0, holdTimer:null,
+  MIN_MS:2500,   // every caption stays up long enough to read; quick beats queue
+  enabled(){ return this.pref==='on'||(this.pref==='auto'&&runMode==='rolling'); },
+  lookup(key){ const d=SCENARIO_DATA[S[curScenario].id]; return d&&d.captions&&d.captions[key]||null; },
+  show(key){
+    const c=this.lookup(key); if(!c||c===this.current) return;
+    clearTimeout(this.holdTimer);
+    const wait=this.current?this.MIN_MS-(Date.now()-this.shownAt):0;
+    const apply=()=>{ this.current=c; this.shownAt=Date.now(); this.render(); };
+    if(wait>0) this.holdTimer=setTimeout(apply,wait); else apply();
+  },
+  render(){
+    const el=$('cap');
+    const on=!!(this.current&&this.enabled());
+    document.body.classList.toggle('cap-on',on);
+    if(!on){ el.classList.remove('show'); return; }
+    txt('cap-tag',this.current.tag||''); txt('cap-text',this.current.text||'');
+    $('cap-tag').style.display=this.current.tag?'':'none';
+    el.classList.add('show');
+  },
+  hide(){ clearTimeout(this.holdTimer); this.current=null; this.render(); },
+  toggle(){
+    this.pref=this.enabled()?'off':'on';
+    clearTimeout(this.toastTimer);
+    // Brief confirmation, then back to the current caption (if on).
+    txt('cap-tag',''); $('cap-tag').style.display='none';
+    txt('cap-text',this.pref==='on'?'Captions on':'Captions off');
+    $('cap').classList.add('show');
+    this.toastTimer=setTimeout(()=>this.render(),1200);
+  }
+};
+window.addEventListener('keydown',e=>{
+  if((e.key==='c'||e.key==='C')&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!SessionScene.playing){ e.preventDefault(); Captions.toggle(); }
+});
 
 // ══════════════════════════════════════════════════════
 // INIT
@@ -2849,7 +2919,7 @@ function fdbSort(col){
 
 // REPORT SCREEN NAVIGATION
 function goReport(){
-  SessionScene.finish();
+  SessionScene.finish(); Captions.hide();
   document.getElementById('demo-screen').classList.remove('active');
   document.getElementById('fraud-dashboard').classList.add('active');
   document.getElementById('tab-portal-btn').classList.remove('on');

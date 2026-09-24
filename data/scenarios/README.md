@@ -86,3 +86,18 @@ Submit, Run Fraud Detection and the rolling demo all respect the stop; in rollin
 The terminal panel's headline and reason come from the deciding checks' conclusions. A scenario can override them with an optional top-level `outcome` object: `{ "headline": "…", "reason": "…", "note": "…" }`.
 
 Scenarios without a `signals` array fall back to the original four verdict-only rows and always continue to the pipeline. At present only CLM-0841 has signals.
+
+## Captions
+
+A `captions` object gives one line per beat for the rolling demo and for muted video. Each entry is `{ "tag": "…", "text": "…" }`: a short function tag, then the story in plain, present-tense English (6–10 words, from the audience's side). Don't repeat text already on screen.
+
+| Key | When it shows |
+| --- | --- |
+| `signin`, `particles`, `handoff` | The three sign-in scene beats (`handoff` also shows if the scene is skipped) |
+| `upload` | The receipt upload starts |
+| `cost:ai`, `cost:rule`, `cost:capture` | A pre-flight check of that cost type starts |
+| `preflightPassed`, `preflightRejected`, `preflightReview` | Pre-flight completes with that outcome |
+| `phase1`, `phase2`, `phase3` | That pipeline phase starts |
+| `outcome` | The fraud detection summary appears |
+
+A missing key keeps the previous caption. Each caption stays up at least 2.5 seconds; quick beats queue. Captions are on by default in rolling mode and off while presenting; C toggles, and `?captions=on` or `?captions=off` fixes the setting.
