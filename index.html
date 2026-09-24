@@ -621,6 +621,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .lsp-ico{font-size:clamp(24px,2.1vw,36px);line-height:1}
 .lsp-t{font-size:clamp(12px,.95vw,17px);font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--pc)}
 .lsp-v{font-size:clamp(19px,1.65vw,31px);font-weight:700;line-height:1.25}
+.lsp-why{font-size:clamp(13px,1.05vw,19px);font-weight:500;color:#C9D6EE;margin-top:3px;white-space:normal;max-width:34ch}
 
 /* ══════════════════════════════════════════════════════
    PHASE 1 PRE-FLIGHT SIGNALS — each check shows its working
@@ -2467,8 +2468,8 @@ document.addEventListener('keydown',e=>{
 // phone at sign-in, not from the claim form. ES-001 and ES-002
 // depend on the audience understanding that.
 // Data: data/scenarios/<claim>.js → window.SCENARIO_DATA[id].session
-// Beats at pace 1: login (0–2s) · particles (2–4s) · handoff (4–5s) · land (5–6s).
-// SESSION_SCENE_PACE stretches all of it (default 2, about 12 seconds).
+// Beats at pace 1: login (0–2s) · particles one at a time (2–8s) · handoff (8–9s) · land (9–10s).
+// SESSION_SCENE_PACE stretches all of it (default 2, about 20 seconds).
 // Partial replays (e.g. several members on one device) pass
 // { beats:['particles','land'] } with a different member and the same deviceId.
 // ══════════════════════════════════════════════════════
@@ -2490,19 +2491,26 @@ function sessionFrame(sess,opts){
   return SESSION_FRAMES[key]||SESSION_FRAMES.phone;
 }
 
-// Scene pace: 1 plays the sign-in in about 6 seconds; 2 (the default) in about
-// 12, leaving time to talk through each beat. Override per viewing with ?pace=,
+// Scene pace: 1 plays the sign-in in about 10 seconds; 2 (the default) in about
+// 20, leaving time to talk through each beat. Override per viewing with ?pace=,
 // for example ?pace=1 for a brisk recording or ?pace=2.5 for a slow walkthrough.
 const SESSION_SCENE_PACE=(()=>{
   const v=parseFloat(new URLSearchParams(location.search).get('pace'));
   return v>=0.5&&v<=4?v:2;
 })();
+// Particle beat at pace 1: the three rise one at a time, SESSION_PARTICLE_GAP
+// apart, each with its own caption, then hold before the handoff.
+const SESSION_PARTICLE_INTRO=1250;   // the beat's intro caption shows first
+const SESSION_PARTICLE_GAP=1300;
+const SESSION_PARTICLES_MS=SESSION_PARTICLE_INTRO+3*SESSION_PARTICLE_GAP+900;
+// Full scene at pace 1: login 2s + particles + handoff 1s + land 1s.
+const SESSION_SCENE_MS=2000+SESSION_PARTICLES_MS+2000;
 // Extra time rolling mode must allow before starting the upload, when the
 // scenario opens with the full sign-in scene (its upload normally starts at 9s).
 function sessionSceneLeadIn(s){
   const sess=scenarioSession(s);
   if(!sess||!sess.showLogin||reducedMotion()) return 0;
-  return Math.max(0,6000*SESSION_SCENE_PACE+3000-9000);
+  return Math.max(0,SESSION_SCENE_MS*SESSION_SCENE_PACE+3000-9000);
 }
 
 function scenarioSession(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&d.session)||null; }
@@ -2516,13 +2524,21 @@ function formatSessionTime(iso){
 }
 
 // The three signals, in slot order. Particles and chip slots share these keys.
+// 'why' says what each signal is used for; a session block can override it
+// with explain: { device, location, session }.
+const SESSION_WHY={
+  device:  'ES-002 counts how many members lodge from this device',
+  location:'ES-001 measures it against the registered address',
+  session: 'Every claim is tied to the session it came from'
+};
 function sessionSignals(sess){
   const t=formatSessionTime(sess.sessionTime);
   const clock=(t.time+' '+t.tz).trim();
+  const why=k=>(sess.explain&&sess.explain[k])||SESSION_WHY[k];
   return [
-    {key:'device',  icon:'📱',title:'Device',  colour:'var(--teal)',  detail:sess.deviceId+' · '+sess.deviceProfile, chip:sess.deviceId},
-    {key:'location',icon:'📍',title:'Location',colour:'var(--orange)',detail:sess.location+' · '+sess.ipAddress,     chip:sess.location},
-    {key:'session', icon:'🕒',title:'Session', colour:'var(--gold)',  detail:(t.date?t.date+', ':'')+clock,          chip:clock},
+    {key:'device',  icon:'📱',title:'Device',  colour:'var(--teal)',  detail:sess.deviceId+' · '+sess.deviceProfile, chip:sess.deviceId, why:why('device')},
+    {key:'location',icon:'📍',title:'Location',colour:'var(--orange)',detail:sess.location+' · '+sess.ipAddress,     chip:sess.location, why:why('location')},
+    {key:'session', icon:'🕒',title:'Session', colour:'var(--gold)',  detail:(t.date?t.date+', ':'')+clock,          chip:clock, why:why('session')},
   ];
 }
 
@@ -2637,7 +2653,7 @@ const SessionScene={
       this.anim($(this.frame.el),[{opacity:0},{opacity:1}],{duration:300});
       t=400;
     }
-    if(beats.includes('particles')){ this.at(t,()=>this.beatParticles()); t+=2000; }
+    if(beats.includes('particles')){ this.at(t,()=>this.beatParticles()); t+=SESSION_PARTICLES_MS; }
     const handoff=beats.includes('handoff');
     if(handoff){ this.at(t,()=>this.beatHandoff()); t+=1000; }
     if(beats.includes('land')){ this.at(t,()=>this.beatLand(!handoff)); t+=1000; }
@@ -2651,7 +2667,8 @@ const SessionScene={
     this.particles=sessionSignals(this.sess).map(sig=>{
       const el=document.createElement('div');
       el.className='lsp'; el.style.setProperty('--pc',sig.colour);
-      el.innerHTML='<span class="lsp-ico"></span><span><div class="lsp-t"></div><div class="lsp-v"></div></span>';
+      el.innerHTML='<span class="lsp-ico"></span><span><div class="lsp-t"></div><div class="lsp-v"></div><div class="lsp-why"></div></span>';
+      el.querySelector('.lsp-why').textContent=sig.why||'';
       el.querySelector('.lsp-ico').textContent=sig.icon;
       el.querySelector('.lsp-t').textContent=sig.title;
       el.querySelector('.lsp-v').textContent=sig.detail;
@@ -2672,7 +2689,8 @@ const SessionScene={
         {transform:`translate(${sx}px,${sy}px) scale(.5)`,opacity:0},
         {transform:`translate(${sx+(p.x-sx)*.45}px,${p.y-24}px) scale(.9)`,opacity:1,offset:.5},
         {transform:`translate(${p.x}px,${p.y}px) scale(1)`,opacity:1}
-      ],{duration:950,delay:i*220,easing:'cubic-bezier(.3,.7,.3,1)',fill:'both'});
+      ],{duration:950,delay:SESSION_PARTICLE_INTRO+i*SESSION_PARTICLE_GAP,easing:'cubic-bezier(.3,.7,.3,1)',fill:'both'});
+      this.at(SESSION_PARTICLE_INTRO+i*SESSION_PARTICLE_GAP,()=>Captions.show('particle:'+p.sig.key));
     });
   },
 
@@ -2755,15 +2773,14 @@ window.addEventListener('keydown',e=>{
 // CAPTIONS
 // One line per beat, for the unattended rolling demo and for muted video.
 // Keyed by beat in data/scenarios/<claim>.js → captions; a scenario without
-// a caption for a beat simply keeps the previous line. On by default in
-// rolling mode, off while presenting live; C toggles, and ?captions=on|off
-// on the address fixes the setting (for example for a recording).
+// a caption for a beat simply keeps the previous line. On by default
+// everywhere; C toggles, and ?captions=off gives a clean take for a recording.
 // ══════════════════════════════════════════════════════
 const Captions={
   pref:(()=>{ const v=(new URLSearchParams(location.search).get('captions')||'').toLowerCase(); return v==='on'||v==='off'?v:'auto'; })(),
   current:null, toastTimer:null, shownAt:0, holdTimer:null,
   MIN_MS:2500,   // every caption stays up long enough to read; quick beats queue
-  enabled(){ return this.pref==='on'||(this.pref==='auto'&&runMode==='rolling'); },
+  enabled(){ return this.pref!=='off'; },   // always on unless switched off (C, or ?captions=off)
   lookup(key){ const d=SCENARIO_DATA[S[curScenario].id]; return d&&d.captions&&d.captions[key]||null; },
   show(key){
     const c=this.lookup(key); if(!c||c===this.current) return;

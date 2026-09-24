@@ -18,6 +18,7 @@ The session block drives the sign-in scene and the session chip in the portal he
 | `ipAddress` | string | Submission IP, shown in the Location particle. Use documentation ranges (`203.0.113.0/24`, `198.51.100.0/24`), never a real address. |
 | `location` | string | Suburb and state resolved from the IP, shown in the chip and the Location particle. ES-001 compares it with the registered address. |
 | `sessionTime` | string | ISO 8601 with offset, for example `2026-07-12T09:14:00+10:00`. Shown as wall-clock time; `+10:00` displays as AEST and `+11:00` as AEDT. |
+| `explain` | object | Optional. Overrides the "used for" line on each particle: `{ "device": "…", "location": "…", "session": "…" }`. The defaults name ES-002, ES-001 and the session link. |
 | `deviceStatus` | `"recognised"` or `"new"` | `recognised` if the member has claimed before on this device, `new` for a first-time device. Shown in the chip as "recognised device" or "new device"; a new device is a fraud signal in its own right. Set it honestly. (The older boolean `deviceSeenBefore` is still read if `deviceStatus` is absent.) |
 | `frame` | `"phone"` | Optional; defaults to `phone`. The device frame the scene plays in. All member scenarios are phones. A `browser` frame is reserved for the ring scenario, where one person on a laptop lodging for several members is part of the tell; it isn't built yet. |
 | `showLogin` | boolean | `true` plays the full sign-in scene when the scenario opens. `false` skips it and fills the chip directly. |
@@ -32,7 +33,7 @@ A scenario with no session block hides the chip. It never inherits another scena
 
 ## Scene pace
 
-The sign-in scene runs at pace 2 by default (about 12 seconds) so a presenter can talk through each beat. Add `?pace=1` to the address for the original 6-second version, or up to `?pace=4` for slower. Rolling mode waits for the scene before starting the upload.
+The sign-in scene runs at pace 2 by default (about 20 seconds) so a presenter can talk through each beat; the three signals rise one at a time, each with its own caption. Add `?pace=1` to the address for a 10-second version, or up to `?pace=4` for slower. Rolling mode waits for the scene before starting the upload.
 
 ## Replaying part of the scene
 
@@ -93,11 +94,12 @@ A `captions` object gives one line per beat for the rolling demo and for muted v
 
 | Key | When it shows |
 | --- | --- |
-| `signin`, `particles`, `handoff` | The three sign-in scene beats (`handoff` also shows if the scene is skipped) |
+| `signin`, `particles`, `handoff` | The sign-in scene beats (`handoff` also shows if the scene is skipped) |
+| `particle:device`, `particle:location`, `particle:session` | Each signal as it rises out of the phone |
 | `upload` | The receipt upload starts |
 | `cost:ai`, `cost:rule`, `cost:capture` | A pre-flight check of that cost type starts |
 | `preflightPassed`, `preflightRejected`, `preflightReview` | Pre-flight completes with that outcome |
 | `phase1`, `phase2`, `phase3` | That pipeline phase starts |
 | `outcome` | The fraud detection summary appears |
 
-A missing key keeps the previous caption. Each caption stays up at least 2.5 seconds; quick beats queue. Captions are on by default in rolling mode and off while presenting; C toggles, and `?captions=on` or `?captions=off` fixes the setting.
+A missing key keeps the previous caption. Each caption stays up at least 2.5 seconds; quick beats queue. Captions are on by default everywhere; C toggles, and `?captions=off` gives a clean take for a recording.

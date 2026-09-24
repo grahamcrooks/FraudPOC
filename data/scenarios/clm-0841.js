@@ -89,7 +89,19 @@
     },
     "particles": {
       "tag": "Session capture",
-      "text": "Device, location and time are captured at sign-in, before any claim exists"
+      "text": "Three signals are captured at sign-in, before any claim exists"
+    },
+    "particle:device": {
+      "tag": "Session capture · Device",
+      "text": "The phone's fingerprint. ES-002 checks whether other members lodge from it"
+    },
+    "particle:location": {
+      "tag": "Session capture · Location",
+      "text": "Where James signed in, from his IP. ES-001 checks the distance from home"
+    },
+    "particle:session": {
+      "tag": "Session capture · Session",
+      "text": "When he signed in. The claim stays tied to this session"
     },
     "handoff": {
       "tag": "Session capture",
