@@ -1782,8 +1782,10 @@ function launchRollingDemo(){
   // Highlight the active scenario button in the control bar
   for(let i=0;i<6;i++) $('sc'+i).classList.toggle('on',i===curScenario);
   // Let audience see the portal/member for 3s, then start upload, then submit
-  addTimer(()=>{ if(rollingOK()) simulateUpload(); },9000);
-  addTimer(()=>{ if(rollingOK()) submitClaim(); },19500);
+  // Wait for the sign-in scene, if this scenario opens with one.
+  const leadIn=sessionSceneLeadIn(S[curScenario]);
+  addTimer(()=>{ if(rollingOK()) simulateUpload(); },9000+leadIn);
+  addTimer(()=>{ if(rollingOK()) submitClaim(); },19500+leadIn);
 }
 
 function rollingOK(){ return runMode==='rolling'&&!rollingPaused; }
@@ -1862,7 +1864,7 @@ function setScenario(idx){
     txt('sb-body',s.preview.body);
     banner.style.display='block';
     // Countdown ticks from 3s until upload starts (upload fires at 3000ms in launchRollingDemo)
-    startBannerCountdown(9);
+    startBannerCountdown(9+Math.round(sessionSceneLeadIn(s)/1000));
   } else {
     banner.style.display='none';
   }
@@ -2441,7 +2443,8 @@ document.addEventListener('keydown',e=>{
 // phone at sign-in, not from the claim form. ES-001 and ES-002
 // depend on the audience understanding that.
 // Data: data/scenarios/<claim>.js → window.SCENARIO_DATA[id].session
-// Beats: login (0–2s) · particles (2–4s) · handoff (4–5s) · land (5–6s)
+// Beats at pace 1: login (0–2s) · particles (2–4s) · handoff (4–5s) · land (5–6s).
+// SESSION_SCENE_PACE stretches all of it (default 2, about 12 seconds).
 // Partial replays (e.g. several members on one device) pass
 // { beats:['particles','land'] } with a different member and the same deviceId.
 // ══════════════════════════════════════════════════════
@@ -2461,6 +2464,21 @@ function sessionFrame(sess,opts){
   const key=(opts&&opts.frame)||sess.frame||'phone';
   if(!SESSION_FRAMES[key]) console.warn('Session frame "'+key+'" is not built yet; using phone.');
   return SESSION_FRAMES[key]||SESSION_FRAMES.phone;
+}
+
+// Scene pace: 1 plays the sign-in in about 6 seconds; 2 (the default) in about
+// 12, leaving time to talk through each beat. Override per viewing with ?pace=,
+// for example ?pace=1 for a brisk recording or ?pace=2.5 for a slow walkthrough.
+const SESSION_SCENE_PACE=(()=>{
+  const v=parseFloat(new URLSearchParams(location.search).get('pace'));
+  return v>=0.5&&v<=4?v:2;
+})();
+// Extra time rolling mode must allow before starting the upload, when the
+// scenario opens with the full sign-in scene (its upload normally starts at 9s).
+function sessionSceneLeadIn(s){
+  const sess=scenarioSession(s);
+  if(!sess||!sess.showLogin||reducedMotion()) return 0;
+  return Math.max(0,6000*SESSION_SCENE_PACE+3000-9000);
 }
 
 function scenarioSession(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&d.session)||null; }
@@ -2685,8 +2703,14 @@ const SessionScene={
     if(this.current) SessionChip.set(this.current,false);
   },
   // Timers are relative to when at() is called (scene start, or the start of a beat).
-  at(ms,fn){ this.timers.push(setTimeout(fn,ms)); },
-  anim(el,frames,o){ const a=el.animate(frames,o); this.anims.push(a); return a; }
+  // Every scene timer and animation runs through these two, scaled by the pace.
+  at(ms,fn){ this.timers.push(setTimeout(fn,ms*SESSION_SCENE_PACE)); },
+  anim(el,frames,o){
+    const oo=Object.assign({},o);
+    if(oo.duration) oo.duration*=SESSION_SCENE_PACE;
+    if(oo.delay) oo.delay*=SESSION_SCENE_PACE;
+    const a=el.animate(frames,oo); this.anims.push(a); return a;
+  }
 };
 
 // Skip with any key while the scene plays; L replays it. Runs before the

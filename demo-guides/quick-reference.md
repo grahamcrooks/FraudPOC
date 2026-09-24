@@ -17,7 +17,8 @@
 
 ### Sign-in scene
 
-- Plays automatically when CLM-0841 opens, including each loop of the Rolling Demo (about 6 seconds).
+- Plays automatically when CLM-0841 opens, including each loop of the Rolling Demo (about 12 seconds, paced for talking through each beat).
+- Change the pace by adding `?pace=` to the address: `?pace=1` is brisk (about 6 seconds, good for a recording), `?pace=2.5` slower still.
 - Any key or click → Skip to the end: the session chip is filled and the privacy line shows.
 - Space, Enter and Esc only skip the scene; they don't also pause the Rolling Demo or advance.
 - Number keys and S still work mid-scene: the scene skips to the end, then the key does its usual job.
