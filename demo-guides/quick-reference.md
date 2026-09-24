@@ -14,19 +14,20 @@
 - B → Jump to the Backup slide (manual mode only)
 - Esc → Exit fullscreen (standard browser behaviour)
 - L → Replay the sign-in scene (or click the session chip in the portal header)
-- C → Captions on or off (on by default in the Rolling Demo, off while presenting)
+- C → Captions on or off (on by default)
 
 ### Captions
 
 - A one-line caption at the bottom of the screen says what is happening at each beat: tag, then the story ("Session capture · James signs in to the H+ app with Face ID").
-- On by default in the Rolling Demo, where nobody is presenting; off while you present live. Press C to switch.
-- For a recording, fix the setting on the address: `?captions=on` or `?captions=off`.
+- On by default everywhere, including while you present. Press C to switch them off or on.
+- For a clean recording with no captions, add `?captions=off` to the address.
 - Only CLM-0841 has captions so far; other scenarios show none.
 
 ### Sign-in scene
 
-- Plays automatically when CLM-0841 opens, including each loop of the Rolling Demo (about 12 seconds, paced for talking through each beat).
-- Change the pace by adding `?pace=` to the address: `?pace=1` is brisk (about 6 seconds, good for a recording), `?pace=2.5` slower still.
+- Plays automatically when CLM-0841 opens, including each loop of the Rolling Demo (about 20 seconds, paced for talking through each beat).
+- The three signals rise one at a time — Device, Location, Session — each with a caption and a line saying what it is used for (ES-002, ES-001, the session link).
+- Change the pace by adding `?pace=` to the address: `?pace=1` is brisk (about 10 seconds, good for a recording), `?pace=2.5` slower still.
 - Any key or click → Skip to the end: the session chip is filled and the privacy line shows.
 - Space, Enter and Esc only skip the scene; they don't also pause the Rolling Demo or advance.
 - Number keys and S still work mid-scene: the scene skips to the end, then the key does its usual job.
