@@ -71,7 +71,7 @@ Each step has three parts:
   - Every signal goes to a human investigator in Pega AIM. AI assists; people decide.
 - **Under the hood**:
   - Phase 1 pre-flight: one AI extraction (document type, fields, per-field confidence), then business rules (disqualifying terms, completeness, claim value).
-  - Phase 1 forensic analysis: six checks, four AI and two rule-based, scored into a document integrity score.
+  - Phase 1 forensic analysis: six checks, three AI and three rule-based, scored into a receipt integrity score.
   - Phase 2: Pega Event Strategies, which aggregate events over time windows: ES-001 distance anomaly, ES-002 device ring, ES-003 bank account ring.
   - Phase 3: graph traversal through an MCP connection to the graph, up to three hops across member, practice, practitioner, device, submission IP and payment account.
   - Planned and not in this build: phantom ABN, waiver abuse, item code validation (Phase 2), and fraud case similarity matching (Phase 3).
@@ -161,7 +161,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
   | Metadata and provenance | Business rule | Practice software, and timestamps not after the service |
   | Duplicate detection | Business rule | Same practice and receipt number, or identical fingerprint |
 
-  Document integrity score:
+  Receipt integrity score:
   - It starts at 1.00, with deductions for adverse findings only: match flag −0.07, font fail −0.40, metadata fail −0.25.
   - At or above 0.70 continues; below 0.70 goes to the investigator queue at HIGH priority with a 4-hour SLA.
   - Extraction confidence is not scored here. A low-confidence field is already routed to Needs Review in pre-flight.

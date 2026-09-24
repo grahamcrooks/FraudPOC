@@ -29,7 +29,7 @@
       "name": "Field extraction",
       "summary": "11 of 11 fields · $312.00 · items 011, 022, 114",
       "cost": "ai",
-      "lookedAt": "Full document, 1,204 characters",
+      "lookedAt": "Full receipt, 1,204 characters",
       "rule": "Extract provider, ABN, service date, line items and total",
       "found": "Bright Smile Dental · items 011, 022, 114 · $312.00 · 12 Jul 2026",
       "verdict": "pass",
@@ -120,7 +120,7 @@
     },
     "cost:ai": {
       "tag": "Pre-flight · AI",
-      "text": "AI reads the receipt: document type, fields and confidence"
+      "text": "AI reads the receipt: receipt type, fields and confidence"
     },
     "cost:rule": {
       "tag": "Pre-flight · Rules",

@@ -899,7 +899,7 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
       <div class="s3-grid">
         <div class="s3-card" id="i0" style="border-left-color:#FFC836">
           <div class="s3-title">🕰️ Background</div>
-          <div class="s3-body">Bupa has traditionally caught fraud after a claim is paid, through audits and recoveries. This proof of concept tests whether the same detection can happen before payment, using AI to review documents and patterns at scale.</div>
+          <div class="s3-body">Bupa has traditionally caught fraud after a claim is paid, through audits and recoveries. This proof of concept tests whether the same detection can happen before payment, using AI to review receipts and patterns at scale.</div>
         </div>
         <div class="s3-card" id="i1" style="border-left-color:#10A5AC">
           <div class="s3-title">🗂️ What the POC Will Entail</div>
@@ -1152,20 +1152,20 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
         </div>
         <div class="lodge-section" style="height:100%">
           <div class="lodge-hdr">
-            <div><div class="lodge-hdr-title">Phase 1 Dataset Analysis</div><div class="lodge-hdr-sub" id="form-sub">Validating member-entered data against historical receipts</div></div>
+            <div><div class="lodge-hdr-title">Phase 1 Receipt Analysis</div><div class="lodge-hdr-sub" id="form-sub">Checking the member-entered details against the receipt</div></div>
             <div class="lodge-active"><div class="lodge-active-dot"></div>AI Fraud Detection Active</div>
           </div>
           <div class="lodge-body">
             <div class="form-group full" style="margin-bottom:14px">
-              <label class="form-label">Document from Dataset <span class="req">*</span></label>
+              <label class="form-label">Receipt from Dataset <span class="req">*</span></label>
               <div class="upload-zone" id="upload-zone" onclick="simulateUpload()">
                 <div class="upload-icon">📎</div>
-                <div class="upload-text"><strong style="color:var(--red)">Load Document</strong></div>
+                <div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div>
                 <div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>
               </div>
               <div id="upload-validation" style="display:none;margin-top:8px">
                 <div class="sig-list" id="sig-list" style="display:none" aria-live="polite"></div>
-                <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Document type confirmed</div><div class="val-detail" id="val-det-1">Checking document type...</div></div></div>
+                <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Receipt type confirmed</div><div class="val-detail" id="val-det-1">Checking receipt type...</div></div></div>
                 <div class="val-step" id="val-step-2" style="opacity:.3"><div class="val-ico" id="val-ico-2">⏳</div><div class="val-content"><div class="val-name">Field extraction complete</div><div class="val-detail" id="val-det-2">Extracting provider, amounts and item codes...</div></div></div>
                 <div class="val-step" id="val-step-3" style="opacity:.3"><div class="val-ico" id="val-ico-3">⏳</div><div class="val-content"><div class="val-name">Confidence scoring complete</div><div class="val-detail" id="val-det-3">Scoring extraction confidence per field...</div></div></div>
                 <div class="val-step" id="val-step-4" style="opacity:.3"><div class="val-ico" id="val-ico-4">⏳</div><div class="val-content"><div class="val-name">Pre-flight gate passed</div><div class="val-detail" id="val-det-4">Running disqualifying keyword gate...</div></div></div>
@@ -1178,8 +1178,8 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
               </div>
             </div>
             <div class="dataset-intro">
-              <div class="dataset-intro-title">Member-Entered Data (From Dataset)</div>
-              <div class="dataset-intro-body">Below shows data entered by the member when lodging the claim. Phase 1 validates: does this data match the actual receipt?</div>
+              <div class="dataset-intro-title">Member-Entered Receipt</div>
+              <div class="dataset-intro-body">The receipt details the member entered when lodging the claim. Phase 1 checks: do they match the receipt itself?</div>
             </div>
             <div class="form-row">
               <div class="form-group"><label class="form-label">Claim Type <span class="req">*</span></label><select class="form-select" id="f-type"><option id="f-type-opt"></option></select></div>
@@ -1308,12 +1308,12 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
       <div class="phase-collapsed"><div class="phase-status-ico psi-pass">📥</div><div class="phase-name">Claim Case Created · Valid Receipt Confirmed</div><span class="phase-status-badge psb-pass">✓ Complete</span></div>
     </div>
     <div class="phase-block" id="ph1-block">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph1-ico">🔍</div><div class="phase-titlewrap"><div class="phase-name">Phase 1 — Receipt Forensics</div><div class="phase-question">Is this document real and valid? Examining fonts, structure, provenance and claim consistency.</div></div><span class="phase-status-badge psb-queued" id="ph1-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph1-ico">🔍</div><div class="phase-titlewrap"><div class="phase-name">Phase 1 — Receipt Forensics</div><div class="phase-question">Is this receipt real and valid? Examining fonts, structure, provenance and claim consistency.</div></div><span class="phase-status-badge psb-queued" id="ph1-badge">Queued</span></div>
       <div class="phase-expanded" id="ph1-expanded">
         <div class="phase-info" id="ph1-info"><div class="phase-info-band" id="ph1-info-band"><div class="phase-info-txt" id="ph1-info-txt"></div></div></div>
         <div class="check-list" id="ph1-checks"></div>
         <div class="p1-calc" id="ph1-calc"></div>
-        <div class="score-reveal" id="ph1-score"><div class="score-num" id="ph1-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Document Integrity Score</div><div class="score-verdict" id="ph1-score-verdict">Calculating...</div><div class="score-route" id="ph1-score-route"></div></div></div>
+        <div class="score-reveal" id="ph1-score"><div class="score-num" id="ph1-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Receipt Integrity Score</div><div class="score-verdict" id="ph1-score-verdict">Calculating...</div><div class="score-route" id="ph1-score-route"></div></div></div>
         <div class="result-badge" id="ph1-result"><div class="rb-ico" id="ph1-rb-ico">✅</div><div><div class="rb-title" id="ph1-rb-title">Phase 1 Passed</div><div class="rb-sub" id="ph1-rb-sub">No adverse findings</div></div></div>
         <div class="discrepancy-panel" id="ph1-discrepancy">
           <div class="discrepancy-title">⚠️ Phase 1 Validation Failed — Member Claim vs Actual Receipt</div>
@@ -1323,7 +1323,7 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
             <div class="discrepancy-row total"><span>Discrepancy</span><span id="dp-diff"></span></div>
           </div>
           <div class="discrepancy-result">Result: MISMATCH DETECTED</div>
-          <div class="discrepancy-note">This document would be escalated for investigator review.</div>
+          <div class="discrepancy-note">This receipt would be escalated for investigator review.</div>
         </div>
         <div class="phase-btns" id="ph1-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
@@ -1472,7 +1472,7 @@ const S=[
     preview:{icon:'✅',label:'Scenario 1 of 7 — Clean Claim',title:'A legitimate dental claim — watch how all three phases clear',body:'James lodges a routine dental claim from Bright Smile Dental. The receipt is genuine, the provider is registered and there are no suspicious patterns. This shows what a clean run looks like end-to-end.'}},
   {id:'CLM-2024-0842',mbr:'MBR-44712',joined:'Aug 2021',suburb:'Footscray VIC 3011',contact:'Email',member:'Sarah Nguyen',ini:'SN',pol:'POL-2019-88821',cov:'Silver Hospital + Extras',cnt:5,amt:'$1,240.00',ben:'$960',type:'Optical (Extras)',date:'14 Jul 2026',prov:'Vision Direct Pty Ltd',abn:'51 234 567 891',clamt:'$487.50',codes:'10801, 10701, 10501',file:'optical_receipt_MBR44712.pdf',fsz:'391 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph1',
     receiptMismatch:{entered:'$487.50',receipt:'$445.00',diff:'$42.50',pct:'10.8%'},
-    preview:{icon:'🔍',label:'Scenario 2 of 7 — Document Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
+    preview:{icon:'🔍',label:'Scenario 2 of 7 — Receipt Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
   {id:'CLM-2024-0843',mbr:'MBR-77834',joined:'Jan 2024',suburb:'Dandenong VIC 3175',contact:'SMS',member:'David Okafor',ini:'DO',pol:'POL-2022-11092',cov:'Bronze Hospital + Extras',cnt:2,amt:'$390.00',ben:'$1,610',type:'Physiotherapy (Extras)',date:'11 Jul 2026',prov:'Active Rehab Centre',abn:'99 000 111 222',clamt:'$195.00',codes:'SP001, SP010',file:'physio_receipt_MBR77834.pdf',fsz:'212 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'fail-ph2',
     preview:{icon:'🏦',label:'Scenario 3 of 7 — Bank Account Ring',title:'Four practices, one bank account — caught in Phase 2',body:'David\'s physio receipt is genuine and his claim looks ordinary. But ES-003 sees that four unrelated practices have paid into the same bank account in 22 days, and the account name matches none of them.'}},
   {id:'CLM-2024-0844',mbr:'MBR-55901',joined:'Nov 2025',suburb:'Springvale VIC 3171',contact:'SMS',member:'Linda Pham',ini:'LP',pol:'POL-2020-73341',cov:'Gold Hospital + Extras',cnt:7,amt:'$2,100.00',ben:'$400',type:'Dental (Extras)',date:'13 Jul 2026',prov:'Metro Dental Group',abn:'77 345 678 012',clamt:'$264.00',codes:'011, 121',file:'dental_receipt_MBR55901.pdf',fsz:'267 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'fail-ph2',
@@ -1527,7 +1527,7 @@ const PHASE_RESULT_DESC=[
   { ph1:'No adverse findings on the receipt.',
     ph2:'All three event strategies clear — no signal raised.',
     ph3:'No connections to known fraud or to anything under investigation.' },
-  { ph1:'Suspicious document — spliced typefaces and a Photoshop metadata trail dated after the service.' },
+  { ph1:'Suspicious receipt — spliced typefaces and a Photoshop metadata trail dated after the service.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'ES-003 found four unrelated practices paying into one account in 22 days — and the account name matches none of them.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
@@ -1544,11 +1544,11 @@ const PHASE_RESULT_DESC=[
 const PHASES=[
   {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $312.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
-    {ico:'🔤',name:'Font Consistency',running:'Scanning document typefaces...',pass:'Single uniform typeface throughout — Arial 9pt',result:'pass',d:5000},
+    {ico:'🔤',name:'Font Consistency',running:'Scanning receipt typefaces...',pass:'Single uniform typeface throughout — Arial 9pt',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays and stamp manipulation...',pass:'No overlay detected — StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts — generative signature score 0.02',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'Authored by clinic practice software 12 Jul 2026 — matches service date',result:'pass',d:13200},
-    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this receipt',result:'pass',d:15600},
   ]},ph2:{pass:true,score:'0.04',scoreColor:'#16A34A',verdict:'CLEAN — No flags raised',route:'Confirmed Clean → Phase 3 Network Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission IP location against the member\'s registered address...',pass:'Lodged near the registered address — no distance grade raised',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Counting distinct members submitting from this device fingerprint...',pass:'No unrelated members on this device in the window',result:'pass',d:4000},
@@ -1558,11 +1558,11 @@ const PHASES=[
   ]}},
   {ph1:{pass:false,score:'0.28',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Below threshold',route:'Routing to Investigator Queue · HIGH priority · SLA 4 hours',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $487.50 does not match receipt total $445.00 — $42.50 discrepancy flagged for review',result:'warn',d:2200},
-    {ico:'🔤',name:'Font Consistency',running:'Scanning document typefaces...',pass:'',fail:'3 different typefaces detected — Arial 9pt + Helvetica 10pt + Times New Roman 8pt',result:'fail',d:5000},
+    {ico:'🔤',name:'Font Consistency',running:'Scanning receipt typefaces...',pass:'',fail:'3 different typefaces detected — Arial 9pt + Helvetica 10pt + Times New Roman 8pt',result:'fail',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays...',pass:'No overlay — StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts detected',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'',fail:'Authored in Adobe Photoshop, modified 16 Jul 2026 — two days after the service date, no practice software trail',result:'fail',d:13200},
-    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this receipt',result:'pass',d:15600},
   /* Phase 2 & 3 hidden for the Phase 1 dataset-processing demo — CLM-0842 stops at Phase 1, ph2/ph3 stay null so their blocks never activate. Data kept, not deleted. */
   ]},ph2:null,ph3:null},
   {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
@@ -1571,7 +1571,7 @@ const PHASES=[
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting overlays...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.04',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 11 Jul 2026 — matches service date',result:'pass',d:13200},
-    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this receipt',result:'pass',d:15600},
   ]},ph2:{pass:false,score:'0.81',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Bank account ring detected',route:'Routing to SIU Queue · HIGH priority · SLA 4 hours',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission location...',pass:'Within expected range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking device fingerprint...',pass:'No shared-device pattern',result:'pass',d:4000},
@@ -1583,7 +1583,7 @@ const PHASES=[
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.03',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 13 Jul 2026 — matches service date',result:'pass',d:13200},
-    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this receipt',result:'pass',d:15600},
   ]},ph2:{pass:false,score:'0.65',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Device ring detected',route:'Routing to SIU Queue · HIGH priority · SLA 4 hours',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
@@ -1595,7 +1595,7 @@ const PHASES=[
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.05',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by practice software 10 Jul 2026 — matches service date',result:'pass',d:13200},
-    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this receipt',result:'pass',d:15600},
   ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — No signal raised',route:'Proceeding to Phase 3 Network Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
@@ -1609,7 +1609,7 @@ const PHASES=[
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.02',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 15 Jul 2026 — matches service date',result:'pass',d:13200},
-    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
+    {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this receipt',result:'pass',d:15600},
   ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — All strategies clear',route:'Proceeding to Phase 3 Network Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
@@ -1939,10 +1939,10 @@ function setScenario(idx){
   $('f-date').value=''; $('f-prov').value=''; $('f-abn').value='';
   $('f-amt').value=''; $('f-codes').value='';
   [ 'f-type','f-date','f-prov','f-abn','f-amt','f-codes' ].forEach(id=>$(id).classList.remove('ai-filled'));
-  txt('form-sub','Validating member-entered data against historical receipts');
+  txt('form-sub','Checking the member-entered details against the receipt');
   const uz=$('upload-zone');
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Document</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
   // Reset action buttons to default state
@@ -2012,7 +2012,7 @@ function simulateUpload(){
       $('val-step-'+i).className='val-step';
       $('val-ico-'+i).textContent=i===1?'🔄':'⏳';
     });
-    txt('val-det-1','Checking document type...');
+    txt('val-det-1','Checking receipt type...');
     txt('val-det-2','Extracting provider, amounts and item codes...');
     txt('val-det-3','Scoring extraction confidence per field...');
     txt('val-det-4','Running disqualifying keyword gate...');
@@ -2030,7 +2030,7 @@ function simulateUpload(){
     // 3 — Confidence scoring (5.2s)
     addTimer(()=>done(3, pf.conf, true), 5200);
     // 4 — Pre-flight gate (10.0s)
-    addTimer(()=>done(4, 'No disqualifying keywords detected · Document type approved', true), 10000);
+    addTimer(()=>done(4, 'No disqualifying keywords detected · Receipt type approved', true), 10000);
     // 5 — Device & geolocation capture (10.8s), fired with the completion
     // below. Read from the session block so it always matches the chip.
     addTimer(()=>{
@@ -2076,7 +2076,7 @@ function simulateUpload(){
     }
     Captions.show('preflightPassed');
     const summary=sigs?SignalPanel.summary(sigs)
-      :'Document type confirmed · Fields extracted · Confidence thresholds met · Device & location captured · No disqualifying content detected';
+      :'Receipt type confirmed · Fields extracted · Confidence thresholds met · Device & location captured · No disqualifying content detected';
     uz.classList.add('has-file');
     uz.innerHTML='<div class="upload-icon">✅</div>'
       +'<div class="upload-text" style="color:#16A34A"><strong>Receipt pre-validated — passing to forensic authentication</strong></div>'
@@ -2192,11 +2192,11 @@ const Phase1Score={
     const line=x=>'<div class="p1c-row"><span class="p1c-l">'+esc(x.label)+'</span><span class="p1c-s p1c-'+esc(x.status)+'">'+esc(x.status)+'</span><span class="p1c-d">'+minus(x.deduct)+'</span></div>';
     const cls=r.above?'ok':'bad';
     box.className='p1-calc show '+cls;
-    box.innerHTML='<div class="p1c-title">Document integrity score <span>— starts at '+f(r.sc.start)+', deducted per finding</span></div>'
+    box.innerHTML='<div class="p1c-title">Receipt integrity score <span>— starts at '+f(r.sc.start)+', deducted per finding</span></div>'
       +'<div class="p1c-row p1c-start"><span class="p1c-l">Starting score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.sc.start)+'</span></div>'
       +rows.map(line).join('')
       +'<div class="p1c-rule"></div>'
-      +'<div class="p1c-row p1c-total"><span class="p1c-l">Document integrity score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.total)+'</span></div>'
+      +'<div class="p1c-row p1c-total"><span class="p1c-l">Receipt integrity score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.total)+'</span></div>'
       +'<div class="p1c-verdict">Threshold '+f(r.sc.threshold)+' — '+(!r.above?'below · SUSPICIOUS':r.adverse?'above · CLEAN':'No adverse findings')+'</div>'
       +(r.sc.action?'<div class="p1c-action">'+esc(r.sc.action)+'</div>':'');
     // At rest the score block is the payoff: bring all of it into view.
@@ -2344,7 +2344,7 @@ const SignalPanel={
   renderStop(uz,s,out){
     const d=SCENARIO_DATA[s.id]||{}, o=d.outcome||{};
     const reject=out.kind==='reject';
-    const headline=o.headline||(reject?'Claim rejected — not a claimable document':'Claim held for review — '+out.items.length+' item'+(out.items.length===1?'':'s')+' flagged');
+    const headline=o.headline||(reject?'Claim rejected — not a claimable receipt':'Claim held for review — '+out.items.length+' item'+(out.items.length===1?'':'s')+' flagged');
     const reason=o.reason||out.items.map(x=>x.conclusion).join(' · ');
     const stage=reject?'Reject Document':'Needs Review', status=reject?'Resolved-Rejected':'Pending-Review';
     const note=o.note||(reject?'No forensic analysis was run. No referral to the fraud team.'
@@ -2531,7 +2531,7 @@ function activatePhase(ph,phData){
       txt('ph'+ph+'-badge','✗ Suspicious');
       $('ph'+ph+'-block').style.background='#FEF2F2'; $('ph'+ph+'-block').style.borderColor='rgba(220,38,38,.3)'; $('ph'+ph+'-block').style.boxShadow='0 2px 8px rgba(220,38,38,.08)';
       if(ph===1){
-        txt('ph1-rb-title','Phase 1 — Suspicious Document Detected'); txt('ph1-rb-sub','DocumentIntegrityScore below threshold · Routed to Investigator Queue · HIGH priority · SLA 4 hours');
+        txt('ph1-rb-title','Phase 1 — Suspicious Receipt Detected'); txt('ph1-rb-sub','Receipt integrity score below threshold · Routed to Investigator Queue · HIGH priority · SLA 4 hours');
         const rm=S[curScenario].receiptMismatch;
         if(rm && $('ph1-discrepancy')){
           txt('dp-entered',rm.entered); txt('dp-receipt',rm.receipt); txt('dp-diff',rm.diff+' (claimed amount exceeds receipt by '+rm.pct+')');
@@ -2643,7 +2643,7 @@ function closeOverlay(){
   clearAllTimers(); uploaded=false; uploadCount=0;
   const uz=$('upload-zone');
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Document</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
   if($('btn-submit')) $('btn-submit').style.display='';

@@ -113,7 +113,7 @@ Captions for each check use the key `phase1:<check id>`, for example `phase1:SIG
 
 ## Phase 1 scoring
 
-`phase1Scoring` turns the six verdicts into the document integrity score, shown as its arithmetic:
+`phase1Scoring` turns the six verdicts into the receipt integrity score, shown as its arithmetic:
 
 | Field | Meaning |
 | --- | --- |
