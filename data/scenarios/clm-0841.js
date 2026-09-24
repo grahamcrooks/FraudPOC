@@ -9,7 +9,7 @@
     "ipAddress": "203.0.113.18",
     "location": "Carlton VIC",
     "sessionTime": "2026-07-12T09:14:00+10:00",
-    "deviceSeenBefore": true,
+    "deviceStatus": "recognised",
     "showLogin": true
   }
 };
