@@ -4,7 +4,7 @@ Per-scenario data for the demo, one file per scenario, named for the claim (`clm
 
 The object literal in each file is valid JSON. Keep it that way so the data can be moved to `.json` files later without changes.
 
-Every scenario (CLM-0841 to CLM-0846) has a session block; only CLM-0841 plays the sign-in scene. Each file can hold a `session` block and a `signals` array; the rest of each scenario is still in the `S` array in `index.html`.
+Every scenario (CLM-0841 to CLM-0847) has a session block; CLM-0841 plays the sign-in scene on the phone and CLM-0844 on the laptop browser. Each file can hold a `session` block and a `signals` array; the rest of each scenario is still in the `S` array in `index.html`.
 
 ## Session block
 
@@ -20,7 +20,7 @@ The session block drives the sign-in scene and the session chip in the portal he
 | `sessionTime` | string | ISO 8601 with offset, for example `2026-07-12T09:14:00+10:00`. Shown as wall-clock time; `+10:00` displays as AEST and `+11:00` as AEDT. |
 | `explain` | object | Optional. Overrides the "used for" line on each particle: `{ "device": "…", "location": "…", "session": "…" }`. The defaults name ES-002, ES-001 and the session link. |
 | `deviceStatus` | `"recognised"` or `"new"` | `recognised` if the member has claimed before on this device, `new` for a first-time device. Shown in the chip as "recognised device" or "new device"; a new device is a fraud signal in its own right. Set it honestly. (The older boolean `deviceSeenBefore` is still read if `deviceStatus` is absent.) |
-| `frame` | `"phone"` | Optional; defaults to `phone`. The device frame the scene plays in. All member scenarios are phones. A `browser` frame is reserved for the ring scenario, where one person on a laptop lodging for several members is part of the tell; it isn't built yet. |
+| `frame` | `"phone"` or `"browser"` | Optional; defaults to `phone`. The device frame the scene plays in. Member scenarios are phones. `browser` is a laptop on the H+ member website, used by the device ring scenario (CLM-0844), where one person on a laptop lodging for several members is part of the tell. |
 | `showLogin` | boolean | `true` plays the full sign-in scene when the scenario opens. `false` skips it and fills the chip directly. |
 
 A scenario with no session block hides the chip. It never inherits another scenario's session, because carrying one member's device into another member's claim would show several members on one device, which is the ES-002 signal.
@@ -37,7 +37,7 @@ The sign-in scene runs at pace 2 by default (about 20 seconds) so a presenter ca
 
 ## Replaying part of the scene
 
-`SessionScene.play(session, { beats: ['particles', 'land'], memberNo, frame })` replays only the particle and landing beats, with the device already signed in. Frames are registered in `SESSION_FRAMES` in `index.html`; particles and the handoff outline take their origin and shape from the active frame, so the ring scenario's browser frame needs its markup and one registry entry, not a rebuild. A scenario can use this to show several members submitting from one device: pass a session with a different `member` and the same `deviceId`, and the chip's device slot stays on that ID while the other slots update.
+`SessionScene.play(session, { beats: ['particles', 'land'], memberNo, frame })` replays only the particle and landing beats, with the device already signed in. Frames are registered in `SESSION_FRAMES` in `index.html`; particles and the handoff outline take their origin and shape from the active frame, so a new frame needs its markup and one registry entry, not a rebuild. Each entry also sets the device icon, the verification step (Face ID or one-time code) and the "Simulated" caption line. A scenario can use this to show several members submitting from one device: pass a session with a different `member` and the same `deviceId`, and the chip's device slot stays on that ID while the other slots update.
 
 ## Signals array (Phase 1 pre-flight)
 
@@ -87,7 +87,7 @@ Submit, Run Fraud Detection and the rolling demo all respect the stop; in rollin
 
 The terminal panel's headline and reason come from the deciding checks' conclusions. A scenario can override them with an optional top-level `outcome` object: `{ "headline": "…", "reason": "…", "note": "…" }`.
 
-Scenarios without a `signals` array fall back to the original four verdict-only rows and always continue to the pipeline. All six scenarios (CLM-0841 to CLM-0846) have signals; every pre-flight check passes, since their stories fail or flag later in the pipeline.
+Scenarios without a `signals` array fall back to the original four verdict-only rows and always continue to the pipeline. All seven scenarios have signals. CLM-0841 to CLM-0846 pass pre-flight, since their stories fail or flag later in the pipeline. CLM-0847 fails it: a dental quotation with nothing paid, rejected before any forensic AI runs. It has no `phase1`, `phase2` or `phase3` arrays, because the pipeline never opens.
 
 ## Captions
 
@@ -105,9 +105,9 @@ A `captions` object gives one line per beat for the rolling demo and for muted v
 
 A missing key keeps the previous caption. Each caption stays up at least 2.5 seconds; quick beats queue. Captions are on by default everywhere; C toggles, and `?captions=off` gives a clean take for a recording.
 
-## Phase 1 array (pipeline document forensics)
+## Phase 1 array (pipeline receipt forensics)
 
-`phase1` drives Phase 1 in the pipeline modal, on the same renderer as the pre-flight panel: each check shows Looked at, Rule, Found and its conclusion, collapses to its summary line while the next runs, and all six stay open at rest. Entries have the same shape as `signals`, plus `delay`: when the check starts, in milliseconds from the start of Phase 1 (it completes 1.2 seconds later). Scenarios without a `phase1` array fall back to the checks in the `PHASES` array in `index.html`.
+`phase1` drives Phase 1 in the pipeline modal, on the same renderer as the pre-flight panel: each check shows Looked at, Rule, Found and its conclusion, collapses to its summary line while the next runs, and all six stay open at rest if they fit. When the band, checks and score block together are taller than the card's visible area (measured, not a breakpoint), the passing checks close at rest and flags and fails stay open; a closed check's summary line still carries its figure and threshold. This applies to every phase. Entries have the same shape as `signals`, plus `delay`: when the check starts, in milliseconds from the start of Phase 1 (it completes 1.2 seconds later). Scenarios without a `phase1` array fall back to the checks in the `PHASES` array in `index.html`.
 
 Captions for each check use the key `phase1:<check id>`, for example `phase1:SIG-P1-FONT`.
 
@@ -120,14 +120,13 @@ Captions for each check use the key `phase1:<check id>`, for example `phase1:SIG
 | `start` | Starting score, usually 1.00 |
 | `threshold` | At or above is CLEAN; below is SUSPICIOUS |
 | `weights` | Deduction per check and verdict: `{ "SIG-P1-FONT": { "fail": 0.40 } }`. A pass costs nothing. |
-| `adjustments` | Further deductions not tied to a Phase 1 check: `[{ "label": "Extraction confidence", "value": "0.92", "deduct": 0.09 }]` |
 | `action` | One line saying what the verdict causes, shown under the score |
 
-The total is computed from these deductions, never typed in, so the displayed score always reconciles with the lines above it. If the result disagrees with the scenario's pass/fail flag in `PHASES`, the page logs a console warning.
+The score deducts for adverse findings only. Extraction confidence is not evidence of tampering, and a low-confidence field is already routed to Needs Review in pre-flight, so it has no row here. A receipt with no deductions shows "No adverse findings". The total is computed from these deductions, never typed in, so the displayed score always reconciles with the lines above it. If the result disagrees with the scenario's pass/fail flag in `PHASES`, the page logs a console warning.
 
 ## Phase 2 and Phase 3 arrays
 
-`phase2` (provider and pattern) and `phase3` (organised ring) use the same shape as `phase1`, on the same renderer: single column, every check open at rest. Phase 2 holds the three Pega Event Strategies in this build (`ES-001` distance anomaly, `ES-002` device ring, `ES-003` bank account ring), all cost `rule`. Phase 3 holds `P3-RAG` (similar-case search) and `P3-GRAPH` (network graph), both cost `ai`. An optional `tag` adds a pill after the check name, for example `"MCP · Graph"`. A check that didn't run has `"verdict": "skipped"`.
+`phase2` (cross-claim signals) and `phase3` (network intelligence) use the same shape as `phase1`, on the same renderer: single column, every check open at rest. Phase 2 holds the three Pega Event Strategies in this build (`ES-001` distance anomaly, `ES-002` device ring, `ES-003` bank account ring), all cost `rule`. Phase 3 holds `P3-RAG` (similar-case search) and `P3-GRAPH` (network graph), both cost `ai`. An optional `tag` adds a pill after the check name, for example `"MCP · Graph"`. A check that didn't run has `"verdict": "skipped"`.
 
 Captions for each check use the key `phase2:<check id>` or `phase3:<check id>`, for example `phase2:ES-003`.
 

@@ -2,7 +2,7 @@
 
 ## Keyboard Shortcuts
 
-- 1-6 → Jump to CLM-0841 through CLM-0846
+- 1-7 → Jump to CLM-0841 through CLM-0847
 - 0 → Restart demo (returns to Slide 1, clears the claim form)
 - D → Go to Demo mode
 - S → Go to Slides mode
@@ -35,7 +35,7 @@
 
 ## The Three Phases
 
-### Phase 1: Document Forensics 🔍
+### Phase 1: Receipt Forensics 🔍
 
 **Question:** Is the document real and valid?
 
@@ -56,7 +56,7 @@
 - Checks: RAG pattern matching, network graph analysis
 - Result: PASS or FLAGGED
 
-## The Six Scenarios at a Glance
+## The Seven Scenarios at a Glance
 
 | ID       | Member  | Ph1  | Ph2  | Ph3  | Outcome                  |
 
@@ -66,13 +66,15 @@
 
 | CLM-0842 | Sarah   | FAIL | —    | —    | Phase 1: Amount mismatch |
 
-| CLM-0843 | David   | PASS | FAIL | —    | Phase 2: Phantom ABN     |
+| CLM-0843 | David   | PASS | FAIL | —    | Phase 2: Bank account ring |
 
-| CLM-0844 | Linda   | PASS | FAIL | —    | Phase 2: Clustering      |
+| CLM-0844 | Linda   | PASS | FAIL | —    | Phase 2: Device ring     |
 
 | CLM-0845 | Michael | PASS | PASS | FLAG | Phase 3: RAG match - AIM |
 
 | CLM-0846 | Angela  | PASS | PASS | FLAG | Phase 3: Network connect |
+
+| CLM-0847 | Priya   | —    | —    | —    | Pre-flight: Quotation rejected |
 
 ## Presentation Flow (15-20 minutes)
 

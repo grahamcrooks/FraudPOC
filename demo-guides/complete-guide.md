@@ -35,7 +35,7 @@ evidence package.
 
 ## 2. The Three Phases
 
-### Phase 1: Document Forensics 🔍
+### Phase 1: Receipt Forensics 🔍
 
 - Purpose: Is the document real and valid?
 - What it checks:
@@ -94,7 +94,7 @@ PASS → Send for normal adjudication \| FLAGGED → HIGH PRIORITY → SIU
 - Phase 2: N/A
 - Phase 3: N/A
 - Outcome: Caught in Phase 1 (Claim-to-Receipt mismatch)
-- Demo Point: Shows document forensics catching a discrepancy — a dedicated panel shows Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) with "Result: MISMATCH DETECTED"
+- Demo Point: Shows receipt forensics catching a discrepancy — a dedicated panel shows Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) with "Result: MISMATCH DETECTED"
 
 ### CLM-0843 — David Okafor
 
@@ -193,7 +193,7 @@ CLM-0845 only: Click "Open Alert & Investigation Manager" after Phase 3
 
 ### Keyboard Shortcuts
 
-- 1-6 = Jump to scenarios
+- 1-7 = Jump to scenarios
 - 0 = Restart demo
 - D = Demo mode
 - S = Slides mode

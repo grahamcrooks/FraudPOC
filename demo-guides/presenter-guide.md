@@ -5,7 +5,7 @@
 1. Open the demo in fullscreen (F key)
 2. Make sure you are on Slide 1 (Agenda)
 3. Have your talking points ready (see Key Messages below)
-4. Test keyboard shortcuts: D (demo), S (slides), 1-6 (scenarios), 0 (restart)
+4. Test keyboard shortcuts: D (demo), S (slides), 1-7 (scenarios), 0 (restart)
 
 ## Part 1: Slides (1-5)
 
@@ -42,9 +42,9 @@ Time: 2 minutes
 ### Slide 4: Three Phases (One Intelligent Pipeline)
 
 - Talk about:
-  - Phase 1 — Document Forensics: is this document real and valid?
-  - Phase 2 — Provider & Pattern Fraud: does this claim make sense?
-  - Phase 3 — Organised Ring Fraud: who else is involved?
+  - Phase 1 — Receipt Forensics: is this document real and valid?
+  - Phase 2 — Cross-Claim Signals: does this claim make sense?
+  - Phase 3 — Network Intelligence: who else is involved?
   - Pega Alerts & Investigations Management (AIM) — every AI signal is reviewed by a human investigator; AI assists, humans decide
 
 Time: 2 minutes
@@ -67,7 +67,7 @@ Time: 1-2 minutes
   - This is a normal claim from James Kowalski - a \$312 dental service. Watch what happens...
 - What happens:
   - Document upload → validation checks pass
-  - Phase 1: Document Forensics → PASS
+  - Phase 1: Receipt Forensics → PASS
   - Phase 2: Event Strategies → PASS
   - Phase 3: Agentic Intelligence → PASS
   - Result: Sent for normal adjudication
@@ -82,7 +82,7 @@ Time: 2-3 minutes
   - Now watch what happens when the member-entered data doesn’t match the actual receipt...
 - What happens:
   - Member entered \$487.50 but the receipt shows \$445.00
-  - Phase 1: Document Forensics → FAILS — Claim-to-Receipt Match (amber warning), plus Font Consistency and Metadata & Provenance both fail (spliced typefaces, Photoshop metadata trail)
+  - Phase 1: Receipt Forensics → FAILS — Claim-to-Receipt Match (amber warning), plus Font Consistency and Metadata & Provenance both fail (spliced typefaces, Photoshop metadata trail)
   - A dedicated “Phase 1 Validation Failed” panel appears showing Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) and “Result: MISMATCH DETECTED”
   - Phases 2 and 3 never run for this claim — it’s scoped to Phase 1 only
   - Escalated to the investigator queue, HIGH priority, 4-hour SLA

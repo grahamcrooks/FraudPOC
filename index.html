@@ -170,6 +170,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .s2-pts li{color:#fff}
 .light .s2-pts li{color:var(--blue)}
 .s2-pts li::before{content:'·';opacity:.7;flex-shrink:0}
+.s2-planned{font-size:clamp(11px,1.1vw,13px);font-style:italic;line-height:1.45;margin-top:10px}
+.dark .s2-planned{color:#7C93B8}
+.light .s2-planned{color:var(--text-3)}
 .s2-aim{border-radius:10px;padding:14px 24px;text-align:center;font-size:clamp(12px,1.3vw,16px);line-height:1.6;margin-top:16px;opacity:0;transition:opacity .5s .6s}
 .s2-aim.visible{opacity:1}
 .dark .s2-aim{background:rgba(0,31,95,.6);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.1)}
@@ -599,6 +602,21 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .ls-view-welcome{opacity:0}
 .ls-wb{font-size:1.6em;font-weight:800;color:var(--text);line-height:1.2;margin:.8em 0 1em}
 .ls-tile{display:flex;align-items:center;gap:.7em;border:1px solid var(--border);border-radius:.8em;padding:.8em .9em;margin-bottom:.7em;font-weight:600;color:var(--text-2)}
+.ls.fr-browser{justify-content:flex-start;padding-left:6vw}
+.ls-browser{position:relative;width:min(52vw,calc((100vh - 200px) * 1.6));aspect-ratio:16/10;font-size:clamp(10px,1.55vh,15px);background:#0B0F1A;border-radius:.8em;padding:0 .35em .35em;box-shadow:0 0 0 2px #2A3345,0 30px 80px rgba(0,0,0,.45);display:flex;flex-direction:column}
+.lsb-bar{display:flex;align-items:center;gap:1em;padding:.55em .6em}
+.lsb-dots{display:flex;gap:.4em}
+.lsb-dots i{width:.7em;height:.7em;border-radius:50%;background:#2A3345}
+.lsb-url{flex:1;background:#1A2233;color:#9FB4D4;border-radius:.5em;padding:.3em .9em;font-size:.85em}
+.lsb-screen{position:relative;flex:1;background:var(--white);overflow:hidden;border-radius:.3em .3em 0 0}
+.lsb-screen .ls-brand{border-bottom:1px solid var(--border);padding:.8em 1.4em}
+.lsb-nav{margin-left:auto;font-size:.62em;font-weight:600;color:var(--text-3);letter-spacing:0}
+.ls-browser .ls-view{left:50%;right:auto;width:22em;transform:translateX(-50%);top:4.4em}
+.ls-browser .ls-view-welcome{width:40em}
+.ls-browser .ls-bio{left:50%;right:auto;width:16em;margin-left:-8em;top:34%}
+.lsb-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:.7em}
+.lsb-tiles .ls-tile{margin:0;white-space:nowrap}
+.lsb-task{display:flex;justify-content:space-between;padding:.35em .8em;background:#1A2233;color:#9FB4D4;font-size:.8em;border-radius:0 0 .4em .4em}
 .ls-bio{position:absolute;left:12%;right:12%;top:38%;background:rgba(255,255,255,.97);border-radius:1.4em;box-shadow:0 12px 40px rgba(0,31,95,.25);padding:1.4em 1em;text-align:center;opacity:0;transform:scale(.92);transition:opacity .25s,transform .25s;z-index:2}
 .ls-bio svg{width:3.6em;height:3.6em;stroke:var(--pblue);transition:stroke .2s}
 .ls-bio-txt{margin-top:.5em;font-weight:700;color:var(--text)}
@@ -613,6 +631,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 /* Simplified outline the phone cross-fades into at handoff */
 .ls-outline{position:fixed;z-index:615;border:3px solid var(--navy);box-shadow:0 0 0 2px #fff,0 8px 24px rgba(0,0,0,.25);pointer-events:none;opacity:0}
 .ls-outline.phone{border-radius:18%/8.5%}
+.ls-outline.browser{border-radius:6%/9%}
+.ls-outline.browser::before{content:'';position:absolute;top:0;left:0;right:0;height:16%;background:var(--navy)}
 .ls-outline.phone::before{content:'';position:absolute;top:4%;left:50%;transform:translateX(-50%);width:32%;height:3%;border-radius:4px;background:var(--navy)}
 
 /* Particles: sized for the back of the room */
@@ -688,7 +708,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .p1c-pass{color:var(--green-mid)}
 .p1c-flag{color:#92400E}
 .p1c-fail{color:#DC2626}
-.p1c-adj{color:var(--text)}
 .p1c-d{text-align:right;font-weight:600;color:var(--text)}
 .p1c-rule{width:calc(min(280px,100%) + 164px);max-width:444px;border-top:1px solid var(--text-4);margin:4px 0}
 .p1c-total{font-weight:800;color:var(--text);font-size:14px}
@@ -745,7 +764,7 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
 
 <!-- CONTROL BAR -->
 <div class="ctrl" id="ctrl">
-  <button class="cbtn" id="btn-rolling" onclick="toggleRolling()" title="Auto-advance slides once, then loop the six scenarios continuously">▶ Rolling Demo</button>
+  <button class="cbtn" id="btn-rolling" onclick="toggleRolling()" title="Auto-advance slides once, then loop the seven scenarios continuously">▶ Rolling Demo</button>
   <button class="cbtn" id="btn-restart" onclick="restartDemo()" title="Stop everything and return to Slide 1">↩ Restart</button>
   <div class="ctrl-sep"></div>
   <span class="ctrl-lbl" id="ctrl-context">Slides</span>
@@ -764,6 +783,7 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
     <button class="sc" onclick="setScenario(3)" id="sc3"><span class="dot-indicator da"></span>CLM-0844 · Ph.2 Device</button>
     <button class="sc" onclick="setScenario(4)" id="sc4"><span class="dot-indicator da"></span>CLM-0845 · Ph.3 RAG</button>
     <button class="sc" onclick="setScenario(5)" id="sc5"><span class="dot-indicator dr"></span>CLM-0846 · Ph.3 Network</button>
+    <button class="sc" onclick="setScenario(6)" id="sc6"><span class="dot-indicator dr"></span>CLM-0847 · Pre-flight</button>
   </div>
   <div class="ctrl-sep"></div>
   <span class="mode-badge presenting" id="mode-badge">⌨ Presenting</span>
@@ -919,7 +939,7 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
         <div class="s2-col" id="c0">
           <div class="s2-bar" style="background:#F76923"></div>
           <div class="s2-body">
-            <div class="s2-title">🔍 Document Forensics</div>
+            <div class="s2-title">🔍 Receipt Forensics</div>
             <span class="s2-tag" style="background:#F76923">Is this document real and valid?</span>
             <div class="s2-signals">8 Fraud Signals</div>
             <ul class="s2-pts">
@@ -937,24 +957,21 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
         <div class="s2-col" id="c1">
           <div class="s2-bar" style="background:#10A5AC"></div>
           <div class="s2-body">
-            <div class="s2-title">⚡ Provider & Pattern Fraud</div>
+            <div class="s2-title">⚡ Cross-Claim Signals</div>
             <span class="s2-tag" style="background:#10A5AC">Does this claim make sense?</span>
-            <div class="s2-signals">7 Fraud Signals</div>
+            <div class="s2-signals">3 Fraud Signals</div>
             <ul class="s2-pts">
-              <li>Every strategy named, explainable and entirely auditable</li>
-              <li>Phantom ABN detection — checked against the Australian Business Register</li>
-              <li>Repeat-account clustering — one payment account recurring across claims</li>
-              <li>Claim velocity (planned) — submission frequency across rolling windows</li>
-              <li>Device ring — unrelated members submitting from one device</li>
-              <li>Waiver abuse & 90-day volume — scope being confirmed</li>
-              <li>New strategies added in days — no custom code</li>
+              <li>ES-001 Distance anomaly — lodged far from the member's registered address</li>
+              <li>ES-002 Device ring — unrelated members submitting from one device</li>
+              <li>ES-003 Bank account ring — unrelated practices paying into one account</li>
             </ul>
+            <div class="s2-planned">Further strategies — phantom ABN, waiver abuse, item code validation — are planned and not in this build.</div>
           </div>
         </div>
         <div class="s2-col" id="c2">
           <div class="s2-bar" style="background:#5F67B9"></div>
           <div class="s2-body">
-            <div class="s2-title">🧠 Organised Ring Fraud</div>
+            <div class="s2-title">🧠 Network Intelligence</div>
             <span class="s2-tag" style="background:#5F67B9">Who else is involved?</span>
             <div class="s2-signals">5 Fraud Signals</div>
             <ul class="s2-pts">
@@ -1114,7 +1131,7 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
         <div class="scenario-banner" id="scenario-banner" style="display:none">
           <div class="sb-top">
             <span class="sb-icon" id="sb-icon">✅</span>
-            <div class="sb-label" id="sb-label">Scenario 1 of 6 — Clean Claim</div>
+            <div class="sb-label" id="sb-label">Scenario 1 of 7 — Clean Claim</div>
             <div class="sb-countdown" id="sb-countdown"></div>
           </div>
           <div class="sb-title" id="sb-title">A legitimate dental claim — watch how all three phases clear</div>
@@ -1278,13 +1295,13 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
       <div class="phase-collapsed"><div class="phase-status-ico psi-pass">📥</div><div class="phase-name">Claim Case Created · Valid Receipt Confirmed</div><span class="phase-status-badge psb-pass">✓ Complete</span></div>
     </div>
     <div class="phase-block" id="ph1-block">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph1-ico">🔍</div><div class="phase-titlewrap"><div class="phase-name">Phase 1 — Document Forensics</div><div class="phase-question">Is this document real and valid? Examining fonts, structure, provenance and claim consistency.</div></div><span class="phase-status-badge psb-queued" id="ph1-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph1-ico">🔍</div><div class="phase-titlewrap"><div class="phase-name">Phase 1 — Receipt Forensics</div><div class="phase-question">Is this document real and valid? Examining fonts, structure, provenance and claim consistency.</div></div><span class="phase-status-badge psb-queued" id="ph1-badge">Queued</span></div>
       <div class="phase-expanded" id="ph1-expanded">
         <div class="phase-info" id="ph1-info"><div class="phase-info-band" id="ph1-info-band"><div class="phase-info-txt" id="ph1-info-txt"></div></div></div>
         <div class="check-list" id="ph1-checks"></div>
         <div class="p1-calc" id="ph1-calc"></div>
         <div class="score-reveal" id="ph1-score"><div class="score-num" id="ph1-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Document Integrity Score</div><div class="score-verdict" id="ph1-score-verdict">Calculating...</div><div class="score-route" id="ph1-score-route"></div></div></div>
-        <div class="result-badge" id="ph1-result"><div class="rb-ico" id="ph1-rb-ico">✅</div><div><div class="rb-title" id="ph1-rb-title">Phase 1 Passed</div><div class="rb-sub" id="ph1-rb-sub">Document integrity confirmed</div></div></div>
+        <div class="result-badge" id="ph1-result"><div class="rb-ico" id="ph1-rb-ico">✅</div><div><div class="rb-title" id="ph1-rb-title">Phase 1 Passed</div><div class="rb-sub" id="ph1-rb-sub">No adverse findings</div></div></div>
         <div class="discrepancy-panel" id="ph1-discrepancy">
           <div class="discrepancy-title">⚠️ Phase 1 Validation Failed — Member Claim vs Actual Receipt</div>
           <div class="discrepancy-rows">
@@ -1297,13 +1314,13 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
         </div>
         <div class="phase-btns" id="ph1-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
-          <button class="btn-continue" id="ph1-continue-btn" onclick="collapseAndContinue(1)">Continue to Phase 2 — Provider and Pattern →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Auditable Pega Event Strategies evaluated in real time</div></button>
+          <button class="btn-continue" id="ph1-continue-btn" onclick="collapseAndContinue(1)">Continue to Phase 2 — Cross-Claim Signals →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Auditable Pega Event Strategies evaluated in real time</div></button>
           <button class="btn-aim" id="ph1-aim-btn" style="display:none" onclick="showFinalAndAIM()">View Fraud Detection Summary →</button>
         </div>
       </div>
     </div>
     <div class="phase-block" id="ph2-block" style="display:none">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Provider and Pattern</div><div class="phase-question">Does this claim make sense? Comparing against provider history, registers and recent claim patterns.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Cross-Claim Signals</div><div class="phase-question">Does this claim make sense? Comparing it with other claims from the same location, device and bank account.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
@@ -1313,13 +1330,13 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
         <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No fraudulent patterns detected</div></div></div>
         <div class="phase-btns" id="ph2-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
-          <button class="btn-continue" id="ph2-continue-btn" onclick="collapseAndContinue(2)">Continue to Phase 3 — Organised Ring →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Knowledge Buddy RAG similarity search and network graph ring detection</div></button>
+          <button class="btn-continue" id="ph2-continue-btn" onclick="collapseAndContinue(2)">Continue to Phase 3 — Network Intelligence →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Knowledge Buddy RAG similarity search and network graph ring detection</div></button>
           <button class="btn-aim" id="ph2-aim-btn" style="display:none" onclick="showFinalAndAIM()">View Fraud Detection Summary →</button>
         </div>
       </div>
     </div>
     <div class="phase-block" id="ph3-block" style="display:none">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph3-ico">🧠</div><div class="phase-titlewrap"><div class="phase-name">Phase 3 — Organised Ring</div><div class="phase-question">Who else is involved? Tracing connections to entities already confirmed fraudulent.</div></div><span class="phase-status-badge psb-queued" id="ph3-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph3-ico">🧠</div><div class="phase-titlewrap"><div class="phase-name">Phase 3 — Network Intelligence</div><div class="phase-question">Who else is involved? Tracing connections to entities already confirmed fraudulent.</div></div><span class="phase-status-badge psb-queued" id="ph3-badge">Queued</span></div>
       <div class="phase-expanded" id="ph3-expanded">
         <div class="phase-info" id="ph3-info"><div class="phase-info-band" id="ph3-info-band"><div class="phase-info-txt" id="ph3-info-txt"></div></div></div>
         <div class="check-list" id="ph3-checks"></div>
@@ -1357,29 +1374,52 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
   <div class="ls-phone" id="ls-phone">
     <div class="ls-notch"></div>
     <div class="ls-screen">
-      <div class="ls-status"><span id="ls-clock">9:14</span><span>●●●● 5G ▮</span></div>
+      <div class="ls-status"><span class="ls-clock">9:14</span><span>●●●● 5G ▮</span></div>
       <div class="ls-brand"><span class="logo-plus">H+</span>Health Insurance Co</div>
       <div class="ls-view ls-view-login">
         <div class="ls-h">Sign in</div>
         <div class="ls-lbl">Membership number</div>
-        <div class="ls-field" id="ls-mbr">MBR-33291</div>
+        <div class="ls-field ls-mbr">MBR-33291</div>
         <div class="ls-lbl">Password</div>
         <div class="ls-field ls-pw">••••••••••</div>
         <div class="ls-btn">Sign in</div>
       </div>
       <div class="ls-bio">
         <svg viewBox="0 0 48 48" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14V8a4 4 0 0 1 4-4h6M34 4h6a4 4 0 0 1 4 4v6M44 34v6a4 4 0 0 1-4 4h-6M14 44H8a4 4 0 0 1-4-4v-6"/><path d="M17 18v3M31 18v3M24 18v9h-2M17 32c4 3.5 10 3.5 14 0"/></svg>
-        <div class="ls-bio-txt" id="ls-bio-txt">Face ID</div>
+        <div class="ls-bio-txt">Face ID</div>
       </div>
       <div class="ls-view ls-view-welcome">
-        <div class="ls-wb">Welcome back, <span id="ls-first">James</span>.</div>
+        <div class="ls-wb">Welcome back, <span class="ls-first">James</span>.</div>
         <div class="ls-tile">🧾 Lodge a claim</div>
         <div class="ls-tile">🛡️ My cover</div>
         <div class="ls-tile">📍 Find a provider</div>
       </div>
     </div>
   </div>
-  <div class="ls-sim"><span class="ls-sim-pill">Simulated</span>Member sign-in on the H+ app · illustrative device and location data</div>
+  <div class="ls-browser" id="ls-browser" style="display:none">
+    <div class="lsb-bar"><span class="lsb-dots"><i></i><i></i><i></i></span><span class="lsb-url">🔒 members.hplus.example/sign-in</span></div>
+    <div class="lsb-screen">
+      <div class="ls-brand"><span class="logo-plus">H+</span>Health Insurance Co<span class="lsb-nav">Cover · Claims · Find a provider · Help</span></div>
+      <div class="ls-view ls-view-login">
+        <div class="ls-h">Member sign-in</div>
+        <div class="ls-lbl">Membership number</div>
+        <div class="ls-field ls-mbr">MBR-33291</div>
+        <div class="ls-lbl">Password</div>
+        <div class="ls-field ls-pw">••••••••••</div>
+        <div class="ls-btn">Sign in</div>
+      </div>
+      <div class="ls-bio">
+        <svg viewBox="0 0 48 48" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><rect x="10" y="21" width="28" height="21" rx="4"/><path d="M16 21v-6a8 8 0 0 1 16 0v6M24 29v5"/></svg>
+        <div class="ls-bio-txt">One-time code</div>
+      </div>
+      <div class="ls-view ls-view-welcome">
+        <div class="ls-wb">Welcome back, <span class="ls-first">James</span>.</div>
+        <div class="lsb-tiles"><div class="ls-tile">🧾 Lodge a claim</div><div class="ls-tile">🛡️ My cover</div><div class="ls-tile">📍 Find a provider</div></div>
+      </div>
+    </div>
+    <div class="lsb-task"><span>⊞</span><span class="ls-clock">9:14</span></div>
+  </div>
+  <div class="ls-sim"><span class="ls-sim-pill">Simulated</span><span id="ls-sim-txt">Member sign-in on the H+ app · illustrative device and location data</span></div>
 </div>
 <div class="ls-fx" id="ls-fx"></div>
 <div class="cap" id="cap" role="status" aria-live="polite"><span class="cap-tag" id="cap-tag"></span><span class="cap-text" id="cap-text"></span></div>
@@ -1390,6 +1430,7 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
 <script src="data/scenarios/clm-0844.js"></script>
 <script src="data/scenarios/clm-0845.js"></script>
 <script src="data/scenarios/clm-0846.js"></script>
+<script src="data/scenarios/clm-0847.js"></script>
 <script>
 // ══════════════════════════════════════════════════════
 // DATA
@@ -1408,22 +1449,26 @@ const PREFLIGHT=[
     conf:'All critical fields above threshold · ProviderABN 0.97 · InvoiceTotal 0.95 · ServiceDate 0.91' },
   { doctype:'TAX INVOICE · Healthcare Receipt (Physiotherapy) · Allied health schedule applies',
     conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93' },
+  { doctype:'TAX INVOICE layout · Dental treatment plan and quotation',
+    conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.95' },
 ];
 
 const S=[
   {id:'CLM-2024-0841',mbr:'MBR-33291',joined:'Mar 2019',suburb:'Carlton VIC 3053',contact:'Email',member:'James Kowalski',ini:'JK',pol:'POL-2021-44210',cov:'Gold Hospital + Extras',cnt:3,amt:'$847.00',ben:'$1,153',type:'Dental (Extras)',date:'12 Jul 2026',prov:'Bright Smile Dental',abn:'42 198 776 334',clamt:'$312.00',codes:'011, 022, 114',file:'dental_receipt_MBR33291.pdf',fsz:'284 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'clean',
-    preview:{icon:'✅',label:'Scenario 1 of 6 — Clean Claim',title:'A legitimate dental claim — watch how all three phases clear',body:'James lodges a routine dental claim from Bright Smile Dental. The receipt is genuine, the provider is registered and there are no suspicious patterns. This shows what a clean run looks like end-to-end.'}},
+    preview:{icon:'✅',label:'Scenario 1 of 7 — Clean Claim',title:'A legitimate dental claim — watch how all three phases clear',body:'James lodges a routine dental claim from Bright Smile Dental. The receipt is genuine, the provider is registered and there are no suspicious patterns. This shows what a clean run looks like end-to-end.'}},
   {id:'CLM-2024-0842',mbr:'MBR-44712',joined:'Aug 2021',suburb:'Footscray VIC 3011',contact:'Email',member:'Sarah Nguyen',ini:'SN',pol:'POL-2019-88821',cov:'Silver Hospital + Extras',cnt:5,amt:'$1,240.00',ben:'$960',type:'Optical (Extras)',date:'14 Jul 2026',prov:'Vision Direct Pty Ltd',abn:'51 234 567 891',clamt:'$487.50',codes:'10801, 10701, 10501',file:'optical_receipt_MBR44712.pdf',fsz:'391 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph1',
     receiptMismatch:{entered:'$487.50',receipt:'$445.00',diff:'$42.50',pct:'10.8%'},
-    preview:{icon:'🔍',label:'Scenario 2 of 6 — Document Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
+    preview:{icon:'🔍',label:'Scenario 2 of 7 — Document Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
   {id:'CLM-2024-0843',mbr:'MBR-77834',joined:'Jan 2024',suburb:'Dandenong VIC 3175',contact:'SMS',member:'David Okafor',ini:'DO',pol:'POL-2022-11092',cov:'Bronze Hospital + Extras',cnt:2,amt:'$390.00',ben:'$1,610',type:'Physiotherapy (Extras)',date:'11 Jul 2026',prov:'Active Rehab Centre',abn:'99 000 111 222',clamt:'$195.00',codes:'SP001, SP010',file:'physio_receipt_MBR77834.pdf',fsz:'212 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'fail-ph2',
-    preview:{icon:'🏦',label:'Scenario 3 of 6 — Bank Account Ring',title:'Four practices, one bank account — caught in Phase 2',body:'David\'s physio receipt is genuine and his claim looks ordinary. But ES-003 sees that four unrelated practices have paid into the same bank account in 22 days, and the account name matches none of them.'}},
+    preview:{icon:'🏦',label:'Scenario 3 of 7 — Bank Account Ring',title:'Four practices, one bank account — caught in Phase 2',body:'David\'s physio receipt is genuine and his claim looks ordinary. But ES-003 sees that four unrelated practices have paid into the same bank account in 22 days, and the account name matches none of them.'}},
   {id:'CLM-2024-0844',mbr:'MBR-55901',joined:'Nov 2025',suburb:'Springvale VIC 3171',contact:'SMS',member:'Linda Pham',ini:'LP',pol:'POL-2020-73341',cov:'Gold Hospital + Extras',cnt:7,amt:'$2,100.00',ben:'$400',type:'Dental (Extras)',date:'13 Jul 2026',prov:'Metro Dental Group',abn:'77 345 678 012',clamt:'$264.00',codes:'011, 121',file:'dental_receipt_MBR55901.pdf',fsz:'267 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'fail-ph2',
-    preview:{icon:'📱',label:'Scenario 4 of 6 — Device Ring',title:'Five members, one device — caught in Phase 2',body:'Linda\'s dental claim looks ordinary on its own. But ES-002 sees five unrelated members lodging from the same device in 26 hours — different surnames, addresses and policies. Her claim is the one that tips it over the threshold.'}},
+    preview:{icon:'📱',label:'Scenario 4 of 7 — Device Ring',title:'Five members, one device — caught in Phase 2',body:'Linda\'s dental claim looks ordinary on its own. But ES-002 sees five unrelated members lodging from the same device in 26 hours — different surnames, addresses and policies. Her claim is the one that tips it over the threshold.'}},
   {id:'CLM-2024-0845',mbr:'MBR-29034',joined:'Jun 2018',suburb:'Brunswick VIC 3056',contact:'Email',member:'Michael Torres',ini:'MT',pol:'POL-2018-55601',cov:'Silver Hospital + Extras',cnt:4,amt:'$920.00',ben:'$580',type:'Optical (Extras)',date:'10 Jul 2026',prov:'ClearView Optometry',abn:'33 456 789 123',clamt:'$390.00',codes:'10801, 10712',file:'optical_receipt_MBR29034.pdf',fsz:'318 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph3',
-    preview:{icon:'🧠',label:'Scenario 5 of 6 — Phantom Billing Pattern',title:'Passes Phases 1 & 2 — caught by AI case library in Phase 3',body:'Michael\'s optical claim clears document forensics and all Pega Event Strategies. But Knowledge Buddy finds a 91% similarity match to four confirmed phantom billing cases — same item codes, same provider profile type.'}},
+    preview:{icon:'🧠',label:'Scenario 5 of 7 — Phantom Billing Pattern',title:'Passes Phases 1 & 2 — caught by AI case library in Phase 3',body:'Michael\'s optical claim clears receipt forensics and all Pega Event Strategies. But Knowledge Buddy finds a 91% similarity match to four confirmed phantom billing cases — same item codes, same provider profile type.'}},
   {id:'CLM-2024-0846',mbr:'MBR-61203',joined:'Feb 2026',suburb:'Sunshine VIC 3020',contact:'SMS',member:'Angela Wu',ini:'AW',pol:'POL-2023-98811',cov:'Gold Hospital + Extras',cnt:1,amt:'$195.00',ben:'$1,805',type:'Physiotherapy (Extras)',date:'15 Jul 2026',prov:'Prime Physio & Sports',abn:'55 678 901 234',clamt:'$230.00',codes:'SP001, SP015',file:'physio_receipt_MBR61203.pdf',fsz:'198 KB',h1:'Lodge your physio claim',hs:'Treatment sessions · assessed on submission',outcome:'fail-ph3',
-    preview:{icon:'🕸️',label:'Scenario 6 of 6 — Organised Fraud Ring',title:'Passes Phases 1 & 2 — network graph reveals a fraud ring',body:'Angela\'s claim is clean on the surface and clears both earlier phases. But the network graph traces a 3-hop connection from this provider through a shared IP to a confirmed fraud member — uncovering Community #47, a ring of 14 members and 3 providers.'}},
+    preview:{icon:'🕸️',label:'Scenario 6 of 7 — Organised Fraud Ring',title:'Passes Phases 1 & 2 — network graph reveals a fraud ring',body:'Angela\'s claim is clean on the surface and clears both earlier phases. But the network graph traces a 3-hop connection from this provider through a shared IP to a confirmed fraud member — uncovering Community #47, a ring of 14 members and 3 providers.'}},
+  {id:'CLM-2024-0847',mbr:'MBR-80174',joined:'Sep 2022',suburb:'Northcote VIC 3070',contact:'Email',member:'Priya Raman',ini:'PR',pol:'POL-2022-31905',cov:'Gold Hospital + Extras',cnt:2,amt:'$412.00',ben:'$1,588',type:'Dental (Extras)',date:'16 Jul 2026',prov:'Merri Creek Dental Studio',abn:'36 757 192 913',clamt:'$448.00',codes:'012, 114, 532',file:'dental_quote_MBR80174.pdf',fsz:'231 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'reject-preflight',
+    preview:{icon:'🧾',label:'Scenario 7 of 7 — Not a Claimable Receipt',title:'A quotation, not a receipt — stopped in pre-flight',body:'Priya uploads what looks like a dental invoice. It is a treatment plan and quotation for work she has not had done. Caught in pre-flight, before a single forensic AI call is spent on it.'}},
 ];
 
 // Per-scenario, per-phase one-sentence explanation shown in rolling mode
@@ -1460,35 +1505,37 @@ const PHASE_DESC=[
     ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
     ph3:'Tracing the provider\'s network up to 3 hops out — using the device and geolocation signals captured at submission — looking for links into known fraud communities.',
   },
+  {}, // CLM-0847: never reaches the pipeline
 ];
 
 // Shown in the band AFTER a phase resolves — states the finding.
 const PHASE_RESULT_DESC=[
-  { ph1:'Document integrity confirmed — no tampering detected.',
+  { ph1:'No adverse findings on the receipt.',
     ph2:'All three event strategies clear — no signal raised.',
     ph3:'No similar fraud cases and no network connections found.' },
   { ph1:'Suspicious document — spliced typefaces and a Photoshop metadata trail dated after the service.' },
-  { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
+  { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'ES-003 found four unrelated practices paying into one account in 22 days — and the account name matches none of them.' },
-  { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
-    ph2:'ES-002 found five unrelated members on one device in 26 hours. The ring was detected by this claim: the earlier four were assessed and cleared before there was anything to see, so the alert is raised against the device, not the claim.' },
-  { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
+  { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
+    ph2:'ES-002 found five unrelated members on one device in 26 hours. The four earlier claims were assessed and cleared before the pattern existed; this claim is the one that revealed it.' },
+  { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'All three event strategies clear. Every strategy sees one claim at a time — no single claim contains the connection.',
     ph3:'91% similarity to four confirmed phantom-billing cases — same codes, same provider profile.' },
-  { ph1:'Document integrity confirmed — no tampering detected. A clean document is not a clean claim.',
+  { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'All three event strategies clear — no signal raised. Every strategy sees one claim at a time — no single claim contains the connection.',
     ph3:'3-hop link via the shared submission IP into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
+  {}, // CLM-0847: never reaches the pipeline
 ];
 
 const PHASES=[
-  {ph1:{pass:true,score:'0.91',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
+  {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $312.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning document typefaces...',pass:'Single uniform typeface throughout — Arial 9pt',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays and stamp manipulation...',pass:'No overlay detected — StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts — generative signature score 0.02',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading file authoring trail and timestamps...',pass:'Authored by clinic practice software 12 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:true,score:'0.04',scoreColor:'#16A34A',verdict:'CLEAN — No flags raised',route:'Confirmed Clean → Phase 3 Organised Ring',checks:[
+  ]},ph2:{pass:true,score:'0.04',scoreColor:'#16A34A',verdict:'CLEAN — No flags raised',route:'Confirmed Clean → Phase 3 Network Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission IP location against the member\'s registered address...',pass:'Lodged near the registered address — no distance grade raised',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Counting distinct members submitting from this device fingerprint...',pass:'No unrelated members on this device in the window',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Counting distinct practices paying into this bank account...',pass:'Account receives payments from a single practice only',result:'pass',d:6000},
@@ -1505,7 +1552,7 @@ const PHASES=[
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
   /* Phase 2 & 3 hidden for the Phase 1 dataset-processing demo — CLM-0842 stops at Phase 1, ph2/ph3 stay null so their blocks never activate. Data kept, not deleted. */
   ]},ph2:null,ph3:null},
-  {ph1:{pass:true,score:'0.83',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
+  {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $195.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning typefaces...',pass:'Calibri 10pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting overlays...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
@@ -1517,7 +1564,7 @@ const PHASES=[
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking device fingerprint...',pass:'No shared-device pattern',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking bank account...',pass:'Single practice',result:'pass',d:6000},
   ]},ph3:null},
-  {ph1:{pass:true,score:'0.78',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
+  {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $264.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Times New Roman 10pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
@@ -1529,14 +1576,14 @@ const PHASES=[
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
   ]},ph3:null},
-  {ph1:{pass:true,score:'0.82',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
+  {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $390.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Helvetica 9pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.05',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by practice software 10 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — No signal raised',route:'Proceeding to Phase 3 Organised Ring',checks:[
+  ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — No signal raised',route:'Proceeding to Phase 3 Network Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
@@ -1544,14 +1591,14 @@ const PHASES=[
     {ico:'🔍',name:'Knowledge Buddy RAG',running:'Searching Fraud Case Library for pattern matches...',pass:'',fail:'91% similarity match — Pattern closely resembles 4 confirmed phantom billing cases. Same item codes, similar provider profile.',result:'fail',d:3600},
     {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal...',pass:'No direct ring connections found',result:'pass',d:7200,isMCP:true},
   ]}},
-  {ph1:{pass:true,score:'0.79',scoreColor:'#16A34A',verdict:'CLEAN — Above threshold',route:'Routing to Phase 2 Provider and Pattern',checks:[
+  {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
     {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $230.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Arial 10pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.02',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by clinic software 15 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this document',result:'pass',d:15600},
-  ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — All strategies clear',route:'Proceeding to Phase 3 Organised Ring',checks:[
+  ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — All strategies clear',route:'Proceeding to Phase 3 Network Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
@@ -1559,6 +1606,8 @@ const PHASES=[
     {ico:'🔍',name:'Knowledge Buddy RAG',running:'Searching Fraud Case Library...',pass:'Low similarity — 0.18 — No significant match',result:'pass',d:3200},
     {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Provider ABC → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
   ]}},
+  // CLM-0847: rejected at pre-flight, so the pipeline never opens.
+  {ph1:null,ph2:null,ph3:null},
 ];
 
 // ══════════════════════════════════════════════════════
@@ -1813,7 +1862,7 @@ function launchRollingDemo(){
   // Set the scenario (resets portal to clean state)
   setScenario(curScenario);
   // Highlight the active scenario button in the control bar
-  for(let i=0;i<6;i++) $('sc'+i).classList.toggle('on',i===curScenario);
+  for(let i=0;i<S.length;i++) $('sc'+i).classList.toggle('on',i===curScenario);
   // Let audience see the portal/member for 3s, then start upload, then submit
   // Wait for the sign-in scene, if this scenario opens with one.
   const leadIn=sessionSceneLeadIn(S[curScenario]);
@@ -1836,8 +1885,8 @@ function rollingAdvanceAfterPhase(){
         if(!rollingOK()) return;
         closeOverlay();
         const next=curScenario+1;
-        if(next>=6){
-          // All 6 done — loop scenarios only, slides already shown at the start
+        if(next>=S.length){
+          // All scenarios done — loop scenarios only, slides already shown at the start
           curScenario=0;
           addTimer(()=>{ if(rollingOK()) launchRollingDemo(); },1200);
         } else {
@@ -1868,7 +1917,7 @@ function rollingAdvanceAfterPhase(){
 function setScenario(idx){
   Captions.hide();
   clearAllTimers(); uploaded=false; uploadCount=0; uploadCount=0; curScenario=idx;
-  for(let i=0;i<6;i++) $('sc'+i).classList.toggle('on',i===idx);
+  for(let i=0;i<S.length;i++) $('sc'+i).classList.toggle('on',i===idx);
   const s=S[idx];
   $('m-av').textContent=s.ini; txt('m-name',s.member);
   txt('hero-h1',s.h1); txt('hero-sub',s.hs);
@@ -2074,7 +2123,7 @@ const PhaseSignals={
       return '<div class="p1c-row p2c-row"><span class="p1c-l">'+esc(c.name)+'</span><span class="p2c-s '+(raised(c)?'p1c-fail':'p1c-pass')+'">'+esc(st)+'</span></div>';
     };
     box.className='p1-calc show '+(n?'bad':'ok');
-    box.innerHTML='<div class="p1c-title">'+(ph===2?'Event strategy signals':'Organised ring signals')+' <span>— each check raises a signal or it doesn\'t</span></div>'
+    box.innerHTML='<div class="p1c-title">'+(ph===2?'Event strategy signals':'Network intelligence signals')+' <span>— each check raises a signal or it doesn\'t</span></div>'
       +checks.map(row).join('')
       +'<div class="p1c-rule"></div>'
       +'<div class="p1c-row p2c-row p1c-total"><span class="p1c-l">Signals raised</span><span class="p2c-s">'+n+' of '+checks.length+'</span></div>'
@@ -2087,9 +2136,23 @@ const PhaseSignals={
 // ══════════════════════════════════════════════════════
 // PHASE 1 SCORE — the integrity score shown as its arithmetic: start at
 // data.phase1Scoring.start, deduct each check's weight for its verdict
-// (weights[checkId][verdict]; a pass costs nothing) and each adjustment.
+// (weights[checkId][verdict]; a pass costs nothing). Adverse findings only.
 // The total is computed here, never typed in, so it always reconciles.
 // ══════════════════════════════════════════════════════
+// Resting state on a short screen. Measured, not guessed from a breakpoint:
+// if the phase's band, checks and score block together are taller than the
+// card's visible area, close the passing checks. Flags and fails stay open,
+// and a closed check's summary line still carries its figure and threshold.
+function fitRestingChecks(ph){
+  const list=$('ph'+ph+'-checks'), card=list&&list.closest('.ov-card'); if(!card) return;
+  const hdr=card.querySelector('.ov-hdr'), info=$('ph'+ph+'-info'), calc=$('ph'+ph+'-calc');
+  const top=(info&&info.classList.contains('show')?info:list).getBoundingClientRect().top;
+  const bottom=(calc&&calc.classList.contains('show')?calc:list).getBoundingClientRect().bottom;
+  const avail=card.clientHeight-(hdr?hdr.offsetHeight:0)-24;
+  if(bottom-top<=avail) return;
+  list.querySelectorAll('.sig[data-verdict="pass"]').forEach(el=>SignalPanel.toggle(el,false));
+}
+
 const Phase1Score={
   compute(s,checks){
     const d=SCENARIO_DATA[s.id]||{}, sc=d.phase1Scoring; if(!sc) return null;
@@ -2099,10 +2162,11 @@ const Phase1Score={
       if(v!=='pass'&&ded==null) console.warn('No phase1Scoring weight for',c.id,v);
       return {label:c.name,status:v,deduct:ded||0};
     });
-    const adj=(sc.adjustments||[]).map(a=>({label:a.label,status:a.value,deduct:a.deduct||0,adj:true}));
+    // Adverse findings only: extraction confidence is not evidence of
+    // tampering, and a low-confidence field is already routed to Needs Review in pre-flight.
     const cents=x=>Math.round(x*100);
-    const total=(cents(sc.start)-rows.concat(adj).reduce((t,r)=>t+cents(r.deduct),0))/100;
-    return {sc,rows,adj,total,above:total>=sc.threshold};
+    const total=(cents(sc.start)-rows.reduce((t,r)=>t+cents(r.deduct),0))/100;
+    return {sc,rows,total,above:total>=sc.threshold,adverse:rows.some(x=>x.deduct>0)};
   },
   render(s,checks,phData){
     const r=this.compute(s,checks), box=$('ph1-calc'); if(!r||!box) return false;
@@ -2114,15 +2178,15 @@ const Phase1Score={
     // single check catches it.
     const rows=r.rows.filter(x=>x.deduct>0).sort((x,y)=>y.deduct-x.deduct).concat(r.rows.filter(x=>x.deduct===0));
     const esc=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-    const line=x=>'<div class="p1c-row"><span class="p1c-l">'+esc(x.label)+'</span><span class="p1c-s p1c-'+esc(x.adj?'adj':x.status)+'">'+esc(x.status)+'</span><span class="p1c-d">'+minus(x.deduct)+'</span></div>';
+    const line=x=>'<div class="p1c-row"><span class="p1c-l">'+esc(x.label)+'</span><span class="p1c-s p1c-'+esc(x.status)+'">'+esc(x.status)+'</span><span class="p1c-d">'+minus(x.deduct)+'</span></div>';
     const cls=r.above?'ok':'bad';
     box.className='p1-calc show '+cls;
     box.innerHTML='<div class="p1c-title">Document integrity score <span>— starts at '+f(r.sc.start)+', deducted per finding</span></div>'
       +'<div class="p1c-row p1c-start"><span class="p1c-l">Starting score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.sc.start)+'</span></div>'
-      +rows.map(line).join('')+r.adj.map(line).join('')
+      +rows.map(line).join('')
       +'<div class="p1c-rule"></div>'
       +'<div class="p1c-row p1c-total"><span class="p1c-l">Document integrity score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.total)+'</span></div>'
-      +'<div class="p1c-verdict">Threshold '+f(r.sc.threshold)+' — '+(r.above?'above · CLEAN':'below · SUSPICIOUS')+'</div>'
+      +'<div class="p1c-verdict">Threshold '+f(r.sc.threshold)+' — '+(!r.above?'below · SUSPICIOUS':r.adverse?'above · CLEAN':'No adverse findings')+'</div>'
       +(r.sc.action?'<div class="p1c-action">'+esc(r.sc.action)+'</div>':'');
     // At rest the score block is the payoff: bring all of it into view.
     setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'end'}),150);
@@ -2423,6 +2487,7 @@ function activatePhase(ph,phData){
   addTimer(()=>{
     if(p1&&(ph===1?Phase1Score.render(S[curScenario],p1,phData):PhaseSignals.render(ph,S[curScenario],p1,phData))){
       // the arithmetic replaces the bare score
+      fitRestingChecks(ph);
     } else if(phData.score&&$('ph'+ph+'-score')){
       const sc=$('ph'+ph+'-score'); sc.classList.add('show');
       const numEl=$('ph'+ph+'-score-num'); numEl.textContent=phData.score; numEl.style.color=phData.scoreColor;
@@ -2443,8 +2508,8 @@ function activatePhase(ph,phData){
       $('ph'+ph+'-badge').className='phase-status-badge psb-pass';
       txt('ph'+ph+'-badge','✓ '+(ph===3?'Detection Complete':'Passed'));
       $('ph'+ph+'-block').style.background='#F0FDF4'; $('ph'+ph+'-block').style.borderColor='rgba(22,163,74,.3)'; $('ph'+ph+'-block').style.boxShadow='0 2px 8px rgba(22,163,74,.08)';
-      if(ph===1){ txt('ph1-rb-title','Phase 1 Passed — Document Clean'); txt('ph1-rb-sub','Receipt integrity confirmed · Proceeding to Phase 2 Provider and Pattern'); }
-      if(ph===2){ txt('ph2-rb-title','Phase 2 Passed — No Fraudulent Patterns Detected'); txt('ph2-rb-sub','All Pega Event Strategies evaluated · Proceeding to Phase 3 Organised Ring'); }
+      if(ph===1){ txt('ph1-rb-title','Phase 1 Passed — No Adverse Findings'); txt('ph1-rb-sub','No adverse findings on the receipt · Proceeding to Phase 2 Cross-Claim Signals'); }
+      if(ph===2){ txt('ph2-rb-title','Phase 2 Passed — No Fraudulent Patterns Detected'); txt('ph2-rb-sub','All Pega Event Strategies evaluated · Proceeding to Phase 3 Network Intelligence'); }
       if(ph===3){ txt('ph3-rb-title','Phase 3 Complete — No Suspicious Activity'); txt('ph3-rb-sub','All fraud detection phases passed · Sent for Claim Adjudication'); if($('ph3-aim-btn')){ $('ph3-aim-btn').style.display=''; $('ph3-aim-btn').textContent='View Fraud Detection Summary →'; } }
     } else {
       rb.className='result-badge show fail'; rbI.textContent='❌';
@@ -2515,9 +2580,9 @@ function showFinalState(clean){
     txt('fs-sub','Fraud signal identified · Routed to investigation queue');
   }
   const phases=[
-    {ico:'🔍',name:'Phase 1 — Document Forensics',pass:ph1pass,skip:false},
-    {ico:'⚡',name:'Phase 2 — Provider and Pattern',pass:ph2pass,skip:!pl.ph2},
-    {ico:'🧠',name:'Phase 3 — Organised Ring',pass:ph3pass,skip:!pl.ph3},
+    {ico:'🔍',name:'Phase 1 — Receipt Forensics',pass:ph1pass,skip:false},
+    {ico:'⚡',name:'Phase 2 — Cross-Claim Signals',pass:ph2pass,skip:!pl.ph2},
+    {ico:'🧠',name:'Phase 3 — Network Intelligence',pass:ph3pass,skip:!pl.ph3},
   ];
   $('fs-phases').innerHTML=phases.map(p=>{
     let cls,lbl;
@@ -2584,7 +2649,7 @@ function toggleFS(){
 
 document.addEventListener('keydown',e=>{
   const onSlides=$('slides-screen').classList.contains('active');
-  if(e.key>='1'&&e.key<='6'){ e.preventDefault(); goDemo(); setScenario(parseInt(e.key)-1); return; }
+  if(e.key>='1'&&e.key<=String(S.length)){ e.preventDefault(); goDemo(); setScenario(parseInt(e.key)-1); return; }
   if(e.key==='0'){ e.preventDefault(); restartDemo(); return; }
   if(e.key==='f'||e.key==='F'){ toggleFS(); return; }
   if(e.key==='r'||e.key==='R'){ toggleRolling(); return; }
@@ -2620,11 +2685,14 @@ const SESSION_TZ={'+10:00':'AEST','+11:00':'AEDT','+09:30':'ACST','+10:30':'ACDT
 const SESSION_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 // Device frames the scene can play in. Particles and the handoff take their
-// origin and outline shape from the active frame, so a new frame (a desktop
-// browser for the ring scenario) is a swap: add its markup and an entry here.
-// Every member scenario is a phone; the browser is reserved for the ring.
+// origin and outline shape from the active frame, so a new frame is a swap:
+// add its markup and an entry here. Member scenarios are phones; the browser
+// is for the ring scenario, where one person on a laptop lodges for several members.
 const SESSION_FRAMES={
-  phone:{el:'ls-phone', aspect:19.5/9, outline:'phone'}
+  phone:  {el:'ls-phone',   aspect:19.5/9, outlineW:.62, outline:'phone',   icon:'📱', verify:'Face ID',
+           sim:'Member sign-in on the H+ app · illustrative device and location data'},
+  browser:{el:'ls-browser', aspect:10/16,  outlineW:1.3, outline:'browser', icon:'💻', verify:'One-time code',
+           sim:'Sign-in on the H+ member website · illustrative device and location data'}
 };
 function sessionFrame(sess,opts){
   const key=(opts&&opts.frame)||sess.frame||'phone';
@@ -2677,7 +2745,7 @@ function sessionSignals(sess){
   const clock=(t.time+' '+t.tz).trim();
   const why=k=>(sess.explain&&sess.explain[k])||SESSION_WHY[k];
   return [
-    {key:'device',  icon:'📱',title:'Device',  colour:'var(--teal)',  detail:sess.deviceId+' · '+sess.deviceProfile, chip:sess.deviceId, why:why('device')},
+    {key:'device',  icon:(SESSION_FRAMES[sess.frame]||SESSION_FRAMES.phone).icon,title:'Device',  colour:'var(--teal)',  detail:sess.deviceId+' · '+sess.deviceProfile, chip:sess.deviceId, why:why('device')},
     {key:'location',icon:'📍',title:'Location',colour:'var(--orange)',detail:sess.location+' · '+sess.ipAddress,     chip:sess.location, why:why('location')},
     {key:'session', icon:'🕒',title:'Session', colour:'var(--gold)',  detail:(t.date?t.date+', ':'')+clock,          chip:clock, why:why('session')},
   ];
@@ -2706,6 +2774,7 @@ const SessionChip={
   // Recognised versus first-time device, from deviceStatus. A new device is
   // a fraud signal in its own right, so it shows at the front door.
   mark(sess){
+    const ico=this.slot('device'); if(ico) ico.querySelector('.sess-ico').textContent=(SESSION_FRAMES[sess.frame]||SESSION_FRAMES.phone).icon;
     const m=$('sess-seen'); m.className='sess-seen';
     const status=sess.deviceStatus||(sess.deviceSeenBefore===true?'recognised':sess.deviceSeenBefore===false?'new':'');
     // Short label under 1340px so the header never wraps.
@@ -2773,10 +2842,13 @@ const SessionScene={
     const ls=$('ls');
     ls.classList.remove('dark','light','st-login','st-bio','st-ok','st-welcome');
     ls.classList.add(theme==='light'?'light':'dark');
-    txt('ls-first',(sess.member||opts.member||'').split(' ')[0]);
-    txt('ls-mbr',opts.memberNo||'');
-    txt('ls-clock',formatSessionTime(sess.sessionTime).time.replace(/^0/,''));
-    txt('ls-bio-txt','Face ID');
+    const setAll=(sel,v)=>ls.querySelectorAll(sel).forEach(el=>{ el.textContent=v; });
+    setAll('.ls-first',(sess.member||opts.member||'').split(' ')[0]);
+    setAll('.ls-mbr',opts.memberNo||'');
+    setAll('.ls-clock',formatSessionTime(sess.sessionTime).time.replace(/^0/,''));
+    setAll('.ls-bio-txt',this.frame.verify);
+    txt('ls-sim-txt',this.frame.sim);
+    Object.keys(SESSION_FRAMES).forEach(k=>ls.classList.toggle('fr-'+k,SESSION_FRAMES[k]===this.frame));
     ls.style.opacity='';
     Object.values(SESSION_FRAMES).forEach(f=>{ const el=$(f.el); el.style.display=f===this.frame?'':'none'; el.style.opacity=''; });
     ls.classList.add('show'); document.body.classList.add('ls-on');
@@ -2786,7 +2858,7 @@ const SessionScene={
       Captions.show('signin');
       ls.classList.add('st-login');
       this.at(450, ()=>{ ls.classList.add('st-bio'); });
-      this.at(1150,()=>{ ls.classList.replace('st-bio','st-ok'); txt('ls-bio-txt','Verified'); });
+      this.at(1150,()=>{ ls.classList.replace('st-bio','st-ok'); ls.querySelectorAll('.ls-bio-txt').forEach(el=>{ el.textContent='Verified'; }); });
       this.at(1550,()=>{ ls.classList.remove('st-login','st-ok'); ls.classList.add('st-welcome'); });
       t=2000;
     } else {
@@ -2845,7 +2917,7 @@ const SessionScene={
     const ls=$('ls'), phone=$(this.frame.el), pr=phone.getBoundingClientRect();
     const target=SessionChip.rect('device');
     const o=document.createElement('div'); o.className='ls-outline '+this.frame.outline; document.body.appendChild(o); this.outline=o;
-    const w1=Math.max(18,target?target.height*.62:18), h1=w1*this.frame.aspect;
+    const w1=Math.max(18,target?target.height*this.frame.outlineW:18), h1=w1*this.frame.aspect;
     const x1=target?target.left-w1-10:innerWidth-60, y1=target?target.top+target.height/2-h1/2:40;
     this.anim(phone,[{opacity:1},{opacity:0}],{duration:350,fill:'forwards'});
     this.anim(o,[
@@ -3184,17 +3256,17 @@ showFinalState = function(clean){
         <div class="aim-phases">
           <div class="aim-phase-row">
             <div class="aim-phase-ico">🔍</div>
-            <div class="aim-phase-name">Phase 1 — Document Forensics</div>
+            <div class="aim-phase-name">Phase 1 — Receipt Forensics</div>
             <div class="aim-phase-status aim-phase-pass">✓ Passed</div>
           </div>
           <div class="aim-phase-row">
             <div class="aim-phase-ico">⚡</div>
-            <div class="aim-phase-name">Phase 2 — Provider and Pattern</div>
+            <div class="aim-phase-name">Phase 2 — Cross-Claim Signals</div>
             <div class="aim-phase-status aim-phase-pass">✓ Passed</div>
           </div>
           <div class="aim-phase-row">
             <div class="aim-phase-ico">🧠</div>
-            <div class="aim-phase-name">Phase 3 — Organised Ring</div>
+            <div class="aim-phase-name">Phase 3 — Network Intelligence</div>
             <div class="aim-phase-status aim-phase-fail">✗ Flagged — RAG Match</div>
           </div>
         </div>

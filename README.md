@@ -1,6 +1,6 @@
 # Health Insurance Fraud Detection POC
 
-A proof of concept showing real-time fraud detection for health insurance claims on Pega Infinity 26.1. A member submits a claim, and it passes through three phases of analysis: Phase 1 document forensics (is the receipt genuine?), Phase 2 provider and pattern (do the provider and claim pattern make sense?) and Phase 3 organised ring (is it connected to known fraud?). Six scripted scenarios show clean claims going to adjudication and suspicious ones going to the Specialist Investigation Unit with a complete evidence package. The demo app is [`index.html`](index.html), served by GitHub Pages, with per-scenario data in [`data/scenarios/`](data/scenarios/).
+A proof of concept showing real-time fraud detection for health insurance claims on Pega Infinity 26.1. A member submits a claim, and it passes through three phases of analysis: Phase 1 receipt forensics (is the receipt genuine?), Phase 2 cross-claim signals (does it fit a pattern across other claims?) and Phase 3 network intelligence (is it connected to known fraud?). Seven scripted scenarios show clean claims going to adjudication, a non-claimable receipt rejected in pre-flight, and suspicious claims going to the Specialist Investigation Unit with a complete evidence package. The demo app is [`index.html`](index.html), served by GitHub Pages, with per-scenario data in [`data/scenarios/`](data/scenarios/).
 
 ## Demo guides
 
@@ -28,8 +28,8 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 ## Data
 
-- [Scenario data](data/scenarios/README.md): per-scenario data files: the session block for the sign-in scene and the Phase 1 signals array.
+- [Scenario data](data/scenarios/README.md): per-scenario data files (CLM-0841 to CLM-0847): the session block for the sign-in scene, the pre-flight signals and the checks for each pipeline phase.
 
 ## Tests
 
-- [Stage 1 document validity](tests/stage1-document-validity/): test material for Phase 1 document forensics (contents to be added).
+- [Stage 1 document validity](tests/stage1-document-validity/): test material for Phase 1 receipt forensics (contents to be added).

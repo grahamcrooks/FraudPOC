@@ -176,7 +176,6 @@
         "fail": 0.25
       }
     },
-    "adjustments": [],
     "action": "Below threshold. Claim referred to the investigator queue, HIGH priority, 4-hour SLA. Phases 2 and 3 do not run."
   },
   "phase2": [
