@@ -221,26 +221,14 @@
   },
   "phase3": [
     {
-      "id": "P3-RAG",
-      "name": "Knowledge Buddy RAG",
-      "summary": "highest match 0.18 · threshold 0.85",
-      "cost": "ai",
-      "delay": 3200,
-      "lookedAt": "This claim's pattern against the confirmed fraud case library",
-      "rule": "Similarity at or above 0.85 to a confirmed case",
-      "found": "Highest match 0.18",
-      "verdict": "pass",
-      "conclusion": "No similar confirmed case"
-    },
-    {
       "id": "P3-GRAPH",
       "name": "Network graph",
       "tag": "MCP · Graph",
       "summary": "3-hop path into Community #47 · 14 members, 3 providers",
       "cost": "ai",
       "delay": 7800,
-      "lookedAt": "Graph traversal up to 3 hops from the member, using the device and payment links captured at submission",
-      "rule": "Any path reaching a confirmed fraud community",
+      "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, payment account, submission IP",
+      "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
       "found": "3-hop path: this claim's submission IP 203.0.113.91 → Provider ABC → confirmed fraud member MBR-99112, in Community #47 of 14 members and 3 providers",
       "verdict": "fail",
       "conclusion": "Connected to a confirmed fraud community"

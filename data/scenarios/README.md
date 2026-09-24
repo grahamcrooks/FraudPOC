@@ -126,7 +126,7 @@ The score deducts for adverse findings only. Extraction confidence is not eviden
 
 ## Phase 2 and Phase 3 arrays
 
-`phase2` (cross-claim signals) and `phase3` (network intelligence) use the same shape as `phase1`, on the same renderer: single column, every check open at rest. Phase 2 holds the three Pega Event Strategies in this build (`ES-001` distance anomaly, `ES-002` device ring, `ES-003` bank account ring), all cost `rule`. Phase 3 holds `P3-RAG` (similar-case search) and `P3-GRAPH` (network graph), both cost `ai`. An optional `tag` adds a pill after the check name, for example `"MCP · Graph"`. A check that didn't run has `"verdict": "skipped"`.
+`phase2` (cross-claim signals) and `phase3` (network intelligence) use the same shape as `phase1`, on the same renderer: single column, every check open at rest. Phase 2 holds the three Pega Event Strategies in this build (`ES-001` distance anomaly, `ES-002` device ring, `ES-003` bank account ring), all cost `rule`. Phase 3 holds `P3-GRAPH` (network graph traversal, up to 3 hops from every entity the claim touches), cost `ai`. Fraud case similarity matching is planned, not built, and shows as a planned line under the Phase 3 checks, as the planned strategies do under Phase 2. An optional `tag` adds a pill after the check name, for example `"MCP · Graph"`. A check that didn't run has `"verdict": "skipped"`.
 
 Captions for each check use the key `phase2:<check id>` or `phase3:<check id>`, for example `phase2:ES-003`.
 

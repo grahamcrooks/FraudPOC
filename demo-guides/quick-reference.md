@@ -42,18 +42,18 @@
 - Checks: Document type, field extraction, confidence scoring, disqualifying content
 - Result: PASS or FAIL
 
-### Phase 2: Event Strategies ⚡
+### Phase 2: Cross-Claim Signals ⚡
 
 **Question:** Does this claim make sense?
 
-- Checks: Phantom ABN, account clustering, distance/velocity/IP, waiver analysis, item code validation (8 Event Strategies, ES-001 to ES-008)
-- Result: PASS or MEDIUM RISK or FAIL
+- Checks: ES-001 distance anomaly, ES-002 device ring, ES-003 bank account ring (Pega Event Strategies). Phantom ABN, waiver abuse and item code validation are planned.
+- Result: PASS or FAIL
 
-### Phase 3: Agentic Intelligence 🧠
+### Phase 3: Network Intelligence 🧠
 
-**Question:** Who else is involved? Is this fraud?
+**Question:** Who else is involved?
 
-- Checks: RAG pattern matching, network graph analysis
+- Checks: network graph traversal, up to 3 hops from every entity the claim touches. Fraud case similarity matching is planned.
 - Result: PASS or FLAGGED
 
 ## The Seven Scenarios at a Glance
@@ -70,7 +70,7 @@
 
 | CLM-0844 | Linda   | PASS | FAIL | —    | Phase 2: Device ring     |
 
-| CLM-0845 | Michael | PASS | PASS | FLAG | Phase 3: RAG match - AIM |
+| CLM-0845 | Michael | PASS | PASS | FLAG | Phase 3: Shared practitioner - AIM |
 
 | CLM-0846 | Angela  | PASS | PASS | FLAG | Phase 3: Network connect |
 

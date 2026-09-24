@@ -1,4 +1,4 @@
-// Scenario data for CLM-2024-0845 (Michael Torres, optical claim, Phase 3 RAG match).
+// Scenario data for CLM-2024-0845 (Michael Torres, optical claim, Phase 3 shared practitioner).
 // Loaded by index.html with a plain <script> tag, so the demo still runs from
 // file:// with no server. Keep the object literal valid JSON.
 (window.SCENARIO_DATA = window.SCENARIO_DATA || {})['CLM-2024-0845'] = {
@@ -221,32 +221,20 @@
   },
   "phase3": [
     {
-      "id": "P3-RAG",
-      "name": "Knowledge Buddy RAG",
-      "summary": "highest match 0.91 · threshold 0.85",
-      "cost": "ai",
-      "delay": 3600,
-      "lookedAt": "This claim's pattern against the confirmed fraud case library",
-      "rule": "Similarity at or above 0.85 to a confirmed case",
-      "found": "Highest match 0.91 — 4 confirmed phantom-billing cases: same item codes, similar provider profile",
-      "verdict": "fail",
-      "conclusion": "Closely matches confirmed phantom billing"
-    },
-    {
       "id": "P3-GRAPH",
       "name": "Network graph",
       "tag": "MCP · Graph",
-      "summary": "0 connections within 3 hops",
+      "summary": "2-hop path to a practitioner shared with 2 practices under investigation",
       "cost": "ai",
       "delay": 7200,
-      "lookedAt": "Graph traversal up to 3 hops from the member, using the device and payment links captured at submission",
-      "rule": "Any path reaching a confirmed fraud community",
-      "found": "0 connections within 3 hops",
-      "verdict": "pass",
-      "conclusion": "Graph clear"
+      "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, payment account, submission IP",
+      "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
+      "found": "2-hop path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation",
+      "verdict": "fail",
+      "conclusion": "Practitioner shared with two practices under investigation"
     }
   ],
   "phase3Result": {
-    "action": "Similarity 0.91 to 4 confirmed phantom-billing cases. Claim referred to the investigation queue with the matched cases attached."
+    "action": "2-hop path through ClearView Optometry to a practitioner shared with two practices under investigation. Claim referred to the SIU queue, HIGH priority, with the path attached."
   }
 };
