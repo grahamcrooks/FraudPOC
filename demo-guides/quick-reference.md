@@ -14,6 +14,14 @@
 - B → Jump to the Backup slide (manual mode only)
 - Esc → Exit fullscreen (standard browser behaviour)
 - L → Replay the sign-in scene (or click the session chip in the portal header)
+- C → Captions on or off (on by default in the Rolling Demo, off while presenting)
+
+### Captions
+
+- A one-line caption at the bottom of the screen says what is happening at each beat: tag, then the story ("Session capture · James signs in to the H+ app with Face ID").
+- On by default in the Rolling Demo, where nobody is presenting; off while you present live. Press C to switch.
+- For a recording, fix the setting on the address: `?captions=on` or `?captions=off`.
+- Only CLM-0841 has captions so far; other scenarios show none.
 
 ### Sign-in scene
 

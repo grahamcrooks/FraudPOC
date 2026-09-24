@@ -81,5 +81,55 @@
       "usedBy": "ES-001 distance anomaly, ES-002 device ring",
       "conclusion": "Recorded, no evaluation at this stage"
     }
-  ]
+  ],
+  "captions": {
+    "signin": {
+      "tag": "Session capture",
+      "text": "James signs in to the H+ app with Face ID"
+    },
+    "particles": {
+      "tag": "Session capture",
+      "text": "Device, location and time are captured at sign-in, before any claim exists"
+    },
+    "handoff": {
+      "tag": "Session capture",
+      "text": "That session travels with him into the claim portal"
+    },
+    "upload": {
+      "tag": "Lodgement",
+      "text": "James uploads his dental receipt"
+    },
+    "cost:ai": {
+      "tag": "Pre-flight · AI",
+      "text": "AI reads the receipt: document type, fields and confidence"
+    },
+    "cost:rule": {
+      "tag": "Pre-flight · Rules",
+      "text": "Business rules run next, at no AI cost"
+    },
+    "cost:capture": {
+      "tag": "Pre-flight",
+      "text": "The sign-in device and location are attached to the claim for later checks"
+    },
+    "preflightPassed": {
+      "tag": "Pre-flight passed",
+      "text": "Genuine, complete and claimable, so on to fraud detection"
+    },
+    "phase1": {
+      "tag": "Phase 1 · Document forensics",
+      "text": "Forensic checks look for tampering, forgery and AI-made receipts"
+    },
+    "phase2": {
+      "tag": "Phase 2 · Provider and pattern",
+      "text": "Event strategies compare this claim with patterns across all claims"
+    },
+    "phase3": {
+      "tag": "Phase 3 · Organised ring",
+      "text": "AI searches known fraud cases and the provider's network"
+    },
+    "outcome": {
+      "tag": "Outcome",
+      "text": "No suspicious activity: James's claim goes to normal adjudication"
+    }
+  }
 };
