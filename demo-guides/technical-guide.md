@@ -1,4 +1,4 @@
-# H+ Health Insurance Demo: Technical Components & Architecture
+# Bupa Fraud Detection Demo: Technical Components & Architecture
 
 A guide to understanding how each component works
 
@@ -11,7 +11,7 @@ dependencies. All HTML, CSS, and JavaScript are embedded.
 
 - index.html
   - Single file deployment
-  - ~2,100 lines of code
+  - ~2,300 lines of code
   - Runs in any modern browser
   - Deployed via GitHub Pages
 
@@ -19,19 +19,24 @@ dependencies. All HTML, CSS, and JavaScript are embedded.
 
 ### 1. Slides Screen
 
-Four presentation slides that set context
+Five presentation slides that set context, plus one manual-access backup
+slide
 
-  - Slide 1: The Problem
-  - Slide 2: The Solution (3-phase pipeline)
-  - Slide 3: Why It Matters (key benefits)
-  - Slide 4: Live Demo
-- Keyboard: S = Slides mode, Space = next slide
+  - Slide 1: Agenda (Background, Quantify Bupa Fraud POC, Target Outcome, Requirements)
+  - Slide 2: The Problem (the fraud estimate and why prevention beats recovery)
+  - Slide 3: The Business Case for Prevention (POC scope, methodology, outcome, requirements)
+  - Slide 4: Three Phases (One Intelligent Pipeline)
+  - Slide 5: Powered by Pega (Why Pega) - ends with the Launch Demo button
+  - Backup slide: "Three Hops" identity-graph diagram - reachable only via the B key or the dashed Backup button, not part of the main sequence or Rolling Demo
+- Keyboard: S = Slides mode, Space / ← → = previous-next slide, B = jump to Backup slide
 
 ### 2. Demo Screen (Portal)
 
-Interactive claim portal with 6 real scenarios
+"Phase 1 Dataset Analysis" tool with 6 real scenarios - framed as
+validating member-entered data against historical receipts, not a live
+claim portal
 
-  - Document upload section (fake, instant completion)
+  - "Load Document" upload section (fake, instant completion)
   - Form fields for claim details
   - Three-phase pipeline display (real-time simulation)
 - Keyboard: D = Demo mode, 1-6 = select scenario
@@ -42,9 +47,10 @@ Accumulated fraud case database
 
   - 24 cases total (6 real + 18 illustrative)
   - Filters: Member, Provider, Date, Outcome
+  - Discrepancy column - claimed-vs-receipt mismatch amount with an ↑ arrow, sortable, blank for clean claims (e.g. CLM-0842: \$42.50 ↑)
   - Sortable columns
   - Summary statistics
-- Keyboard: Tab = Portal, Tab = Report
+- Keyboard: no shortcut - click the Portal / Report tabs to switch
 
 ## The Six Claim Scenarios
 
@@ -72,8 +78,8 @@ Accumulated fraud case database
 - Provider: Vision Direct Pty Ltd
 - Type: Optical
 - Amount: \$487.50 (claimed) vs \$445.00 (receipt)
-- Result: FAILS at Claim-to-Receipt Match
-- Purpose: Show document forensics catching discrepancies
+- Result: FAILS - Claim-to-Receipt Match (amber warning) plus Font Consistency and Metadata & Provenance both fail (red); Phase 1 score 0.28. Phases 2 and 3 never run - this scenario is scoped to Phase 1 only.
+- Purpose: Show document forensics catching discrepancies - a dedicated panel appears under the Phase 1 result showing Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) and "Result: MISMATCH DETECTED"
 
 ### CLM-0843: Phase 2 ABN Failure
 
@@ -123,11 +129,13 @@ Accumulated fraud case database
   - Confidence scoring
   - Disqualifying content detection
   - Claim-to-Receipt Match (on CLM-0842)
-- Flow:
-  - 0.8s: Document type → PASS
-  - 3.0s: Field extraction → PASS
-  - 5.2s: Confidence scoring → PASS
-  - 8.2s: Pre-flight gate → PASS/FAIL
+- Flow (this is the upload-validation sequence, on the claim form before the pipeline modal opens):
+  - 0.8s: Document type confirmed ✓
+  - 3.0s: Field extraction complete ✓
+  - 5.2s: Confidence scoring complete ✓
+  - \[3-second pause - nothing happens\]
+  - 8.2s-9.2s: the 6 form fields flash green one at a time, 200ms apart, 800ms each (Attachment 1 only - a second upload populates the fields silently, no highlight)
+  - 10.0s: Pre-flight gate passed → PASS/FAIL (this is when the pipeline can open)
 
 ### Phase 2: Event Strategies
 
@@ -135,10 +143,10 @@ Accumulated fraud case database
   - Phantom ABN Detection (vs ABR)
   - Repeat-Account Clustering
   - Claim Velocity Analysis
-  - Shared Origin Detection
-  - Dark Web Credential Exposure (ES-009)
+  - Distance, IP block and waiver-abuse checks
+  - Item Code Validation (against ADA/MBS registry)
 - Result codes (8 Event Strategies total):
-  - ES-001 through ES-009 (each with pass/fail status)
+  - ES-001 Distance, ES-002 Velocity, ES-003 IP Block, ES-004 Waiver Abuse, ES-005 Phantom ABN, ES-006 Cluster Flag, ES-007 Waiver Frequency, ES-008 Item Code Validation (each with pass/fail status)
 
 ### Phase 3: Agentic Intelligence
 
@@ -155,10 +163,10 @@ Accumulated fraud case database
 ### Upload Validation Animation
 
 - When you attach document (Attachment 1):
-  - Four green checks appear in sequence
+  - Four green validation checks appear in sequence (document type, field extraction, confidence scoring, pre-flight gate)
   - Each check animates with emoji
-  - Form fields populate and flash green
-  - Timing: 0.8s → 3.0s → 5.2s → 8.2s
+  - After a 3-second pause, the 6 form fields populate and flash green one at a time (200ms apart)
+  - Timing: 0.8s → 3.0s → 5.2s → \[pause\] → 8.2s-9.2s field flashes → 10.0s pre-flight gate
 - Second attachment:
   - No validation checks shown
   - Fields silently populate
@@ -190,10 +198,11 @@ Accumulated fraud case database
   - 0.8s: Document type confirmed ✓
   - 3.0s: Field extraction complete ✓
   - 5.2s: Confidence scoring complete ✓
-  - 8.2s: Pre-flight gate passed ✓
-- Phase 1 (Document Forensics):
-  - ~12s total (sequential checks with 200-400ms between items)
+  - 8.2s-9.2s: form fields flash green, one at a time ✓
+  - 10.0s: Pre-flight gate passed ✓
+- Phase 1 (Document Forensics, inside the pipeline modal):
+  - ~17s total (6 sequential checks, last one lands at 15.6s + 1.6s buffer)
 - Phase 2 (Event Strategies):
-  - ~8s total (runs all 8 checks with staggered animation)
+  - ~18s total (runs all 8 checks with staggered animation, last one lands at 16.0s + 1.6s buffer)
 - Phase 3 (Agentic Intelligence):
-  - ~10s total (RAG match calculation + network analysis)
+  - ~7-9s total, varies by scenario (RAG match calculation + network analysis)
