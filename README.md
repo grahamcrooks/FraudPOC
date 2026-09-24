@@ -27,7 +27,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 ## Data
 
-- [Scenario data](data/scenarios/README.md): per-scenario data files and the session block schema that drives the sign-in scene.
+- [Scenario data](data/scenarios/README.md): per-scenario data files: the session block for the sign-in scene and the Phase 1 signals array.
 
 ## Tests
 

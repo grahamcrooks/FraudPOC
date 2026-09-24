@@ -7,7 +7,7 @@ The presentation and demo site for the Bupa fraud detection POC, published by Gi
 ## Directories
 
 - `index.html`: the demo site itself, a single page served by GitHub Pages. It loads per-scenario data from `data/scenarios/` with plain `<script>` tags.
-- `data/scenarios/`: per-scenario data (currently the session block that drives the sign-in scene), one file per claim; see its README for the schema.
+- `data/scenarios/`: per-scenario data (the session block for the sign-in scene and the Phase 1 signals array), one file per claim; see its README for the schema.
 - `demo-guides/`: demo guides in Markdown; `_source/` holds the original Word files for comparison.
 - `prompts/`: reusable prompts run against the Pega environment, one prompt per file.
 - `docs/`: reference material: the data model, test reference data and the Pega Blueprint export.

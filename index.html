@@ -577,6 +577,55 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .lsp-ico{font-size:clamp(24px,2.1vw,36px);line-height:1}
 .lsp-t{font-size:clamp(12px,.95vw,17px);font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--pc)}
 .lsp-v{font-size:clamp(19px,1.65vw,31px);font-weight:700;line-height:1.25}
+
+/* ══════════════════════════════════════════════════════
+   PHASE 1 PRE-FLIGHT SIGNALS — each check shows its working
+   Fixed shape: name + cost + verdict / Looked at / Rule /
+   Found / → conclusion. Content from data/scenarios/ signals.
+══════════════════════════════════════════════════════ */
+.sig-list{display:flex;flex-direction:column;gap:6px}
+.sig{border:1px solid var(--border);border-radius:10px;background:var(--white);transition:opacity .3s,border-color .3s,background .3s}
+.sig[data-state="queued"]{opacity:.4}
+.sig[data-state="running"]{border-color:var(--pblue);background:var(--blue-bg)}
+.sig[data-verdict="pass"]{border-color:rgba(22,163,74,.45)}
+.sig[data-verdict="flag"]{border-color:var(--amber-mid);background:#FFFBEB}
+.sig[data-verdict="fail"]{border-color:var(--red);background:var(--red-light)}
+.sig[data-verdict="capture"]{border-color:rgba(51,65,144,.3)}
+.sig-head{display:flex;align-items:center;flex-wrap:wrap;gap:6px 10px;width:100%;padding:7px 12px 2px;background:none;border:0;text-align:left;font-family:var(--font);cursor:pointer;color:var(--text)}
+.sig-ico{font-size:17px;width:22px;text-align:center;flex-shrink:0}
+.sig-name{font-size:14px;font-weight:700;flex:1;min-width:140px}
+.sig-badges{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.sig-cost,.sig-verdict{font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;white-space:nowrap}
+.sig-cost.ai{background:#EEF0FB;color:var(--purple);border:1px solid rgba(95,103,185,.35)}
+.sig-cost.rule{background:#E6F6F7;color:#0B7F85;border:1px solid rgba(16,165,172,.35)}
+.sig-cost.capture{background:var(--lblue);color:var(--blue);border:1px solid rgba(51,65,144,.25)}
+.sig-verdict{display:none;text-transform:uppercase;letter-spacing:.5px}
+.sig-verdict.pass{display:inline-block;background:var(--green-bg);color:var(--green)}
+.sig-verdict.flag{display:inline-block;background:#FEF3C7;color:#92400E}
+.sig-verdict.fail{display:inline-block;background:var(--red);color:#fff}
+.sig-chev{font-size:11px;color:var(--text-3);transition:transform .2s;flex-shrink:0}
+.sig.open .sig-chev{transform:rotate(90deg)}
+.sig-body{display:none;padding:2px 12px 2px 44px}
+.sig.open .sig-body{display:block}
+.sig-lines{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;font-size:13px;line-height:1.45}
+.sig-lines dt{color:var(--text-3);font-weight:600;white-space:nowrap}
+.sig-lines dd{color:var(--text)}
+.sig-lines dd.pending{color:var(--text-4);font-style:italic}
+.sig-concl{padding:1px 12px 7px 44px;font-size:13px;font-weight:600;color:var(--text-2)}
+.sig[data-state="queued"] .sig-concl{display:none}
+.sig[data-state="queued"] .sig-head{padding-bottom:7px}
+.sig[data-state="running"] .sig-concl{color:var(--text-4);font-weight:500;font-style:italic}
+.sig[data-verdict="pass"] .sig-concl{color:var(--green)}
+.sig[data-verdict="flag"] .sig-concl{color:#92400E}
+.sig[data-verdict="fail"] .sig-concl{color:var(--red)}
+.sig[data-verdict="capture"] .sig-concl{color:var(--blue)}
+.sig-hint{font-size:11px;color:var(--text-3);margin:2px 2px 0}
+@media (prefers-reduced-motion:reduce){.sig,.sig-chev{transition:none}}
+@media (max-width:560px){
+  .sig-body,.sig-concl{padding-left:12px}
+  .sig-lines{grid-template-columns:1fr;gap:0}
+  .sig-lines dd{margin-bottom:4px}
+}
 </style>
 </head>
 <body>
@@ -902,6 +951,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
                 <div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF, JPG, PNG · AI receipt validation runs on upload</div>
               </div>
               <div id="upload-validation" style="display:none;margin-top:8px">
+                <div class="sig-list" id="sig-list" style="display:none" aria-live="polite"></div>
                 <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Document type confirmed</div><div class="val-detail" id="val-det-1">Checking document type...</div></div></div>
                 <div class="val-step" id="val-step-2" style="opacity:.3"><div class="val-ico" id="val-ico-2">⏳</div><div class="val-content"><div class="val-name">Field extraction complete</div><div class="val-detail" id="val-det-2">Extracting provider, amounts and item codes...</div></div></div>
                 <div class="val-step" id="val-step-3" style="opacity:.3"><div class="val-ico" id="val-ico-3">⏳</div><div class="val-content"><div class="val-name">Confidence scoring complete</div><div class="val-detail" id="val-det-3">Scoring extraction confidence per field...</div></div></div>
@@ -1679,23 +1729,11 @@ function simulateUpload(){
   uz.innerHTML='<div class="upload-icon">⏫</div><div class="upload-text">Uploading...</div>';
   uploadCount++;
   const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none';
-  // Reset all four rows to queued
-  [1,2,3,4].forEach(i=>{
-    $('val-step-'+i).style.opacity=i===1?'1':'.3';
-    $('val-step-'+i).className='val-step';
-    $('val-ico-'+i).textContent=i===1?'🔄':'⏳';
-  });
-  txt('val-det-1','Checking document type...');
-  txt('val-det-2','Extracting provider, amounts and item codes...');
-  txt('val-det-3','Scoring extraction confidence per field...');
-  txt('val-det-4','Running disqualifying keyword gate...');
-
-  const done=(i,detail,nextIco)=>{
-    $('val-step-'+i).className='val-step done';
-    $('val-ico-'+i).textContent='✅';
-    txt('val-det-'+i,detail);
-    if(nextIco){ $('val-step-'+(i+1)).style.opacity='1'; $('val-ico-'+(i+1)).textContent='🔄'; }
-  };
+  // Scenarios with a signals array in data/scenarios/ get the self-describing
+  // panel; the rest keep the original four verdict rows until they have one.
+  const sigs=scenarioSignals(s);
+  $('sig-list').style.display=sigs?'':'none';
+  [1,2,3,4].forEach(i=>{ $('val-step-'+i).style.display=sigs?'none':''; });
 
   const fillFields=()=>{
     // Just fill the data (no animation delays here)
@@ -1708,12 +1746,34 @@ function simulateUpload(){
   // that switching scenario or restarting mid-upload — which calls
   // clearAllTimers() — cancels them instead of letting them fire later
   // and collide with the next scenario's sequence.
-  // 1 — Document type (0.8s)
-  addTimer(()=>done(1, pf.doctype, true), 800);
-  // 2 — Field extraction (3.0s) — populate form fields
-  addTimer(()=>{ done(2, 'Provider: '+s.prov+' · Total: '+s.clamt+' · '+s.codes.split(',').length+' service lines · Item codes: '+s.codes+' · Member: '+s.mbr.replace('-',''), true); fillFields(); }, 3000);
-  // 3 — Confidence scoring (5.2s)
-  addTimer(()=>done(3, pf.conf, true), 5200);
+  if(sigs){
+    SignalPanel.run(s,sigs,{onExtracted:fillFields});
+  } else {
+    // Reset all four rows to queued
+    [1,2,3,4].forEach(i=>{
+      $('val-step-'+i).style.opacity=i===1?'1':'.3';
+      $('val-step-'+i).className='val-step';
+      $('val-ico-'+i).textContent=i===1?'🔄':'⏳';
+    });
+    txt('val-det-1','Checking document type...');
+    txt('val-det-2','Extracting provider, amounts and item codes...');
+    txt('val-det-3','Scoring extraction confidence per field...');
+    txt('val-det-4','Running disqualifying keyword gate...');
+    const done=(i,detail,nextIco)=>{
+      $('val-step-'+i).className='val-step done';
+      $('val-ico-'+i).textContent='✅';
+      txt('val-det-'+i,detail);
+      if(nextIco){ $('val-step-'+(i+1)).style.opacity='1'; $('val-ico-'+(i+1)).textContent='🔄'; }
+    };
+    // 1 — Document type (0.8s)
+    addTimer(()=>done(1, pf.doctype, true), 800);
+    // 2 — Field extraction (3.0s) — populate form fields
+    addTimer(()=>{ done(2, 'Provider: '+s.prov+' · Total: '+s.clamt+' · '+s.codes.split(',').length+' service lines · Item codes: '+s.codes+' · Member: '+s.mbr.replace('-',''), true); fillFields(); }, 3000);
+    // 3 — Confidence scoring (5.2s)
+    addTimer(()=>done(3, pf.conf, true), 5200);
+    // 4 — Pre-flight gate (10.0s), fired with the completion below
+    addTimer(()=>done(4, 'No disqualifying keywords detected · Document type approved · Passing to Pega Document Agent for forensic authentication', false), 10000);
+  }
 
   // Animate fields ONE BY ONE starting at 8.2s (3 second pause after phase 3)
   if(uploadCount===1){
@@ -1728,15 +1788,19 @@ function simulateUpload(){
     });
   }
 
-  // 4 — Pre-flight gate (10.0s - after all fields complete). Banner + file
-  // card fire in the same callback so the "no disqualifying content"
-  // message can't appear before the check that establishes it has run.
+  // Pre-flight complete (10.0s — after all checks). Banner + file card fire
+  // here so the completion message can't appear before the checks that
+  // establish it have run.
   addTimer(()=>{
-    done(4, 'No disqualifying keywords detected · Document type approved · Passing to Pega Document Agent for forensic authentication', false);
+    // Back to the top so the session chip and this summary are both in view.
+    if(sigs) $('demo-screen').scrollTo({top:0,behavior:reducedMotion()?'auto':'smooth'});
+    const summary=sigs?SignalPanel.summary(sigs)
+      :'Document type confirmed · Fields extracted · Confidence thresholds met · No disqualifying content detected';
     uz.classList.add('has-file');
     uz.innerHTML='<div class="upload-icon">✅</div>'
       +'<div class="upload-text" style="color:#16A34A"><strong>Receipt pre-validated — passing to forensic authentication</strong></div>'
-      +'<div style="font-size:11px;color:#4B7A5A;margin-top:4px;line-height:1.5">Document type confirmed · Fields extracted · Confidence thresholds met · No disqualifying content detected</div>';
+      +'<div style="font-size:11px;color:#4B7A5A;margin-top:4px;line-height:1.5"></div>';
+    uz.lastElementChild.textContent=summary;
     const rc=$('receipt-card'); rc.style.display='flex';
     txt('r-name',s.file); txt('r-size',s.fsz+' · Validated · Pre-flight complete');
     uploaded=true;
@@ -1746,6 +1810,131 @@ function simulateUpload(){
     }
   },10000);
 }
+
+// ══════════════════════════════════════════════════════
+// PHASE 1 PRE-FLIGHT SIGNALS
+// Each check shows what it looked at, the rule (with its threshold), what
+// it found and its conclusion, plus whether it cost an AI call. Content is
+// the signals array in data/scenarios/<claim>.js; nothing here is copy.
+// ══════════════════════════════════════════════════════
+const SIGNAL_COST={
+  ai:     {label:'AI call',                   cls:'ai'},
+  rule:   {label:'Business rule — no AI cost', cls:'rule'},
+  capture:{label:'Captured — no evaluation',  cls:'capture'}
+};
+const SIGNAL_VERDICT={
+  pass:{label:'Pass',ico:'✅'}, flag:{label:'Flag',ico:'⚠️'}, fail:{label:'Fail',ico:'⛔'}
+};
+
+function scenarioSignals(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&Array.isArray(d.signals)&&d.signals.length)?d.signals:null; }
+
+const SignalPanel={
+  // The labelled lines for one check. A capture records data rather than
+  // deciding anything, so it has its own two lines and no verdict.
+  lines(sig,s){
+    if(sig.cost==='capture'){
+      let captured=sig.captured;
+      if(captured==='session'){   // single source of truth: the session block
+        const ss=scenarioSession(s);
+        captured=ss?[ss.deviceId,ss.deviceProfile,ss.ipAddress,ss.location].join(' · '):'—';
+      }
+      return [['Captured at sign-in',captured],['Used by',sig.usedBy]];
+    }
+    const out=[['Looked at',sig.lookedAt],['Rule',sig.rule],['Found',sig.found]];
+    if(sig.detail&&typeof sig.detail==='object') Object.entries(sig.detail).forEach(([k,v])=>out.push([k,String(v)]));
+    return out;
+  },
+
+  build(s,sigs){
+    const list=$('sig-list'); list.innerHTML='';
+    return sigs.map((sig,i)=>{
+      const el=document.createElement('div');
+      el.className='sig'; el.dataset.state='queued'; el.id='sig-'+i;
+      const cost=SIGNAL_COST[sig.cost]||SIGNAL_COST.rule;
+      el.innerHTML=
+        '<button type="button" class="sig-head" aria-expanded="false">'
+        +'<span class="sig-ico">⏳</span><span class="sig-name"></span>'
+        +'<span class="sig-badges"><span class="sig-cost '+cost.cls+'"></span><span class="sig-verdict"></span>'
+        +'<span class="sig-chev" aria-hidden="true">▸</span></span></button>'
+        +'<div class="sig-body"><dl class="sig-lines"></dl></div>'
+        +'<div class="sig-concl"></div>';
+      el.querySelector('.sig-name').textContent=sig.name;
+      el.querySelector('.sig-cost').textContent=cost.label;
+      const dl=el.querySelector('.sig-lines');
+      this.lines(sig,s).forEach(([k,v],j)=>{
+        const dt=document.createElement('dt'), dd=document.createElement('dd');
+        dt.textContent=k;
+        // What was found is withheld until the check completes.
+        const isResult=sig.cost==='capture'?j===0:k==='Found';
+        dd.textContent=isResult?'checking…':v; if(isResult){ dd.classList.add('pending'); dd.dataset.value=v; }
+        dl.append(dt,dd);
+      });
+      el.querySelector('.sig-concl').textContent='→ …';
+      el.querySelector('.sig-head').addEventListener('click',()=>this.toggle(el));
+      list.appendChild(el);
+      return el;
+    });
+  },
+
+  toggle(el,open){
+    const o=open===undefined?!el.classList.contains('open'):open;
+    el.classList.toggle('open',o);
+    el.querySelector('.sig-head').setAttribute('aria-expanded',o?'true':'false');
+  },
+
+  start(el){
+    el.dataset.state='running'; el.querySelector('.sig-ico').textContent='🔄'; this.toggle(el,true);
+    // Keep the running check on screen so its working is seen as it happens.
+    el.scrollIntoView({block:'nearest',behavior:reducedMotion()?'auto':'smooth'});
+  },
+
+  complete(el,sig){
+    const isCapture=sig.cost==='capture';
+    const v=isCapture?null:(SIGNAL_VERDICT[sig.verdict]||SIGNAL_VERDICT.pass);
+    el.dataset.state='done';
+    el.dataset.verdict=isCapture?'capture':(sig.verdict||'pass');
+    el.querySelector('.sig-ico').textContent=isCapture?'📥':v.ico;
+    const vb=el.querySelector('.sig-verdict');
+    if(v){ vb.className='sig-verdict '+(sig.verdict||'pass'); vb.textContent=v.label; }
+    el.querySelectorAll('dd.pending').forEach(dd=>{ dd.textContent=dd.dataset.value; dd.classList.remove('pending'); });
+    el.querySelector('.sig-concl').textContent='→ '+sig.conclusion;
+  },
+
+  // Plays the checks across the same 10s window as before: each check opens
+  // while it runs and closes when the next starts; flags and fails stay open.
+  run(s,sigs,hooks){
+    const els=this.build(s,sigs), n=sigs.length;
+    const doneAt=i=>n===1?5000:Math.round(800+i*(8400/(n-1)));
+    this.start(els[0]);
+    sigs.forEach((sig,i)=>{
+      addTimer(()=>{
+        this.complete(els[i],sig);
+        if(sig.id==='SIG-FIELD-EXTRACTION'&&hooks&&hooks.onExtracted) hooks.onExtracted();
+        if(i+1<n){
+          if(sig.verdict!=='flag'&&sig.verdict!=='fail') this.toggle(els[i],false);
+          this.start(els[i+1]);
+        }
+      },doneAt(i));
+    });
+    // Keep the last check open briefly, then leave only flags and fails open.
+    addTimer(()=>{ const last=sigs[n-1]; if(last.verdict!=='flag'&&last.verdict!=='fail') this.toggle(els[n-1],false); },9900);
+    if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&hooks&&hooks.onExtracted) addTimer(hooks.onExtracted,3000);
+  },
+
+  // One line for the upload zone once pre-flight completes.
+  summary(sigs){
+    const decided=sigs.filter(x=>x.cost!=='capture');
+    const count=v=>decided.filter(x=>(x.verdict||'pass')===v).length;
+    const parts=[count('pass')+' of '+decided.length+' checks passed'];
+    if(count('flag')) parts.push(count('flag')+' flagged');
+    if(count('fail')) parts.push(count('fail')+' failed');
+    const ai=decided.filter(x=>x.cost==='ai').length, rules=decided.filter(x=>x.cost==='rule').length;
+    parts.push(ai+' AI call'+(ai===1?'':'s')+' · '+rules+' business rule'+(rules===1?'':'s'));
+    const caps=sigs.length-decided.length;
+    if(caps) parts.push(caps+' capture recorded');
+    return parts.join(' · ');
+  }
+};
 
 // ══════════════════════════════════════════════════════
 // PIPELINE

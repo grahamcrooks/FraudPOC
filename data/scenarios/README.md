@@ -4,7 +4,7 @@ Per-scenario data for the demo, one file per scenario, named for the claim (`clm
 
 The object literal in each file is valid JSON. Keep it that way so the data can be moved to `.json` files later without changes.
 
-Every scenario (CLM-0841 to CLM-0846) has a session block; only CLM-0841 plays the sign-in scene. Only the session block lives here so far; the rest of each scenario is still in the `S` array in `index.html`.
+Every scenario (CLM-0841 to CLM-0846) has a session block; only CLM-0841 plays the sign-in scene. Each file can hold a `session` block and a `signals` array; the rest of each scenario is still in the `S` array in `index.html`.
 
 ## Session block
 
@@ -33,3 +33,38 @@ A scenario with no session block hides the chip. It never inherits another scena
 ## Replaying part of the scene
 
 `SessionScene.play(session, { beats: ['particles', 'land'], memberNo, frame })` replays only the particle and landing beats, with the device already signed in. Frames are registered in `SESSION_FRAMES` in `index.html`; particles and the handoff outline take their origin and shape from the active frame, so the ring scenario's browser frame needs its markup and one registry entry, not a rebuild. A scenario can use this to show several members submitting from one device: pass a session with a different `member` and the same `deviceId`, and the chip's device slot stays on that ID while the other slots update.
+
+## Signals array (Phase 1 pre-flight)
+
+The `signals` array drives the Phase 1 panel on the claim lodgement screen. Each check renders in the same fixed shape, so a reader learns it once:
+
+```
+[icon] Check name                      [cost badge] [verdict]
+       Looked at:  what was examined
+       Rule:       the rule applied, including any threshold
+       Found:      what was actually found
+       → Conclusion
+```
+
+| Field | Type | Meaning |
+| --- | --- | --- |
+| `id` | string | Stable ID, for example `SIG-DOC-TYPE`. `SIG-FIELD-EXTRACTION` also fills the claim form when it completes. |
+| `name` | string | Check name. |
+| `cost` | `"ai"`, `"rule"` or `"capture"` | Badge: "AI call", "Business rule — no AI cost" or "Captured — no evaluation". This shows why cheap deterministic checks run before model calls. |
+| `lookedAt` | string | What was examined. |
+| `rule` | string | The rule applied. State the threshold wherever one exists ("at or above 0.70", "$5,000 or above"); never "above threshold" on its own. |
+| `found` | string | What was actually found. Hidden until the check completes. |
+| `verdict` | `"pass"`, `"flag"` or `"fail"` | Shown as a word (Pass, Flag, Fail) as well as colour. Flags and fails stay expanded when the panel finishes. |
+| `conclusion` | string | Shown after an arrow; always visible once the check completes. |
+| `detail` | object | Optional. Extra label and value pairs, shown under Found when the check is expanded. |
+
+A `capture` records data rather than deciding anything. It has no verdict and uses two fields instead of `lookedAt`, `rule` and `found`:
+
+| Field | Meaning |
+| --- | --- |
+| `captured` | The captured values, or `"session"` to build them from this file's session block (device ID · profile · IP · location), so the panel can't disagree with the session chip. |
+| `usedBy` | Which later strategies use the data. |
+
+The checks play in array order across the same 10 seconds as the upload. The running check expands to show its working and collapses when the next one starts. Any check can be clicked open again.
+
+Scenarios without a `signals` array fall back to the original four verdict-only rows. At present only CLM-0841 has one.
