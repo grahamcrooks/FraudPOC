@@ -4,7 +4,7 @@
 (window.SCENARIO_DATA = window.SCENARIO_DATA || {})['CLM-2024-0846'] = {
   "session": {
     "deviceId": "DEV-2740",
-    "deviceProfile": "Web · Edge (Windows)",
+    "deviceProfile": "H+ App v4.2 (Android)",
     "ipAddress": "203.0.113.91",
     "location": "Preston VIC",
     "sessionTime": "2026-07-18T21:15:00+10:00",
