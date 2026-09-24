@@ -128,12 +128,12 @@
     {
       "id": "SIG-P1-AIGEN",
       "name": "AI-generated detection",
-      "summary": "no signature detected · threshold 0.15",
+      "summary": "score 0.02 · threshold 0.15",
       "cost": "ai",
       "delay": 10600,
       "lookedAt": "Pixel-level artefacts characteristic of image generators",
       "rule": "Generative signature score at or below 0.15",
-      "found": "No generator signature detected",
+      "found": "0.02",
       "verdict": "pass",
       "conclusion": "Not a generated image"
     },
@@ -157,7 +157,7 @@
       "delay": 15600,
       "lookedAt": "Receipt fingerprint against every claim already submitted",
       "rule": "Same practice and receipt number, or an identical fingerprint, is a duplicate",
-      "found": "1 fingerprint match of 1 — itself · no prior submission",
+      "found": "0 prior submissions of this fingerprint",
       "verdict": "pass",
       "conclusion": "First submission of this receipt"
     }

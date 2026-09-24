@@ -244,7 +244,7 @@
       "delay": 15600,
       "lookedAt": "Receipt fingerprint against every claim already submitted",
       "rule": "Same practice and receipt number, or an identical fingerprint, is a duplicate",
-      "found": "1 fingerprint match of 1 — itself · no prior submission",
+      "found": "0 prior submissions of this fingerprint",
       "verdict": "pass",
       "conclusion": "First submission of this receipt"
     }
