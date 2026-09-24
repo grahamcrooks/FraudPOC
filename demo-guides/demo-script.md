@@ -124,6 +124,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 - **Check**:
   - The portal shows MBR-33291, Carlton VIC 3053, POL-2021-44210, Gold Hospital + Extras.
   - The session chip matches Step 1.
+  - The claim card has two numbered panels: 1 · Receipt (upload and pre-flight) and 2 · Member-Entered Receipt (the form).
 
 ### Step 3: Upload and pre-flight
 

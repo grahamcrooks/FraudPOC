@@ -270,6 +270,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .lodge-active{display:flex;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.9)}
 .lodge-active-dot{width:7px;height:7px;border-radius:50%;background:#4ade80;animation:blink 2s infinite}
 .lodge-body{padding:20px}
+.lodge-group{border:1px solid rgba(0,31,95,.28);border-radius:10px;padding:14px 16px 16px;margin-bottom:16px}
+.lodge-group-hd{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.lodge-group-n{width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
+.lodge-group .dataset-intro-title{display:none}
+.lodge-section,.stat-card{border-color:rgba(0,31,95,.22)}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .form-group{display:flex;flex-direction:column;gap:4px}
 .form-group.full{grid-column:1/-1}
@@ -1156,7 +1161,9 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
             <div class="lodge-active"><div class="lodge-active-dot"></div>AI Fraud Detection Active</div>
           </div>
           <div class="lodge-body">
-            <div class="form-group full" style="margin-bottom:14px">
+            <div class="lodge-group">
+            <div class="lodge-group-hd"><span class="lodge-group-n">1</span>Receipt</div>
+            <div class="form-group full" style="margin-bottom:0">
               <label class="form-label">Receipt from Dataset <span class="req">*</span></label>
               <div class="upload-zone" id="upload-zone" onclick="simulateUpload()">
                 <div class="upload-icon">📎</div>
@@ -1177,6 +1184,9 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
                 <div class="receipt-check">✅</div>
               </div>
             </div>
+            </div>
+            <div class="lodge-group">
+            <div class="lodge-group-hd"><span class="lodge-group-n">2</span>Member-Entered Receipt</div>
             <div class="dataset-intro">
               <div class="dataset-intro-title">Member-Entered Receipt</div>
               <div class="dataset-intro-body">The receipt details the member entered when lodging the claim. Phase 1 checks: do they match the receipt itself?</div>
@@ -1192,6 +1202,7 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
             <div class="form-row">
               <div class="form-group"><label class="form-label">Claim Amount <span class="req">*</span></label><input class="form-input" id="f-amt" readonly placeholder="Read from receipt"></div>
               <div class="form-group"><label class="form-label">Item Codes</label><input class="form-input" id="f-codes" readonly placeholder="Read from receipt"></div>
+            </div>
             </div>
             <div class="form-footer">
               <div class="form-note">🔒 Secured · Processed by Pega Infinity 26.1 <span class="dataset-badge">🤖 Historical Dataset · Phase 1 Only</span></div>
