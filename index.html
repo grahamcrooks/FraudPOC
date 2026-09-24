@@ -519,8 +519,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .sess-slot.kept{animation:sessKept .9s ease-out}
 @keyframes sessPop{0%{transform:scale(.85);background:var(--gold)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
 @keyframes sessKept{0%{box-shadow:0 0 0 0 rgba(16,165,172,.55)}100%{box-shadow:0 0 0 10px rgba(16,165,172,0)}}
+.sess-seen{display:none;font-size:11px;font-weight:700;padding:1px 7px;border-radius:10px;margin-left:2px}
+.sess-seen.known{display:inline-block;background:var(--green-bg);color:var(--green)}
+.sess-seen.new{display:inline-block;background:#FEF3C7;color:#92400E;border:1px solid var(--amber-mid)}
+.sess-chip.awaiting .sess-slot:not(.filled) .sess-seen{display:none}
 .sess-note{position:absolute;top:calc(100% + 6px);right:0;z-index:5;white-space:nowrap;font-size:12px;font-weight:500;color:var(--text-2);background:var(--white);border:1px solid var(--border);border-radius:10px;padding:4px 10px;box-shadow:0 2px 8px rgba(0,0,0,.08);opacity:0;pointer-events:none;transition:opacity .6s}
 .sess-note.show{opacity:1}
+.sess-seen .ss-short{display:none}
+@media (max-width:1340px){.sess-seen .ss-full{display:none}.sess-seen .ss-short{display:inline}}
 @media (max-width:1200px){.sess-slot{font-size:12px;padding:4px 8px}.sess-wrap{margin-right:10px}}
 
 /* Stage: covers the portal while the phone is centre frame */
@@ -538,7 +544,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .ls-notch{position:absolute;top:.55em;left:50%;transform:translateX(-50%);width:34%;height:1.5em;background:#0B0F1A;border-radius:0 0 .9em .9em;z-index:3}
 .ls-screen{position:relative;height:100%;border-radius:2.1em;background:var(--white);overflow:hidden;display:flex;flex-direction:column}
 .ls-status{display:flex;justify-content:space-between;padding:.7em 1.6em 0;font-size:.8em;font-weight:700;color:var(--text)}
-.ls-brand{padding:.95em .82em .25em;font-size:1.7em;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.ls-brand{display:flex;align-items:baseline;gap:.1em;padding:1.25em 1.1em .3em;font-size:1.25em;font-weight:700;color:var(--text);letter-spacing:-.3px}
+.ls-brand .logo-plus{font-size:1.1em}
 .ls-view{position:absolute;left:0;right:0;top:5.4em;padding:0 1.4em;transition:opacity .3s}
 .ls-h{font-size:1.35em;font-weight:800;color:var(--text);margin:.6em 0 1em}
 .ls-lbl{font-size:.78em;font-weight:600;color:var(--text-3);margin-bottom:.35em}
@@ -828,7 +835,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     <div class="nav-right">
       <div class="sess-wrap">
         <button class="sess-chip" id="sess-chip" title="Session captured at sign-in · click or press L to replay" onclick="SessionScene.replay()">
-          <span class="sess-slot" data-slot="device"><span class="sess-ico">📱</span><span class="sess-val">—</span></span>
+          <span class="sess-slot" data-slot="device"><span class="sess-ico">📱</span><span class="sess-val">—</span><span class="sess-seen" id="sess-seen"></span></span>
           <span class="sess-slot" data-slot="location"><span class="sess-ico">📍</span><span class="sess-val">—</span></span>
           <span class="sess-slot" data-slot="session"><span class="sess-ico">🕒</span><span class="sess-val">—</span></span>
         </button>
@@ -1097,7 +1104,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
     <div class="ls-notch"></div>
     <div class="ls-screen">
       <div class="ls-status"><span id="ls-clock">9:14</span><span>●●●● 5G ▮</span></div>
-      <div class="ls-brand">Bupa</div>
+      <div class="ls-brand"><span class="logo-plus">H+</span>Health Insurance Co</div>
       <div class="ls-view ls-view-login">
         <div class="ls-h">Sign in</div>
         <div class="ls-lbl">Membership number</div>
@@ -1118,7 +1125,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       </div>
     </div>
   </div>
-  <div class="ls-sim"><span class="ls-sim-pill">Simulated</span>Member sign-in on the Bupa app · illustrative device and location data</div>
+  <div class="ls-sim"><span class="ls-sim-pill">Simulated</span>Member sign-in on the H+ app · illustrative device and location data</div>
 </div>
 <div class="ls-fx" id="ls-fx"></div>
 
@@ -2015,7 +2022,6 @@ const SESSION_TZ={'+10:00':'AEST','+11:00':'AEDT','+09:30':'ACST','+10:30':'ACDT
 const SESSION_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
 function scenarioSession(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&d.session)||null; }
-function firstSession(){ for(const s of S){ const x=scenarioSession(s); if(x) return x; } return null; }
 
 // Wall-clock time as written in the ISO string, so the display never depends on the viewer's timezone.
 function formatSessionTime(iso){
@@ -2053,8 +2059,20 @@ const SessionChip={
   },
   set(sess,animate){
     sessionSignals(sess).forEach(sig=>this.fill(sig.key,sig.chip,animate));
+    this.mark(sess);
     const c=$('sess-chip'); c.classList.add('show'); c.classList.remove('awaiting');
   },
+  // Recognised versus first-time device, from deviceSeenBefore. A new device is
+  // a fraud signal in its own right, so it shows at the front door.
+  mark(sess){
+    const m=$('sess-seen'); m.className='sess-seen';
+    // Short label under 1340px so the header never wraps.
+    const lbl=(full,short)=>'<span class="ss-full">'+full+'</span><span class="ss-short">'+short+'</span>';
+    if(sess.deviceSeenBefore===true){ m.classList.add('known'); m.innerHTML=lbl('✓ recognised device','✓ recognised'); }
+    else if(sess.deviceSeenBefore===false){ m.classList.add('new'); m.innerHTML=lbl('⚠ new device','⚠ new'); }
+    else m.textContent='';
+  },
+  hide(){ $('sess-chip').classList.remove('show','awaiting'); this.hideNote(); },
   rect(key){ const sl=this.slot(key); return sl?sl.getBoundingClientRect():null; },
   noteTimer:null,
   showNote(){
@@ -2080,18 +2098,19 @@ const SessionScene={
       this.pending=sess; this.pendingOpts={memberNo:s.mbr};
       if($('demo-screen').classList.contains('active')) this.playPending();
       else SessionChip.await();
+    } else if(sess){
+      this.pending=null; this.apply(sess,false);
     } else {
-      this.pending=null;
-      const use=sess||this.current||firstSession();   // no session block: keep the current session
-      if(use) this.apply(use,false);
+      // No session block: hide the chip. Carrying another member's device over
+      // would show several members on one device, which is the ES-002 signal.
+      this.pending=null; this.current=null; SessionChip.hide();
     }
   },
   // Called by goDemo.
   playPending(){ if(this.pending){ const p=this.pending,o=this.pendingOpts; this.pending=null; this.play(p,o); } },
   replay(){
     if(!$('demo-screen').classList.contains('active')||$('overlay').classList.contains('show')) return;
-    const sess=this.current||firstSession(); if(!sess) return;
-    const s=S.find(x=>scenarioSession(x)===sess)||S[curScenario];
+    const s=S[curScenario], sess=scenarioSession(s); if(!sess) return;
     this.play(sess,{memberNo:s.mbr});
   },
   apply(sess,note){
@@ -2204,7 +2223,7 @@ const SessionScene={
         {transform:`translate(${ex}px,${ey}px) scale(.62)`,opacity:1,offset:.88},
         {transform:`translate(${ex}px,${ey}px) scale(.5)`,opacity:0}
       ],{duration:dur,delay,easing:'cubic-bezier(.45,0,.3,1)',fill:'forwards'});
-      this.at(delay+dur*.88,()=>SessionChip.fill(p.sig.key,p.sig.chip,true));
+      this.at(delay+dur*.88,()=>{ SessionChip.fill(p.sig.key,p.sig.chip,true); if(p.sig.key==='device') SessionChip.mark(this.sess); });
     });
   },
 

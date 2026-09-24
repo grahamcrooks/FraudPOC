@@ -35,6 +35,10 @@ Use these names for the phases everywhere:
 - Kebab-case file and folder names, named for what the file contains or does.
 - Update the index in `README.md` whenever a file is added, renamed or removed.
 
+## Branding
+
+The demo UI uses the generic "H+ Health Insurance Co" brand everywhere, including mock app screens and device profiles. Never use Bupa's name, logo or colours in the demo UI: the site is public and shared as video, and must not look like Bupa's own app. Slides may state that the POC is for Bupa; that is a statement of fact, not an impersonation.
+
 ## Simulated or actual
 
 Every scene in the demo is labelled either "simulated" or "actual", and the difference must stay visually obvious. Don't add a scene without a label, and don't restyle the labels in a way that makes the two harder to tell apart.

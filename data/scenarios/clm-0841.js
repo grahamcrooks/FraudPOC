@@ -5,7 +5,7 @@
   "session": {
     "member": "James Kowalski",
     "deviceId": "DEV-2291",
-    "deviceProfile": "Bupa App v4.2 (iOS)",
+    "deviceProfile": "H+ App v4.2 (iOS)",
     "ipAddress": "203.0.113.18",
     "location": "Carlton VIC",
     "sessionTime": "2026-07-12T09:14:00+10:00",

@@ -18,10 +18,16 @@ The session block drives the sign-in scene and the session chip in the portal he
 | `ipAddress` | string | Submission IP, shown in the Location particle. Use documentation ranges (`203.0.113.0/24`, `198.51.100.0/24`), never a real address. |
 | `location` | string | Suburb and state resolved from the IP, shown in the chip and the Location particle. ES-001 compares it with the registered address. |
 | `sessionTime` | string | ISO 8601 with offset, for example `2026-07-12T09:14:00+10:00`. Shown as wall-clock time; `+10:00` displays as AEST and `+11:00` as AEDT. |
-| `deviceSeenBefore` | boolean | Whether the device has been used by this member before. Carried for ES-002; not displayed yet. |
+| `deviceSeenBefore` | boolean | `true` if the member has claimed before on this device, `false` for a first-time device. Shown in the chip as "recognised device" or "new device"; a new device is a fraud signal in its own right. Set it honestly. |
 | `showLogin` | boolean | `true` plays the full sign-in scene when the scenario opens. `false` skips it and fills the chip directly. |
 
-A scenario with no session block keeps the current session, so the chip stays populated from the last sign-in.
+A scenario with no session block hides the chip. It never inherits another scenario's session, because carrying one member's device into another member's claim would show several members on one device, which is the ES-002 signal.
+
+## Device rules
+
+- Every scenario meant to pass ES-002 has its own device ID and its own IP.
+- Several members on one device ID is reserved for the ring scenario, where it is the thing that fires. It is never the default.
+- Use values from the test pack (`members.csv`, `manifest.json`) so members, suburbs, device IDs and IPs stay consistent, and IPs are documentation-range addresses that geolocate to the suburb in the manifest.
 
 ## Replaying part of the scene
 

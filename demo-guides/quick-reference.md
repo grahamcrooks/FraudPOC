@@ -10,6 +10,15 @@
 - F → Toggle Fullscreen
 - P → Toggle Step-by-Step mode
 - Esc → Exit fullscreen
+- L → Replay the sign-in scene (or click the session chip in the portal header)
+
+### Sign-in scene
+
+- Plays automatically when CLM-0841 opens, including each loop of the Rolling Demo (about 6 seconds).
+- Any key or click → Skip to the end: the session chip is filled and the privacy line shows.
+- Space, Enter and Esc only skip the scene; they don't also pause the Rolling Demo or advance.
+- Number keys and S still work mid-scene: the scene skips to the end, then the key does its usual job.
+- L → Replay it at any time on a scenario with a sign-in.
 
 ## The Three Phases
 
@@ -84,3 +93,4 @@
 - Want to go back → Press S for Slides, then use Space
 - AIM button not showing → Make sure youre on CLM-0845
 - Dashboard not responding → Try clicking Portal tab first, then Report
+- Sign-in scene in the way → Press any key or click to skip it; press L to replay
