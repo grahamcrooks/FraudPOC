@@ -501,6 +501,74 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .aim-buttons{display:flex;gap:10px;justify-content:flex-end;padding:20px;border-top:1px solid var(--border)}
 .btn-aim-close{background:#F3F4F6;color:var(--text-2);border:1px solid var(--border);padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font);transition:all .15s}
 .btn-aim-close:hover{background:var(--white);border-color:var(--text-3)}
+
+/* ══════════════════════════════════════════════════════
+   SESSION SIGN-IN SCENE + SESSION CHIP
+   Shows that the device fingerprint and location come from
+   the member's phone at sign-in, not from the claim form.
+   Driven by data/scenarios/ (session block).
+══════════════════════════════════════════════════════ */
+/* Session chip in the portal header */
+.sess-wrap{position:relative;display:flex;align-items:center;margin-right:18px}
+.sess-chip{display:none;align-items:center;gap:6px;cursor:pointer;background:none;border:0;padding:0;font-family:var(--font)}
+.sess-chip.show{display:flex}
+.sess-slot{display:inline-flex;align-items:center;gap:6px;padding:5px 11px;border-radius:20px;background:var(--lblue);border:1px solid rgba(51,65,144,.18);color:var(--navy);font-size:13px;font-weight:600;white-space:nowrap;font-variant-numeric:tabular-nums}
+.sess-slot .sess-ico{font-size:14px;line-height:1}
+.sess-chip.awaiting .sess-slot:not(.filled){background:transparent;border:1px dashed var(--text-4);color:var(--text-4)}
+.sess-slot.pop{animation:sessPop .55s ease-out}
+.sess-slot.kept{animation:sessKept .9s ease-out}
+@keyframes sessPop{0%{transform:scale(.85);background:var(--gold)}60%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes sessKept{0%{box-shadow:0 0 0 0 rgba(16,165,172,.55)}100%{box-shadow:0 0 0 10px rgba(16,165,172,0)}}
+.sess-note{position:absolute;top:calc(100% + 6px);right:0;z-index:5;white-space:nowrap;font-size:12px;font-weight:500;color:var(--text-2);background:var(--white);border:1px solid var(--border);border-radius:10px;padding:4px 10px;box-shadow:0 2px 8px rgba(0,0,0,.08);opacity:0;pointer-events:none;transition:opacity .6s}
+.sess-note.show{opacity:1}
+@media (max-width:1200px){.sess-slot{font-size:12px;padding:4px 8px}.sess-wrap{margin-right:10px}}
+
+/* Stage: covers the portal while the phone is centre frame */
+.ls{position:fixed;left:0;right:0;bottom:0;top:36px;z-index:610;display:none;align-items:center;justify-content:center;cursor:pointer}
+.ls.show{display:flex}
+.ls.dark{background:linear-gradient(145deg,#020B18 0%,#051428 60%,#040F1E 100%)}
+.ls.light{background:linear-gradient(145deg,#F0F4FF 0%,#E8EEF8 60%,#EDF2FF 100%)}
+.ls-sim{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:13px;font-weight:500}
+.ls.dark .ls-sim{color:#9FB4D4}
+.ls.light .ls-sim{color:var(--text-2)}
+.ls-sim-pill{background:var(--gold);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px}
+
+/* Phone */
+.ls-phone{position:relative;height:min(calc(100vh - 130px),940px);aspect-ratio:9/19.5;font-size:clamp(11px,1.9vh,17px);background:#0B0F1A;border-radius:2.6em;padding:.55em;box-shadow:0 0 0 2px #2A3345,0 30px 80px rgba(0,0,0,.45)}
+.ls-notch{position:absolute;top:.55em;left:50%;transform:translateX(-50%);width:34%;height:1.5em;background:#0B0F1A;border-radius:0 0 .9em .9em;z-index:3}
+.ls-screen{position:relative;height:100%;border-radius:2.1em;background:var(--white);overflow:hidden;display:flex;flex-direction:column}
+.ls-status{display:flex;justify-content:space-between;padding:.7em 1.6em 0;font-size:.8em;font-weight:700;color:var(--text)}
+.ls-brand{padding:.95em .82em .25em;font-size:1.7em;font-weight:800;color:var(--navy);letter-spacing:-.5px}
+.ls-view{position:absolute;left:0;right:0;top:5.4em;padding:0 1.4em;transition:opacity .3s}
+.ls-h{font-size:1.35em;font-weight:800;color:var(--text);margin:.6em 0 1em}
+.ls-lbl{font-size:.78em;font-weight:600;color:var(--text-3);margin-bottom:.35em}
+.ls-field{border:1px solid var(--border);border-radius:.7em;padding:.75em .9em;font-size:.95em;color:var(--text);margin-bottom:1em;background:var(--canvas)}
+.ls-pw{letter-spacing:.25em}
+.ls-btn{margin-top:.6em;background:var(--navy);color:#fff;text-align:center;font-weight:700;border-radius:.8em;padding:.85em}
+.ls-view-welcome{opacity:0}
+.ls-wb{font-size:1.6em;font-weight:800;color:var(--text);line-height:1.2;margin:.8em 0 1em}
+.ls-tile{display:flex;align-items:center;gap:.7em;border:1px solid var(--border);border-radius:.8em;padding:.8em .9em;margin-bottom:.7em;font-weight:600;color:var(--text-2)}
+.ls-bio{position:absolute;left:12%;right:12%;top:38%;background:rgba(255,255,255,.97);border-radius:1.4em;box-shadow:0 12px 40px rgba(0,31,95,.25);padding:1.4em 1em;text-align:center;opacity:0;transform:scale(.92);transition:opacity .25s,transform .25s;z-index:2}
+.ls-bio svg{width:3.6em;height:3.6em;stroke:var(--pblue);transition:stroke .2s}
+.ls-bio-txt{margin-top:.5em;font-weight:700;color:var(--text)}
+.ls.st-bio .ls-bio,.ls.st-ok .ls-bio{opacity:1;transform:none}
+.ls.st-bio .ls-view-login,.ls.st-ok .ls-view-login{opacity:.35}
+.ls.st-bio .ls-bio svg{animation:lsScan .7s ease-in-out infinite alternate}
+.ls.st-ok .ls-bio svg{stroke:var(--green-mid)}
+.ls.st-welcome .ls-view-login{opacity:0}
+.ls.st-welcome .ls-view-welcome{opacity:1}
+@keyframes lsScan{from{opacity:.55}to{opacity:1}}
+
+/* Simplified outline the phone cross-fades into at handoff */
+.ls-outline{position:fixed;z-index:615;border:3px solid var(--navy);box-shadow:0 0 0 2px #fff,0 8px 24px rgba(0,0,0,.25);border-radius:18%/8.5%;pointer-events:none;opacity:0}
+.ls-outline::before{content:'';position:absolute;top:4%;left:50%;transform:translateX(-50%);width:32%;height:3%;border-radius:4px;background:var(--navy)}
+
+/* Particles: sized for the back of the room */
+.ls-fx{position:fixed;inset:0;z-index:620;pointer-events:none}
+.lsp{position:absolute;left:0;top:0;display:flex;align-items:center;gap:14px;padding:12px 22px 12px 16px;border-radius:16px;background:var(--navy);color:#fff;border:2px solid var(--pc);box-shadow:0 10px 30px rgba(0,0,0,.35);white-space:nowrap;transform-origin:center;opacity:0;will-change:transform,opacity}
+.lsp-ico{font-size:clamp(24px,2.1vw,36px);line-height:1}
+.lsp-t{font-size:clamp(12px,.95vw,17px);font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--pc)}
+.lsp-v{font-size:clamp(19px,1.65vw,31px);font-weight:700;line-height:1.25}
 </style>
 </head>
 <body>
@@ -758,6 +826,14 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
       <a class="nav-link" href="#">Wellness</a>
     </div>
     <div class="nav-right">
+      <div class="sess-wrap">
+        <button class="sess-chip" id="sess-chip" title="Session captured at sign-in · click or press L to replay" onclick="SessionScene.replay()">
+          <span class="sess-slot" data-slot="device"><span class="sess-ico">📱</span><span class="sess-val">—</span></span>
+          <span class="sess-slot" data-slot="location"><span class="sess-ico">📍</span><span class="sess-val">—</span></span>
+          <span class="sess-slot" data-slot="session"><span class="sess-ico">🕒</span><span class="sess-val">—</span></span>
+        </button>
+        <div class="sess-note" id="sess-note">Captured at sign-in. No browsing history, contacts or background location.</div>
+      </div>
       <div class="member-avatar" id="m-av">JK</div>
       <div><div class="member-greeting">Welcome back</div><div class="member-name" id="m-name">James Kowalski</div></div>
     </div>
@@ -1015,6 +1091,38 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
   </div>
 </div>
 
+<!-- SESSION SIGN-IN SCENE — simulated; text is filled from data/scenarios/ -->
+<div class="ls dark" id="ls" aria-hidden="true" onclick="SessionScene.finish()">
+  <div class="ls-phone" id="ls-phone">
+    <div class="ls-notch"></div>
+    <div class="ls-screen">
+      <div class="ls-status"><span id="ls-clock">9:14</span><span>●●●● 5G ▮</span></div>
+      <div class="ls-brand">Bupa</div>
+      <div class="ls-view ls-view-login">
+        <div class="ls-h">Sign in</div>
+        <div class="ls-lbl">Membership number</div>
+        <div class="ls-field" id="ls-mbr">MBR-33291</div>
+        <div class="ls-lbl">Password</div>
+        <div class="ls-field ls-pw">••••••••••</div>
+        <div class="ls-btn">Sign in</div>
+      </div>
+      <div class="ls-bio">
+        <svg viewBox="0 0 48 48" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14V8a4 4 0 0 1 4-4h6M34 4h6a4 4 0 0 1 4 4v6M44 34v6a4 4 0 0 1-4 4h-6M14 44H8a4 4 0 0 1-4-4v-6"/><path d="M17 18v3M31 18v3M24 18v9h-2M17 32c4 3.5 10 3.5 14 0"/></svg>
+        <div class="ls-bio-txt" id="ls-bio-txt">Face ID</div>
+      </div>
+      <div class="ls-view ls-view-welcome">
+        <div class="ls-wb">Welcome back, <span id="ls-first">James</span>.</div>
+        <div class="ls-tile">🧾 Lodge a claim</div>
+        <div class="ls-tile">🛡️ My cover</div>
+        <div class="ls-tile">📍 Find a provider</div>
+      </div>
+    </div>
+  </div>
+  <div class="ls-sim"><span class="ls-sim-pill">Simulated</span>Member sign-in on the Bupa app · illustrative device and location data</div>
+</div>
+<div class="ls-fx" id="ls-fx"></div>
+
+<script src="data/scenarios/clm-0841.js"></script>
 <script>
 // ══════════════════════════════════════════════════════
 // DATA
@@ -1302,6 +1410,7 @@ function clearSlideProgress(){
 // SCREEN ROUTING
 // ══════════════════════════════════════════════════════
 function goSlides(){
+  SessionScene.finish();
   clearSlideTimer();
   $('slides-screen').classList.add('active');
   $('demo-screen').classList.remove('active');
@@ -1329,6 +1438,7 @@ function goDemo(){
   $('demo-nav-btn').style.opacity='.4';
   // In rolling mode, launch the demo sequence
   if(runMode==='rolling' && !rollingPaused) launchRollingDemo();
+  else SessionScene.playPending();
 }
 
 // ══════════════════════════════════════════════════════
@@ -1533,6 +1643,7 @@ function setScenario(idx){
   } else {
     banner.style.display='none';
   }
+  SessionScene.onScenario(s);
 }
 
 let countdownInterval=null;
@@ -1889,6 +2000,244 @@ document.addEventListener('keydown',e=>{
 });
 
 // ══════════════════════════════════════════════════════
+// SESSION SIGN-IN SCENE + SESSION CHIP
+// The device fingerprint and location come from the member's
+// phone at sign-in, not from the claim form. ES-001 and ES-002
+// depend on the audience understanding that.
+// Data: data/scenarios/<claim>.js → window.SCENARIO_DATA[id].session
+// Beats: login (0–2s) · particles (2–4s) · handoff (4–5s) · land (5–6s)
+// Partial replays (e.g. several members on one device) pass
+// { beats:['particles','land'] } with a different member and the same deviceId.
+// ══════════════════════════════════════════════════════
+const SCENARIO_DATA=window.SCENARIO_DATA||{};
+const reducedMotion=()=>!!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const SESSION_TZ={'+10:00':'AEST','+11:00':'AEDT','+09:30':'ACST','+10:30':'ACDT','+08:00':'AWST','Z':'UTC'};
+const SESSION_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function scenarioSession(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&d.session)||null; }
+function firstSession(){ for(const s of S){ const x=scenarioSession(s); if(x) return x; } return null; }
+
+// Wall-clock time as written in the ISO string, so the display never depends on the viewer's timezone.
+function formatSessionTime(iso){
+  const m=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::\d{2}(?:\.\d+)?)?(Z|[+-]\d{2}:\d{2})?$/.exec(iso||'');
+  if(!m) return {date:'',time:iso||'',tz:''};
+  const tz=m[6]?(SESSION_TZ[m[6]]||'UTC'+m[6]):'';
+  return {date:(+m[3])+' '+SESSION_MON[+m[2]-1]+' '+m[1], time:m[4]+':'+m[5], tz};
+}
+
+// The three signals, in slot order. Particles and chip slots share these keys.
+function sessionSignals(sess){
+  const t=formatSessionTime(sess.sessionTime);
+  const clock=(t.time+' '+t.tz).trim();
+  return [
+    {key:'device',  icon:'📱',title:'Device',  colour:'var(--teal)',  detail:sess.deviceId+' · '+sess.deviceProfile, chip:sess.deviceId},
+    {key:'location',icon:'📍',title:'Location',colour:'var(--orange)',detail:sess.location+' · '+sess.ipAddress,     chip:sess.location},
+    {key:'session', icon:'🕒',title:'Session', colour:'var(--gold)',  detail:(t.date?t.date+', ':'')+clock,          chip:clock},
+  ];
+}
+
+const SessionChip={
+  slot(key){ return document.querySelector('#sess-chip [data-slot="'+key+'"]'); },
+  // Empty slots shown as landing targets while the scene plays.
+  await(){ const c=$('sess-chip'); c.classList.add('show','awaiting');
+    c.querySelectorAll('.sess-slot').forEach(sl=>{ sl.classList.remove('filled','pop','kept'); sl.querySelector('.sess-val').textContent='—'; }); },
+  // Fill one slot. An unchanged value pulses instead of popping, so a
+  // repeated device ID visibly stays put while the member changes.
+  fill(key,value,animate){
+    const sl=this.slot(key); if(!sl) return;
+    const v=sl.querySelector('.sess-val'), changed=v.textContent!==value;
+    v.textContent=value; sl.classList.add('filled');
+    // A plain refresh with the same value leaves a running pop/pulse alone.
+    if(animate||changed) sl.classList.remove('pop','kept');
+    if(animate&&!reducedMotion()){ void sl.offsetWidth; sl.classList.add(changed?'pop':'kept'); }
+  },
+  set(sess,animate){
+    sessionSignals(sess).forEach(sig=>this.fill(sig.key,sig.chip,animate));
+    const c=$('sess-chip'); c.classList.add('show'); c.classList.remove('awaiting');
+  },
+  rect(key){ const sl=this.slot(key); return sl?sl.getBoundingClientRect():null; },
+  noteTimer:null,
+  showNote(){
+    const n=$('sess-note'); clearTimeout(this.noteTimer);
+    n.style.transition=reducedMotion()?'none':'';
+    n.classList.add('show');
+    this.noteTimer=setTimeout(()=>n.classList.remove('show'),3000);
+  },
+  hideNote(){ clearTimeout(this.noteTimer); $('sess-note').classList.remove('show'); }
+};
+
+const SessionScene={
+  current:null,    // session shown in the chip
+  pending:null,    // login waiting for the demo screen to become visible
+  pendingOpts:null,
+  playing:false, sess:null, timers:[], anims:[], particles:[], outline:null,
+
+  // Called by setScenario.
+  onScenario(s){
+    this.stop();
+    const sess=scenarioSession(s);
+    if(sess&&sess.showLogin){
+      this.pending=sess; this.pendingOpts={memberNo:s.mbr};
+      if($('demo-screen').classList.contains('active')) this.playPending();
+      else SessionChip.await();
+    } else {
+      this.pending=null;
+      const use=sess||this.current||firstSession();   // no session block: keep the current session
+      if(use) this.apply(use,false);
+    }
+  },
+  // Called by goDemo.
+  playPending(){ if(this.pending){ const p=this.pending,o=this.pendingOpts; this.pending=null; this.play(p,o); } },
+  replay(){
+    if(!$('demo-screen').classList.contains('active')||$('overlay').classList.contains('show')) return;
+    const sess=this.current||firstSession(); if(!sess) return;
+    const s=S.find(x=>scenarioSession(x)===sess)||S[curScenario];
+    this.play(sess,{memberNo:s.mbr});
+  },
+  apply(sess,note){
+    this.current=sess; SessionChip.set(sess,false);
+    if(note) SessionChip.showNote(); else SessionChip.hideNote();
+  },
+
+  play(sess,opts){
+    opts=opts||{};
+    const beats=opts.beats||['login','particles','handoff','land'];
+    this.stop(); this.sess=sess;
+    if(reducedMotion()){ this.apply(sess,true); return; }
+    this.playing=true;
+    // A full sign-in empties the chip; a partial replay keeps the previous
+    // values so unchanged slots (e.g. the same device) visibly stay put.
+    if(beats.includes('login')||!this.current) SessionChip.await();
+    SessionChip.hideNote();
+    const ls=$('ls');
+    ls.classList.remove('dark','light','st-login','st-bio','st-ok','st-welcome');
+    ls.classList.add(theme==='light'?'light':'dark');
+    txt('ls-first',(sess.member||'').split(' ')[0]);
+    txt('ls-mbr',opts.memberNo||'');
+    txt('ls-clock',formatSessionTime(sess.sessionTime).time.replace(/^0/,''));
+    txt('ls-bio-txt','Face ID');
+    ls.style.opacity=''; $('ls-phone').style.opacity='';
+    ls.classList.add('show');
+
+    let t=0;
+    if(beats.includes('login')){
+      ls.classList.add('st-login');
+      this.at(450, ()=>{ ls.classList.add('st-bio'); });
+      this.at(1150,()=>{ ls.classList.replace('st-bio','st-ok'); txt('ls-bio-txt','Verified'); });
+      this.at(1550,()=>{ ls.classList.remove('st-login','st-ok'); ls.classList.add('st-welcome'); });
+      t=2000;
+    } else {
+      ls.classList.add('st-welcome');
+      this.anim($('ls-phone'),[{opacity:0},{opacity:1}],{duration:300});
+      t=400;
+    }
+    if(beats.includes('particles')){ this.at(t,()=>this.beatParticles()); t+=2000; }
+    const handoff=beats.includes('handoff');
+    if(handoff){ this.at(t,()=>this.beatHandoff()); t+=1000; }
+    if(beats.includes('land')){ this.at(t,()=>this.beatLand(!handoff)); t+=1000; }
+    this.at(t,()=>this.end());
+  },
+
+  // Beat 2: three labelled particles lift out of the phone and hold, readable.
+  beatParticles(){
+    const fx=$('ls-fx'), pr=$('ls-phone').getBoundingClientRect();
+    this.particles=sessionSignals(this.sess).map(sig=>{
+      const el=document.createElement('div');
+      el.className='lsp'; el.style.setProperty('--pc',sig.colour);
+      el.innerHTML='<span class="lsp-ico"></span><span><div class="lsp-t"></div><div class="lsp-v"></div></span>';
+      el.querySelector('.lsp-ico').textContent=sig.icon;
+      el.querySelector('.lsp-t').textContent=sig.title;
+      el.querySelector('.lsp-v').textContent=sig.detail;
+      fx.appendChild(el);
+      return {sig,el,w:el.offsetWidth,h:el.offsetHeight,x:0,y:0};
+    });
+    const gap=22, maxW=Math.max(...this.particles.map(p=>p.w));
+    const hTot=this.particles.reduce((a,p)=>a+p.h,0)+gap*(this.particles.length-1);
+    let x=pr.right+40;
+    if(x+maxW>innerWidth-24) x=Math.max(24,innerWidth-24-maxW);
+    let y=pr.top+pr.height/2-hTot/2;
+    // Each particle rises out of the phone on its own lane, so paths never cross.
+    const cx=pr.left+pr.width/2;
+    this.particles.forEach((p,i)=>{
+      p.x=x; p.y=y; y+=p.h+gap;
+      const sx=cx-p.w/2, sy=p.y+60;
+      this.anim(p.el,[
+        {transform:`translate(${sx}px,${sy}px) scale(.5)`,opacity:0},
+        {transform:`translate(${sx+(p.x-sx)*.45}px,${p.y-24}px) scale(.9)`,opacity:1,offset:.5},
+        {transform:`translate(${p.x}px,${p.y}px) scale(1)`,opacity:1}
+      ],{duration:950,delay:i*220,easing:'cubic-bezier(.3,.7,.3,1)',fill:'both'});
+    });
+  },
+
+  // Beat 3: the portal fades up; the phone cross-fades to a plain outline,
+  // and only the outline shrinks toward the top-right, so no screen text is scaled.
+  beatHandoff(){
+    const ls=$('ls'), phone=$('ls-phone'), pr=phone.getBoundingClientRect();
+    const target=SessionChip.rect('device');
+    const o=document.createElement('div'); o.className='ls-outline'; document.body.appendChild(o); this.outline=o;
+    const w1=Math.max(18,target?target.height*.62:18), h1=w1*19.5/9;
+    const x1=target?target.left-w1-10:innerWidth-60, y1=target?target.top+target.height/2-h1/2:40;
+    this.anim(phone,[{opacity:1},{opacity:0}],{duration:350,fill:'forwards'});
+    this.anim(o,[
+      {left:pr.left+'px',top:pr.top+'px',width:pr.width+'px',height:pr.height+'px',opacity:0},
+      {left:pr.left+'px',top:pr.top+'px',width:pr.width+'px',height:pr.height+'px',opacity:1,offset:.3},
+      {left:x1+'px',top:y1+'px',width:w1+'px',height:h1+'px',opacity:1}
+    ],{duration:1000,easing:'cubic-bezier(.55,0,.35,1)',fill:'forwards'});
+    this.anim(ls,[{opacity:1},{opacity:0}],{duration:1000,easing:'ease-in-out',fill:'forwards'});
+  },
+
+  // Beat 4: each particle completes its arc into its own chip slot.
+  beatLand(fadeStage){
+    if(fadeStage){
+      this.anim($('ls'),[{opacity:1},{opacity:0}],{duration:400,fill:'forwards'});
+    }
+    if(this.outline) this.anim(this.outline,[{opacity:1},{opacity:0}],{duration:350,delay:450,fill:'forwards'});
+    this.particles.forEach((p,i)=>{
+      const r=SessionChip.rect(p.sig.key); if(!r) return;
+      const ex=r.left+r.width/2-p.w/2, ey=r.top+r.height/2-p.h/2;
+      const dur=720, delay=i*100;
+      // Arc bows upward but its top edge stays below the control bar (36px).
+      const my=Math.max(44-p.h*.09,p.y+(ey-p.y)*.55-40);
+      this.anim(p.el,[
+        {transform:`translate(${p.x}px,${p.y}px) scale(1)`,opacity:1},
+        {transform:`translate(${(p.x+ex)/2}px,${my}px) scale(.82)`,opacity:1,offset:.5},
+        {transform:`translate(${ex}px,${ey}px) scale(.62)`,opacity:1,offset:.88},
+        {transform:`translate(${ex}px,${ey}px) scale(.5)`,opacity:0}
+      ],{duration:dur,delay,easing:'cubic-bezier(.45,0,.3,1)',fill:'forwards'});
+      this.at(delay+dur*.88,()=>SessionChip.fill(p.sig.key,p.sig.chip,true));
+    });
+  },
+
+  end(){ const sess=this.sess; if(sess) this.current=sess; this.stop(); if(sess) SessionChip.showNote(); },
+  // Skip: jump straight to the landed state.
+  finish(){ if(this.playing) this.end(); },
+  // Tear down without populating (used when a new scenario replaces the scene).
+  stop(){
+    this.timers.forEach(clearTimeout); this.timers=[];
+    this.anims.forEach(a=>{ try{a.cancel();}catch(e){} }); this.anims=[];
+    $('ls-fx').innerHTML=''; this.particles=[];
+    if(this.outline){ this.outline.remove(); this.outline=null; }
+    const ls=$('ls'); ls.classList.remove('show'); ls.style.opacity='';
+    this.playing=false;
+    if(this.current) SessionChip.set(this.current,false);
+  },
+  // Timers are relative to when at() is called (scene start, or the start of a beat).
+  at(ms,fn){ this.timers.push(setTimeout(fn,ms)); },
+  anim(el,frames,o){ const a=el.animate(frames,o); this.anims.push(a); return a; }
+};
+
+// Skip with any key while the scene plays; L replays it. Runs before the
+// main keyboard handler so Space/Enter/Esc only skip and don't also pause.
+window.addEventListener('keydown',e=>{
+  if(SessionScene.playing){
+    SessionScene.finish();
+    if(e.key===' '||e.key==='Enter'||e.key==='Escape'){ e.preventDefault(); e.stopImmediatePropagation(); }
+    return;
+  }
+  if((e.key==='l'||e.key==='L')&&!e.ctrlKey&&!e.metaKey&&!e.altKey){ e.preventDefault(); e.stopImmediatePropagation(); SessionScene.replay(); }
+},true);
+
+// ══════════════════════════════════════════════════════
 // INIT
 // ══════════════════════════════════════════════════════
 goSlide(0);
@@ -2010,6 +2359,7 @@ function fdbSort(col){
 
 // REPORT SCREEN NAVIGATION
 function goReport(){
+  SessionScene.finish();
   document.getElementById('demo-screen').classList.remove('active');
   document.getElementById('fraud-dashboard').classList.add('active');
   document.getElementById('tab-portal-btn').classList.remove('on');

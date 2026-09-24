@@ -1,6 +1,6 @@
 # Health Insurance Fraud Detection POC
 
-A proof of concept showing real-time fraud detection for health insurance claims on Pega Infinity 26.1. A member submits a claim, and it passes through three phases of analysis: Phase 1 document forensics (is the receipt genuine?), Phase 2 provider and pattern (do the provider and claim pattern make sense?) and Phase 3 organised ring (is it connected to known fraud?). Six scripted scenarios show clean claims going to adjudication and suspicious ones going to the Specialist Investigation Unit with a complete evidence package. The demo app is a single self-contained [`index.html`](index.html), served by GitHub Pages.
+A proof of concept showing real-time fraud detection for health insurance claims on Pega Infinity 26.1. A member submits a claim, and it passes through three phases of analysis: Phase 1 document forensics (is the receipt genuine?), Phase 2 provider and pattern (do the provider and claim pattern make sense?) and Phase 3 organised ring (is it connected to known fraud?). Six scripted scenarios show clean claims going to adjudication and suspicious ones going to the Specialist Investigation Unit with a complete evidence package. The demo app is [`index.html`](index.html), served by GitHub Pages, with per-scenario data in [`data/scenarios/`](data/scenarios/).
 
 ## Demo guides
 
@@ -24,6 +24,10 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 - [Reference data](docs/reference-data.md): test practices and practitioners for the claim form dropdowns.
 - [Pega Blueprint export](docs/blueprint/README.md): the application's Blueprint file and how to use it.
+
+## Data
+
+- [Scenario data](data/scenarios/README.md): per-scenario data files and the session block schema that drives the sign-in scene.
 
 ## Tests
 
