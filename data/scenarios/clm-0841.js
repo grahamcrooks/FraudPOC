@@ -52,7 +52,7 @@
       "summary": "10 terms checked · none found",
       "cost": "rule",
       "lookedAt": "Extracted receipt text",
-      "rule": "Disqualifying terms — quotation, proforma, void, non-medical, balance outstanding",
+      "rule": "10 disqualifying terms, for example non-medical, quotation, unpaid, proforma",
       "found": "None",
       "verdict": "pass",
       "conclusion": "No disqualifying content"
