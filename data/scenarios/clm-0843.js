@@ -14,7 +14,7 @@
   "signals": [
     {
       "id": "SIG-DOC-TYPE",
-      "name": "Document type",
+      "name": "Receipt type",
       "summary": "TAX INVOICE · ABN and AHPRA present",
       "cost": "ai",
       "lookedAt": "Header, footer and declaration text",
@@ -47,7 +47,7 @@
     },
     {
       "id": "SIG-INVALID-KEYWORDS",
-      "name": "Invalid document keywords",
+      "name": "Disqualifying content",
       "summary": "10 terms checked · none found",
       "cost": "rule",
       "lookedAt": "Extracted receipt text",
@@ -58,7 +58,7 @@
     },
     {
       "id": "SIG-DOC-COMPLETENESS",
-      "name": "Document completeness",
+      "name": "Receipt completeness",
       "summary": "$195.00 paid of $195.00 · ABN ✓ · 2 lines · signed",
       "cost": "rule",
       "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",

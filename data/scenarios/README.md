@@ -71,7 +71,7 @@ A `capture` records data rather than deciding anything. It has no verdict and us
 | `captured` | The captured values, or `"session"` to build them from this file's session block (device ID · profile · IP · location), so the panel can't disagree with the session chip. |
 | `usedBy` | Which later strategies use the data. |
 
-The checks play in array order across the same 10 seconds as the upload. The running check expands to show its working and collapses to its summary when the next one starts. When pre-flight completes, every check opens and stays open, so the resting state (a booth loop, a pause, a screenshot) shows how every verdict was reached. Clicking a check still toggles it.
+The checks play in array order across the same 10 seconds as the upload. The running check expands to show its working and collapses to its summary when the next one starts. When pre-flight completes, every check opens and stays open, laid out in two columns, so the resting state (a booth loop, a pause, a screenshot) shows how every verdict was reached. Clicking a check still toggles it.
 
 ## Routing after pre-flight
 
