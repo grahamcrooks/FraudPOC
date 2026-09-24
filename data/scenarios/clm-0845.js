@@ -227,7 +227,7 @@
       "summary": "2-hop path to a practitioner shared with 2 practices under investigation",
       "cost": "ai",
       "delay": 7200,
-      "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, payment account, submission IP",
+      "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
       "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
       "found": "2-hop path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation",
       "verdict": "fail",

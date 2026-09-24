@@ -330,7 +330,7 @@
       "summary": "0 connections within 3 hops",
       "cost": "ai",
       "delay": 5800,
-      "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, payment account, submission IP",
+      "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
       "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
       "found": "0 connections within 3 hops",
       "verdict": "pass",
