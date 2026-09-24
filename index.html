@@ -1130,6 +1130,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 <div class="ls-fx" id="ls-fx"></div>
 
 <script src="data/scenarios/clm-0841.js"></script>
+<script src="data/scenarios/clm-0842.js"></script>
+<script src="data/scenarios/clm-0843.js"></script>
+<script src="data/scenarios/clm-0844.js"></script>
+<script src="data/scenarios/clm-0845.js"></script>
+<script src="data/scenarios/clm-0846.js"></script>
 <script>
 // ══════════════════════════════════════════════════════
 // DATA
@@ -2062,14 +2067,15 @@ const SessionChip={
     this.mark(sess);
     const c=$('sess-chip'); c.classList.add('show'); c.classList.remove('awaiting');
   },
-  // Recognised versus first-time device, from deviceSeenBefore. A new device is
+  // Recognised versus first-time device, from deviceStatus. A new device is
   // a fraud signal in its own right, so it shows at the front door.
   mark(sess){
     const m=$('sess-seen'); m.className='sess-seen';
+    const status=sess.deviceStatus||(sess.deviceSeenBefore===true?'recognised':sess.deviceSeenBefore===false?'new':'');
     // Short label under 1340px so the header never wraps.
     const lbl=(full,short)=>'<span class="ss-full">'+full+'</span><span class="ss-short">'+short+'</span>';
-    if(sess.deviceSeenBefore===true){ m.classList.add('known'); m.innerHTML=lbl('✓ recognised device','✓ recognised'); }
-    else if(sess.deviceSeenBefore===false){ m.classList.add('new'); m.innerHTML=lbl('⚠ new device','⚠ new'); }
+    if(status==='recognised'){ m.classList.add('known'); m.innerHTML=lbl('✓ recognised device','✓ recognised'); }
+    else if(status==='new'){ m.classList.add('new'); m.innerHTML=lbl('⚠ new device','⚠ new'); }
     else m.textContent='';
   },
   hide(){ $('sess-chip').classList.remove('show','awaiting'); this.hideNote(); },
@@ -2095,7 +2101,7 @@ const SessionScene={
     this.stop();
     const sess=scenarioSession(s);
     if(sess&&sess.showLogin){
-      this.pending=sess; this.pendingOpts={memberNo:s.mbr};
+      this.pending=sess; this.pendingOpts={memberNo:s.mbr,member:s.member};
       if($('demo-screen').classList.contains('active')) this.playPending();
       else SessionChip.await();
     } else if(sess){
@@ -2111,7 +2117,7 @@ const SessionScene={
   replay(){
     if(!$('demo-screen').classList.contains('active')||$('overlay').classList.contains('show')) return;
     const s=S[curScenario], sess=scenarioSession(s); if(!sess) return;
-    this.play(sess,{memberNo:s.mbr});
+    this.play(sess,{memberNo:s.mbr,member:s.member});
   },
   apply(sess,note){
     this.current=sess; SessionChip.set(sess,false);
@@ -2131,7 +2137,7 @@ const SessionScene={
     const ls=$('ls');
     ls.classList.remove('dark','light','st-login','st-bio','st-ok','st-welcome');
     ls.classList.add(theme==='light'?'light':'dark');
-    txt('ls-first',(sess.member||'').split(' ')[0]);
+    txt('ls-first',(sess.member||opts.member||'').split(' ')[0]);
     txt('ls-mbr',opts.memberNo||'');
     txt('ls-clock',formatSessionTime(sess.sessionTime).time.replace(/^0/,''));
     txt('ls-bio-txt','Face ID');
