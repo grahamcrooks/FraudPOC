@@ -4,10 +4,11 @@ A proof of concept showing real-time fraud detection for health insurance claims
 
 ## Demo guides
 
-- [Complete guide](demo-guides/complete-guide.md): overview of the phases, scenarios, controls, dashboard and investigation manager.
-- [Presenter guide](demo-guides/presenter-guide.md): slide-by-slide and scenario-by-scenario script with what to say and timings.
+- [Demo script](demo-guides/demo-script.md): the current script for running the demo and for system testing: each step with what to say, what happens under the hood, and what to check.
+- [Complete guide](demo-guides/complete-guide.md): overview of the phases, scenarios, controls, dashboard and investigation manager. Out of date; to be rewritten.
+- [Presenter guide](demo-guides/presenter-guide.md): slide-by-slide and scenario-by-scenario script with what to say and timings. Out of date; to be rewritten.
 - [Quick reference](demo-guides/quick-reference.md): one-page card with shortcuts, scenario table, running order and troubleshooting.
-- [Technical guide](demo-guides/technical-guide.md): how the app is built, scenario data, phase logic and animation timings.
+- [Technical guide](demo-guides/technical-guide.md): how the app is built, scenario data, phase logic and animation timings. Out of date; to be rewritten.
 
 The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
