@@ -329,8 +329,8 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 ══════════════════════════════════════════════════════ */
 .overlay{position:fixed;inset:0;top:36px;background:rgba(8,14,28,.92);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:opacity .4s;padding:16px;overflow-y:auto}
 .overlay.show{opacity:1;pointer-events:all}
-.ov-card{background:#FFFFFF;border:1px solid #E5E7EB;border-radius:18px;padding:32px 40px;width:92vw;max-width:1280px;max-height:calc(100vh - 80px);overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25)}
-.ov-hdr{display:flex;align-items:center;gap:14px;margin-bottom:22px;padding:4px 0 16px;border-bottom:2px solid #F3F4F6;position:sticky;top:-4px;background:#FFFFFF;z-index:30}
+.ov-card{background:#FFFFFF;border:1px solid #E5E7EB;border-radius:18px;padding:0 40px 32px;scroll-padding-top:150px;scroll-padding-bottom:20px;width:92vw;max-width:1280px;max-height:calc(100vh - 80px);overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25)}
+.ov-hdr{display:flex;align-items:center;gap:14px;margin-bottom:22px;padding:32px 0 16px;border-bottom:2px solid #F3F4F6;position:sticky;top:0;background:#FFFFFF;z-index:30}
 .ov-hdr-ico{font-size:36px}
 .ov-hdr-title{font-size:20px;font-weight:800;color:#111827}
 .ov-hdr-sub{font-size:13px;color:#6B7280;margin-top:2px}
@@ -692,6 +692,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .p1c-d{text-align:right;font-weight:600;color:var(--text)}
 .p1c-rule{width:calc(min(280px,100%) + 164px);max-width:444px;border-top:1px solid var(--text-4);margin:4px 0}
 .p1c-total{font-weight:800;color:var(--text);font-size:14px}
+.p1c-start{font-weight:700;color:var(--text)}
 .p1c-total .p1c-d{font-size:16px;font-weight:800}
 .p1c-verdict{margin-top:6px;font-size:14px;font-weight:800}
 .p1-calc.ok .p1c-verdict{color:var(--green-mid)}
@@ -731,6 +732,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 /* Clear the sign-in stage's Simulated label; let the pipeline scroll clear of the caption */
 body.ls-on .cap{bottom:64px}
 body.cap-on .overlay{padding-bottom:130px}
+body.cap-on .ov-card{max-height:calc(100vh - 200px)}
 @media (prefers-reduced-motion:reduce){.cap{transition:none}}
 @media (max-width:700px){.cap{flex-direction:column;gap:2px;bottom:24px}}
 </style>
@@ -2093,23 +2095,23 @@ const Phase1Score={
     const f=x=>x.toFixed(2), minus=x=>'−'+f(x);
     // Stored flow flag must agree with the arithmetic; warn loudly if not.
     if(r.above!==!!phData.pass) console.warn('Phase 1 score',f(r.total),'disagrees with PHASES pass flag',phData.pass);
-    const anyDeduct=r.rows.some(x=>x.deduct>0);
-    let rows=r.rows;
-    if(anyDeduct){   // deductions first, then the passes folded into one line
-      const hit=rows.filter(x=>x.deduct>0).sort((x,y)=>y.deduct-x.deduct), zero=rows.filter(x=>x.deduct===0);
-      rows=hit.concat(zero.length?[{label:'Others ('+zero.length+')',status:'pass',deduct:0}]:[]);
-    }
+    // Deductions first, largest first; then every check that passed, listed
+    // individually. On a forged receipt the passes make the point that no
+    // single check catches it.
+    const rows=r.rows.filter(x=>x.deduct>0).sort((x,y)=>y.deduct-x.deduct).concat(r.rows.filter(x=>x.deduct===0));
     const esc=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
     const line=x=>'<div class="p1c-row"><span class="p1c-l">'+esc(x.label)+'</span><span class="p1c-s p1c-'+esc(x.adj?'adj':x.status)+'">'+esc(x.status)+'</span><span class="p1c-d">'+minus(x.deduct)+'</span></div>';
     const cls=r.above?'ok':'bad';
     box.className='p1-calc show '+cls;
     box.innerHTML='<div class="p1c-title">Document integrity score <span>— starts at '+f(r.sc.start)+', deducted per finding</span></div>'
+      +'<div class="p1c-row p1c-start"><span class="p1c-l">Starting score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.sc.start)+'</span></div>'
       +rows.map(line).join('')+r.adj.map(line).join('')
       +'<div class="p1c-rule"></div>'
       +'<div class="p1c-row p1c-total"><span class="p1c-l">Document integrity score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.total)+'</span></div>'
       +'<div class="p1c-verdict">Threshold '+f(r.sc.threshold)+' — '+(r.above?'above · CLEAN':'below · SUSPICIOUS')+'</div>'
       +(r.sc.action?'<div class="p1c-action">'+esc(r.sc.action)+'</div>':'');
-    setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'center'}),150);
+    // At rest the score block is the payoff: bring all of it into view.
+    setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'end'}),150);
     return true;
   }
 };
