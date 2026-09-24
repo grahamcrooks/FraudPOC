@@ -180,11 +180,7 @@
     },
     "phase3": {
       "tag": "Phase 3 · Network intelligence",
-      "text": "AI searches known fraud cases and the provider's network"
-    },
-    "phase3:P3-RAG": {
-      "tag": "Phase 3 · Network intelligence",
-      "text": "Knowledge Buddy compares this claim with confirmed fraud cases"
+      "text": "Phase 3 looks beyond this claim, to everything it is connected to"
     },
     "phase3:P3-GRAPH": {
       "tag": "Phase 3 · Network intelligence",
@@ -328,32 +324,20 @@
   },
   "phase3": [
     {
-      "id": "P3-RAG",
-      "name": "Knowledge Buddy RAG",
-      "summary": "highest match 0.03 · threshold 0.85",
-      "cost": "ai",
-      "delay": 2400,
-      "lookedAt": "This claim's pattern against the confirmed fraud case library",
-      "rule": "Similarity at or above 0.85 to a confirmed case",
-      "found": "Highest match 0.03",
-      "verdict": "pass",
-      "conclusion": "No similar confirmed case"
-    },
-    {
       "id": "P3-GRAPH",
       "name": "Network graph",
       "tag": "MCP · Graph",
       "summary": "0 connections within 3 hops",
       "cost": "ai",
       "delay": 5800,
-      "lookedAt": "Graph traversal up to 3 hops from the member, using the device and payment links captured at submission",
-      "rule": "Any path reaching a confirmed fraud community",
+      "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, payment account, submission IP",
+      "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
       "found": "0 connections within 3 hops",
       "verdict": "pass",
       "conclusion": "Graph clear"
     }
   ],
   "phase3Result": {
-    "action": "No similar cases and no network connections. Claim approved and sent for adjudication."
+    "action": "No connections to known fraud or to anything under investigation. Claim approved and sent for adjudication."
   }
 };
