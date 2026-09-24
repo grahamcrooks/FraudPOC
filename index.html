@@ -621,7 +621,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .lsp-ico{font-size:clamp(24px,2.1vw,36px);line-height:1}
 .lsp-t{font-size:clamp(12px,.95vw,17px);font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--pc)}
 .lsp-v{font-size:clamp(19px,1.65vw,31px);font-weight:700;line-height:1.25}
-.lsp-why{font-size:clamp(13px,1.05vw,19px);font-weight:500;color:#C9D6EE;margin-top:3px;white-space:normal;max-width:34ch}
+.lsp-why{font-size:clamp(13px,1.05vw,19px);font-weight:500;color:#C9D6EE;margin-top:3px;white-space:normal}
 
 /* ══════════════════════════════════════════════════════
    PHASE 1 PRE-FLIGHT SIGNALS — each check shows its working
@@ -2675,7 +2675,10 @@ const SessionScene={
       fx.appendChild(el);
       return {sig,el,w:el.offsetWidth,h:el.offsetHeight,x:0,y:0};
     });
-    const gap=22, maxW=Math.max(...this.particles.map(p=>p.w));
+    // One width for all three, so the boxes line up on both edges.
+    const maxW=Math.max(...this.particles.map(p=>p.w));
+    this.particles.forEach(p=>{ p.el.style.width=maxW+'px'; p.w=maxW; p.h=p.el.offsetHeight; });
+    const gap=22;
     const hTot=this.particles.reduce((a,p)=>a+p.h,0)+gap*(this.particles.length-1);
     let x=pr.right+40;
     if(x+maxW>innerWidth-24) x=Math.max(24,innerWidth-24-maxW);
