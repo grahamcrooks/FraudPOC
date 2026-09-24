@@ -675,6 +675,28 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .sig[data-verdict="flag"] .sig-concl{color:#92400E}
 .sig[data-verdict="fail"] .sig-concl{color:#991B1B}
 .sig[data-verdict="capture"] .sig-concl{color:var(--blue)}
+/* Phase 1 in the pipeline modal: single column, full width */
+.check-list .sig-list,.check-list>.sig{width:100%}
+.p1-calc{display:none;margin-top:14px;padding:16px 22px;border-radius:13px;background:#F9FAFB;border:2px solid #E5E7EB;font-variant-numeric:tabular-nums}
+.p1-calc.show{display:block;animation:scoreIn .5s ease}
+.p1-calc.ok{border-color:rgba(22,163,74,.35)}
+.p1-calc.bad{border-color:rgba(220,38,38,.4);background:#FEF2F2}
+.p1c-title{font-size:14px;font-weight:800;color:var(--text);margin-bottom:8px}
+.p1c-title span{font-weight:500;color:var(--text-3)}
+.p1c-row{display:grid;grid-template-columns:minmax(200px,280px) 70px 70px;gap:12px;font-size:13px;line-height:1.7;color:var(--text-2)}
+.p1c-s{font-weight:700;text-transform:lowercase}
+.p1c-pass{color:var(--green-mid)}
+.p1c-flag{color:#92400E}
+.p1c-fail{color:#DC2626}
+.p1c-adj{color:var(--text)}
+.p1c-d{text-align:right;font-weight:600;color:var(--text)}
+.p1c-rule{width:calc(min(280px,100%) + 164px);max-width:444px;border-top:1px solid var(--text-4);margin:4px 0}
+.p1c-total{font-weight:800;color:var(--text);font-size:14px}
+.p1c-total .p1c-d{font-size:16px;font-weight:800}
+.p1c-verdict{margin-top:6px;font-size:14px;font-weight:800}
+.p1-calc.ok .p1c-verdict{color:var(--green-mid)}
+.p1-calc.bad .p1c-verdict{color:#DC2626}
+.p1c-action{margin-top:4px;font-size:13px;font-weight:600;color:var(--text)}
 /* Pre-flight terminal outcomes: a fail or flag stops the flow before the pipeline */
 .upload-zone.pf-stop{cursor:default;text-align:left;padding:16px 18px}
 .upload-zone.pf-reject{border:2px solid #DC2626;background:#FEF2F2}
@@ -1254,6 +1276,7 @@ body.cap-on .overlay{padding-bottom:130px}
       <div class="phase-expanded" id="ph1-expanded">
         <div class="phase-info" id="ph1-info"><div class="phase-info-band" id="ph1-info-band"><div class="phase-info-txt" id="ph1-info-txt"></div></div></div>
         <div class="check-list" id="ph1-checks"></div>
+        <div class="p1-calc" id="ph1-calc"></div>
         <div class="score-reveal" id="ph1-score"><div class="score-num" id="ph1-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Document Integrity Score</div><div class="score-verdict" id="ph1-score-verdict">Calculating...</div><div class="score-route" id="ph1-score-route"></div></div></div>
         <div class="result-badge" id="ph1-result"><div class="rb-ico" id="ph1-rb-ico">✅</div><div><div class="rb-title" id="ph1-rb-title">Phase 1 Passed</div><div class="rb-sub" id="ph1-rb-sub">Document integrity confirmed</div></div></div>
         <div class="discrepancy-panel" id="ph1-discrepancy">
@@ -2043,6 +2066,54 @@ const SIGNAL_VERDICT={
 
 function scenarioSignals(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&Array.isArray(d.signals)&&d.signals.length)?d.signals:null; }
 
+function scenarioPhase1(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&Array.isArray(d.phase1)&&d.phase1.length)?d.phase1:null; }
+
+// ══════════════════════════════════════════════════════
+// PHASE 1 SCORE — the integrity score shown as its arithmetic: start at
+// data.phase1Scoring.start, deduct each check's weight for its verdict
+// (weights[checkId][verdict]; a pass costs nothing) and each adjustment.
+// The total is computed here, never typed in, so it always reconciles.
+// ══════════════════════════════════════════════════════
+const Phase1Score={
+  compute(s,checks){
+    const d=SCENARIO_DATA[s.id]||{}, sc=d.phase1Scoring; if(!sc) return null;
+    const w=sc.weights||{};
+    const rows=checks.map(c=>{
+      const v=c.verdict||'pass', ded=v==='pass'?0:((w[c.id]||{})[v]);
+      if(v!=='pass'&&ded==null) console.warn('No phase1Scoring weight for',c.id,v);
+      return {label:c.name,status:v,deduct:ded||0};
+    });
+    const adj=(sc.adjustments||[]).map(a=>({label:a.label,status:a.value,deduct:a.deduct||0,adj:true}));
+    const cents=x=>Math.round(x*100);
+    const total=(cents(sc.start)-rows.concat(adj).reduce((t,r)=>t+cents(r.deduct),0))/100;
+    return {sc,rows,adj,total,above:total>=sc.threshold};
+  },
+  render(s,checks,phData){
+    const r=this.compute(s,checks), box=$('ph1-calc'); if(!r||!box) return false;
+    const f=x=>x.toFixed(2), minus=x=>'−'+f(x);
+    // Stored flow flag must agree with the arithmetic; warn loudly if not.
+    if(r.above!==!!phData.pass) console.warn('Phase 1 score',f(r.total),'disagrees with PHASES pass flag',phData.pass);
+    const anyDeduct=r.rows.some(x=>x.deduct>0);
+    let rows=r.rows;
+    if(anyDeduct){   // deductions first, then the passes folded into one line
+      const hit=rows.filter(x=>x.deduct>0).sort((x,y)=>y.deduct-x.deduct), zero=rows.filter(x=>x.deduct===0);
+      rows=hit.concat(zero.length?[{label:'Others ('+zero.length+')',status:'pass',deduct:0}]:[]);
+    }
+    const esc=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+    const line=x=>'<div class="p1c-row"><span class="p1c-l">'+esc(x.label)+'</span><span class="p1c-s p1c-'+esc(x.adj?'adj':x.status)+'">'+esc(x.status)+'</span><span class="p1c-d">'+minus(x.deduct)+'</span></div>';
+    const cls=r.above?'ok':'bad';
+    box.className='p1-calc show '+cls;
+    box.innerHTML='<div class="p1c-title">Document integrity score <span>— starts at '+f(r.sc.start)+', deducted per finding</span></div>'
+      +rows.map(line).join('')+r.adj.map(line).join('')
+      +'<div class="p1c-rule"></div>'
+      +'<div class="p1c-row p1c-total"><span class="p1c-l">Document integrity score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.total)+'</span></div>'
+      +'<div class="p1c-verdict">Threshold '+f(r.sc.threshold)+' — '+(r.above?'above · CLEAN':'below · SUSPICIOUS')+'</div>'
+      +(r.sc.action?'<div class="p1c-action">'+esc(r.sc.action)+'</div>':'');
+    setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'center'}),150);
+    return true;
+  }
+};
+
 const SignalPanel={
   // The labelled lines for one check. A capture records data rather than
   // deciding anything, so it has its own two lines and no verdict.
@@ -2060,8 +2131,8 @@ const SignalPanel={
     return out;
   },
 
-  build(s,sigs){
-    const list=$('sig-list'); list.innerHTML=''; list.classList.remove('at-rest');
+  build(s,sigs,list){
+    list=list||$('sig-list'); list.innerHTML=''; list.classList.remove('at-rest','rested');
     return sigs.map((sig,i)=>{
       const el=document.createElement('div');
       el.className='sig'; el.dataset.state='queued'; el.id='sig-'+i;
@@ -2132,27 +2203,37 @@ const SignalPanel={
     return th&&fig.indexOf(th[0])<0?fig+' · threshold '+th[0]:fig;
   },
 
-  // Plays the checks across the same 10s window as before: each check opens
-  // while it runs and closes when the next starts; flags and fails stay open.
-  run(s,sigs,hooks){
+  // Plays the checks into opts.mount (default: the pre-flight panel) on
+  // opts.schedule ([{start,done}] in ms; default: pre-flight's 10s window).
+  // Each check opens while it runs and closes when the next starts; flags
+  // and fails stay open. At opts.restAt every check opens and stays open.
+  //   opts: { mount, schedule, restAt, restClass, caption(sig)→key, onExtracted }
+  run(s,sigs,opts){
+    opts=opts||{};
     this.scenario=s;
-    const els=this.build(s,sigs), n=sigs.length;
-    const doneAt=i=>n===1?5000:Math.round(800+i*(8400/(n-1)));
-    this.start(els[0]); Captions.show('cost:'+sigs[0].cost);
+    const list=opts.mount||$('sig-list');
+    const els=this.build(s,sigs,list), n=sigs.length;
+    let sch=opts.schedule;
+    if(!sch){   // pre-flight: back-to-back across 0.8s–9.2s
+      const doneAt=i=>n===1?5000:Math.round(800+i*(8400/(n-1)));
+      sch=sigs.map((_,i)=>({start:i?doneAt(i-1):0, done:doneAt(i)}));
+    }
+    const cap=opts.caption||(sig=>'cost:'+sig.cost);
     sigs.forEach((sig,i)=>{
       addTimer(()=>{
+        if(i>0){ const pv=sigs[i-1]; if(pv.verdict!=='flag'&&pv.verdict!=='fail') this.toggle(els[i-1],false); }
+        this.start(els[i]); Captions.show(cap(sig));
+      },sch[i].start);
+      addTimer(()=>{
         this.complete(els[i],sig);
-        if(sig.id==='SIG-FIELD-EXTRACTION'&&hooks&&hooks.onExtracted) hooks.onExtracted();
-        if(i+1<n){
-          if(sig.verdict!=='flag'&&sig.verdict!=='fail') this.toggle(els[i],false);
-          this.start(els[i+1]); Captions.show('cost:'+sigs[i+1].cost);
-        }
-      },doneAt(i));
+        if(sig.id==='SIG-FIELD-EXTRACTION'&&opts.onExtracted) opts.onExtracted();
+      },sch[i].done);
     });
     // Resting state: every check open, showing its full working. Collapsing
     // is for the run only; a click still toggles a check to tidy the view.
-    addTimer(()=>{ els.forEach(el=>this.toggle(el,true)); $('sig-list').classList.add('at-rest'); },9900);
-    if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&hooks&&hooks.onExtracted) addTimer(hooks.onExtracted,3000);
+    const restAt=opts.restAt!=null?opts.restAt:9900;
+    addTimer(()=>{ els.forEach(el=>this.toggle(el,true)); list.classList.add(opts.restClass||'at-rest'); },restAt);
+    if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&opts.onExtracted) addTimer(opts.onExtracted,3000);
   },
 
   // Routing, as in the build: any fail → Reject Document; else any flag →
@@ -2232,6 +2313,7 @@ function resetPhaseBlock(ph){
   if($('ph'+ph+'-continue-btn')) $('ph'+ph+'-continue-btn').style.display='';
   if($('ph'+ph+'-aim-btn')) $('ph'+ph+'-aim-btn').style.display='none';
   if(ph===1&&$('ph1-discrepancy')) $('ph1-discrepancy').classList.remove('show');
+  if(ph===1&&$('ph1-calc')){ $('ph1-calc').classList.remove('show'); $('ph1-calc').innerHTML=''; }
   if(ph===2||ph===3) $('ph'+ph+'-block').style.display='none';
 }
 
@@ -2289,6 +2371,16 @@ function activatePhase(ph,phData){
     infoEl.classList.remove('show');
   }
   const container=$('ph'+ph+'-checks');
+  const p1=ph===1?scenarioPhase1(S[curScenario]):null;
+  let maxD;
+  if(p1){
+    // Phase 1 on the shared renderer: single column, each check showing
+    // Looked at / Rule / Found / conclusion, all open at rest.
+    container.classList.remove('two-col');
+    const sch=p1.map(c=>({start:c.delay, done:c.delay+1200}));
+    maxD=Math.max(...p1.map(c=>c.delay))+1600;
+    SignalPanel.run(S[curScenario],p1,{mount:container,schedule:sch,restAt:maxD-300,restClass:'rested',caption:sig=>'phase1:'+sig.id});
+  } else {
   container.classList.toggle('two-col', phData.checks.length>4);
   phData.checks.forEach((c,i)=>{
     const row=document.createElement('div');
@@ -2307,9 +2399,12 @@ function activatePhase(ph,phData){
       else{ row.className='check-row visible state-warn'; det.textContent=c.pass; det.className='cr-detail warn'; txt('cres-'+ph+'-'+i,'⚠️'); }
     },c.d+1200);
   });
-  const maxD=Math.max(...phData.checks.map(c=>c.d))+1600;
+  maxD=Math.max(...phData.checks.map(c=>c.d))+1600;
+  }
   addTimer(()=>{
-    if(phData.score&&$('ph'+ph+'-score')){
+    if(p1&&Phase1Score.render(S[curScenario],p1,phData)){
+      // the arithmetic replaces the bare score
+    } else if(phData.score&&$('ph'+ph+'-score')){
       const sc=$('ph'+ph+'-score'); sc.classList.add('show');
       const numEl=$('ph'+ph+'-score-num'); numEl.textContent=phData.score; numEl.style.color=phData.scoreColor;
       const vEl=$('ph'+ph+'-score-verdict'); vEl.textContent=phData.verdict; vEl.style.color=phData.scoreColor;

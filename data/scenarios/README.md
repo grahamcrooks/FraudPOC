@@ -104,3 +104,23 @@ A `captions` object gives one line per beat for the rolling demo and for muted v
 | `outcome` | The fraud detection summary appears |
 
 A missing key keeps the previous caption. Each caption stays up at least 2.5 seconds; quick beats queue. Captions are on by default everywhere; C toggles, and `?captions=off` gives a clean take for a recording.
+
+## Phase 1 array (pipeline document forensics)
+
+`phase1` drives Phase 1 in the pipeline modal, on the same renderer as the pre-flight panel: each check shows Looked at, Rule, Found and its conclusion, collapses to its summary line while the next runs, and all six stay open at rest. Entries have the same shape as `signals`, plus `delay`: when the check starts, in milliseconds from the start of Phase 1 (it completes 1.2 seconds later). Scenarios without a `phase1` array fall back to the checks in the `PHASES` array in `index.html`.
+
+Captions for each check use the key `phase1:<check id>`, for example `phase1:SIG-P1-FONT`.
+
+## Phase 1 scoring
+
+`phase1Scoring` turns the six verdicts into the document integrity score, shown as its arithmetic:
+
+| Field | Meaning |
+| --- | --- |
+| `start` | Starting score, usually 1.00 |
+| `threshold` | At or above is CLEAN; below is SUSPICIOUS |
+| `weights` | Deduction per check and verdict: `{ "SIG-P1-FONT": { "fail": 0.40 } }`. A pass costs nothing. |
+| `adjustments` | Further deductions not tied to a Phase 1 check: `[{ "label": "Extraction confidence", "value": "0.92", "deduct": 0.09 }]` |
+| `action` | One line saying what the verdict causes, shown under the score |
+
+The total is computed from these deductions, never typed in, so the displayed score always reconciles with the lines above it. If the result disagrees with the scenario's pass/fail flag in `PHASES`, the page logs a console warning.
