@@ -19,6 +19,7 @@ The session block drives the sign-in scene and the session chip in the portal he
 | `location` | string | Suburb and state resolved from the IP, shown in the chip and the Location particle. ES-001 compares it with the registered address. |
 | `sessionTime` | string | ISO 8601 with offset, for example `2026-07-12T09:14:00+10:00`. Shown as wall-clock time; `+10:00` displays as AEST and `+11:00` as AEDT. |
 | `deviceStatus` | `"recognised"` or `"new"` | `recognised` if the member has claimed before on this device, `new` for a first-time device. Shown in the chip as "recognised device" or "new device"; a new device is a fraud signal in its own right. Set it honestly. (The older boolean `deviceSeenBefore` is still read if `deviceStatus` is absent.) |
+| `frame` | `"phone"` | Optional; defaults to `phone`. The device frame the scene plays in. All member scenarios are phones. A `browser` frame is reserved for the ring scenario, where one person on a laptop lodging for several members is part of the tell; it isn't built yet. |
 | `showLogin` | boolean | `true` plays the full sign-in scene when the scenario opens. `false` skips it and fills the chip directly. |
 
 A scenario with no session block hides the chip. It never inherits another scenario's session, because carrying one member's device into another member's claim would show several members on one device, which is the ES-002 signal.
@@ -31,4 +32,4 @@ A scenario with no session block hides the chip. It never inherits another scena
 
 ## Replaying part of the scene
 
-`SessionScene.play(session, { beats: ['particles', 'land'], memberNo })` replays only the particle and landing beats, with the phone already signed in. A scenario can use this to show several members submitting from one device: pass a session with a different `member` and the same `deviceId`, and the chip's device slot stays on that ID while the other slots update.
+`SessionScene.play(session, { beats: ['particles', 'land'], memberNo, frame })` replays only the particle and landing beats, with the device already signed in. Frames are registered in `SESSION_FRAMES` in `index.html`; particles and the handoff outline take their origin and shape from the active frame, so the ring scenario's browser frame needs its markup and one registry entry, not a rebuild. A scenario can use this to show several members submitting from one device: pass a session with a different `member` and the same `deviceId`, and the chip's device slot stays on that ID while the other slots update.

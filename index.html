@@ -567,8 +567,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 @keyframes lsScan{from{opacity:.55}to{opacity:1}}
 
 /* Simplified outline the phone cross-fades into at handoff */
-.ls-outline{position:fixed;z-index:615;border:3px solid var(--navy);box-shadow:0 0 0 2px #fff,0 8px 24px rgba(0,0,0,.25);border-radius:18%/8.5%;pointer-events:none;opacity:0}
-.ls-outline::before{content:'';position:absolute;top:4%;left:50%;transform:translateX(-50%);width:32%;height:3%;border-radius:4px;background:var(--navy)}
+.ls-outline{position:fixed;z-index:615;border:3px solid var(--navy);box-shadow:0 0 0 2px #fff,0 8px 24px rgba(0,0,0,.25);pointer-events:none;opacity:0}
+.ls-outline.phone{border-radius:18%/8.5%}
+.ls-outline.phone::before{content:'';position:absolute;top:4%;left:50%;transform:translateX(-50%);width:32%;height:3%;border-radius:4px;background:var(--navy)}
 
 /* Particles: sized for the back of the room */
 .ls-fx{position:fixed;inset:0;z-index:620;pointer-events:none}
@@ -2026,6 +2027,19 @@ const reducedMotion=()=>!!(window.matchMedia&&window.matchMedia('(prefers-reduce
 const SESSION_TZ={'+10:00':'AEST','+11:00':'AEDT','+09:30':'ACST','+10:30':'ACDT','+08:00':'AWST','Z':'UTC'};
 const SESSION_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
+// Device frames the scene can play in. Particles and the handoff take their
+// origin and outline shape from the active frame, so a new frame (a desktop
+// browser for the ring scenario) is a swap: add its markup and an entry here.
+// Every member scenario is a phone; the browser is reserved for the ring.
+const SESSION_FRAMES={
+  phone:{el:'ls-phone', aspect:19.5/9, outline:'phone'}
+};
+function sessionFrame(sess,opts){
+  const key=(opts&&opts.frame)||sess.frame||'phone';
+  if(!SESSION_FRAMES[key]) console.warn('Session frame "'+key+'" is not built yet; using phone.');
+  return SESSION_FRAMES[key]||SESSION_FRAMES.phone;
+}
+
 function scenarioSession(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&d.session)||null; }
 
 // Wall-clock time as written in the ISO string, so the display never depends on the viewer's timezone.
@@ -2127,7 +2141,7 @@ const SessionScene={
   play(sess,opts){
     opts=opts||{};
     const beats=opts.beats||['login','particles','handoff','land'];
-    this.stop(); this.sess=sess;
+    this.stop(); this.sess=sess; this.frame=sessionFrame(sess,opts);
     if(reducedMotion()){ this.apply(sess,true); return; }
     this.playing=true;
     // A full sign-in empties the chip; a partial replay keeps the previous
@@ -2141,7 +2155,8 @@ const SessionScene={
     txt('ls-mbr',opts.memberNo||'');
     txt('ls-clock',formatSessionTime(sess.sessionTime).time.replace(/^0/,''));
     txt('ls-bio-txt','Face ID');
-    ls.style.opacity=''; $('ls-phone').style.opacity='';
+    ls.style.opacity='';
+    Object.values(SESSION_FRAMES).forEach(f=>{ const el=$(f.el); el.style.display=f===this.frame?'':'none'; el.style.opacity=''; });
     ls.classList.add('show');
 
     let t=0;
@@ -2153,7 +2168,7 @@ const SessionScene={
       t=2000;
     } else {
       ls.classList.add('st-welcome');
-      this.anim($('ls-phone'),[{opacity:0},{opacity:1}],{duration:300});
+      this.anim($(this.frame.el),[{opacity:0},{opacity:1}],{duration:300});
       t=400;
     }
     if(beats.includes('particles')){ this.at(t,()=>this.beatParticles()); t+=2000; }
@@ -2165,7 +2180,7 @@ const SessionScene={
 
   // Beat 2: three labelled particles lift out of the phone and hold, readable.
   beatParticles(){
-    const fx=$('ls-fx'), pr=$('ls-phone').getBoundingClientRect();
+    const fx=$('ls-fx'), pr=$(this.frame.el).getBoundingClientRect();
     this.particles=sessionSignals(this.sess).map(sig=>{
       const el=document.createElement('div');
       el.className='lsp'; el.style.setProperty('--pc',sig.colour);
@@ -2197,10 +2212,10 @@ const SessionScene={
   // Beat 3: the portal fades up; the phone cross-fades to a plain outline,
   // and only the outline shrinks toward the top-right, so no screen text is scaled.
   beatHandoff(){
-    const ls=$('ls'), phone=$('ls-phone'), pr=phone.getBoundingClientRect();
+    const ls=$('ls'), phone=$(this.frame.el), pr=phone.getBoundingClientRect();
     const target=SessionChip.rect('device');
-    const o=document.createElement('div'); o.className='ls-outline'; document.body.appendChild(o); this.outline=o;
-    const w1=Math.max(18,target?target.height*.62:18), h1=w1*19.5/9;
+    const o=document.createElement('div'); o.className='ls-outline '+this.frame.outline; document.body.appendChild(o); this.outline=o;
+    const w1=Math.max(18,target?target.height*.62:18), h1=w1*this.frame.aspect;
     const x1=target?target.left-w1-10:innerWidth-60, y1=target?target.top+target.height/2-h1/2:40;
     this.anim(phone,[{opacity:1},{opacity:0}],{duration:350,fill:'forwards'});
     this.anim(o,[
