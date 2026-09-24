@@ -87,5 +87,96 @@
       "usedBy": "ES-001 distance anomaly, ES-002 device ring",
       "conclusion": "Recorded, no evaluation at this stage"
     }
-  ]
+  ],
+  "phase1": [
+    {
+      "id": "SIG-P1-MATCH",
+      "name": "Claim-to-receipt match",
+      "summary": "keyed $487.50 vs receipt $445.00 · $42.50 over",
+      "cost": "rule",
+      "delay": 2200,
+      "lookedAt": "Member-keyed claim fields against the extracted receipt",
+      "rule": "Amount, provider, service date and item codes must all match",
+      "found": "Member keyed $487.50, receipt shows $445.00 — $42.50 (10.8%) discrepancy · provider, date and codes match",
+      "verdict": "flag",
+      "conclusion": "Keyed amount exceeds the receipt"
+    },
+    {
+      "id": "SIG-P1-FONT",
+      "name": "Font consistency",
+      "summary": "3 typefaces · breaks in the amount and date",
+      "cost": "ai",
+      "delay": 5000,
+      "lookedAt": "Every text run in the receipt — typeface, size, weight",
+      "rule": "A genuine receipt prints in one typeface; spliced text is the commonest alteration",
+      "found": "3 typefaces — Arial 9pt, Helvetica 10pt, Times New Roman 8pt · breaks fall in the amount and date fields",
+      "verdict": "fail",
+      "conclusion": "Text has been spliced"
+    },
+    {
+      "id": "SIG-P1-COLOUR",
+      "name": "Colour and stamp analysis",
+      "summary": "no overlay regions · uniform compression",
+      "cost": "ai",
+      "delay": 7800,
+      "lookedAt": "Colour layers, stamp regions, compression artefacts",
+      "rule": "Digital overlays leave colour discontinuities the original scan does not have",
+      "found": "No overlay regions · StampDetectedFlag FALSE · uniform compression",
+      "verdict": "pass",
+      "conclusion": "No digital overlay"
+    },
+    {
+      "id": "SIG-P1-AIGEN",
+      "name": "AI-generated detection",
+      "summary": "no signature detected · threshold 0.15",
+      "cost": "ai",
+      "delay": 10600,
+      "lookedAt": "Pixel-level artefacts characteristic of image generators",
+      "rule": "Generative signature score at or below 0.15",
+      "found": "No generator signature detected",
+      "verdict": "pass",
+      "conclusion": "Not a generated image"
+    },
+    {
+      "id": "SIG-P1-META",
+      "name": "Metadata and provenance",
+      "summary": "Photoshop · modified 2 days after service",
+      "cost": "rule",
+      "delay": 13200,
+      "lookedAt": "File authoring trail, creation and modification timestamps",
+      "rule": "Authoring software should be practice software, and timestamps must not post-date the service",
+      "found": "Authored in Adobe Photoshop · modified 16 Jul 2026, two days after the service · no practice software trail",
+      "verdict": "fail",
+      "conclusion": "Provenance inconsistent with the service"
+    },
+    {
+      "id": "SIG-P1-DUP",
+      "name": "Duplicate detection",
+      "summary": "0 prior submissions of this fingerprint",
+      "cost": "rule",
+      "delay": 15600,
+      "lookedAt": "Receipt fingerprint against every claim already submitted",
+      "rule": "Same practice and receipt number, or an identical fingerprint, is a duplicate",
+      "found": "1 fingerprint match of 1 — itself · no prior submission",
+      "verdict": "pass",
+      "conclusion": "First submission of this receipt"
+    }
+  ],
+  "phase1Scoring": {
+    "start": 1.0,
+    "threshold": 0.7,
+    "weights": {
+      "SIG-P1-MATCH": {
+        "flag": 0.07
+      },
+      "SIG-P1-FONT": {
+        "fail": 0.4
+      },
+      "SIG-P1-META": {
+        "fail": 0.25
+      }
+    },
+    "adjustments": [],
+    "action": "Below threshold. Claim referred to the investigator queue, HIGH priority, 4-hour SLA. Phases 2 and 3 do not run."
+  }
 };
