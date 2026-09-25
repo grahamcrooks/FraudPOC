@@ -253,6 +253,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .ctx-h1{font-size:19px;font-weight:800;color:var(--text);line-height:1.2;white-space:nowrap}
 .ctx-spacer{flex:1}
 .ctx-sub{font-size:12px;color:var(--text-2);flex-shrink:0}
+/* Presenter-only context: shown while presenting or stepping through, hidden in the rolling demo */
+.ctx-presenter{font-size:10px;font-weight:500;font-style:italic;color:var(--text-3);white-space:nowrap}
+body.run-rolling .presenter-only{display:none}
 .hero-dot{width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 2s infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .dashboard{padding:24px 40px;background:var(--canvas);flex:1}
@@ -596,10 +599,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .ls.show{display:flex}
 .ls.dark{background:linear-gradient(145deg,#020B18 0%,#051428 60%,#040F1E 100%)}
 .ls.light{background:linear-gradient(145deg,#F0F4FF 0%,#E8EEF8 60%,#EDF2FF 100%)}
-.ls-sim{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:10px;white-space:nowrap;font-size:13px;font-weight:500}
+/* Pinned between the safe-area insets: the text wraps on narrow screens, the pill never leaves the viewport */
+.ls-sim{position:absolute;bottom:max(16px,env(safe-area-inset-bottom));left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 10px;text-align:center;font-size:13px;font-weight:500}
 .ls.dark .ls-sim{color:#9FB4D4}
 .ls.light .ls-sim{color:var(--text-2)}
-.ls-sim-pill{background:var(--gold);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px}
+.ls-sim-pill{flex-shrink:0;background:var(--gold);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px}
 
 /* Phone */
 .ls-phone{position:relative;height:min(calc(100vh - 130px),940px);aspect-ratio:9/19.5;font-size:clamp(11px,1.9vh,17px);background:#0B0F1A;border-radius:2.6em;padding:.55em;box-shadow:0 0 0 2px #2A3345,0 30px 80px rgba(0,0,0,.45)}
@@ -763,16 +767,22 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
    CAPTIONS — one line per beat for the unattended rolling
    demo and muted video. Text from data/scenarios/ captions.
 ══════════════════════════════════════════════════════ */
-.cap{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:640;max-width:min(92vw,1100px);display:flex;align-items:baseline;gap:14px;padding:12px 22px;border-radius:14px;background:rgba(0,31,95,.94);box-shadow:0 10px 30px rgba(0,0,0,.35);pointer-events:none;opacity:0;transition:opacity .35s}
+.cap{position:fixed;left:0;right:0;bottom:0;z-index:640;display:flex;align-items:center;justify-content:center;gap:14px;padding:10px max(22px,env(safe-area-inset-right)) max(10px,env(safe-area-inset-bottom)) max(22px,env(safe-area-inset-left));background:var(--navy);box-shadow:0 -6px 20px rgba(0,0,0,.25);pointer-events:none;opacity:0;transition:opacity .35s}
 .cap.show{opacity:1}
 .cap-tag{flex-shrink:0;font-size:clamp(11px,.9vw,15px);font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--gold);white-space:nowrap}
-.cap-text{font-size:clamp(17px,1.55vw,28px);font-weight:600;line-height:1.3;color:#fff}
-/* Clear the sign-in stage's Simulated label; let the pipeline scroll clear of the caption */
-body.ls-on .cap{bottom:64px}
-body.cap-on .overlay{padding-bottom:130px}
-body.cap-on .ov-card{max-height:calc(100vh - 200px)}
+/* Room for two lines always, so the stage doesn't jump as captions change length */
+.cap-text{font-size:clamp(17px,1.55vw,28px);font-weight:600;line-height:1.3;color:#fff;max-width:1100px;min-height:2.6em;display:flex;align-items:center}
+/* Reserved strip: while a caption is up, the stage and the full-screen layers
+   end above it (--cap-h is the strip's measured height), so it never covers them */
+body.cap-on{padding-bottom:var(--cap-h,0px)}
+body.cap-on .overlay,body.cap-on .ls{bottom:var(--cap-h,0px)}
+body.cap-on .ov-card{max-height:calc(100vh - 80px - var(--cap-h,0px))}
+body.cap-on .ls-phone{height:min(calc(100vh - 130px - var(--cap-h,0px)),940px);font-size:clamp(11px,calc((100vh - var(--cap-h,0px)) * .019),17px)}
+body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) * 1.6));font-size:clamp(10px,calc((100vh - var(--cap-h,0px)) * .0155),15px)}
+/* Narrow screens: the Simulated label wraps to three lines, so the phone leaves room for it */
+@media (max-width:700px){.ls-phone,body.cap-on .ls-phone{height:min(calc(100vh - 220px - var(--cap-h,0px)),940px);font-size:clamp(9px,calc((100vh - 220px - var(--cap-h,0px)) * .0227),17px)}}
 @media (prefers-reduced-motion:reduce){.cap{transition:none}}
-@media (max-width:700px){.cap{flex-direction:column;gap:2px;bottom:24px}}
+@media (max-width:700px){.cap{flex-direction:column;gap:2px}.cap-text{justify-content:center;text-align:center}}
 </style>
 </head>
 <body>
@@ -1114,10 +1124,11 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
     </div>
   </nav>
   <div class="ctx-strip">
-    <div class="ctx-tag"><div class="hero-dot"></div>POC: Phase 1 Validation — Dataset Processing</div>
+    <div class="ctx-tag"><div class="hero-dot"></div>Extras claim</div>
     <div class="ctx-sep"></div>
     <h1 class="ctx-h1" id="hero-h1">Lodge your dental claim</h1>
     <div class="ctx-spacer"></div>
+    <div class="ctx-presenter presenter-only">Presenter note: POC Phase 1 validation · receipts load from the test dataset</div>
     <div class="ctx-sub" id="hero-sub">Most claims assessed within seconds</div>
   </div>
   <div class="dashboard">
@@ -1164,11 +1175,11 @@ body.cap-on .ov-card{max-height:calc(100vh - 200px)}
             <div class="lodge-group">
             <div class="lodge-group-hd"><span class="lodge-group-n">1</span>Receipt</div>
             <div class="form-group full" style="margin-bottom:0">
-              <label class="form-label">Receipt from Dataset <span class="req">*</span></label>
+              <label class="form-label">Receipt <span class="req">*</span></label>
               <div class="upload-zone" id="upload-zone" onclick="simulateUpload()">
                 <div class="upload-icon">📎</div>
                 <div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div>
-                <div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>
+                <div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>
               </div>
               <div id="upload-validation" style="display:none;margin-top:8px">
                 <div class="sig-list" id="sig-list" style="display:none" aria-live="polite"></div>
@@ -1809,6 +1820,7 @@ function toggleRolling(){
 function startRolling(){
   stopRolling(); // clean state
   runMode='rolling'; rollingPaused=false;
+  document.body.classList.add('run-rolling');
   $('btn-rolling').classList.add('rolling-on');
   $('btn-rolling').textContent='⏹ Stop Rolling';
   $('btn-stepbystep').classList.remove('on');
@@ -1827,6 +1839,7 @@ function startRolling(){
 
 function stopRolling(){
   runMode='manual'; rollingPaused=false;
+  document.body.classList.remove('run-rolling');
   if(typeof Captions!=='undefined') Captions.render();   // captions are rolling-only unless switched on
   clearSlideTimer(); clearAllTimers();
   hideBanner();
@@ -1953,7 +1966,7 @@ function setScenario(idx){
   txt('form-sub','Checking the member-entered details against the receipt');
   const uz=$('upload-zone');
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
   // Reset action buttons to default state
@@ -2654,7 +2667,7 @@ function closeOverlay(){
   clearAllTimers(); uploaded=false; uploadCount=0;
   const uz=$('upload-zone');
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
-  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">PDF receipt from dataset with member-entered data for validation</div>';
+  uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
   if($('btn-submit')) $('btn-submit').style.display='';
@@ -3047,6 +3060,8 @@ const Captions={
     this.toastTimer=setTimeout(()=>this.render(),1200);
   }
 };
+// Publish the caption strip's height so the reserved space always matches it.
+new ResizeObserver(()=>document.documentElement.style.setProperty('--cap-h',$('cap').offsetHeight+'px')).observe($('cap'));
 window.addEventListener('keydown',e=>{
   if((e.key==='c'||e.key==='C')&&!e.ctrlKey&&!e.metaKey&&!e.altKey&&!SessionScene.playing){ e.preventDefault(); Captions.toggle(); }
 });
