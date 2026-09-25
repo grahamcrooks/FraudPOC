@@ -1,0 +1,93 @@
+
+Size
+----
+claims           49,392
+members          18,063  in 8,060 memberships
+practices           659  with 2,637 practitioners
+submitted       01 Jul 2025 to 30 Jun 2026
+channel mix     point_of_sale 58%, app 34%, web 5%, kiosk 2%
+claim type mix  dental 45%, physio 16%, optical 12%, chiro 8%, podiatry 8%, massage 7%, psych 5%
+
+Planted fraud
+-------------
+fraud claims 540 of 49,392 = 1.09%
+fraud_pattern
+none           48852
+device_ring      148
+bank_ring        148
+upcoding         122
+distance         122
+claims carrying both a device-ring and a bank-ring id: 99
+ring members: 144, of whom in more than one ring: 63
+ring members who are synthetic identities: 60
+fraud by month (claims, rate): Jul 27 (0.8%), Aug 38 (1.0%), Sep 59 (1.5%), Oct 45 (1.1%), Nov 57 (1.4%), Dec 33 (0.8%), Jan 63 (1.5%), Feb 64 (1.6%), Mar 23 (0.5%), Apr 35 (0.8%), May 52 (1.2%), Jun 44 (0.9%)
+
+Honest confounders (clean claims carrying each context)
+-------------------------------------------------------
+legit_context
+shared_device               7340
+family_batch                5784
+ip_hub                      3717
+multi_site_account          3485
+corporate_account           2947
+kiosk                       1083
+treated_while_travelling     760
+carer_device                 568
+extended_family_account      450
+specialist_practice          448
+travel_domestic              311
+vpn                          220
+travel_overseas              177
+mover                        167
+fifo                         131
+clean claims with no special context: 27,152
+
+Naive rule thresholds: what do they flag?
+-----------------------------------------
+
+3+ members on one device in 72h
+  flagged 1,175 claims; fraud among them 97 (8.3% precision)
+  planted device_ring claims caught: 95 of 148 (64%)
+  clean claims flagged, by context: kiosk 628, shared_device 448, family_batch 446, ip_hub 59, treated_while_travelling 10, mover 6
+
+3+ practices into one account in 30d
+  flagged 6,463 claims; fraud among them 199 (3.1% precision)
+  planted bank_ring claims caught: 115 of 148 (78%)
+  clean claims flagged, by context: corporate_account 2938, multi_site_account 2253, family_batch 836, (no special context) 469, shared_device 370, ip_hub 320
+
+lodged 500+ km from home
+  flagged 3,578 claims; fraud among them 134 (3.7% precision)
+  planted distance claims caught: 109 of 122 (89%)
+  clean claims flagged, by context: ip_hub 1342, shared_device 695, (no special context) 651, treated_while_travelling 588, family_batch 332, travel_domestic 271
+
+any of the three: flagged 10,740, fraud 345 (3.2%); fraud caught 345 of 540
+upcoding claims flagged by any rule: 15 of 122
+distance fraud that does not look far: 13 (ip in Sydney, Newcastle, Toowoomba, Melbourne)
+claims lodged from an overseas IP: 344 (60 fraud, 284 clean)
+
+Claim-level preview (for Stage 2)
+---------------------------------
+            50%   mean    75%
+is_fraud                     
+0         226.0  260.0  290.0
+1         292.0  407.0  485.0
+is_fraud          0     1
+channel                  
+app            33.7  74.4
+kiosk           2.2   0.0
+point_of_sale  59.0  13.3
+web             5.1  12.2
+
+Billing profiles (dental practices, mean amount per claim)
+----------------------------------------------------------
+            count    50%    min    max
+profile                               
+normal      209.0  321.0  225.0  479.0
+specialist    3.0  542.0  529.0  707.0
+upcoder       3.0  322.0  293.0  325.0
+  PR0611 upcoder    $293 per claim, higher than 21% of normal practices
+  PR0254 upcoder    $322 per claim, higher than 52% of normal practices
+  PR0580 upcoder    $325 per claim, higher than 53% of normal practices
+  PR0193 specialist $529 per claim, higher than 100% of normal practices
+  PR0154 specialist $542 per claim, higher than 100% of normal practices
+  PR0281 specialist $707 per claim, higher than 100% of normal practices

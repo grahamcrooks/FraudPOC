@@ -12,6 +12,7 @@ The presentation and demo site for the Bupa fraud detection POC, published by Gi
 - `prompts/`: reusable prompts run against the Pega environment, one prompt per file.
 - `docs/`: reference material: the data model, test reference data and the Pega Blueprint export.
 - `tests/`: test material, one folder per stage (for example `stage1-document-validity/`).
+- `fraud-ml-learning/`: a separate build-and-learn Python project on fraud detection modelling with synthetic claims; its generated `data/` is git-ignored.
 - `archive/`: superseded material kept for the record; don't link to it from current files.
 - `.nojekyll`: stops GitHub Pages running Jekyll, which would drop `_source/` (Jekyll ignores paths starting with an underscore) and consume `{{placeholders}}` as Liquid. Keep it.
 

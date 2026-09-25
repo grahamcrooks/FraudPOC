@@ -34,3 +34,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 ## Tests
 
 - [Stage 1 document validity](tests/stage1-document-validity/): test material for Phase 1 receipt forensics (contents to be added).
+
+## Fraud ML learning
+
+- [Fraud ML learning](fraud-ml-learning/README.md): a stage-by-stage, build-and-learn project on fraud detection modelling for extras claims, using a synthetic dataset, with plain-English notes for each stage.
