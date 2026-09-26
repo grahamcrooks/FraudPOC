@@ -20,15 +20,28 @@ Each step has three parts:
 | Key | Action |
 | --- | --- |
 | S / D | Slides / Demo |
-| ← / → or Space | Previous / next slide |
+| ← / → | Previous / next slide |
+| Space | Next slide on the slides; pauses and resumes the rolling demo; skips the sign-in scene. Does nothing else in the demo |
 | 1 to 8 | Open scenario CLM-0841 to CLM-0848 |
 | L | Replay the sign-in scene (or click the session chip in the portal header) |
 | C | Captions on or off |
-| R | Rolling demo on or off. Space pauses and resumes it |
-| P | Step-by-step mode |
+| R | Rolling demo on or off (stops it completely) |
+| P | Step-by-step mode: pauses after every phase result until you click Continue |
 | B | Backup slide (not in rolling mode) |
-| 0 | Restart: back to slide 1, claim form cleared |
+| 0 | Restart: back to slide 1, claim form cleared. The emergency reset |
 | F | Fullscreen |
+
+### Stopping and pausing
+
+What stops the demo depends on the mode:
+
+| Where you are | What to do |
+| --- | --- |
+| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 10 seconds, or a phase running its checks), so talk over it |
+| Presenting, on the slides | Don't press Space unless you mean to move on: it goes to the next slide |
+| Expecting lots of questions | Press P for step-by-step mode. The demo pauses after every phase result until you click Continue |
+| Rolling demo | Space pauses it and shows a banner with Resume and Stop; Space again resumes. R stops it completely |
+| Anything goes wrong | Press 0: back to slide 1, claim form cleared, then 1 to 8 to reopen a scenario |
 
 ### The eight scenarios
 

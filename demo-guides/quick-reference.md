@@ -3,17 +3,25 @@
 ## Keyboard Shortcuts
 
 - 1-8 → Jump to CLM-0841 through CLM-0848
-- 0 → Restart demo (returns to Slide 1, clears the claim form)
+- 0 → Restart demo (returns to Slide 1, clears the claim form): the emergency reset
 - D → Go to Demo mode
 - S → Go to Slides mode
-- R → Toggle Rolling Demo
-- Space → Next slide (Slides screen) / Pause-Resume (Rolling Demo)
+- R → Toggle Rolling Demo (stops it completely)
+- Space → Next slide (Slides screen) / Pause-Resume (Rolling Demo) / skip the sign-in scene. Does nothing else in the demo
 - ← → → Previous / Next slide (Slides screen only)
 - F → Toggle Fullscreen
-- P → Toggle Step-by-Step mode
+- P → Toggle Step-by-Step mode (pauses after every phase result until you click Continue)
 - B → Jump to the Backup slide (manual mode only)
 - Esc → Exit fullscreen (standard browser behaviour)
 - L → Replay the sign-in scene (or click the session chip in the portal header)
+
+## Stopping and Pausing
+
+- Presenting: nothing to stop. The demo waits for Run Fraud Detection and Continue; only a step's few seconds of animation can't be paused.
+- On the slides, Space moves to the next slide, so don't press it by accident.
+- Lots of questions expected: press P, and the demo pauses after every phase result.
+- Rolling Demo: Space pauses and resumes; R stops it completely.
+- Anything goes wrong: press 0, then 1-8 to reopen a scenario.
 - C → Captions on or off (on by default)
 
 ### Captions
