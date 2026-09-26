@@ -41,6 +41,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 #btn-restart{background:rgba(29,78,216,.25);border-color:rgba(29,78,216,.5);color:#BFDBFE}
 #btn-restart:hover{background:#1D4ED8;border-color:#1D4ED8;color:#fff}
 .cbtn.paused-on{background:#7C3AED;border-color:#7C3AED;color:#fff}
+/* Scenario picker. The menu is fixed-position because the bar scrolls horizontally and would clip it. */
+/* Below 1360px the slide buttons show only their number (the name is in the tooltip) so the bar fits at 1280px */
+@media (max-width:1360px){.sb-name{display:none}}
+.scen-pick{display:flex}
+.scen-caret{font-size:9px;opacity:.8;margin-left:2px}
+.scen-menu{position:fixed;z-index:1;min-width:230px;display:flex;flex-direction:column;gap:4px;padding:6px;background:#07101F;border:1px solid rgba(255,255,255,.15);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.scen-menu[hidden]{display:none}
+.scen-menu .sc{width:100%;padding:5px 8px;font-size:11px}
+.scen-menu .sc:focus-visible,.scen-trigger:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.scen-menu .scen-name{flex:1;text-align:left}
+.scen-menu kbd{font-family:var(--font);font-size:9px;opacity:.6;border:1px solid rgba(255,255,255,.25);border-radius:4px;padding:0 4px}
 .mode-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;background:rgba(255,255,255,.08);color:rgba(255,255,255,.5)}
 .mode-badge.presenting{background:rgba(29,78,216,.3);color:#93C5FD}
 .mode-badge.rolling{background:rgba(217,119,6,.3);color:#FCD34D}
@@ -794,21 +805,25 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
   <div class="ctrl-sep"></div>
   <span class="ctrl-lbl" id="ctrl-context">Slides</span>
   <div id="slide-btns" style="display:flex;gap:4px">
-    <button class="sc slide-on" onclick="goSlide(0)" id="sb0">① Agenda</button>
-    <button class="sc" onclick="goSlide(1)" id="sb1">② Problem</button>
-    <button class="sc" onclick="goSlide(2)" id="sb2">③ Business Case</button>
-    <button class="sc" onclick="goSlide(3)" id="sb3">④ Three Phases</button>
-    <button class="sc" onclick="goSlide(4)" id="sb4">⑤ Why Pega</button>
-    <button class="sc" onclick="goSlide(5)" id="sb5" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧 Backup</button>
+    <button class="sc slide-on" onclick="goSlide(0)" id="sb0" title="Agenda">①<span class="sb-name"> Agenda</span></button>
+    <button class="sc" onclick="goSlide(1)" id="sb1" title="Problem">②<span class="sb-name"> Problem</span></button>
+    <button class="sc" onclick="goSlide(2)" id="sb2" title="Business Case">③<span class="sb-name"> Business Case</span></button>
+    <button class="sc" onclick="goSlide(3)" id="sb3" title="Three Phases">④<span class="sb-name"> Three Phases</span></button>
+    <button class="sc" onclick="goSlide(4)" id="sb4" title="Why Pega">⑤<span class="sb-name"> Why Pega</span></button>
+    <button class="sc" onclick="goSlide(5)" id="sb5" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧<span class="sb-name"> Backup</span></button>
   </div>
-  <div id="demo-btns" style="display:none;gap:4px">
-    <button class="sc" onclick="setScenario(0)" id="sc0"><span class="dot-indicator dg"></span>CLM-0841 · Clean</button>
-    <button class="sc" onclick="setScenario(1)" id="sc1"><span class="dot-indicator dr"></span>CLM-0842 · Ph.1 Doc</button>
-    <button class="sc" onclick="setScenario(2)" id="sc2"><span class="dot-indicator dr"></span>CLM-0843 · Ph.2 Account</button>
-    <button class="sc" onclick="setScenario(3)" id="sc3"><span class="dot-indicator da"></span>CLM-0844 · Ph.2 Device</button>
-    <button class="sc" onclick="setScenario(4)" id="sc4"><span class="dot-indicator da"></span>CLM-0845 · Ph.3 Practitioner</button>
-    <button class="sc" onclick="setScenario(5)" id="sc5"><span class="dot-indicator dr"></span>CLM-0846 · Ph.3 Network</button>
-    <button class="sc" onclick="setScenario(6)" id="sc6"><span class="dot-indicator dr"></span>CLM-0847 · Pre-flight</button>
+  <!-- Scenario picker: one button and a menu, so the bar fits at 1280px. Keys 1–7 still jump straight to a scenario. -->
+  <div id="demo-btns" class="scen-pick" style="display:none">
+    <button class="sc on scen-trigger" id="scen-trigger" onclick="ScenarioPicker.toggle()" aria-haspopup="menu" aria-expanded="false" aria-controls="scen-menu" title="Choose a scenario (or press 1–7)"><span class="dot-indicator dg" id="scen-dot"></span><span id="scen-label">CLM-0841 · Clean</span><span class="scen-caret" aria-hidden="true">▾</span></button>
+    <div class="scen-menu" id="scen-menu" role="menu" aria-label="Scenarios" hidden>
+      <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(0)" id="sc0"><span class="dot-indicator dg"></span><span class="scen-name">CLM-0841 · Clean</span><kbd>1</kbd></button>
+      <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(1)" id="sc1"><span class="dot-indicator dr"></span><span class="scen-name">CLM-0842 · Ph.1 Doc</span><kbd>2</kbd></button>
+      <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(2)" id="sc2"><span class="dot-indicator dr"></span><span class="scen-name">CLM-0843 · Ph.2 Account</span><kbd>3</kbd></button>
+      <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(3)" id="sc3"><span class="dot-indicator da"></span><span class="scen-name">CLM-0844 · Ph.2 Device</span><kbd>4</kbd></button>
+      <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(4)" id="sc4"><span class="dot-indicator da"></span><span class="scen-name">CLM-0845 · Ph.3 Practitioner</span><kbd>5</kbd></button>
+      <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(5)" id="sc5"><span class="dot-indicator dr"></span><span class="scen-name">CLM-0846 · Ph.3 Network</span><kbd>6</kbd></button>
+      <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(6)" id="sc6"><span class="dot-indicator dr"></span><span class="scen-name">CLM-0847 · Pre-flight</span><kbd>7</kbd></button>
+    </div>
   </div>
   <div class="ctrl-sep"></div>
   <span class="mode-badge presenting" id="mode-badge">⌨ Presenting</span>
@@ -821,8 +836,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
   <button class="cbtn on" id="tab-portal-btn" onclick="goPortal()" title="Active claim portal">📋 Portal</button>
   <button class="cbtn" id="tab-dashboard-btn" onclick="goReport()" title="Fraud dashboard">📊 Report</button>
   <div class="ctrl-sep"></div>
-  <button class="cbtn" id="tdark" onclick="setTheme('dark')" class="on">◼ Dark</button>
-  <button class="cbtn" id="tlight" onclick="setTheme('light')">◻ Light</button>
+  <button class="cbtn" id="ttheme" onclick="setTheme(theme==='dark'?'light':'dark')" title="Switch to light theme">◻ Light</button>
   <button class="cbtn" onclick="toggleFS()">⛶ Full</button>
 </div>
 
@@ -1662,8 +1676,10 @@ const txt=(id,v)=>{const e=$(id);if(e)e.textContent=v};
 // ══════════════════════════════════════════════════════
 function setTheme(t){
   theme=t;
-  $('tdark').classList.toggle('on',t==='dark');
-  $('tlight').classList.toggle('on',t==='light');
+  // One toggle: it names the theme a click switches to
+  const next=t==='dark'?'light':'dark';
+  $('ttheme').textContent=next==='light'?'◻ Light':'◼ Dark';
+  $('ttheme').title='Switch to '+next+' theme';
   document.querySelectorAll('.pslide').forEach(s=>{
     s.classList.remove('dark','light');
     s.classList.add(t);
@@ -1947,12 +1963,65 @@ function rollingAdvanceAfterPhase(){
 }
 
 // ══════════════════════════════════════════════════════
+// SCENARIO PICKER
+// One trigger in the control bar opens a menu of the seven
+// scenarios. Arrow keys move through it; Esc or a click
+// outside closes it. Keys 1–7 still work from anywhere.
+// ══════════════════════════════════════════════════════
+const ScenarioPicker={
+  isOpen(){ return !$('scen-menu').hidden; },
+  toggle(){ this.isOpen()?this.close():this.open(); },
+  open(){
+    const r=$('scen-trigger').getBoundingClientRect(), m=$('scen-menu');
+    m.style.top=(r.bottom+6)+'px';
+    m.style.left=Math.max(8,Math.min(r.left,window.innerWidth-m.offsetWidth-8))+'px';
+    m.hidden=false;
+    // offsetWidth is only known once shown, so clamp again to keep it on screen
+    m.style.left=Math.max(8,Math.min(r.left,window.innerWidth-m.offsetWidth-8))+'px';
+    $('scen-trigger').setAttribute('aria-expanded','true');
+    $('sc'+curScenario).focus();
+  },
+  close(focusTrigger){
+    if(!this.isOpen()) return;
+    $('scen-menu').hidden=true;
+    $('scen-trigger').setAttribute('aria-expanded','false');
+    if(focusTrigger) $('scen-trigger').focus();
+  },
+  pick(i){ this.close(); setScenario(i); },
+  sync(i){
+    const item=$('sc'+i);
+    $('scen-dot').className=item.querySelector('.dot-indicator').className;
+    txt('scen-label',item.querySelector('.scen-name').textContent);
+  }
+};
+document.addEventListener('pointerdown',e=>{
+  if(ScenarioPicker.isOpen()&&!e.target.closest('#scen-menu,#scen-trigger')) ScenarioPicker.close();
+});
+window.addEventListener('resize',()=>ScenarioPicker.close());
+$('ctrl').addEventListener('scroll',()=>ScenarioPicker.close());
+// Capture phase, so Esc and the arrows drive the menu instead of the demo's own shortcuts
+window.addEventListener('keydown',e=>{
+  if(!ScenarioPicker.isOpen()) return;
+  const items=[...$('scen-menu').querySelectorAll('[role=menuitem]')], at=items.indexOf(document.activeElement);
+  if(e.key==='Escape'){ e.preventDefault(); e.stopImmediatePropagation(); ScenarioPicker.close(true); }
+  else if(e.key==='ArrowDown'||e.key==='ArrowUp'){
+    e.preventDefault(); e.stopImmediatePropagation();
+    const n=items.length, step=e.key==='ArrowDown'?1:-1;
+    items[((at<0?0:at+step)%n+n)%n].focus();
+  }
+  else if(e.key==='Tab') ScenarioPicker.close();
+  else if(e.key>='1'&&e.key<='9') ScenarioPicker.close();
+  else if((e.key==='Enter'||e.key===' ')&&at>=0){ e.preventDefault(); e.stopImmediatePropagation(); ScenarioPicker.pick(at); }
+},true);
+
+// ══════════════════════════════════════════════════════
 // SCENARIO & PORTAL
 // ══════════════════════════════════════════════════════
 function setScenario(idx){
   Captions.hide();
   clearAllTimers(); uploaded=false; uploadCount=0; uploadCount=0; curScenario=idx;
   for(let i=0;i<S.length;i++) $('sc'+i).classList.toggle('on',i===idx);
+  ScenarioPicker.sync(idx);
   const s=S[idx];
   $('m-av').textContent=s.ini; txt('m-name',s.member);
   txt('hero-h1',s.h1); txt('hero-sub',s.hs);
@@ -3073,7 +3142,6 @@ goSlide(0);
 setScenario(0);
 $('slides-nav-btn').style.opacity='.4';
 $('demo-nav-btn').style.opacity='1';
-$('tdark').classList.add('on');
 
 // FRAUD DASHBOARD DATA & FUNCTIONS
 let fdbAllData = [];
