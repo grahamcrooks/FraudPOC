@@ -323,13 +323,14 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - Phases pause 5.5 seconds between each other, and the demo holds on each outcome before moving on.
   - Scenarios with a sign-in scene (CLM-0841, CLM-0844) take about 14 seconds longer.
 - **Check**:
-  - For CLM-0841: Phase 2 starts at about 57 seconds, Phase 3 at about 80 seconds, and the outcome at about 93 seconds.
+  - Pre-flight runs slower than when presenting: one caption per check, about 3.5 seconds each, about 25 seconds in all.
+  - For CLM-0841: Phase 2 starts at about 72 seconds, Phase 3 at about 95 seconds, and the outcome at about 108 seconds.
   - CLM-0847 and CLM-0848 each hold on the reject panel for about 9 seconds. After CLM-0847 comes CLM-0848, then CLM-0841.
   - Space pauses and resumes. There are no console errors.
 
 ## Known limitations
 
-- **Captions** exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only. The other scenarios show none. CLM-0848 has two: one on the failing check and one on the outcome.
+- **Captions**: every check in every scenario has a caption naming the component behind it, what it's for and what it costs. While presenting, pre-flight shows three (the AI reads, the business rules, the decision); the rolling demo shows one per check. Sign-in, upload and outcome captions exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only.
 - **Simulated data**: every scenario is simulated with illustrative data. Names, numbers and addresses are fictional.
 - **CLM-0846's path** passes through "Provider ABC", a placeholder name.
 - **The claim-to-receipt mismatch weight** (−0.07) is small. A mismatch on an otherwise genuine receipt would still score 0.93 and pass. How a mismatch should be routed on its own is still to be decided.

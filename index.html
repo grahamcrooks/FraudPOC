@@ -1477,6 +1477,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 <div class="ls-fx" id="ls-fx"></div>
 <div class="cap" id="cap" role="status" aria-live="polite"><span class="cap-tag" id="cap-tag"></span><span class="cap-text" id="cap-text"></span></div>
 
+<script src="data/check-captions.js"></script>
 <script src="data/scenarios/clm-0841.js"></script>
 <script src="data/scenarios/clm-0842.js"></script>
 <script src="data/scenarios/clm-0843.js"></script>
@@ -1930,7 +1931,7 @@ function launchRollingDemo(){
   // Wait for the sign-in scene, if this scenario opens with one.
   const leadIn=sessionSceneLeadIn(S[curScenario]);
   addTimer(()=>{ if(rollingOK()) simulateUpload(); },9000+leadIn);
-  addTimer(()=>{ if(rollingOK()) submitClaim(); },19500+leadIn);
+  addTimer(()=>{ if(rollingOK()) submitClaim(); },9000+leadIn+preflightMs()+500);
 }
 
 function rollingOK(){ return runMode==='rolling'&&!rollingPaused; }
@@ -2084,6 +2085,17 @@ function startBannerCountdown(secs){
 }
 function hideBanner(){ $('scenario-banner').style.display='none'; clearInterval(countdownInterval); }
 
+// Pre-flight pacing. Presenting (and step-by-step) runs pre-flight in 10 s with
+// grouped captions. The rolling demo is for unattended booth playback, so each
+// check gets its own caption and about 3.5 s, about 25 s for seven checks.
+const PF_BOOTH_STEP=3500;
+function captionsPerCheck(){ return runMode==='rolling'; }
+function preflightMs(){
+  const sigs=scenarioSignals(S[curScenario]);
+  if(!sigs) return 10800;
+  return captionsPerCheck()?sigs.length*PF_BOOTH_STEP:10000;
+}
+
 function simulateUpload(){
   hideBanner();
   const s=S[curScenario], pf=PREFLIGHT[curScenario], uz=$('upload-zone');
@@ -2157,8 +2169,8 @@ function simulateUpload(){
     });
   }
 
-  // Pre-flight complete (10.0s with signals, 10.8s for the five fallback
-  // rows — after all checks). Banner + file card fire
+  // Pre-flight complete (preflightMs(): 10 s presenting, about 25 s in the
+  // rolling demo, 10.8 s for the five fallback rows — after all checks). Banner + file card fire
   // here so the completion message can't appear before the checks that
   // establish it have run.
   addTimer(()=>{
@@ -2194,7 +2206,7 @@ function simulateUpload(){
       if($('btn-submit')) $('btn-submit').style.display='none';
       if($('btn-runpipeline')) $('btn-runpipeline').style.display='';
     }
-  },sigs?10000:10800);
+  },preflightMs());
 }
 
 // ══════════════════════════════════════════════════════
@@ -2411,12 +2423,22 @@ const SignalPanel={
     const list=opts.mount||$('sig-list');
     const els=this.build(s,sigs,list), n=sigs.length;
     let sch=opts.schedule;
-    if(!sch){   // pre-flight: back-to-back across 0.8s–9.2s
+    const perCheck=captionsPerCheck();
+    if(!sch&&perCheck){   // booth: one check, and one caption, every PF_BOOTH_STEP
+      sch=sigs.map((_,i)=>({start:i*PF_BOOTH_STEP, done:i*PF_BOOTH_STEP+PF_BOOTH_STEP-700}));
+    } else if(!sch){   // presenting: back-to-back across 0.8s–9.2s
       const doneAt=i=>n===1?5000:Math.round(800+i*(8400/(n-1)));
       sch=sigs.map((_,i)=>({start:i?doneAt(i-1):0, done:doneAt(i)}));
     }
-    // A check's own caption (preflight:<check id>) wins over its cost type's
-    const cap=opts.caption||(sig=>Captions.lookup('preflight:'+sig.id)?'preflight:'+sig.id:'cost:'+sig.cost);
+    // Booth: every check has its own caption. Presenting: grouped by cost
+    // (the AI reads, then the business rules; the capture joins the rules),
+    // unless the scenario gives a check its own caption to tell its story.
+    const cap=opts.caption||(sig=>{
+      const own='preflight:'+sig.id;
+      if(perCheck||Captions.own(own)) return own;
+      if(sig.cost==='capture') return Captions.own('cost:capture')?'cost:capture':'cost:rule';
+      return 'cost:'+sig.cost;
+    });
     sigs.forEach((sig,i)=>{
       addTimer(()=>{
         if(i>0){ const pv=sigs[i-1]; if(pv.verdict!=='flag'&&pv.verdict!=='fail') this.toggle(els[i-1],false); }
@@ -2429,7 +2451,7 @@ const SignalPanel={
     });
     // Resting state: every check open, showing its full working. Collapsing
     // is for the run only; a click still toggles a check to tidy the view.
-    const restAt=opts.restAt!=null?opts.restAt:9900;
+    const restAt=opts.restAt!=null?opts.restAt:preflightMs()-100;
     addTimer(()=>{ els.forEach(el=>this.toggle(el,true)); list.classList.add(opts.restClass||'at-rest'); },restAt);
     if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&opts.onExtracted) addTimer(opts.onExtracted,3000);
   },
@@ -2521,8 +2543,8 @@ function submitClaim(){
   // Not yet uploaded — run the upload validation first.
   if(!uploaded){
     simulateUpload();
-    // In rolling mode, auto-continue into the pipeline once validation finishes (upload sequence ends at 10.0s — give it a beat).
-    if(runMode==='rolling') addTimer(openPipeline,10500);
+    // In rolling mode, auto-continue into the pipeline once validation finishes (at preflightMs() — give it a beat).
+    if(runMode==='rolling') addTimer(openPipeline,preflightMs()+500);
     return;
   }
   // Already uploaded (manual click of Submit after upload) — in rolling, go straight on.
@@ -2534,7 +2556,7 @@ function submitClaim(){
 
 function openPipeline(){
   if(preflightStopped) return;
-  if(!uploaded){ simulateUpload(); addTimer(openPipeline,10500); return; }
+  if(!uploaded){ simulateUpload(); addTimer(openPipeline,preflightMs()+500); return; }
   clearAllTimers();
   const s=S[curScenario], pl=PHASES[curScenario];
   [1,2,3].forEach(p=>resetPhaseBlock(p));
@@ -3114,7 +3136,9 @@ const Captions={
   current:null, toastTimer:null, shownAt:0, holdTimer:null,
   MIN_MS:2500,   // every caption stays up long enough to read; quick beats queue
   enabled(){ return this.pref!=='off'; },   // always on unless switched off (C, or ?captions=off)
-  lookup(key){ const d=SCENARIO_DATA[S[curScenario].id]; return d&&d.captions&&d.captions[key]||null; },
+  // The scenario's own caption wins; otherwise the shared default from data/check-captions.js
+  own(key){ const d=SCENARIO_DATA[S[curScenario].id]; return d&&d.captions&&d.captions[key]||null; },
+  lookup(key){ return this.own(key)||(window.CHECK_CAPTIONS||{})[key]||null; },
   show(key){
     const c=this.lookup(key); if(!c||c===this.current) return;
     clearTimeout(this.holdTimer);

@@ -118,73 +118,17 @@
       "tag": "Lodgement",
       "text": "The claimant uploads a dental receipt"
     },
-    "cost:ai": {
-      "tag": "Pre-flight · AI",
-      "text": "AI reads the receipt: receipt type, fields and confidence"
-    },
-    "cost:rule": {
-      "tag": "Pre-flight · Rules",
-      "text": "Business rules run next, at no AI cost"
-    },
-    "cost:capture": {
-      "tag": "Pre-flight",
-      "text": "The sign-in device and location are attached to the claim for later checks"
-    },
-    "preflightPassed": {
-      "tag": "Pre-flight passed",
-      "text": "Genuine, complete and claimable, so on to fraud detection"
-    },
     "phase1": {
       "tag": "Phase 1 · Receipt forensics",
       "text": "Forensic checks look for tampering, forgery and AI-made receipts"
-    },
-    "phase1:SIG-P1-MATCH": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "The keyed claim is checked against the receipt itself"
-    },
-    "phase1:SIG-P1-FONT": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "One typeface throughout, so no text has been spliced in"
-    },
-    "phase1:SIG-P1-COLOUR": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "No digital overlays or pasted stamps on the scan"
-    },
-    "phase1:SIG-P1-AIGEN": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "The image is scored against AI image-generator signatures"
-    },
-    "phase1:SIG-P1-META": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "Made by clinic software on the day of the service"
-    },
-    "phase1:SIG-P1-DUP": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "This receipt has never been claimed before"
     },
     "phase2": {
       "tag": "Phase 2 · Cross-claim signals",
       "text": "Event strategies compare this claim with patterns across all claims"
     },
-    "phase2:ES-001": {
-      "tag": "Phase 2 · Cross-claim signals",
-      "text": "Where the claimant lodged from is measured against the registered address"
-    },
-    "phase2:ES-002": {
-      "tag": "Phase 2 · Cross-claim signals",
-      "text": "How many unrelated members have lodged from this device"
-    },
-    "phase2:ES-003": {
-      "tag": "Phase 2 · Cross-claim signals",
-      "text": "How many practices pay into this bank account"
-    },
     "phase3": {
       "tag": "Phase 3 · Network intelligence",
       "text": "Phase 3 looks beyond this claim, to everything it is connected to"
-    },
-    "phase3:P3-GRAPH": {
-      "tag": "Phase 3 · Network intelligence",
-      "text": "The graph is walked three hops out, looking for known fraud"
     },
     "outcome": {
       "tag": "Outcome",

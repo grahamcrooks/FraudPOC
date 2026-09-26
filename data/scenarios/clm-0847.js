@@ -17,18 +17,6 @@
       "tag": "Lodgement",
       "text": "Priya uploads what looks like a dental invoice"
     },
-    "cost:ai": {
-      "tag": "Pre-flight · AI",
-      "text": "AI reads the document: it has the layout and fields of a receipt"
-    },
-    "cost:rule": {
-      "tag": "Pre-flight · Rules",
-      "text": "Business rules read what the document actually says, at no AI cost"
-    },
-    "cost:capture": {
-      "tag": "Pre-flight",
-      "text": "The sign-in device and location are still recorded against the claim"
-    },
     "preflightRejected": {
       "tag": "Pre-flight rejected",
       "text": "A quotation, and nothing paid. Rejected before any forensic AI runs"

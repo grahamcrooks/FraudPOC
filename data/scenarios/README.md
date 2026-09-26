@@ -93,18 +93,34 @@ The disqualifying content check (`SIG-INVALID-KEYWORDS`) matches 11 terms, inclu
 
 ## Captions
 
-A `captions` object gives one line per beat for the rolling demo and for muted video. Each entry is `{ "tag": "…", "text": "…" }`: a short function tag, then the story in plain, present-tense English (6–10 words, from the audience's side). Don't repeat text already on screen.
+Captions give one line per beat, for the rolling demo and for muted video. Each entry is `{ "tag": "…", "text": "…" }`: a short function tag, then plain, present-tense English.
+
+Every check has a default caption in `data/check-captions.js`, shared by all scenarios. A check caption adds what the panel cannot show: which component produced the verdict (a vision model call, a named data transform or decision table, a Pega Event Strategy, a graph query over MCP), why it runs where it does, and what it costs. It never repeats the panel's own Looked at, Rule and Found lines.
+
+A scenario's own `captions` object wins over the defaults, key by key. Use it for the story beats only a scenario can tell: the sign-in scene, the upload, the phase openings, the outcome, and a check that carries the scenario's point (CLM-0848's PAID stamp). Don't copy a default into a scenario to reword it; change the default.
 
 | Key | When it shows |
 | --- | --- |
 | `signin`, `particles`, `handoff` | The sign-in scene beats (`handoff` also shows if the scene is skipped) |
 | `particle:device`, `particle:location`, `particle:session` | Each signal as it rises out of the phone |
 | `upload` | The receipt upload starts |
-| `cost:ai`, `cost:rule`, `cost:capture` | A pre-flight check of that cost type starts |
-| `preflight:<check id>` | That pre-flight check starts, for example `preflight:SIG-INVALID-KEYWORDS`. Wins over the cost-type caption for that check |
-| `preflightPassed`, `preflightRejected`, `preflightReview` | Pre-flight completes with that outcome |
+| `preflight:<check id>` | That pre-flight check starts, for example `preflight:SIG-INVALID-KEYWORDS`. In the rolling demo every check shows its own; while presenting, only a scenario's own `preflight:` caption does |
+| `cost:ai`, `cost:rule`, `cost:capture` | While presenting, a pre-flight check of that cost type starts. The capture joins the rules caption unless a scenario defines `cost:capture` |
+| `preflightPassed`, `preflightRejected`, `preflightReview` | Pre-flight completes with that outcome: the Valid Claim decision table's verdict |
 | `phase1`, `phase2`, `phase3` | That pipeline phase starts |
+| `phase1:<check id>`, `phase2:<check id>`, `phase3:<check id>` | That pipeline check starts, in both modes |
 | `outcome` | The fraud detection summary appears |
+
+### Pacing
+
+Pre-flight has two paces, tied to the run mode:
+
+| Mode | Pre-flight | Captions |
+| --- | --- | --- |
+| Presenting and step-by-step (the default) | 10 seconds | Grouped: the AI reads, the business rules, the decision |
+| Rolling demo (booth, unattended) | 3.5 seconds a check, about 25 seconds for seven | One per check, then the decision |
+
+The pipeline phases keep their timing in both modes, and each pipeline check shows its own caption. Every timer that waits for pre-flight (the pipeline opening, the rolling demo's next step, the resting state) reads the same duration, `preflightMs()`, so the two paces can't drift apart.
 
 A missing key keeps the previous caption. Each caption stays up at least 2.5 seconds; quick beats queue. Captions are on by default everywhere; C toggles, and `?captions=off` gives a clean take for a recording.
 
