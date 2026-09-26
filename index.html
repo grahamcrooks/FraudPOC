@@ -2222,11 +2222,12 @@ function simulateUpload(){
     }, 10800);
   }
 
-  // Flash the fields ONE BY ONE just after Field extraction (the second check)
-  // fills them, so the audience sees where they came from
+  // Flash the fields ONE BY ONE just after Field extraction fills them, so
+  // the audience sees where they came from
   if(uploadCount===1){
     const fields = ['f-type','f-date','f-prov','f-abn','f-amt','f-codes'];
-    const filledAt = sigs ? 2*PF_STEP-500 : 8200;
+    const fx = sigs ? sigs.findIndex(x=>x.id==='SIG-FIELD-EXTRACTION') : -1;
+    const filledAt = fx>=0 ? fx*PF_STEP+PF_STEP-500 : 8200;
     fields.forEach((id, idx) => {
       const animStart = filledAt + (idx * 200); // 200ms between each
       addTimer(() => {
@@ -2526,7 +2527,8 @@ const SignalPanel={
     const cap=opts.caption||(sig=>{
       const own='preflight:'+sig.id;
       if(perCheck||Captions.own(own)) return own;
-      if(sig.cost==='capture') return Captions.own('cost:capture')?'cost:capture':'cost:rule';
+      // The capture isn't a rule: it gets its own caption (it now runs first).
+      if(sig.cost==='capture') return Captions.own('cost:capture')?'cost:capture':own;
       return 'cost:'+sig.cost;
     });
     sigs.forEach((sig,i)=>{

@@ -148,13 +148,13 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 
   | Check | Cost | Rule |
   | --- | --- | --- |
+  | Device and location | Capture | Recorded for later evaluation; no verdict |
   | Receipt type | AI call | Must be a tax invoice from a registered health provider |
   | Field extraction | AI call | Extract provider, ABN, service date, line items and total |
-  | Extraction confidence | AI call | Every critical field at or above 0.70, or the claim goes to human review |
-  | Disqualifying content | Business rule | 11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp |
   | Receipt completeness | Business rule | Amount received recorded against amount charged, valid tax invoice, itemised, signed |
+  | Disqualifying content | Business rule | 11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp |
   | Claim value | Business rule | Recorded at $5,000 or above as context for later checks; never routes the claim on its own |
-  | Device and location | Capture | Recorded for later evaluation; no verdict |
+  | Extraction confidence | AI call | Every critical field at or above 0.70, or the claim goes to human review |
 
   Routing: any fail sends the claim to **Reject Document** (Resolved-Rejected). Any flag sends it to **Needs Review** (Pending-Review). Claim value is the exception: a high-value claim isn't suspicious, so it's recorded as context for later (a high-value claim from a member in a ring is a different priority from an $80 one) and never routes the claim. All passes open the pipeline. The claim form fields fill from the extraction.
 - **Check**:

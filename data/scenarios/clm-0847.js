@@ -24,6 +24,15 @@
   },
   "signals": [
     {
+      "id": "SIG-DEVICE-LOCATION",
+      "name": "Device and location",
+      "summary": "DEV-5540 · Northcote VIC · captured at sign-in",
+      "cost": "capture",
+      "captured": "session",
+      "usedBy": "ES-001 distance anomaly, ES-002 device ring",
+      "conclusion": "Recorded, no evaluation at this stage"
+    },
+    {
       "id": "SIG-DOC-TYPE",
       "name": "Receipt type",
       "summary": "dental receipt layout · ABN and AHPRA present",
@@ -46,15 +55,15 @@
       "conclusion": "All required fields present"
     },
     {
-      "id": "SIG-EXTRACTION-CONFIDENCE",
-      "name": "Extraction confidence",
-      "summary": "lowest 0.94 (InvoiceTotal) · threshold 0.70",
-      "cost": "ai",
-      "lookedAt": "Per-field extraction confidence",
-      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
-      "found": "Lowest InvoiceTotal 0.94 · ProviderABN 0.96 · ServiceDate 0.95",
-      "verdict": "pass",
-      "conclusion": "All fields above threshold"
+      "id": "SIG-DOC-COMPLETENESS",
+      "name": "Receipt completeness",
+      "summary": "$0.00 received of $448.00",
+      "cost": "rule",
+      "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
+      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
+      "found": "$0.00 received against $448.00 charged · ABN present · 3 itemised lines · not signed",
+      "verdict": "fail",
+      "conclusion": "Nothing has been paid"
     },
     {
       "id": "SIG-INVALID-KEYWORDS",
@@ -66,17 +75,6 @@
       "found": "\"treatment plan and quotation\" in the header, \"this is not a tax invoice\" in the footer",
       "verdict": "fail",
       "conclusion": "Classified as a quotation"
-    },
-    {
-      "id": "SIG-DOC-COMPLETENESS",
-      "name": "Receipt completeness",
-      "summary": "$0.00 received of $448.00",
-      "cost": "rule",
-      "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
-      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
-      "found": "$0.00 received against $448.00 charged · ABN present · 3 itemised lines · not signed",
-      "verdict": "fail",
-      "conclusion": "Nothing has been paid"
     },
     {
       "id": "SIG-CLAIM-VALUE",
@@ -91,13 +89,15 @@
       "conclusion": "Under $5,000, no high-value marker"
     },
     {
-      "id": "SIG-DEVICE-LOCATION",
-      "name": "Device and location",
-      "summary": "DEV-5540 · Northcote VIC · captured at sign-in",
-      "cost": "capture",
-      "captured": "session",
-      "usedBy": "ES-001 distance anomaly, ES-002 device ring",
-      "conclusion": "Recorded, no evaluation at this stage"
+      "id": "SIG-EXTRACTION-CONFIDENCE",
+      "name": "Extraction confidence",
+      "summary": "lowest 0.94 (InvoiceTotal) · threshold 0.70",
+      "cost": "ai",
+      "lookedAt": "Per-field extraction confidence",
+      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
+      "found": "Lowest InvoiceTotal 0.94 · ProviderABN 0.96 · ServiceDate 0.95",
+      "verdict": "pass",
+      "conclusion": "All fields above threshold"
     }
   ],
   "outcome": {
