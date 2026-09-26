@@ -63,6 +63,7 @@ The `signals` array drives the Phase 1 panel on the claim lodgement screen. Each
 | `verdict` | `"pass"`, `"flag"`, `"fail"` or `"skipped"` | Shown as a word (Pass, Flag, Fail, Not run) as well as colour. Flags and fails stay expanded when the panel finishes. Use `skipped` for checks that didn't run because an earlier one stopped the claim. |
 | `conclusion` | string | Shown after an arrow; always visible once the check completes. |
 | `detail` | object | Optional. Extra label and value pairs, shown under Found when the check is expanded. |
+| `routes` | boolean | Optional; defaults to `true`. `false` marks a context check whose verdict is recorded but never decides the route. Claim value (`SIG-CLAIM-VALUE`) uses it: a high-value claim is context for later phases, not a reason to hold it. |
 
 A `capture` records data rather than deciding anything. It has no verdict and uses two fields instead of `lookedAt`, `rule` and `found`:
 
@@ -79,8 +80,8 @@ Pre-flight decides whether the claim reaches the pipeline at all, as in the buil
 
 | Verdicts | What happens |
 | --- | --- |
-| Any check fails | Stop. No pipeline. Terminal panel: Stage Reject Document, Status Resolved-Rejected, reason shown. "No forensic analysis was run. No referral to the fraud team." |
-| Any check flags (and none fail) | Stop. No pipeline. Terminal panel: Stage Needs Review, Status Pending-Review, with the flagged checks' rule and finding for the reviewer. |
+| Any routing check fails | Stop. No pipeline. Terminal panel: Stage Reject Document, Status Resolved-Rejected, reason shown. "No forensic analysis was run. No referral to the fraud team." |
+| Any routing check flags (and none fail) | Stop. No pipeline. Terminal panel: Stage Needs Review, Status Pending-Review, with the flagged checks' rule and finding for the reviewer. |
 | All pass | Continue to the pipeline. |
 
 Submit, Run Fraud Detection and the rolling demo all respect the stop; in rolling mode the demo holds on the outcome for nine seconds, then moves to the next scenario.

@@ -2501,7 +2501,9 @@ const SignalPanel={
   // Needs Review; else on to the pipeline. The forensic phases never run on
   // a document that was never claimable.
   outcome(sigs){
-    const decided=sigs.filter(x=>x.cost!=='capture');
+    // Captures and context checks ("routes": false, e.g. claim value) never
+    // decide the route, whatever their verdict.
+    const decided=sigs.filter(x=>x.cost!=='capture'&&x.routes!==false);
     const fails=decided.filter(x=>x.verdict==='fail'), flags=decided.filter(x=>x.verdict==='flag');
     if(fails.length) return {kind:'reject',items:fails};
     if(flags.length) return {kind:'review',items:flags};

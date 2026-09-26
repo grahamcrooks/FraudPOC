@@ -40,7 +40,7 @@ window.CHECK_CAPTIONS = {
   },
   "preflight:SIG-CLAIM-VALUE": {
     "tag": "Pre-flight · Claim value",
-    "text": "SetHighValueFlag. Recorded at $5,000 and above — context for later, not a fraud signal"
+    "text": "SetHighValueFlag. Recorded at $5,000 and above as context for later, not a fraud signal. It never routes a claim on its own"
   },
   "preflight:SIG-DEVICE-LOCATION": {
     "tag": "Pre-flight · Device and location",
