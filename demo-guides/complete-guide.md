@@ -138,7 +138,7 @@ PASS → Send for normal adjudication \| FLAGGED → HIGH PRIORITY → SIU
 
 - ▶ Rolling Demo - Automatically play all scenarios in sequence
 - ↩ Restart - Stop everything, clear the claim form and return to Slide 1
-- Scenario picker - Shows the current claim; click it to choose any of the seven scenarios (CLM-0841 to CLM-0847), or press 1–7
+- Scenario picker - Shows the current claim; click it to choose any of the eight scenarios (CLM-0841 to CLM-0848), or press 1–8
 - ⌨ Presenting - Shows you're in presentation mode
 - ◀ Slides \| Demo ▶ - Toggle between slides and demo mode
 - 📋 Portal - Phase 1 Dataset Analysis tool (default) - validates member-entered data against historical receipts
@@ -193,7 +193,7 @@ CLM-0845 only: Click "Open Alert & Investigation Manager" after Phase 3
 
 ### Keyboard Shortcuts
 
-- 1-7 = Jump to scenarios
+- 1-8 = Jump to scenarios
 - 0 = Restart demo
 - D = Demo mode
 - S = Slides mode

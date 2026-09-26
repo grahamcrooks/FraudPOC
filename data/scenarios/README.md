@@ -4,7 +4,7 @@ Per-scenario data for the demo, one file per scenario, named for the claim (`clm
 
 The object literal in each file is valid JSON. Keep it that way so the data can be moved to `.json` files later without changes.
 
-Every scenario (CLM-0841 to CLM-0847) has a session block; CLM-0841 plays the sign-in scene on the phone and CLM-0844 on the laptop browser. Each file can hold a `session` block and a `signals` array; the rest of each scenario is still in the `S` array in `index.html`.
+Every scenario (CLM-0841 to CLM-0848) has a session block; CLM-0841 plays the sign-in scene on the phone and CLM-0844 on the laptop browser. Each file can hold a `session` block and a `signals` array; the rest of each scenario is still in the `S` array in `index.html`.
 
 ## Session block
 
@@ -87,7 +87,9 @@ Submit, Run Fraud Detection and the rolling demo all respect the stop; in rollin
 
 The terminal panel's headline and reason come from the deciding checks' conclusions. A scenario can override them with an optional top-level `outcome` object: `{ "headline": "…", "reason": "…", "note": "…" }`.
 
-Scenarios without a `signals` array fall back to the original four verdict-only rows and always continue to the pipeline. All seven scenarios have signals. CLM-0841 to CLM-0846 pass pre-flight, since their stories fail or flag later in the pipeline. CLM-0847 fails it: a dental quotation with nothing paid, rejected before any forensic AI runs. It has no `phase1`, `phase2` or `phase3` arrays, because the pipeline never opens.
+Scenarios without a `signals` array fall back to the original four verdict-only rows and always continue to the pipeline. All eight scenarios have signals. CLM-0841 to CLM-0846 pass pre-flight, since their stories fail or flag later in the pipeline. CLM-0847 and CLM-0848 fail it, before any forensic AI runs. CLM-0847 is a dental quotation with nothing paid. CLM-0848 is a genuine physio receipt stamped PAID by the practice: authentic in every respect, but the account is already settled, so there is nothing to claim. Neither has `phase1`, `phase2` or `phase3` arrays, because the pipeline never opens.
+
+The disqualifying content check (`SIG-INVALID-KEYWORDS`) matches 11 terms, including the PAID stamp (disposition `AlreadyPaid`). Matching is on the phrase or word boundary, not the substring: the stamp matches, but "amount paid", "paid in full", "unpaid" and "prepaid" on an ordinary receipt do not.
 
 ## Captions
 
@@ -99,6 +101,7 @@ A `captions` object gives one line per beat for the rolling demo and for muted v
 | `particle:device`, `particle:location`, `particle:session` | Each signal as it rises out of the phone |
 | `upload` | The receipt upload starts |
 | `cost:ai`, `cost:rule`, `cost:capture` | A pre-flight check of that cost type starts |
+| `preflight:<check id>` | That pre-flight check starts, for example `preflight:SIG-INVALID-KEYWORDS`. Wins over the cost-type caption for that check |
 | `preflightPassed`, `preflightRejected`, `preflightReview` | Pre-flight completes with that outcome |
 | `phase1`, `phase2`, `phase3` | That pipeline phase starts |
 | `outcome` | The fraud detection summary appears |

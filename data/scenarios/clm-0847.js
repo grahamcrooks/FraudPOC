@@ -71,10 +71,10 @@
     {
       "id": "SIG-INVALID-KEYWORDS",
       "name": "Disqualifying content",
-      "summary": "2 of 10 terms matched",
+      "summary": "2 of 11 terms matched",
       "cost": "rule",
       "lookedAt": "Extracted receipt text",
-      "rule": "10 disqualifying terms, maintained by the fraud team",
+      "rule": "11 disqualifying terms, maintained by the fraud team",
       "found": "\"treatment plan and quotation\" in the header, \"this is not a tax invoice\" in the footer",
       "verdict": "fail",
       "conclusion": "Classified as a quotation"

@@ -5,7 +5,7 @@
 1. Open the demo in fullscreen (F key)
 2. Make sure you are on Slide 1 (Agenda)
 3. Have your talking points ready (see Key Messages below)
-4. Test keyboard shortcuts: D (demo), S (slides), 1-7 (scenarios), 0 (restart)
+4. Test keyboard shortcuts: D (demo), S (slides), 1-8 (scenarios), 0 (restart)
 
 ## Part 1: Slides (1-5)
 

@@ -39,7 +39,7 @@ claim portal
   - "Load Document" upload section (fake, instant completion)
   - Form fields for claim details
   - Three-phase pipeline display (real-time simulation)
-- Keyboard: D = Demo mode, 1-7 = select scenario
+- Keyboard: D = Demo mode, 1-8 = select scenario
 
 ### 3. Fraud Dashboard (Report)
 
@@ -188,7 +188,7 @@ Accumulated fraud case database
 
 - Top navigation with:
   - Play controls (Rolling Demo, Restart)
-  - Scenario picker (a menu of the seven scenarios; keys 1-7 jump directly)
+  - Scenario picker (a menu of the eight scenarios; keys 1-8 jump directly)
   - Mode toggles (Slides, Demo, Portal, Report)
   - Display options (one Dark/Light theme toggle, Fullscreen)
 

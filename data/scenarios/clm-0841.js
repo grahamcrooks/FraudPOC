@@ -49,10 +49,10 @@
     {
       "id": "SIG-INVALID-KEYWORDS",
       "name": "Disqualifying content",
-      "summary": "10 terms checked · none found",
+      "summary": "11 terms checked · none found",
       "cost": "rule",
       "lookedAt": "Extracted receipt text",
-      "rule": "10 disqualifying terms, for example non-medical, quotation, paid, proforma",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
       "found": "None",
       "verdict": "pass",
       "conclusion": "No disqualifying content"

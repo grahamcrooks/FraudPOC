@@ -16,6 +16,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 - [Configure provider data object](prompts/configure-provider-data-object.md): creates the Provider data object, test providers and the Provider dropdown.
 - [Configure claim form sections](prompts/configure-claim-form-sections.md): sets out the claim form fields, line-items table and summary.
+- [Add the PAID stamp as a disqualifying term](prompts/add-already-paid-disqualifying-term.md): extends SetKeywordMatchResults so a receipt stamped PAID is rejected in pre-flight (disposition AlreadyPaid), matching the stamp on word boundaries, not the substring.
 - Create fraud session data objects, run in order:
   1. [GeoSession](prompts/create-fraud-session-data-objects/01-geo-session.md): creates the object that captures where a claim was submitted from.
   2. [DeviceSession](prompts/create-fraud-session-data-objects/02-device-session.md): creates the object that captures the submitting device and browser.
@@ -29,7 +30,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 ## Data
 
-- [Scenario data](data/scenarios/README.md): per-scenario data files (CLM-0841 to CLM-0847): the session block for the sign-in scene, the pre-flight signals and the checks for each pipeline phase.
+- [Scenario data](data/scenarios/README.md): per-scenario data files (CLM-0841 to CLM-0848): the session block for the sign-in scene, the pre-flight signals and the checks for each pipeline phase.
 
 ## Tests
 
