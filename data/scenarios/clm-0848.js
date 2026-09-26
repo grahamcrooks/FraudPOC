@@ -71,7 +71,7 @@
     {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Receipt completeness",
-      "summary": "$270.00 paid of $270.00 · ABN ✓ · 4 lines · signed",
+      "summary": "$270.00 received of $270.00 · ABN ✓ · 4 lines · signed",
       "cost": "rule",
       "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
       "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",

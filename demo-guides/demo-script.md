@@ -292,7 +292,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 - **Under the hood**:
   - The first four checks pass: the layout reads as a receipt, 11 of 11 fields, confidence 0.94.
   - Disqualifying content fails: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, 2 of 11 terms.
-  - Receipt completeness fails: $0.00 paid of $448.00, not signed.
+  - Receipt completeness fails: $0.00 received of $448.00, not signed.
   - Any fail routes to Reject Document.
 - **Check**:
   - There are two FAIL badges. The panel reads "Claim rejected — not a claimable receipt".
