@@ -644,6 +644,8 @@ body.run-rolling .presenter-only{display:none}
 .ls-sim{position:absolute;bottom:max(16px,env(safe-area-inset-bottom));left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:4px 10px;text-align:center;font-size:13px;font-weight:500}
 .ls.dark .ls-sim{color:#9FB4D4}
 .ls.light .ls-sim{color:var(--text-2)}
+.ls-paused{position:absolute;top:18px;left:24px;z-index:5;background:#7C3AED;color:#fff;padding:8px 20px;border-radius:30px;font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(124,58,237,.4);white-space:nowrap}
+.ls.paused,.ls.paused *{animation-play-state:paused!important}
 .ls-sim-pill{flex-shrink:0;background:var(--gold);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px}
 
 /* Phone */
@@ -1446,6 +1448,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 
 <!-- SESSION SIGN-IN SCENE — simulated; text is filled from data/scenarios/ -->
 <div class="ls dark" id="ls" aria-hidden="true" onclick="SessionScene.finish()">
+  <div class="ls-paused" id="ls-paused" role="status" hidden>⏸ Paused · Space to resume · Esc to skip</div>
   <div class="ls-phone" id="ls-phone">
     <div class="ls-notch"></div>
     <div class="ls-screen">
@@ -2981,7 +2984,7 @@ const SessionScene={
   current:null,    // session shown in the chip
   pending:null,    // login waiting for the demo screen to become visible
   pendingOpts:null,
-  playing:false, sess:null, timers:[], anims:[], particles:[], outline:null,
+  playing:false, paused:false, sess:null, timers:[], anims:[], particles:[], outline:null,
 
   // Called by setScenario.
   onScenario(s){
@@ -3137,7 +3140,8 @@ const SessionScene={
   finish(){ if(this.playing) this.end(); },
   // Tear down without populating (used when a new scenario replaces the scene).
   stop(){
-    this.timers.forEach(clearTimeout); this.timers=[];
+    this.timers.forEach(t=>clearTimeout(t.id)); this.timers=[];
+    this.setPaused(false);
     this.anims.forEach(a=>{ try{a.cancel();}catch(e){} }); this.anims=[];
     $('ls-fx').innerHTML=''; this.particles=[];
     if(this.outline){ this.outline.remove(); this.outline=null; }
@@ -3147,7 +3151,31 @@ const SessionScene={
   },
   // Timers are relative to when at() is called (scene start, or the start of a beat).
   // Every scene timer and animation runs through these two, scaled by the pace.
-  at(ms,fn){ this.timers.push(setTimeout(fn,ms*SESSION_SCENE_PACE)); },
+  at(ms,fn){ const t={fn}; this.timers.push(t); this.schedule(t,ms*SESSION_SCENE_PACE); },
+  schedule(t,ms){
+    t.due=performance.now()+ms;
+    t.id=setTimeout(()=>{ this.timers=this.timers.filter(x=>x!==t); t.fn(); },ms);
+  },
+  // Pause holds the scene exactly where it is while the presenter talks:
+  // every timer keeps its remaining time and every animation freezes.
+  pause(){
+    if(!this.playing||this.paused) return;
+    const now=performance.now();
+    this.timers.forEach(t=>{ clearTimeout(t.id); t.left=Math.max(0,t.due-now); });
+    this.anims.forEach(a=>{ try{a.pause();}catch(e){} });
+    this.setPaused(true);
+  },
+  resume(){
+    if(!this.playing||!this.paused) return;
+    this.timers.forEach(t=>this.schedule(t,t.left));
+    this.anims.forEach(a=>{ try{a.play();}catch(e){} });
+    this.setPaused(false);
+  },
+  setPaused(on){
+    this.paused=on;
+    $('ls').classList.toggle('paused',on);
+    $('ls-paused').hidden=!on;
+  },
   anim(el,frames,o){
     const oo=Object.assign({},o);
     if(oo.duration) oo.duration*=SESSION_SCENE_PACE;
@@ -3156,10 +3184,17 @@ const SessionScene={
   }
 };
 
-// Skip with any key while the scene plays; L replays it. Runs before the
-// main keyboard handler so Space/Enter/Esc only skip and don't also pause.
+// While the scene plays: Space pauses and resumes it (presenting); Esc,
+// Enter or a click skips to the end; any other key skips and then does its
+// usual job. In the rolling demo Space still skips, as before. L replays.
+// Runs before the main keyboard handler so these keys don't also act there.
 window.addEventListener('keydown',e=>{
   if(SessionScene.playing){
+    if(e.key===' '&&runMode!=='rolling'){
+      e.preventDefault(); e.stopImmediatePropagation();
+      SessionScene.paused?SessionScene.resume():SessionScene.pause();
+      return;
+    }
     SessionScene.finish();
     if(e.key===' '||e.key==='Enter'||e.key==='Escape'){ e.preventDefault(); e.stopImmediatePropagation(); }
     return;
