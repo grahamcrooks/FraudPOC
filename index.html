@@ -131,7 +131,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .light .pl-note{color:var(--text-2)}
 .pl-claim{display:none;margin-left:auto;font-family:'Courier New',monospace;font-size:12px;font-weight:700;color:var(--navy);background:var(--lblue);padding:3px 10px;border-radius:6px}
 .pl.rolling .pl-claim{display:inline-block}
-.pl-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:40px;row-gap:clamp(10px,1.4vh,18px);align-items:stretch}
+.pl-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:52px;row-gap:clamp(10px,1.4vh,18px);align-items:stretch}
 .pl-phase{font-size:clamp(11px,min(1vw,1.55vh),15px);font-weight:700;color:#fff;padding:4px 12px;border-radius:20px;text-align:center;align-self:center}
 .pl-ph0{grid-column:1;border:1px dashed rgba(255,255,255,.3);color:#9FB4D4}
 .light .pl-ph0{border-color:rgba(0,31,95,.25);color:var(--text-3)}
@@ -141,14 +141,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .pl-stage{position:relative;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:clamp(12px,1.5vh,18px) clamp(14px,1vw,20px);display:flex;flex-direction:column;gap:clamp(8px,1.1vh,12px);box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease,border-color .3s,box-shadow .3s}
 .pl-stage.visible{opacity:1;transform:none}
 .pl-stage.lit{border-color:var(--pblue);box-shadow:0 0 0 3px rgba(29,78,216,.45),0 10px 30px rgba(0,0,0,.25)}
-.pl-stage[data-gate]::before{content:'→';position:absolute;left:-30px;top:34%;font-size:20px;font-weight:700;color:var(--gold)}
-.pl-stage[data-gate]::after{content:attr(data-gate);position:absolute;left:-40px;width:40px;top:calc(34% + 28px);text-align:center;font-size:10px;line-height:1.2;color:#9FB4D4}
+.pl-stage[data-gate]::before{content:'→';position:absolute;left:-38px;top:34%;font-size:22px;font-weight:700;color:var(--gold)}
+.pl-stage[data-gate]::after{content:attr(data-gate);position:absolute;left:-52px;width:52px;top:calc(34% + 30px);text-align:center;font-size:13px;font-weight:600;line-height:1.2;color:#9FB4D4}
 .light .pl-stage[data-gate]::before{color:var(--navy)}
 .light .pl-stage[data-gate]::after{color:var(--text-3)}
 .pl-eyebrow{font-size:clamp(10.5px,min(.75vw,1.15vh),12.5px);font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--text-3)}
 .pl-title{font-size:clamp(14px,min(1.35vw,2.2vh),24px);font-weight:800;color:var(--navy);line-height:1.2}
 .pl-costs{display:flex;flex-wrap:wrap;gap:5px}
-.pl-what{font-size:clamp(11.5px,min(1vw,1.6vh),17px);color:var(--text-2);line-height:1.4}
 .pl-stage .sig{margin-top:auto}
 .pl-stage .sig-head{cursor:default;padding:7px 10px 2px}
 .pl-stage .sig-ico{font-size:15px}
@@ -158,7 +157,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .pl-planned{font-size:clamp(10.5px,.85vw,12px);font-style:italic;color:var(--text-3);line-height:1.35}
 .pl-exit{position:relative;margin-top:22px;border-radius:10px;padding:clamp(10px,1.3vh,16px) clamp(14px,1vw,20px);font-size:clamp(11.5px,min(1.05vw,1.65vh),17.5px);line-height:1.45;opacity:0;transition:opacity .5s ease}
 .pl-exit.visible{opacity:1}
-.pl-exit::before{content:'↓ ' attr(data-gate);position:absolute;top:-20px;left:14px;font-size:11px;font-weight:600;color:#9FB4D4}
+.pl-exit::before{content:'↓ ' attr(data-gate);position:absolute;top:-21px;left:14px;font-size:13px;font-weight:600;color:#9FB4D4}
 .light .pl-exit::before{color:var(--text-3)}
 .dark .pl-exit{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
 .dark .pl-x-aim{background:rgba(0,31,95,.6)}
@@ -168,7 +167,7 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .pl-x-rej{grid-column:2}
 .pl-x-aim{grid-column:3/5}
 .pl-x-adj{grid-column:5}
-@media (max-height:820px){.pl{gap:6px}.pl-stage{padding:8px 11px;gap:5px}.pl-what{line-height:1.3}.pl-exit{margin-top:18px;padding:6px 12px;line-height:1.35}.pl-exit::before{top:-17px}.pl-stage .sig-head{padding-top:5px}.pl-stage .sig-concl{padding-bottom:5px}}
+@media (max-height:820px){.pl{gap:6px}.pl-stage{padding:8px 11px;gap:5px}.pl-exit{margin-top:18px;padding:6px 12px;line-height:1.35}.pl-exit::before{top:-17px}.pl-stage .sig-head{padding-top:5px}.pl-stage .sig-concl{padding-bottom:5px}}
 @media (prefers-reduced-motion:reduce){.pl-stage,.pl-exit{transition:none}}
 
 /* ── SLIDE 2 — THE PROBLEM ── */
@@ -250,6 +249,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .light .s0-asks li{color:var(--blue)}
 .s0-asks li::before{content:'✓';color:var(--teal);flex-shrink:0;font-weight:700}
 .s0-note{font-size:clamp(13px,1.5vw,18px);font-style:italic;margin-top:2px}
+/* Slide 3 carries six cards of text: size it by the tighter of width and
+   height, so it fits 1366x768 and 1440x900 as well as 1920x1080. */
+#ps2 .s3-headline{font-size:clamp(26px,min(3.8vw,5.2vh),56px)}
+#ps2 .s3-sub{font-size:clamp(15px,min(1.9vw,2.5vh),24px);margin-bottom:clamp(10px,1.8vh,20px)}
+#ps2 .s3-grid{gap:clamp(10px,1.5vh,16px);min-height:0}
+#ps2 .s3-card{padding:clamp(10px,1.8vh,22px) clamp(16px,1.6vw,24px)}
+#ps2 .s3-title{font-size:clamp(15px,min(1.8vw,2.3vh),22px);margin-bottom:clamp(5px,1vh,10px)}
+#ps2 .s3-body,#ps2 .s0-step,#ps2 .s0-metric-lbl,#ps2 .s0-metric-val,#ps2 .s0-asks li,#ps2 .s0-note{font-size:clamp(12px,min(1.5vw,1.75vh),18px)}
+#ps2 .s3-body{line-height:1.5}
+#ps2 .s0-steps,#ps2 .s0-asks{gap:clamp(3px,.7vh,7px)}
+#ps2 .s0-metric{padding:clamp(3px,.6vh,6px) 0}
 .dark .s0-note{color:#6B84A8}
 .light .s0-note{color:#7B9FC4}
 
@@ -1010,28 +1020,24 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
             <div class="pl-eyebrow">Session</div>
             <div class="pl-title">Sign-in capture</div>
             <div class="pl-costs"><span class="sig-cost capture">Captured, not judged</span></div>
-            <div class="pl-what">Device, location and time, recorded before a claim exists</div>
             <div class="sig" data-verdict="capture"><div class="sig-head"><span class="sig-ico">📥</span><span class="sig-name"><span class="sig-nm">Device and location</span> <span class="sig-sum">· DEV-2291 · Carlton VIC</span></span></div><div class="sig-concl">→ Recorded, no evaluation at this stage</div></div>
           </div>
           <div class="pl-stage" id="pl1" data-gate="upload">
             <div class="pl-eyebrow">Pre-flight</div>
             <div class="pl-title">Is it claimable?</div>
             <div class="pl-costs"><span class="sig-cost ai">1 AI read</span><span class="sig-cost rule">3 rules · 1 table</span></div>
-            <div class="pl-what">Receipt type, fields and confidence, then disqualifying terms, completeness and claim value</div>
             <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">Disqualifying content</span> <span class="sig-sum">· 11 terms checked · none found</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ No disqualifying content</div></div>
           </div>
           <div class="pl-stage" id="pl2" data-gate="valid">
             <div class="pl-eyebrow">Forensic analysis</div>
             <div class="pl-title">Is it genuine?</div>
             <div class="pl-costs"><span class="sig-cost ai">3 AI calls</span><span class="sig-cost rule">3 rules · 1 score</span></div>
-            <div class="pl-what">Claim-to-receipt match, fonts, overlays, AI-generated images, metadata, duplicates</div>
             <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">Font consistency</span> <span class="sig-sum">· 1 typeface · Arial 9pt</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ No evidence of spliced text</div></div>
           </div>
           <div class="pl-stage" id="pl3" data-gate="≥ 0.70">
             <div class="pl-eyebrow">Cross-claim signals</div>
             <div class="pl-title">Against every other claim</div>
             <div class="pl-costs"><span class="sig-cost rule">3 event strategies · no AI</span></div>
-            <div class="pl-what">ES-001 distance from home · ES-002 device ring · ES-003 bank account ring</div>
             <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">ES-002 Device ring</span> <span class="sig-sum">· 1 member on this device · threshold 3</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ No device ring</div></div>
             <div class="pl-planned">Planned: phantom ABN, waiver abuse, item code validation</div>
           </div>
@@ -1039,7 +1045,6 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
             <div class="pl-eyebrow">Network intelligence</div>
             <div class="pl-title">Three hops out</div>
             <div class="pl-costs"><span class="sig-cost ai">1 graph query over MCP</span></div>
-            <div class="pl-what">Every entity the claim touches, into known fraud and open investigations</div>
             <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">Network graph</span> <span class="sig-sum">· 0 connections within 3 hops</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ Graph clear</div></div>
             <div class="pl-planned">Planned: fraud case similarity matching</div>
           </div>
@@ -1679,7 +1684,7 @@ const PHASES=[
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
   ]},ph3:{pass:false,score:'3',scoreColor:'#DC2626',scoreLabel:'Hops to Confirmed Fraud Node',verdict:'RING DETECTED — Community #47',route:'14 members · 3 providers · Routing to SIU Queue · HIGH priority',checks:[
-    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Provider ABC → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
+    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Kestrel Allied Health → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
   ]}},
   // CLM-0847: rejected at pre-flight, so the pipeline never opens.
   {ph1:null,ph2:null,ph3:null},
@@ -3239,28 +3244,35 @@ function generateFraudDashboardData(){
   ];
   data = data.concat(scenarios);
   
-  const providers = ['Bright Smile Dental','Vision Direct Pty Ltd','Active Rehab Centre','Metro Dental Group','ClearView Optometry','Prime Physio & Sports','North Shore Medical','Southside Clinic','Wellness Hub','Central Physio'];
+  // Background cases around the scenarios. Seeded, so the report is identical
+  // on every load; numbered from 849, because CLM-0847 and CLM-0848 belong to
+  // the pre-flight scenarios (rejected, so never fraud cases); and each
+  // provider keeps its own service type.
+  const providers = [['Bright Smile Dental','Dental'],['Vision Direct Pty Ltd','Optical'],['Active Rehab Centre','Physio'],['Metro Dental Group','Dental'],['ClearView Optometry','Optical'],['Prime Physio & Sports','Physio'],['Central Physio','Physio']];
   const members = ['Anna Liu','Brian Chen','Catherine Lee','Daniel Park','Emily Zhang','Francis Wong','Grace Martinez','Henry Patel','Isabella Rodriguez','James Kim'];
-  const types = ['Dental','Optical','Physio','Dental','Optical','Physio'];
-  
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let seed = 20260715;
+  const rand = ()=>{ seed=(seed*1664525+1013904223)>>>0; return seed/4294967296; };
+
   for(let i=0;i<18;i++){
-    const daysAgo = Math.floor(Math.random()*30);
+    const daysAgo = Math.floor(rand()*30);
     const d = new Date(baseDate);
     d.setDate(d.getDate() - daysAgo);
-    
-    const scoreRand = Math.random();
+
+    const scoreRand = rand();
     let score, outcome;
-    if(scoreRand<0.65){score=Math.random()*25; outcome='clean';}
-    else if(scoreRand<0.85){score=30+Math.random()*35; outcome='suspicious';}
-    else{score=65+Math.random()*35; outcome='high';}
-    
+    if(scoreRand<0.65){score=rand()*25; outcome='clean';}
+    else if(scoreRand<0.85){score=30+rand()*35; outcome='suspicious';}
+    else{score=65+rand()*35; outcome='high';}
+    const [provider,type] = providers[Math.floor(rand()*providers.length)];
+
     data.push({
-      claim:'CLM-2024-'+(847+i).toString().padStart(4,'0'),
-      member:members[Math.floor(Math.random()*members.length)],
-      provider:providers[Math.floor(Math.random()*providers.length)],
-      date:d.toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'}),
-      type:types[Math.floor(Math.random()*types.length)],
-      amount:Math.round((100+Math.random()*400)*100)/100,
+      claim:'CLM-2024-'+(849+i).toString().padStart(4,'0'),
+      member:members[Math.floor(rand()*members.length)],
+      provider,
+      date:String(d.getDate()).padStart(2,'0')+' '+MONTHS[d.getMonth()]+' '+d.getFullYear(),
+      type,
+      amount:Math.round((100+rand()*400)*100)/100,
       score:Math.round(score),
       outcome:outcome
     });

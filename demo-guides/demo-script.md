@@ -280,7 +280,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 - **Say**: Angela's claim is clean on its own and clears both earlier phases. But the graph traces it three hops through a shared submission IP into Community #47: a confirmed fraud ring of 14 members and 3 providers.
 - **Under the hood**:
-  - P3-GRAPH found a 3-hop path: submission IP 203.0.113.91 → Provider ABC → confirmed fraud member MBR-99112, in Community #47.
+  - P3-GRAPH found a 3-hop path: submission IP 203.0.113.91 → Kestrel Allied Health → confirmed fraud member MBR-99112, in Community #47.
   - Phase 2 saw nothing, because no single claim contains this connection.
   - The backup slide shows the same pattern as a schema.
 - **Check**:
@@ -333,6 +333,5 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 - **Captions**: every check in every scenario has a caption naming the component behind it, what it's for and what it costs. While presenting, pre-flight shows three (the AI reads, the business rules, the decision); the rolling demo shows one per check. Sign-in, upload and outcome captions exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only.
 - **Simulated data**: every scenario is simulated with illustrative data. Names, numbers and addresses are fictional.
-- **CLM-0846's path** passes through "Provider ABC", a placeholder name.
 - **The claim-to-receipt mismatch weight** (−0.07) is small. A mismatch on an otherwise genuine receipt would still score 0.93 and pass. How a mismatch should be routed on its own is still to be decided.
 - **Older guides**: the complete, presenter and technical guides are out of date. This script replaces them for running the demo.

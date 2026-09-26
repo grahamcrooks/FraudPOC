@@ -229,7 +229,7 @@
       "delay": 7800,
       "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
       "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
-      "found": "3-hop path: this claim's submission IP 203.0.113.91 → Provider ABC → confirmed fraud member MBR-99112, in Community #47 of 14 members and 3 providers",
+      "found": "3-hop path: this claim's submission IP 203.0.113.91 → Kestrel Allied Health → confirmed fraud member MBR-99112, in Community #47 of 14 members and 3 providers",
       "verdict": "fail",
       "conclusion": "Connected to a confirmed fraud community"
     }
