@@ -188,9 +188,9 @@ Accumulated fraud case database
 
 - Top navigation with:
   - Play controls (Rolling Demo, Restart)
-  - Scenario buttons (1-7)
+  - Scenario picker (a menu of the seven scenarios; keys 1-7 jump directly)
   - Mode toggles (Slides, Demo, Portal, Report)
-  - Display options (Dark/Light, Fullscreen)
+  - Display options (one Dark/Light theme toggle, Fullscreen)
 
 ## Key Animations & Timings
 
