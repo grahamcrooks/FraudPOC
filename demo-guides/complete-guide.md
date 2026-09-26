@@ -138,7 +138,7 @@ PASS → Send for normal adjudication \| FLAGGED → HIGH PRIORITY → SIU
 
 - ▶ Rolling Demo - Automatically play all scenarios in sequence
 - ↩ Restart - Stop everything, clear the claim form and return to Slide 1
-- CLM-0841 through CLM-0846 - Click to jump to a specific scenario
+- Scenario picker - Shows the current claim; click it to choose any of the seven scenarios (CLM-0841 to CLM-0847), or press 1–7
 - ⌨ Presenting - Shows you're in presentation mode
 - ◀ Slides \| Demo ▶ - Toggle between slides and demo mode
 - 📋 Portal - Phase 1 Dataset Analysis tool (default) - validates member-entered data against historical receipts
