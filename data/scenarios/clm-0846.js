@@ -70,13 +70,14 @@
     {
       "id": "SIG-CLAIM-VALUE",
       "name": "Claim value",
-      "summary": "$230.00 claimable · threshold $5,000",
+      "summary": "$230.00 claimable · marker at $5,000",
       "cost": "rule",
+      "routes": false,
       "lookedAt": "Claimable line items",
-      "rule": "Flag at $5,000 or above",
+      "rule": "Recorded at $5,000 or above as context for later checks. Never routes the claim on its own",
       "found": "$230.00 claimable",
       "verdict": "pass",
-      "conclusion": "Below threshold, not flagged"
+      "conclusion": "Under $5,000, no high-value marker"
     },
     {
       "id": "SIG-DEVICE-LOCATION",
@@ -229,7 +230,7 @@
       "delay": 7800,
       "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
       "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
-      "found": "3-hop path: this claim's submission IP 203.0.113.91 → Provider ABC → confirmed fraud member MBR-99112, in Community #47 of 14 members and 3 providers",
+      "found": "3-hop path: this claim's submission IP 203.0.113.91 → Kestrel Allied Health → confirmed fraud member MBR-99112, in Community #47 of 14 members and 3 providers",
       "verdict": "fail",
       "conclusion": "Connected to a confirmed fraud community"
     }

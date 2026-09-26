@@ -41,65 +41,13 @@
       "tag": "Lodgement",
       "text": "Linda's dental receipt is uploaded"
     },
-    "cost:ai": {
-      "tag": "Pre-flight · AI",
-      "text": "AI reads the receipt: receipt type, fields and confidence"
-    },
-    "cost:rule": {
-      "tag": "Pre-flight · Rules",
-      "text": "Business rules run next, at no AI cost"
-    },
-    "cost:capture": {
-      "tag": "Pre-flight",
-      "text": "The sign-in device and location are attached to the claim for later checks"
-    },
-    "preflightPassed": {
-      "tag": "Pre-flight passed",
-      "text": "Genuine, complete and claimable, so on to fraud detection"
-    },
     "phase1": {
       "tag": "Phase 1 · Receipt forensics",
       "text": "Forensic checks look for tampering, forgery and AI-made receipts"
     },
-    "phase1:SIG-P1-MATCH": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "The keyed claim is checked against the receipt itself"
-    },
-    "phase1:SIG-P1-FONT": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "One typeface throughout, so no text has been spliced in"
-    },
-    "phase1:SIG-P1-COLOUR": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "No digital overlays or pasted stamps on the scan"
-    },
-    "phase1:SIG-P1-AIGEN": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "The image is scored against AI image-generator signatures"
-    },
-    "phase1:SIG-P1-META": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "Made by clinic software on the day of the service"
-    },
-    "phase1:SIG-P1-DUP": {
-      "tag": "Phase 1 · Receipt forensics",
-      "text": "This receipt has never been claimed before"
-    },
     "phase2": {
       "tag": "Phase 2 · Cross-claim signals",
       "text": "The receipt is genuine. Now the claim is compared with other claims"
-    },
-    "phase2:ES-001": {
-      "tag": "Phase 2 · Cross-claim signals",
-      "text": "Footscray to Springvale is about 28 km, well inside the threshold"
-    },
-    "phase2:ES-002": {
-      "tag": "Phase 2 · Cross-claim signals",
-      "text": "Five unrelated members have lodged from this laptop in 26 hours"
-    },
-    "phase2:ES-003": {
-      "tag": "Phase 2 · Cross-claim signals",
-      "text": "The practice's bank account is its own, so no signal here"
     },
     "outcome": {
       "tag": "Outcome",
@@ -165,13 +113,14 @@
     {
       "id": "SIG-CLAIM-VALUE",
       "name": "Claim value",
-      "summary": "$264.00 claimable · threshold $5,000",
+      "summary": "$264.00 claimable · marker at $5,000",
       "cost": "rule",
+      "routes": false,
       "lookedAt": "Claimable line items",
-      "rule": "Flag at $5,000 or above",
+      "rule": "Recorded at $5,000 or above as context for later checks. Never routes the claim on its own",
       "found": "$264.00 claimable",
       "verdict": "pass",
-      "conclusion": "Below threshold, not flagged"
+      "conclusion": "Under $5,000, no high-value marker"
     },
     {
       "id": "SIG-DEVICE-LOCATION",

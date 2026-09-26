@@ -124,6 +124,52 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .dark .agenda-body{color:var(--lblue)}
 .light .agenda-body{color:var(--blue)}
 
+/* ── SLIDE 4 — ONE PIPELINE, built from the demo's check rows and cost badges ── */
+.pl{display:flex;flex-direction:column;gap:12px;flex:1;min-height:0}
+.pl-note{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500}
+.dark .pl-note{color:#9FB4D4}
+.light .pl-note{color:var(--text-2)}
+.pl-claim{display:none;margin-left:auto;font-family:'Courier New',monospace;font-size:12px;font-weight:700;color:var(--navy);background:var(--lblue);padding:3px 10px;border-radius:6px}
+.pl.rolling .pl-claim{display:inline-block}
+.pl-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:52px;row-gap:clamp(10px,1.4vh,18px);align-items:stretch}
+.pl-phase{font-size:clamp(11px,min(1vw,1.55vh),15px);font-weight:700;color:#fff;padding:4px 12px;border-radius:20px;text-align:center;align-self:center}
+.pl-ph0{grid-column:1;border:1px dashed rgba(255,255,255,.3);color:#9FB4D4}
+.light .pl-ph0{border-color:rgba(0,31,95,.25);color:var(--text-3)}
+.pl-ph1{grid-column:2/4;background:var(--orange)}
+.pl-ph2{grid-column:4;background:var(--teal)}
+.pl-ph3{grid-column:5;background:var(--purple)}
+.pl-stage{position:relative;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:clamp(12px,1.5vh,18px) clamp(14px,1vw,20px);display:flex;flex-direction:column;gap:clamp(8px,1.1vh,12px);box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease,border-color .3s,box-shadow .3s}
+.pl-stage.visible{opacity:1;transform:none}
+.pl-stage.lit{border-color:var(--pblue);box-shadow:0 0 0 3px rgba(29,78,216,.45),0 10px 30px rgba(0,0,0,.25)}
+.pl-stage[data-gate]::before{content:'→';position:absolute;left:-38px;top:34%;font-size:22px;font-weight:700;color:var(--gold)}
+.pl-stage[data-gate]::after{content:attr(data-gate);position:absolute;left:-52px;width:52px;top:calc(34% + 30px);text-align:center;font-size:13px;font-weight:600;line-height:1.2;color:#9FB4D4}
+.light .pl-stage[data-gate]::before{color:var(--navy)}
+.light .pl-stage[data-gate]::after{color:var(--text-3)}
+.pl-eyebrow{font-size:clamp(10.5px,min(.75vw,1.15vh),12.5px);font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--text-3)}
+.pl-title{font-size:clamp(14px,min(1.35vw,2.2vh),24px);font-weight:800;color:var(--navy);line-height:1.2}
+.pl-costs{display:flex;flex-wrap:wrap;gap:5px}
+.pl-stage .sig{margin-top:auto}
+.pl-stage .sig-head{cursor:default;padding:7px 10px 2px}
+.pl-stage .sig-ico{font-size:15px}
+.pl-stage .sig-name{min-width:0;flex:1 1 calc(100% - 40px);font-size:clamp(11.5px,min(.95vw,1.5vh),16px)}
+.pl-stage .sig-badges{margin-left:32px}
+.pl-stage .sig-concl{padding:1px 10px 7px 42px;font-size:clamp(11px,min(.9vw,1.45vh),15px)}
+.pl-planned{font-size:clamp(10.5px,.85vw,12px);font-style:italic;color:var(--text-3);line-height:1.35}
+.pl-exit{position:relative;margin-top:22px;border-radius:10px;padding:clamp(10px,1.3vh,16px) clamp(14px,1vw,20px);font-size:clamp(11.5px,min(1.05vw,1.65vh),17.5px);line-height:1.45;opacity:0;transition:opacity .5s ease}
+.pl-exit.visible{opacity:1}
+.pl-exit::before{content:'↓ ' attr(data-gate);position:absolute;top:-21px;left:14px;font-size:13px;font-weight:600;color:#9FB4D4}
+.light .pl-exit::before{color:var(--text-3)}
+.dark .pl-exit{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
+.dark .pl-x-aim{background:rgba(0,31,95,.6)}
+.dark .pl-exit strong{color:#fff}
+.light .pl-exit{background:var(--white);border:1px solid var(--border);color:var(--text-2)}
+.light .pl-exit strong{color:var(--navy)}
+.pl-x-rej{grid-column:2}
+.pl-x-aim{grid-column:3/5}
+.pl-x-adj{grid-column:5}
+@media (max-height:820px){.pl{gap:6px}.pl-stage{padding:8px 11px;gap:5px}.pl-exit{margin-top:18px;padding:6px 12px;line-height:1.35}.pl-exit::before{top:-17px}.pl-stage .sig-head{padding-top:5px}.pl-stage .sig-concl{padding-bottom:5px}}
+@media (prefers-reduced-motion:reduce){.pl-stage,.pl-exit{transition:none}}
+
 /* ── SLIDE 2 — THE PROBLEM ── */
 .s1-headline{font-weight:800;line-height:1.15;margin-bottom:8px}
 .dark .s1-headline{color:#fff;font-size:clamp(34px,3.6vw,54px)}
@@ -162,35 +208,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .s2-sub{font-size:clamp(15px,1.7vw,21px);font-weight:500;margin-bottom:14px}
 .dark .s2-sub{color:var(--gold)}
 .light .s2-sub{color:var(--teal)}
-.s2-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;flex:1;min-height:0}
-.s2-col{border-radius:12px;overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(12px);transition:all .5s ease}
-.s2-col.visible{opacity:1;transform:translateY(0)}
-.dark .s2-col{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}
-.light .s2-col{background:#fff;border:1px solid rgba(0,31,95,.1);box-shadow:0 2px 12px rgba(0,31,95,.07)}
-.s2-bar{height:5px;flex-shrink:0}
-.s2-body{padding:16px 24px 16px;flex:1;display:flex;flex-direction:column;gap:6px}
-.s2-title{font-size:clamp(16px,1.8vw,22px);font-weight:800}
-.dark .s2-title{color:#fff}
-.light .s2-title{color:var(--navy)}
-.s2-tag{display:inline-block;font-size:clamp(11px,1.1vw,14px);font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:2px;color:#fff}
-.s2-signals{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-top:5px}
-.dark .s2-signals{color:#7C93B8}
-.light .s2-signals{color:var(--text-3)}
-.s2-layer{margin-top:14px}
-.s2-pts.s2-pts-tight{gap:8px}
-@media (max-height:820px){.s2-signals.s2-layer{margin-top:6px}.s2-pts.s2-pts-tight{gap:3px;margin-top:3px}.s2-pts.s2-pts-tight li{font-size:clamp(11px,.95vw,14px);line-height:1.3}#c0 .s2-body{gap:4px}#c2 .s2-pts{gap:3px}#c2 .s2-pts li{line-height:1.35}}
-.s2-pts{list-style:none;display:flex;flex-direction:column;gap:13px;margin-top:6px}
-.s2-pts li{font-size:clamp(11px,1.22vw,15.5px);line-height:1.45;display:flex;gap:6px}
-.dark .s2-pts li{color:#fff}
-.light .s2-pts li{color:var(--blue)}
-.s2-pts li::before{content:'·';opacity:.7;flex-shrink:0}
-.s2-planned{font-size:clamp(11px,1.1vw,13px);font-style:italic;line-height:1.45;margin-top:10px}
-.dark .s2-planned{color:#7C93B8}
-.light .s2-planned{color:var(--text-3)}
-.s2-aim{border-radius:10px;padding:14px 24px;text-align:center;font-size:clamp(12px,1.3vw,16px);line-height:1.6;margin-top:16px;opacity:0;transition:opacity .5s .6s}
-.s2-aim.visible{opacity:1}
-.dark .s2-aim{background:rgba(0,31,95,.6);color:rgba(255,255,255,.85);border:1px solid rgba(255,255,255,.1)}
-.light .s2-aim{background:var(--navy);color:rgba(255,255,255,.9)}
 
 /* ── SLIDE 5 — POWERED BY PEGA ── */
 .s3-headline{font-size:clamp(34px,3.8vw,56px);font-weight:800;margin-bottom:6px}
@@ -232,6 +249,17 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .light .s0-asks li{color:var(--blue)}
 .s0-asks li::before{content:'✓';color:var(--teal);flex-shrink:0;font-weight:700}
 .s0-note{font-size:clamp(13px,1.5vw,18px);font-style:italic;margin-top:2px}
+/* Slide 3 carries six cards of text: size it by the tighter of width and
+   height, so it fits 1366x768 and 1440x900 as well as 1920x1080. */
+#ps2 .s3-headline{font-size:clamp(26px,min(3.8vw,5.2vh),56px)}
+#ps2 .s3-sub{font-size:clamp(15px,min(1.9vw,2.5vh),24px);margin-bottom:clamp(10px,1.8vh,20px)}
+#ps2 .s3-grid{gap:clamp(10px,1.5vh,16px);min-height:0}
+#ps2 .s3-card{padding:clamp(10px,1.8vh,22px) clamp(16px,1.6vw,24px)}
+#ps2 .s3-title{font-size:clamp(15px,min(1.8vw,2.3vh),22px);margin-bottom:clamp(5px,1vh,10px)}
+#ps2 .s3-body,#ps2 .s0-step,#ps2 .s0-metric-lbl,#ps2 .s0-metric-val,#ps2 .s0-asks li,#ps2 .s0-note{font-size:clamp(12px,min(1.5vw,1.75vh),18px)}
+#ps2 .s3-body{line-height:1.5}
+#ps2 .s0-steps,#ps2 .s0-asks{gap:clamp(3px,.7vh,7px)}
+#ps2 .s0-metric{padding:clamp(3px,.6vh,6px) 0}
 .dark .s0-note{color:#6B84A8}
 .light .s0-note{color:#7B9FC4}
 
@@ -977,60 +1005,54 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     <div class="pslide dark" id="ps3">
       <div class="s2-headline">One Intelligent Pipeline.</div>
       <div class="s2-sub">One Problem. Three Layers of Defence.</div>
-      <div class="s2-grid">
-        <div class="s2-col" id="c0">
-          <div class="s2-bar" style="background:#F76923"></div>
-          <div class="s2-body">
-            <div class="s2-title">🔍 Receipt Forensics</div>
-            <span class="s2-tag" style="background:#F76923">Is this receipt real and valid?</span>
-            <div class="s2-signals">Pre-flight — one AI read, then business rules at no AI cost</div>
-            <ul class="s2-pts s2-pts-tight">
-              <li>Receipt type and field extraction with per-field confidence</li>
-              <li>Disqualifying content — quotations, proformas, voids, PAID stamps, non-medical</li>
-              <li>Receipt completeness — member paid in full, ABN, itemised, signed</li>
-              <li>Claim value against the high-value threshold</li>
-            </ul>
-            <div class="s2-signals s2-layer">Forensic analysis — runs only on receipts that clear pre-flight</div>
-            <ul class="s2-pts s2-pts-tight">
-              <li>Claim-to-receipt match</li>
-              <li>Font consistency — spliced typefaces</li>
-              <li>Colour and stamp analysis — digital overlays</li>
-              <li>AI-generated receipt detection</li>
-              <li>Metadata and authoring trail</li>
-              <li>Duplicate detection — fingerprinted against every prior claim</li>
-            </ul>
+      <!-- One claim, one case, drawn with the demo's own parts: the same check
+           rows, cost badges and verdicts the portal and pipeline use. The rows are
+           CLM-2024-0841's, so the slide carries the Simulated label. -->
+      <div class="pl" id="pl">
+        <div class="pl-note"><span class="ls-sim-pill">Simulated</span><span>Sample checks from CLM-2024-0841 · illustrative data</span><span class="pl-claim" id="pl-claim">CLM-2024-0841</span></div>
+        <div class="pl-grid">
+          <div class="pl-phase pl-ph0">Before any claim</div>
+          <div class="pl-phase pl-ph1">Phase 1 · Receipt forensics — Is this receipt real and valid?</div>
+          <div class="pl-phase pl-ph2">Phase 2 · Does this claim make sense?</div>
+          <div class="pl-phase pl-ph3">Phase 3 · Who else is involved?</div>
+
+          <div class="pl-stage" id="pl0">
+            <div class="pl-eyebrow">Session</div>
+            <div class="pl-title">Sign-in capture</div>
+            <div class="pl-costs"><span class="sig-cost capture">Captured, not judged</span></div>
+            <div class="sig" data-verdict="capture"><div class="sig-head"><span class="sig-ico">📥</span><span class="sig-name"><span class="sig-nm">Device and location</span> <span class="sig-sum">· DEV-2291 · Carlton VIC</span></span></div><div class="sig-concl">→ Recorded, no evaluation at this stage</div></div>
           </div>
-        </div>
-        <div class="s2-col" id="c1">
-          <div class="s2-bar" style="background:#10A5AC"></div>
-          <div class="s2-body">
-            <div class="s2-title">⚡ Cross-Claim Signals</div>
-            <span class="s2-tag" style="background:#10A5AC">Does this claim make sense?</span>
-            <ul class="s2-pts">
-              <li>ES-001 Distance anomaly — lodged far from the member's registered address</li>
-              <li>ES-002 Device ring — unrelated members submitting from one device</li>
-              <li>ES-003 Bank account ring — unrelated practices paying into one account</li>
-            </ul>
-            <div class="s2-planned">Further strategies — phantom ABN, waiver abuse, item code validation — are planned and not in this build.</div>
+          <div class="pl-stage" id="pl1" data-gate="upload">
+            <div class="pl-eyebrow">Pre-flight</div>
+            <div class="pl-title">Is it claimable?</div>
+            <div class="pl-costs"><span class="sig-cost ai">1 AI read</span><span class="sig-cost rule">3 rules · 1 table</span></div>
+            <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">Disqualifying content</span> <span class="sig-sum">· 11 terms checked · none found</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ No disqualifying content</div></div>
           </div>
-        </div>
-        <div class="s2-col" id="c2">
-          <div class="s2-bar" style="background:#5F67B9"></div>
-          <div class="s2-body">
-            <div class="s2-title">🧠 Network Intelligence</div>
-            <span class="s2-tag" style="background:#5F67B9">Who else is involved?</span>
-            <ul class="s2-pts">
-              <li>Network graph traversal — every entity a claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account</li>
-              <li>Fraud community mapping — links a claim to fraud already confirmed, not just to itself</li>
-              <li>Retrospective reach — an alert covers every claim attached to the entity, including claims already assessed and closed</li>
-              <li>Invisible to conventional systems — no single claim contains the connection</li>
-            </ul>
-            <div class="s2-planned">Fraud case similarity matching is planned. It needs a corpus of confirmed cases, which this system produces as it runs.</div>
+          <div class="pl-stage" id="pl2" data-gate="valid">
+            <div class="pl-eyebrow">Forensic analysis</div>
+            <div class="pl-title">Is it genuine?</div>
+            <div class="pl-costs"><span class="sig-cost ai">3 AI calls</span><span class="sig-cost rule">3 rules · 1 score</span></div>
+            <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">Font consistency</span> <span class="sig-sum">· 1 typeface · Arial 9pt</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ No evidence of spliced text</div></div>
           </div>
+          <div class="pl-stage" id="pl3" data-gate="≥ 0.70">
+            <div class="pl-eyebrow">Cross-claim signals</div>
+            <div class="pl-title">Against every other claim</div>
+            <div class="pl-costs"><span class="sig-cost rule">3 event strategies · no AI</span></div>
+            <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">ES-002 Device ring</span> <span class="sig-sum">· 1 member on this device · threshold 3</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ No device ring</div></div>
+            <div class="pl-planned">Planned: phantom ABN, waiver abuse, item code validation</div>
+          </div>
+          <div class="pl-stage" id="pl4" data-gate="no signal">
+            <div class="pl-eyebrow">Network intelligence</div>
+            <div class="pl-title">Three hops out</div>
+            <div class="pl-costs"><span class="sig-cost ai">1 graph query over MCP</span></div>
+            <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">Network graph</span> <span class="sig-sum">· 0 connections within 3 hops</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ Graph clear</div></div>
+            <div class="pl-planned">Planned: fraud case similarity matching</div>
+          </div>
+
+          <div class="pl-exit pl-x-rej" id="plx0" data-gate="fail · flag"><strong>Reject Document or Needs Review.</strong> Not claimable, so it never reaches the fraud team.</div>
+          <div class="pl-exit pl-x-aim" id="plx1" data-gate="any signal"><strong>🛡️ Pega AIM.</strong> Every signal goes to a named investigator with the evidence attached. AI assists, humans decide, with a full audit trail.</div>
+          <div class="pl-exit pl-x-adj" id="plx2" data-gate="all clear"><strong>Adjudication.</strong> A clean claim goes on, with every check recorded.</div>
         </div>
-      </div>
-      <div class="s2-aim" id="aim">
-        🛡️ &nbsp;<strong>Pega Alerts & Investigations Management (AIM)</strong> — Every AI signal reviewed by a human investigator · AI assists, humans decide · Full audit trail on every case
       </div>
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
@@ -1477,6 +1499,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 <div class="ls-fx" id="ls-fx"></div>
 <div class="cap" id="cap" role="status" aria-live="polite"><span class="cap-tag" id="cap-tag"></span><span class="cap-text" id="cap-text"></span></div>
 
+<script src="data/check-captions.js"></script>
 <script src="data/scenarios/clm-0841.js"></script>
 <script src="data/scenarios/clm-0842.js"></script>
 <script src="data/scenarios/clm-0843.js"></script>
@@ -1661,7 +1684,7 @@ const PHASES=[
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
   ]},ph3:{pass:false,score:'3',scoreColor:'#DC2626',scoreLabel:'Hops to Confirmed Fraud Node',verdict:'RING DETECTED — Community #47',route:'14 members · 3 providers · Routing to SIU Queue · HIGH priority',checks:[
-    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Provider ABC → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
+    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Kestrel Allied Health → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
   ]}},
   // CLM-0847: rejected at pre-flight, so the pipeline never opens.
   {ph1:null,ph2:null,ph3:null},
@@ -1730,18 +1753,37 @@ function animateSlide(n){
       setTimeout(()=>el.classList.add('visible'),80+i*100);
     });
   } else if(n===3){
-    ['c0','c1','c2'].forEach((id,i)=>{
-      const el=$(id); el.classList.remove('visible');
-      setTimeout(()=>el.classList.add('visible'),100+i*180);
+    ['pl0','pl1','pl2','pl3','pl4'].forEach((id,i)=>{
+      const el=$(id); el.classList.remove('visible','lit');
+      setTimeout(()=>el.classList.add('visible'),100+i*140);
     });
-    const aim=$('aim'); aim.classList.remove('visible');
-    setTimeout(()=>aim.classList.add('visible'),700);
+    ['plx0','plx1','plx2'].forEach((id,i)=>{
+      const el=$(id); el.classList.remove('visible');
+      setTimeout(()=>el.classList.add('visible'),850+i*120);
+    });
+    walkPipelineSlide();
   } else if(n===4){
     ['p0','p1','p2','p3','p4','p5'].forEach((id,i)=>{
       const el=$(id); el.classList.remove('visible');
       setTimeout(()=>el.classList.add('visible'),80+i*100);
     });
   }
+}
+
+// Slide 4: in the rolling demo, CLM-2024-0841 walks the strip stage by
+// stage inside the slide's 11 seconds. While presenting, the strip stays
+// complete and still, so the presenter can point and talk.
+let plTimers=[];
+function walkPipelineSlide(){
+  plTimers.forEach(clearTimeout); plTimers=[];
+  const wrap=$('pl'), rolling=runMode==='rolling'&&!reducedMotion();
+  wrap.classList.toggle('rolling',rolling);
+  if(!rolling) return;
+  const steps=[['pl0','at sign-in'],['pl1','in pre-flight'],['pl2','in forensic analysis'],['pl3','in Phase 2'],['pl4','in Phase 3'],[null,'sent for adjudication']];
+  steps.forEach(([id,where],i)=>plTimers.push(setTimeout(()=>{
+    ['pl0','pl1','pl2','pl3','pl4'].forEach(x=>$(x).classList.toggle('lit',x===id));
+    txt('pl-claim','CLM-2024-0841 · '+where);
+  },1200+i*1500)));
 }
 
 function updateSlideDots(n){
@@ -1930,7 +1972,7 @@ function launchRollingDemo(){
   // Wait for the sign-in scene, if this scenario opens with one.
   const leadIn=sessionSceneLeadIn(S[curScenario]);
   addTimer(()=>{ if(rollingOK()) simulateUpload(); },9000+leadIn);
-  addTimer(()=>{ if(rollingOK()) submitClaim(); },19500+leadIn);
+  addTimer(()=>{ if(rollingOK()) submitClaim(); },9000+leadIn+preflightMs()+500);
 }
 
 function rollingOK(){ return runMode==='rolling'&&!rollingPaused; }
@@ -2084,6 +2126,17 @@ function startBannerCountdown(secs){
 }
 function hideBanner(){ $('scenario-banner').style.display='none'; clearInterval(countdownInterval); }
 
+// Pre-flight pacing. Presenting (and step-by-step) runs pre-flight in 10 s with
+// grouped captions. The rolling demo is for unattended booth playback, so each
+// check gets its own caption and about 3.5 s, about 25 s for seven checks.
+const PF_BOOTH_STEP=3500;
+function captionsPerCheck(){ return runMode==='rolling'; }
+function preflightMs(){
+  const sigs=scenarioSignals(S[curScenario]);
+  if(!sigs) return 10800;
+  return captionsPerCheck()?sigs.length*PF_BOOTH_STEP:10000;
+}
+
 function simulateUpload(){
   hideBanner();
   const s=S[curScenario], pf=PREFLIGHT[curScenario], uz=$('upload-zone');
@@ -2157,8 +2210,8 @@ function simulateUpload(){
     });
   }
 
-  // Pre-flight complete (10.0s with signals, 10.8s for the five fallback
-  // rows — after all checks). Banner + file card fire
+  // Pre-flight complete (preflightMs(): 10 s presenting, about 25 s in the
+  // rolling demo, 10.8 s for the five fallback rows — after all checks). Banner + file card fire
   // here so the completion message can't appear before the checks that
   // establish it have run.
   addTimer(()=>{
@@ -2194,7 +2247,7 @@ function simulateUpload(){
       if($('btn-submit')) $('btn-submit').style.display='none';
       if($('btn-runpipeline')) $('btn-runpipeline').style.display='';
     }
-  },sigs?10000:10800);
+  },preflightMs());
 }
 
 // ══════════════════════════════════════════════════════
@@ -2411,12 +2464,22 @@ const SignalPanel={
     const list=opts.mount||$('sig-list');
     const els=this.build(s,sigs,list), n=sigs.length;
     let sch=opts.schedule;
-    if(!sch){   // pre-flight: back-to-back across 0.8s–9.2s
+    const perCheck=captionsPerCheck();
+    if(!sch&&perCheck){   // booth: one check, and one caption, every PF_BOOTH_STEP
+      sch=sigs.map((_,i)=>({start:i*PF_BOOTH_STEP, done:i*PF_BOOTH_STEP+PF_BOOTH_STEP-700}));
+    } else if(!sch){   // presenting: back-to-back across 0.8s–9.2s
       const doneAt=i=>n===1?5000:Math.round(800+i*(8400/(n-1)));
       sch=sigs.map((_,i)=>({start:i?doneAt(i-1):0, done:doneAt(i)}));
     }
-    // A check's own caption (preflight:<check id>) wins over its cost type's
-    const cap=opts.caption||(sig=>Captions.lookup('preflight:'+sig.id)?'preflight:'+sig.id:'cost:'+sig.cost);
+    // Booth: every check has its own caption. Presenting: grouped by cost
+    // (the AI reads, then the business rules; the capture joins the rules),
+    // unless the scenario gives a check its own caption to tell its story.
+    const cap=opts.caption||(sig=>{
+      const own='preflight:'+sig.id;
+      if(perCheck||Captions.own(own)) return own;
+      if(sig.cost==='capture') return Captions.own('cost:capture')?'cost:capture':'cost:rule';
+      return 'cost:'+sig.cost;
+    });
     sigs.forEach((sig,i)=>{
       addTimer(()=>{
         if(i>0){ const pv=sigs[i-1]; if(pv.verdict!=='flag'&&pv.verdict!=='fail') this.toggle(els[i-1],false); }
@@ -2429,7 +2492,7 @@ const SignalPanel={
     });
     // Resting state: every check open, showing its full working. Collapsing
     // is for the run only; a click still toggles a check to tidy the view.
-    const restAt=opts.restAt!=null?opts.restAt:9900;
+    const restAt=opts.restAt!=null?opts.restAt:preflightMs()-100;
     addTimer(()=>{ els.forEach(el=>this.toggle(el,true)); list.classList.add(opts.restClass||'at-rest'); },restAt);
     if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&opts.onExtracted) addTimer(opts.onExtracted,3000);
   },
@@ -2438,7 +2501,9 @@ const SignalPanel={
   // Needs Review; else on to the pipeline. The forensic phases never run on
   // a document that was never claimable.
   outcome(sigs){
-    const decided=sigs.filter(x=>x.cost!=='capture');
+    // Captures and context checks ("routes": false, e.g. claim value) never
+    // decide the route, whatever their verdict.
+    const decided=sigs.filter(x=>x.cost!=='capture'&&x.routes!==false);
     const fails=decided.filter(x=>x.verdict==='fail'), flags=decided.filter(x=>x.verdict==='flag');
     if(fails.length) return {kind:'reject',items:fails};
     if(flags.length) return {kind:'review',items:flags};
@@ -2521,8 +2586,8 @@ function submitClaim(){
   // Not yet uploaded — run the upload validation first.
   if(!uploaded){
     simulateUpload();
-    // In rolling mode, auto-continue into the pipeline once validation finishes (upload sequence ends at 10.0s — give it a beat).
-    if(runMode==='rolling') addTimer(openPipeline,10500);
+    // In rolling mode, auto-continue into the pipeline once validation finishes (at preflightMs() — give it a beat).
+    if(runMode==='rolling') addTimer(openPipeline,preflightMs()+500);
     return;
   }
   // Already uploaded (manual click of Submit after upload) — in rolling, go straight on.
@@ -2534,7 +2599,7 @@ function submitClaim(){
 
 function openPipeline(){
   if(preflightStopped) return;
-  if(!uploaded){ simulateUpload(); addTimer(openPipeline,10500); return; }
+  if(!uploaded){ simulateUpload(); addTimer(openPipeline,preflightMs()+500); return; }
   clearAllTimers();
   const s=S[curScenario], pl=PHASES[curScenario];
   [1,2,3].forEach(p=>resetPhaseBlock(p));
@@ -3114,7 +3179,9 @@ const Captions={
   current:null, toastTimer:null, shownAt:0, holdTimer:null,
   MIN_MS:2500,   // every caption stays up long enough to read; quick beats queue
   enabled(){ return this.pref!=='off'; },   // always on unless switched off (C, or ?captions=off)
-  lookup(key){ const d=SCENARIO_DATA[S[curScenario].id]; return d&&d.captions&&d.captions[key]||null; },
+  // The scenario's own caption wins; otherwise the shared default from data/check-captions.js
+  own(key){ const d=SCENARIO_DATA[S[curScenario].id]; return d&&d.captions&&d.captions[key]||null; },
+  lookup(key){ return this.own(key)||(window.CHECK_CAPTIONS||{})[key]||null; },
   show(key){
     const c=this.lookup(key); if(!c||c===this.current) return;
     clearTimeout(this.holdTimer);
@@ -3179,28 +3246,35 @@ function generateFraudDashboardData(){
   ];
   data = data.concat(scenarios);
   
-  const providers = ['Bright Smile Dental','Vision Direct Pty Ltd','Active Rehab Centre','Metro Dental Group','ClearView Optometry','Prime Physio & Sports','North Shore Medical','Southside Clinic','Wellness Hub','Central Physio'];
+  // Background cases around the scenarios. Seeded, so the report is identical
+  // on every load; numbered from 849, because CLM-0847 and CLM-0848 belong to
+  // the pre-flight scenarios (rejected, so never fraud cases); and each
+  // provider keeps its own service type.
+  const providers = [['Bright Smile Dental','Dental'],['Vision Direct Pty Ltd','Optical'],['Active Rehab Centre','Physio'],['Metro Dental Group','Dental'],['ClearView Optometry','Optical'],['Prime Physio & Sports','Physio'],['Central Physio','Physio']];
   const members = ['Anna Liu','Brian Chen','Catherine Lee','Daniel Park','Emily Zhang','Francis Wong','Grace Martinez','Henry Patel','Isabella Rodriguez','James Kim'];
-  const types = ['Dental','Optical','Physio','Dental','Optical','Physio'];
-  
+  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let seed = 20260715;
+  const rand = ()=>{ seed=(seed*1664525+1013904223)>>>0; return seed/4294967296; };
+
   for(let i=0;i<18;i++){
-    const daysAgo = Math.floor(Math.random()*30);
+    const daysAgo = Math.floor(rand()*30);
     const d = new Date(baseDate);
     d.setDate(d.getDate() - daysAgo);
-    
-    const scoreRand = Math.random();
+
+    const scoreRand = rand();
     let score, outcome;
-    if(scoreRand<0.65){score=Math.random()*25; outcome='clean';}
-    else if(scoreRand<0.85){score=30+Math.random()*35; outcome='suspicious';}
-    else{score=65+Math.random()*35; outcome='high';}
-    
+    if(scoreRand<0.65){score=rand()*25; outcome='clean';}
+    else if(scoreRand<0.85){score=30+rand()*35; outcome='suspicious';}
+    else{score=65+rand()*35; outcome='high';}
+    const [provider,type] = providers[Math.floor(rand()*providers.length)];
+
     data.push({
-      claim:'CLM-2024-'+(847+i).toString().padStart(4,'0'),
-      member:members[Math.floor(Math.random()*members.length)],
-      provider:providers[Math.floor(Math.random()*providers.length)],
-      date:d.toLocaleDateString('en-AU',{day:'2-digit',month:'short',year:'numeric'}),
-      type:types[Math.floor(Math.random()*types.length)],
-      amount:Math.round((100+Math.random()*400)*100)/100,
+      claim:'CLM-2024-'+(849+i).toString().padStart(4,'0'),
+      member:members[Math.floor(rand()*members.length)],
+      provider,
+      date:String(d.getDate()).padStart(2,'0')+' '+MONTHS[d.getMonth()]+' '+d.getFullYear(),
+      type,
+      amount:Math.round((100+rand()*400)*100)/100,
       score:Math.round(score),
       outcome:outcome
     });

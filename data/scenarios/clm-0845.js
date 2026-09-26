@@ -70,13 +70,14 @@
     {
       "id": "SIG-CLAIM-VALUE",
       "name": "Claim value",
-      "summary": "$390.00 claimable · threshold $5,000",
+      "summary": "$390.00 claimable · marker at $5,000",
       "cost": "rule",
+      "routes": false,
       "lookedAt": "Claimable line items",
-      "rule": "Flag at $5,000 or above",
+      "rule": "Recorded at $5,000 or above as context for later checks. Never routes the claim on its own",
       "found": "$390.00 claimable",
       "verdict": "pass",
-      "conclusion": "Below threshold, not flagged"
+      "conclusion": "Under $5,000, no high-value marker"
     },
     {
       "id": "SIG-DEVICE-LOCATION",

@@ -17,18 +17,6 @@
       "tag": "Lodgement",
       "text": "Priya uploads what looks like a dental invoice"
     },
-    "cost:ai": {
-      "tag": "Pre-flight · AI",
-      "text": "AI reads the document: it has the layout and fields of a receipt"
-    },
-    "cost:rule": {
-      "tag": "Pre-flight · Rules",
-      "text": "Business rules read what the document actually says, at no AI cost"
-    },
-    "cost:capture": {
-      "tag": "Pre-flight",
-      "text": "The sign-in device and location are still recorded against the claim"
-    },
     "preflightRejected": {
       "tag": "Pre-flight rejected",
       "text": "A quotation, and nothing paid. Rejected before any forensic AI runs"
@@ -93,13 +81,14 @@
     {
       "id": "SIG-CLAIM-VALUE",
       "name": "Claim value",
-      "summary": "$448.00 claimable · threshold $5,000",
+      "summary": "$448.00 claimable · marker at $5,000",
       "cost": "rule",
+      "routes": false,
       "lookedAt": "Claimable line items",
-      "rule": "Flag at $5,000 or above",
+      "rule": "Recorded at $5,000 or above as context for later checks. Never routes the claim on its own",
       "found": "$448.00 claimable",
       "verdict": "pass",
-      "conclusion": "Below threshold, not flagged"
+      "conclusion": "Under $5,000, no high-value marker"
     },
     {
       "id": "SIG-DEVICE-LOCATION",

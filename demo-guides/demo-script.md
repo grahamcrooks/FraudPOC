@@ -77,10 +77,11 @@ Each step has three parts:
   - Phase 3: graph traversal through an MCP connection to the graph, up to three hops across member, practice, practitioner, device, submission IP and payment account.
   - Planned and not in this build: phantom ABN, waiver abuse, item code validation (Phase 2), and fraud case similarity matching (Phase 3).
 - **Check**:
-  - There are no signal counts on any column.
-  - Phase 1 shows two sub-headings: pre-flight, and forensic analysis.
+  - The slide is built from the demo's own parts: five white stage panels (sign-in, pre-flight, forensic analysis, Phase 2, Phase 3) under the three phase tags, each with its cost badges and one sample check row from CLM-0841, and the three exits beneath (Reject Document or Needs Review, Pega AIM, adjudication).
+  - The slide carries the "Simulated" label, because the sample rows are CLM-0841's.
   - Phase 2 and Phase 3 each end with an italic "planned" line.
-  - At 1366×768 all three columns fit without clipping.
+  - Presenting: the strip appears complete and still. Rolling demo: CLM-2024-0841 walks the stages one by one within the slide's 11 seconds, ending "sent for adjudication".
+  - At 1366×768, 1440×900 and 1920×1080 everything fits without clipping, clear of the Back and Next buttons.
 
 ### Slide 5: Powered by Pega
 
@@ -139,10 +140,10 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
   | Extraction confidence | AI call | Every critical field at or above 0.70, or the claim goes to human review |
   | Disqualifying content | Business rule | 11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp |
   | Receipt completeness | Business rule | Amount received recorded against amount charged, valid tax invoice, itemised, signed |
-  | Claim value | Business rule | Flag at $5,000 or above |
+  | Claim value | Business rule | Recorded at $5,000 or above as context for later checks; never routes the claim on its own |
   | Device and location | Capture | Recorded for later evaluation; no verdict |
 
-  Routing: any fail sends the claim to **Reject Document** (Resolved-Rejected). Any flag sends it to **Needs Review** (Pending-Review). All passes open the pipeline. The claim form fields fill from the extraction.
+  Routing: any fail sends the claim to **Reject Document** (Resolved-Rejected). Any flag sends it to **Needs Review** (Pending-Review). Claim value is the exception: a high-value claim isn't suspicious, so it's recorded as context for later (a high-value claim from a member in a ring is a different priority from an $80 one) and never routes the claim. All passes open the pipeline. The claim form fields fill from the extraction.
 - **Check**:
   - Each check opens while it runs and closes to a one-line summary when the next starts. At rest they show in two columns.
   - All seven pass for CLM-0841. The capture reads "DEV-2291 · Carlton VIC · captured at sign-in".
@@ -279,7 +280,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 - **Say**: Angela's claim is clean on its own and clears both earlier phases. But the graph traces it three hops through a shared submission IP into Community #47: a confirmed fraud ring of 14 members and 3 providers.
 - **Under the hood**:
-  - P3-GRAPH found a 3-hop path: submission IP 203.0.113.91 → Provider ABC → confirmed fraud member MBR-99112, in Community #47.
+  - P3-GRAPH found a 3-hop path: submission IP 203.0.113.91 → Kestrel Allied Health → confirmed fraud member MBR-99112, in Community #47.
   - Phase 2 saw nothing, because no single claim contains this connection.
   - The backup slide shows the same pattern as a schema.
 - **Check**:
@@ -323,14 +324,14 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - Phases pause 5.5 seconds between each other, and the demo holds on each outcome before moving on.
   - Scenarios with a sign-in scene (CLM-0841, CLM-0844) take about 14 seconds longer.
 - **Check**:
-  - For CLM-0841: Phase 2 starts at about 57 seconds, Phase 3 at about 80 seconds, and the outcome at about 93 seconds.
+  - Pre-flight runs slower than when presenting: one caption per check, about 3.5 seconds each, about 25 seconds in all.
+  - For CLM-0841: Phase 2 starts at about 72 seconds, Phase 3 at about 95 seconds, and the outcome at about 108 seconds.
   - CLM-0847 and CLM-0848 each hold on the reject panel for about 9 seconds. After CLM-0847 comes CLM-0848, then CLM-0841.
   - Space pauses and resumes. There are no console errors.
 
 ## Known limitations
 
-- **Captions** exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only. The other scenarios show none. CLM-0848 has two: one on the failing check and one on the outcome.
+- **Captions**: every check in every scenario has a caption naming the component behind it, what it's for and what it costs. While presenting, pre-flight shows three (the AI reads, the business rules, the decision); the rolling demo shows one per check. Sign-in, upload and outcome captions exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only.
 - **Simulated data**: every scenario is simulated with illustrative data. Names, numbers and addresses are fictional.
-- **CLM-0846's path** passes through "Provider ABC", a placeholder name.
 - **The claim-to-receipt mismatch weight** (−0.07) is small. A mismatch on an otherwise genuine receipt would still score 0.93 and pass. How a mismatch should be routed on its own is still to be decided.
 - **Older guides**: the complete, presenter and technical guides are out of date. This script replaces them for running the demo.
