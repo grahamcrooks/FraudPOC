@@ -10,6 +10,7 @@ The presentation and demo site for the Bupa fraud detection POC, published by Gi
 - `data/scenarios/`: per-scenario data (the session block for the sign-in scene and the Phase 1 signals array), one file per claim; see its README for the schema.
 - `demo-guides/`: demo guides in Markdown; `_source/` holds the original Word files for comparison.
 - `prompts/`: reusable prompts run against the Pega environment, one prompt per file.
+- `assets/slides/`: the five presentation slides as full-slide images (`slide-<n>-<name>.webp`), shown by `index.html`. The text is part of each image, so a wording change means a new image.
 - `docs/`: reference material: the data model, test reference data and the Pega Blueprint export.
 - `tests/`: test material, one folder per stage (for example `stage1-document-validity/`).
 - `archive/`: superseded material kept for the record; don't link to it from current files.

@@ -109,167 +109,21 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 /* Auto-progress bar */
 .slide-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--teal);transition:none;z-index:20}
 
-/* ── SLIDE 1 — AGENDA ── */
-.agenda-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;flex:1;align-content:start;margin-top:12px}
-.agenda-card{border-radius:12px;padding:28px 22px;border-top-width:4px;border-top-style:solid;opacity:0;transform:translateY(8px);transition:all .4s ease;display:flex;flex-direction:column;align-items:flex-start;gap:10px}
-.agenda-card.visible{opacity:1;transform:translateY(0)}
-.dark .agenda-card{background:rgba(255,255,255,.05);border-left:1px solid rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
-.light .agenda-card{background:#fff;border-left:1px solid rgba(0,31,95,.08);border-right:1px solid rgba(0,31,95,.08);border-bottom:1px solid rgba(0,31,95,.08);box-shadow:0 2px 10px rgba(0,31,95,.06)}
-.agenda-num{font-family:'Courier New',monospace;font-weight:800;font-size:13px;color:var(--teal)}
-.agenda-ico{font-size:34px}
-.agenda-title{font-size:clamp(15px,1.6vw,19px);font-weight:800}
-.dark .agenda-title{color:#fff}
-.light .agenda-title{color:var(--navy)}
-.agenda-body{font-size:clamp(12px,1.2vw,14px);line-height:1.5}
-.dark .agenda-body{color:var(--lblue)}
-.light .agenda-body{color:var(--blue)}
+/* ── SLIDES 1–5 — full-slide images (assets/slides/). The whole image always
+   shows (contain); a blurred copy fills any letterbox so the edges don't read as
+   bars. The images are dark in both themes, so the dots and buttons stay dark. ── */
+#slides-screen .pslide.img-slide{padding:0;background:#061229}
+.img-slide .ps-fill{position:absolute;inset:-40px;background:center/cover no-repeat;filter:blur(28px) brightness(.5)}
+.img-slide .ps-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.img-slide.active .ps-img{animation:psFade .5s ease}
+@keyframes psFade{from{opacity:0}to{opacity:1}}
+.img-slide .sdot{background:rgba(255,255,255,.3)}
+.img-slide .sdot.on{background:var(--gold)}
+.img-slide .snav{background:rgba(2,8,20,.6);border-color:rgba(255,255,255,.25);color:#fff}
+.img-slide .snav.primary{background:var(--teal);border-color:var(--teal)}
+@media (prefers-reduced-motion:reduce){.img-slide.active .ps-img{animation:none}}
 
-/* ── SLIDE 4 — ONE PIPELINE, built from the demo's check rows and cost badges ── */
-.pl{display:flex;flex-direction:column;gap:12px;flex:1;min-height:0}
-.pl-note{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500}
-.dark .pl-note{color:#9FB4D4}
-.light .pl-note{color:var(--text-2)}
-.pl-claim{display:none;margin-left:auto;font-family:'Courier New',monospace;font-size:12px;font-weight:700;color:var(--navy);background:var(--lblue);padding:3px 10px;border-radius:6px}
-.pl.rolling .pl-claim{display:inline-block}
-.pl-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));column-gap:52px;row-gap:clamp(10px,1.4vh,18px);align-items:stretch}
-.pl-phase{font-size:clamp(11px,min(1vw,1.55vh),15px);font-weight:700;color:#fff;padding:4px 12px;border-radius:20px;text-align:center;align-self:center}
-.pl-ph0{grid-column:1;border:1px dashed rgba(255,255,255,.3);color:#9FB4D4}
-.light .pl-ph0{border-color:rgba(0,31,95,.25);color:var(--text-3)}
-.pl-ph1{grid-column:2/4;background:var(--orange)}
-.pl-ph2{grid-column:4;background:var(--teal)}
-.pl-ph3{grid-column:5;background:var(--purple)}
-.pl-stage{position:relative;background:var(--white);border:1px solid var(--border);border-radius:12px;padding:clamp(12px,1.5vh,18px) clamp(14px,1vw,20px);display:flex;flex-direction:column;gap:clamp(8px,1.1vh,12px);box-shadow:0 10px 30px rgba(0,0,0,.25);opacity:0;transform:translateY(10px);transition:opacity .45s ease,transform .45s ease,border-color .3s,box-shadow .3s}
-.pl-stage.visible{opacity:1;transform:none}
-.pl-stage.lit{border-color:var(--pblue);box-shadow:0 0 0 3px rgba(29,78,216,.45),0 10px 30px rgba(0,0,0,.25)}
-.pl-stage[data-gate]::before{content:'→';position:absolute;left:-38px;top:34%;font-size:22px;font-weight:700;color:var(--gold)}
-.pl-stage[data-gate]::after{content:attr(data-gate);position:absolute;left:-52px;width:52px;top:calc(34% + 30px);text-align:center;font-size:13px;font-weight:600;line-height:1.2;color:#9FB4D4}
-.light .pl-stage[data-gate]::before{color:var(--navy)}
-.light .pl-stage[data-gate]::after{color:var(--text-3)}
-.pl-eyebrow{font-size:clamp(10.5px,min(.75vw,1.15vh),12.5px);font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--text-3)}
-.pl-title{font-size:clamp(14px,min(1.35vw,2.2vh),24px);font-weight:800;color:var(--navy);line-height:1.2}
-.pl-costs{display:flex;flex-wrap:wrap;gap:5px}
-.pl-stage .sig{margin-top:auto}
-.pl-stage .sig-head{cursor:default;padding:7px 10px 2px}
-.pl-stage .sig-ico{font-size:15px}
-.pl-stage .sig-name{min-width:0;flex:1 1 calc(100% - 40px);font-size:clamp(11.5px,min(.95vw,1.5vh),16px)}
-.pl-stage .sig-badges{margin-left:32px}
-.pl-stage .sig-concl{padding:1px 10px 7px 42px;font-size:clamp(11px,min(.9vw,1.45vh),15px)}
-.pl-planned{font-size:clamp(10.5px,.85vw,12px);font-style:italic;color:var(--text-3);line-height:1.35}
-.pl-exit{position:relative;margin-top:22px;border-radius:10px;padding:clamp(10px,1.3vh,16px) clamp(14px,1vw,20px);font-size:clamp(11.5px,min(1.05vw,1.65vh),17.5px);line-height:1.45;opacity:0;transition:opacity .5s ease}
-.pl-exit.visible{opacity:1}
-.pl-exit::before{content:'↓ ' attr(data-gate);position:absolute;top:-21px;left:14px;font-size:13px;font-weight:600;color:#9FB4D4}
-.light .pl-exit::before{color:var(--text-3)}
-.dark .pl-exit{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.85)}
-.dark .pl-x-aim{background:rgba(0,31,95,.6)}
-.dark .pl-exit strong{color:#fff}
-.light .pl-exit{background:var(--white);border:1px solid var(--border);color:var(--text-2)}
-.light .pl-exit strong{color:var(--navy)}
-.pl-x-rej{grid-column:2}
-.pl-x-aim{grid-column:3/5}
-.pl-x-adj{grid-column:5}
-@media (max-height:820px){.pl{gap:6px}.pl-stage{padding:8px 11px;gap:5px}.pl-exit{margin-top:18px;padding:6px 12px;line-height:1.35}.pl-exit::before{top:-17px}.pl-stage .sig-head{padding-top:5px}.pl-stage .sig-concl{padding-bottom:5px}}
-@media (prefers-reduced-motion:reduce){.pl-stage,.pl-exit{transition:none}}
-
-/* ── SLIDE 2 — THE PROBLEM ── */
-.s1-headline{font-weight:800;line-height:1.15;margin-bottom:8px}
-.dark .s1-headline{color:#fff;font-size:clamp(34px,3.6vw,54px)}
-.light .s1-headline{color:var(--navy);font-size:clamp(34px,3.6vw,54px)}
-.s1-gold{color:var(--gold)}
-.light .s1-gold{color:var(--navy)}
-.s1-rows{display:flex;flex-direction:column;gap:16px;width:100%;flex:1;justify-content:space-between;margin-top:16px}
-.s1-row{display:flex;align-items:stretch;border-radius:12px;overflow:hidden;flex:1;max-height:28vh;transition:all .5s ease;opacity:0;transform:translateX(-20px)}
-.s1-row.visible{opacity:1;transform:translateX(0)}
-.dark .s1-row{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1)}
-.light .s1-row{background:#fff;border:1px solid rgba(0,31,95,.1);box-shadow:0 2px 12px rgba(0,31,95,.08)}
-.s1-stat-box{width:200px;min-width:200px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:20px;flex-shrink:0;align-self:stretch}
-.dark .s1-stat-box{background:rgba(255,255,255,.04)}
-.light .s1-stat-box{background:rgba(0,31,95,.04)}
-.s1-icon{font-size:22px;line-height:1}
-.s1-stat{font-size:clamp(24px,2.8vw,38px);font-weight:800;text-align:center;line-height:1.1;white-space:nowrap}
-.s1-bar{width:4px;flex-shrink:0;align-self:stretch}
-.s1-content{flex:1;padding:20px 28px;display:flex;flex-direction:column;justify-content:center;gap:8px}
-.s1-desc{font-size:clamp(17px,2vw,24px);font-weight:600;line-height:1.4;margin-bottom:0}
-.dark .s1-desc{color:#fff}
-.light .s1-desc{color:var(--navy)}
-.s1-src{font-size:clamp(13px,1.2vw,15px);font-weight:400}
-.dark .s1-src{color:#8FB4D0}
-.light .s1-src{color:#7B9FC4}
-.s1-sub{margin-top:14px;font-size:clamp(15px,1.6vw,20px);line-height:1.5}
-.dark .s1-sub{color:var(--lblue)}
-.light .s1-sub{color:var(--blue)}
-.s1-sub b{color:var(--gold)}
-.light .s1-sub b{color:var(--teal)}
-
-/* ── SLIDE 4 — THREE PHASES ── */
-#ps3,#ps4{justify-content:flex-start}
-.s2-headline{font-size:clamp(28px,3.1vw,46px);font-weight:800;margin-bottom:4px}
-.dark .s2-headline{color:#fff}
-.light .s2-headline{color:var(--navy)}
-.s2-sub{font-size:clamp(15px,1.7vw,21px);font-weight:500;margin-bottom:14px}
-.dark .s2-sub{color:var(--gold)}
-.light .s2-sub{color:var(--teal)}
-
-/* ── SLIDE 5 — POWERED BY PEGA ── */
-.s3-headline{font-size:clamp(34px,3.8vw,56px);font-weight:800;margin-bottom:6px}
-.dark .s3-headline{color:#fff}
-.light .s3-headline{color:var(--navy)}
-.s3-sub{font-size:clamp(17px,1.9vw,24px);font-weight:500;margin-bottom:20px}
-.dark .s3-sub{color:var(--gold)}
-.light .s3-sub{color:var(--teal)}
-.s3-grid{display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:1fr 1fr;gap:16px;flex:1}
-.s3-card{border-radius:11px;padding:22px 24px;border-left-width:4px;border-left-style:solid;opacity:0;transform:translateY(8px);transition:all .4s ease;display:flex;flex-direction:column;justify-content:flex-start}
-.s3-card.visible{opacity:1;transform:translateY(0)}
-.dark .s3-card{background:rgba(255,255,255,.05);border-top:1px solid rgba(255,255,255,.06);border-right:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06)}
-.light .s3-card{background:#fff;border-top:1px solid rgba(0,31,95,.08);border-right:1px solid rgba(0,31,95,.08);border-bottom:1px solid rgba(0,31,95,.08);box-shadow:0 2px 10px rgba(0,31,95,.06)}
-.s3-title{font-size:clamp(16px,1.8vw,22px);font-weight:700;margin-bottom:10px}
-.dark .s3-title{color:#fff}
-.light .s3-title{color:var(--navy)}
-.s3-body{font-size:clamp(13px,1.5vw,18px);line-height:1.65}
-.dark .s3-body{color:var(--lblue)}
-.light .s3-body{color:var(--blue)}
-
-/* ── SLIDE 3 — INTRO / BUSINESS CASE — reuses .s3-* card styling ── */
-.s0-steps{display:flex;flex-direction:column;gap:7px;margin-top:2px}
-.s0-step{display:flex;align-items:baseline;gap:8px;font-size:clamp(13px,1.5vw,18px);line-height:1.5}
-.dark .s0-step{color:#fff}
-.light .s0-step{color:var(--blue)}
-.s0-step-num{font-weight:800;color:var(--teal);flex-shrink:0;font-family:'Courier New',monospace;font-size:11px}
-.s0-metrics{display:flex;flex-direction:column;margin-top:2px}
-.s0-metric{display:flex;justify-content:space-between;align-items:baseline;gap:10px;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,.12)}
-.light .s0-metric{border-bottom-color:rgba(0,31,95,.12)}
-.s0-metric:last-child{border-bottom:none}
-.s0-metric-lbl{font-size:clamp(13px,1.5vw,18px)}
-.dark .s0-metric-lbl{color:#9FB4D4}
-.light .s0-metric-lbl{color:#7B9FC4}
-.s0-metric-val{font-size:clamp(13px,1.5vw,18px);font-weight:800;font-family:'Courier New',monospace;color:var(--gold);white-space:nowrap}
-.light .s0-metric-val{color:var(--navy)}
-.s0-asks{list-style:none;display:flex;flex-direction:column;gap:7px;margin-top:2px}
-.s0-asks li{font-size:clamp(13px,1.5vw,18px);line-height:1.5;display:flex;gap:7px}
-.dark .s0-asks li{color:#fff}
-.light .s0-asks li{color:var(--blue)}
-.s0-asks li::before{content:'✓';color:var(--teal);flex-shrink:0;font-weight:700}
-.s0-note{font-size:clamp(13px,1.5vw,18px);font-style:italic;margin-top:2px}
-/* Slide 3 carries six cards of text: size it by the tighter of width and
-   height, so it fits 1366x768 and 1440x900 as well as 1920x1080. */
-#ps2 .s3-headline{font-size:clamp(26px,min(3.8vw,5.2vh),56px)}
-#ps2 .s3-sub{font-size:clamp(15px,min(1.9vw,2.5vh),24px);margin-bottom:clamp(10px,1.8vh,20px)}
-#ps2 .s3-grid{gap:clamp(10px,1.5vh,16px);min-height:0}
-#ps2 .s3-card{padding:clamp(10px,1.8vh,22px) clamp(16px,1.6vw,24px)}
-#ps2 .s3-title{font-size:clamp(15px,min(1.8vw,2.3vh),22px);margin-bottom:clamp(5px,1vh,10px)}
-#ps2 .s3-body,#ps2 .s0-step,#ps2 .s0-metric-lbl,#ps2 .s0-metric-val,#ps2 .s0-asks li,#ps2 .s0-note{font-size:clamp(12px,min(1.5vw,1.75vh),18px)}
-#ps2 .s3-body{line-height:1.5}
-#ps2 .s0-steps,#ps2 .s0-asks{gap:clamp(3px,.7vh,7px)}
-#ps2 .s0-metric{padding:clamp(3px,.6vh,6px) 0}
-.dark .s0-note{color:#6B84A8}
-.light .s0-note{color:#7B9FC4}
-
-/* ── "Simulated Pipeline · Illustrative Scenarios" pulse indicator — now shown at the foot of the Why Pega slide ── */
-.s4-pulse{display:flex;align-items:center;gap:10px;margin-top:24px}
-.s4-pdot{width:10px;height:10px;border-radius:50%;background:var(--teal);animation:pulse 1.5s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
-.s4-ptxt{font-size:clamp(13px,1.4vw,17px);font-weight:500}
-.dark .s4-ptxt{color:rgba(255,255,255,.5)}
-.light .s4-ptxt{color:rgba(0,31,95,.5)}
 @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 
 /* ══════════════════════════════════════════════════════
@@ -885,192 +739,41 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     <button class="skip-demo-btn" onclick="goDemo()">Skip to Demo →</button>
 
     <!-- SLIDE 1 — AGENDA -->
-    <div class="pslide dark active" id="ps0">
-      <div class="s3-headline">Agenda</div>
-      <div class="s3-sub">What we'll cover today</div>
-      <div class="agenda-grid">
-        <div class="agenda-card" id="ag0" style="border-top-color:#FFC836">
-          <div class="agenda-num">01</div>
-          <div class="agenda-ico">🕰️</div>
-          <div class="agenda-title">Background</div>
-          <div class="agenda-body">Why prevention, not just recovery</div>
-        </div>
-        <div class="agenda-card" id="ag1" style="border-top-color:#10A5AC">
-          <div class="agenda-num">02</div>
-          <div class="agenda-ico">📊</div>
-          <div class="agenda-title">Quantify Bupa Fraud POC</div>
-          <div class="agenda-body">Sizing the problem in Bupa's own claims</div>
-        </div>
-        <div class="agenda-card" id="ag2" style="border-top-color:#F76923">
-          <div class="agenda-num">03</div>
-          <div class="agenda-ico">🎯</div>
-          <div class="agenda-title">Target Outcome</div>
-          <div class="agenda-body">What success looks like for Phase 1</div>
-        </div>
-        <div class="agenda-card" id="ag3" style="border-top-color:#5F67B9">
-          <div class="agenda-num">04</div>
-          <div class="agenda-ico">🤝</div>
-          <div class="agenda-title">Requirements</div>
-          <div class="agenda-body">What we're asking for to get started</div>
-        </div>
-      </div>
+    <div class="pslide dark img-slide active" id="ps0">
+      <div class="ps-fill" style="background-image:url(assets/slides/slide-1-agenda.webp)"></div>
+      <img class="ps-img" src="assets/slides/slide-1-agenda.webp" alt="Agenda: what we'll cover today. 01 Background: why prevention, not just recovery. 02 Quantify Bupa Fraud POC: sizing the problem in Bupa's own claims. 03 Target Outcome: what success looks like for Phase 1. 04 Requirements: what we're asking for to get started.">
       <div class="sdots"><div class="sdot on" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
     <!-- SLIDE 2 — THE PROBLEM -->
-    <div class="pslide dark" id="ps1">
-      <div class="s1-headline">From Detection to <span class="s1-gold">Prevention.</span></div>
-      <div class="s1-rows" id="s1-rows">
-        <div class="s1-row" id="r0">
-          <div class="s1-stat-box"><div class="s1-icon">📊</div><div class="s1-stat" style="color:#FFC836">1–3%</div></div>
-          <div class="s1-bar" style="background:#FFC836"></div>
-          <div class="s1-content">
-            <div class="s1-desc">of Bupa's claims are estimated to contain fraud, waste or abuse — a conservative estimate, held well below the global industry benchmark</div>
-            <div class="s1-src">Conservative internal estimate · benchmarked against PKF Littlejohn / Centre for Counter Fraud Studies (CCFS) global range of 3–10%</div>
-          </div>
-        </div>
-        <div class="s1-row" id="r1">
-          <div class="s1-stat-box"><div class="s1-icon">🚨</div><div class="s1-stat" style="color:#F76923">Invisible</div></div>
-          <div class="s1-bar" style="background:#F76923"></div>
-          <div class="s1-content">
-            <div class="s1-desc">Healthcare is Australia's #1 most targeted sector for data breaches — creating the infrastructure for large-scale insurance fraud rings</div>
-            <div class="s1-src">Source: Office of the Australian Information Commissioner — Notifiable Data Breaches Report Jan–Jun 2023</div>
-          </div>
-        </div>
-        <div class="s1-row" id="r2">
-          <div class="s1-stat-box"><div class="s1-icon">🛡️</div><div class="s1-stat" style="color:#10A5AC;font-size:28px">Prevention</div></div>
-          <div class="s1-bar" style="background:#10A5AC"></div>
-          <div class="s1-content">
-            <div class="s1-desc">Recovery happens after a claim is paid. Prevention happens before. AI is what makes that shift possible.</div>
-            <div class="s1-src">The premise behind everything that follows.</div>
-          </div>
-        </div>
-      </div>
-      <div class="s1-sub">The scale is real. &nbsp;The risk is invisible. &nbsp;<b>Prevention starts here.</b></div>
+    <div class="pslide dark img-slide" id="ps1">
+      <div class="ps-fill" style="background-image:url(assets/slides/slide-2-problem.webp)"></div>
+      <img class="ps-img" src="assets/slides/slide-2-problem.webp" alt="Problem: why prevention, not just recovery. 01 Hidden anomalies in routine claims. 02 Manual review is reactive and slow. 03 Leakage compounds before recovery. 04 Members and providers need protection.">
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
-    <!-- SLIDE 3 — INTRO / BUSINESS CASE -->
-    <div class="pslide dark" id="ps2">
-      <div class="s3-headline">The Business Case for Prevention</div>
-      <div class="s3-sub">What this proof of concept sets out to prove, how it will run, and what we're asking for to get started</div>
-      <div class="s3-grid">
-        <div class="s3-card" id="i0" style="border-left-color:#FFC836">
-          <div class="s3-title">🕰️ Background</div>
-          <div class="s3-body">Bupa has traditionally caught fraud after a claim is paid, through audits and recoveries. This proof of concept tests whether the same detection can happen before payment, using AI to review receipts and patterns at scale.</div>
-        </div>
-        <div class="s3-card" id="i1" style="border-left-color:#10A5AC">
-          <div class="s3-title">🗂️ What the POC Will Entail</div>
-          <div class="s3-body">Extract and analyse approximately 10,000 historical claims receipts, replaying them initially through Phase 1, with future phases to follow.</div>
-        </div>
-        <div class="s3-card" id="i2" style="border-left-color:#5F67B9">
-          <div class="s3-title">⚙️ How the POC Will Work</div>
-          <div class="s0-steps">
-            <div class="s0-step"><span class="s0-step-num">01</span>Extract — AI extracts text and structured data from every receipt</div>
-            <div class="s0-step"><span class="s0-step-num">02</span>Analyse — checked against configured rules based on signals</div>
-            <div class="s0-step"><span class="s0-step-num">03</span>Classify — scored and grouped by risk level</div>
-            <div class="s0-step"><span class="s0-step-num">04</span>Route — clean claims pass; flagged claims go to an investigator</div>
-            <div class="s0-step"><span class="s0-step-num">05</span>Validate — suspicious claims validated by the fraud team</div>
-          </div>
-        </div>
-        <div class="s3-card" id="i3" style="border-left-color:#F76923">
-          <div class="s3-title">🎯 What Is the Expected Outcome</div>
-          <div class="s0-metrics">
-            <div class="s0-metric"><span class="s0-metric-lbl">Fraud detection capability</span><span class="s0-metric-val">[X]%</span></div>
-            <div class="s0-metric"><span class="s0-metric-lbl">Cases for investigator review</span><span class="s0-metric-val">est. [Z]</span></div>
-            <div class="s0-metric"><span class="s0-metric-lbl">Recovery potential</span><span class="s0-metric-val">$[X]</span></div>
-          </div>
-        </div>
-        <div class="s3-card" id="i4" style="border-left-color:#10A5AC">
-          <div class="s3-title">📈 If We Scale</div>
-          <div class="s3-body">Processing an extended volume of claims could identify between $[X] and $[Y] in fraud savings.</div>
-          <div class="s0-note">Figures to be confirmed against the Phase 1 POC results.</div>
-        </div>
-        <div class="s3-card" id="i5" style="border-left-color:#334190">
-          <div class="s3-title">🤝 What's Needed</div>
-          <ul class="s0-asks">
-            <li>Executive project owner to authorise Phase 1 POC with historical claims dataset</li>
-            <li>AI Council approval on detection methodology and governance framework</li>
-            <li>Resource and budget commitment for Phase 1 build</li>
-          </ul>
-        </div>
-      </div>
+    <!-- SLIDE 3 — BUSINESS CASE -->
+    <div class="pslide dark img-slide" id="ps2">
+      <div class="ps-fill" style="background-image:url(assets/slides/slide-3-business-case.webp)"></div>
+      <img class="ps-img" src="assets/slides/slide-3-business-case.webp" alt="Business Case: the value of earlier detection. A claims analytics panel beside four outcomes: 01 Reduce improper payments. 02 Prioritise high-risk claims. 03 Improve operational efficiency. 04 Protect member trust.">
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
     <!-- SLIDE 4 — THREE PHASES -->
-    <div class="pslide dark" id="ps3">
-      <div class="s2-headline">One Intelligent Pipeline.</div>
-      <div class="s2-sub">One Problem. Three Layers of Defence.</div>
-      <!-- One claim, one case, drawn with the demo's own parts: the same check
-           rows, cost badges and verdicts the portal and pipeline use. The rows are
-           CLM-2024-0841's, so the slide carries the Simulated label. -->
-      <div class="pl" id="pl">
-        <div class="pl-note"><span class="ls-sim-pill">Simulated</span><span>Sample checks from CLM-2024-0841 · illustrative data</span><span class="pl-claim" id="pl-claim">CLM-2024-0841</span></div>
-        <div class="pl-grid">
-          <div class="pl-phase pl-ph0">Before any claim</div>
-          <div class="pl-phase pl-ph1">Phase 1 · Receipt forensics — Is this receipt real and valid?</div>
-          <div class="pl-phase pl-ph2">Phase 2 · Does this claim make sense?</div>
-          <div class="pl-phase pl-ph3">Phase 3 · Who else is involved?</div>
-
-          <div class="pl-stage" id="pl0">
-            <div class="pl-eyebrow">Session</div>
-            <div class="pl-title">Sign-in capture</div>
-            <div class="pl-costs"><span class="sig-cost capture">Captured, not judged</span></div>
-            <div class="sig" data-verdict="capture"><div class="sig-head"><span class="sig-ico">📥</span><span class="sig-name"><span class="sig-nm">Device and location</span> <span class="sig-sum">· DEV-2291 · Carlton VIC</span></span></div><div class="sig-concl">→ Recorded, no evaluation at this stage</div></div>
-          </div>
-          <div class="pl-stage" id="pl1" data-gate="upload">
-            <div class="pl-eyebrow">Pre-flight</div>
-            <div class="pl-title">Is it claimable?</div>
-            <div class="pl-costs"><span class="sig-cost ai">1 AI read</span><span class="sig-cost rule">3 rules · 1 table</span></div>
-            <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">Disqualifying content</span> <span class="sig-sum">· 11 terms checked · none found</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ No disqualifying content</div></div>
-          </div>
-          <div class="pl-stage" id="pl2" data-gate="valid">
-            <div class="pl-eyebrow">Forensic analysis</div>
-            <div class="pl-title">Is it genuine?</div>
-            <div class="pl-costs"><span class="sig-cost ai">3 AI calls</span><span class="sig-cost rule">3 rules · 1 score</span></div>
-            <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">Font consistency</span> <span class="sig-sum">· 1 typeface · Arial 9pt</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ No evidence of spliced text</div></div>
-          </div>
-          <div class="pl-stage" id="pl3" data-gate="≥ 0.70">
-            <div class="pl-eyebrow">Cross-claim signals</div>
-            <div class="pl-title">Against every other claim</div>
-            <div class="pl-costs"><span class="sig-cost rule">3 event strategies · no AI</span></div>
-            <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">ES-002 Device ring</span> <span class="sig-sum">· 1 member on this device · threshold 3</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ No device ring</div></div>
-            <div class="pl-planned">Planned: phantom ABN, waiver abuse, item code validation</div>
-          </div>
-          <div class="pl-stage" id="pl4" data-gate="no signal">
-            <div class="pl-eyebrow">Network intelligence</div>
-            <div class="pl-title">Three hops out</div>
-            <div class="pl-costs"><span class="sig-cost ai">1 graph query over MCP</span></div>
-            <div class="sig" data-verdict="pass"><div class="sig-head"><span class="sig-ico">✅</span><span class="sig-name"><span class="sig-nm">Network graph</span> <span class="sig-sum">· 0 connections within 3 hops</span></span><span class="sig-badges"><span class="sig-verdict pass">Pass</span></span></div><div class="sig-concl">→ Graph clear</div></div>
-            <div class="pl-planned">Planned: fraud case similarity matching</div>
-          </div>
-
-          <div class="pl-exit pl-x-rej" id="plx0" data-gate="fail · flag"><strong>Reject Document or Needs Review.</strong> Not claimable, so it never reaches the fraud team.</div>
-          <div class="pl-exit pl-x-aim" id="plx1" data-gate="any signal"><strong>🛡️ Pega AIM.</strong> Every signal goes to a named investigator with the evidence attached. AI assists, humans decide, with a full audit trail.</div>
-          <div class="pl-exit pl-x-adj" id="plx2" data-gate="all clear"><strong>Adjudication.</strong> A clean claim goes on, with every check recorded.</div>
-        </div>
-      </div>
+    <div class="pslide dark img-slide" id="ps3">
+      <div class="ps-fill" style="background-image:url(assets/slides/slide-4-three-phases.webp)"></div>
+      <img class="ps-img" src="assets/slides/slide-4-three-phases.webp" alt="Three Phases: a practical path from detection to prevention. 01 Detection POC: identify suspicious claims patterns. 02 Workflow and Review: triage, prioritise and investigate cases. 03 Prevention at Scale: real-time intervention and continuous optimisation.">
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
-    <!-- SLIDE 5 — POWERED BY PEGA -->
-    <div class="pslide dark" id="ps4">
-      <div class="s3-headline">Powered by Pega</div>
-      <div class="s3-sub">The Enterprise AI Platform Transforming Healthcare Operations</div>
-      <div class="s3-grid">
-        <div class="s3-card" id="p0" style="border-left-color:#FFC836"><div class="s3-title">🏆 Proven Platform</div><div class="s3-body">Predictable, governed workflows. AI agents harnessed inside proven case management — not bolted on.</div></div>
-        <div class="s3-card" id="p1" style="border-left-color:#10A5AC"><div class="s3-title">💰 Predictable Cost</div><div class="s3-body">Flat per-case pricing. No AI token tax. Costs scale with claims volume — not with AI usage</div></div>
-        <div class="s3-card" id="p2" style="border-left-color:#5F67B9"><div class="s3-title">🧠 Self-Improving</div><div class="s3-body">Every investigator decision feeds back. The longer it runs, the more accurate it gets</div></div>
-        <div class="s3-card" id="p3" style="border-left-color:#F76923"><div class="s3-title">✅ APRA CPS 230</div><div class="s3-body">Claims management is a named critical operation under APRA's operational risk standard. Built for the audit trail, resilience and accountability it requires<div class="s1-src" style="margin-top:8px">Source: APRA Prudential Standard CPS 230 Operational Risk Management</div></div></div>
-        <div class="s3-card" id="p4" style="border-left-color:#10A5AC"><div class="s3-title">⚡ Fast to Deploy</div><div class="s3-body">Orchestrated end-to-end by Pega Infinity 26.1. No new platforms to build or infrastructure to own</div></div>
-        <div class="s3-card" id="p5" style="border-left-color:#334190"><div class="s3-title">👤 Human Oversight</div><div class="s3-body">Every AI determination reviewed by a named human investigator. Full audit trail on every case</div></div>
-      </div>
-      <div class="s4-pulse" style="margin-top:14px"><div class="s4-pdot"></div><span class="s4-ptxt">Pega Infinity 26.1 · Simulated Pipeline · Illustrative Scenarios</span></div>
+    <!-- SLIDE 5 — WHY PEGA -->
+    <div class="pslide dark img-slide" id="ps4">
+      <div class="ps-fill" style="background-image:url(assets/slides/slide-5-why-pega.webp)"></div>
+      <img class="ps-img" src="assets/slides/slide-5-why-pega.webp" alt="Why Pega? Decisioning, workflow and orchestration in one platform. 01 Decisioning and business rules. 02 Case management and workflow. 03 Integration across claims data. 04 Governance, audit trail and scale.">
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot on" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="goDemo()">Launch Demo →</button></div>
     </div>
@@ -1731,59 +1434,8 @@ function goSlide(n){
   curSlide=n;
   $('ps'+n).classList.add('active');
   $('sb'+n).classList.add('slide-on');
-  animateSlide(n);
   updateSlideDots(n);
   if(runMode==='rolling' && !rollingPaused) startSlideTimer();
-}
-
-function animateSlide(n){
-  if(n===0){
-    ['ag0','ag1','ag2','ag3'].forEach((id,i)=>{
-      const el=$(id); el.classList.remove('visible');
-      setTimeout(()=>el.classList.add('visible'),80+i*120);
-    });
-  } else if(n===1){
-    ['r0','r1','r2'].forEach((id,i)=>{
-      const el=$(id); el.classList.remove('visible');
-      setTimeout(()=>el.classList.add('visible'),150+i*350);
-    });
-  } else if(n===2){
-    ['i0','i1','i2','i3','i4','i5'].forEach((id,i)=>{
-      const el=$(id); el.classList.remove('visible');
-      setTimeout(()=>el.classList.add('visible'),80+i*100);
-    });
-  } else if(n===3){
-    ['pl0','pl1','pl2','pl3','pl4'].forEach((id,i)=>{
-      const el=$(id); el.classList.remove('visible','lit');
-      setTimeout(()=>el.classList.add('visible'),100+i*140);
-    });
-    ['plx0','plx1','plx2'].forEach((id,i)=>{
-      const el=$(id); el.classList.remove('visible');
-      setTimeout(()=>el.classList.add('visible'),850+i*120);
-    });
-    walkPipelineSlide();
-  } else if(n===4){
-    ['p0','p1','p2','p3','p4','p5'].forEach((id,i)=>{
-      const el=$(id); el.classList.remove('visible');
-      setTimeout(()=>el.classList.add('visible'),80+i*100);
-    });
-  }
-}
-
-// Slide 4: in the rolling demo, CLM-2024-0841 walks the strip stage by
-// stage inside the slide's 11 seconds. While presenting, the strip stays
-// complete and still, so the presenter can point and talk.
-let plTimers=[];
-function walkPipelineSlide(){
-  plTimers.forEach(clearTimeout); plTimers=[];
-  const wrap=$('pl'), rolling=runMode==='rolling'&&!reducedMotion();
-  wrap.classList.toggle('rolling',rolling);
-  if(!rolling) return;
-  const steps=[['pl0','at sign-in'],['pl1','in pre-flight'],['pl2','in forensic analysis'],['pl3','in Phase 2'],['pl4','in Phase 3'],[null,'sent for adjudication']];
-  steps.forEach(([id,where],i)=>plTimers.push(setTimeout(()=>{
-    ['pl0','pl1','pl2','pl3','pl4'].forEach(x=>$(x).classList.toggle('lit',x===id));
-    txt('pl-claim','CLM-2024-0841 · '+where);
-  },1200+i*1500)));
 }
 
 function updateSlideDots(n){
