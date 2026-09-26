@@ -63,7 +63,7 @@
       "summary": "1 of 11 terms matched · PAID stamp",
       "cost": "rule",
       "lookedAt": "Extracted receipt text and stamps",
-      "rule": "11 disqualifying terms, maintained by the fraud team",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
       "found": "PAID stamp across the services table",
       "verdict": "fail",
       "conclusion": "Account already settled, nothing to claim"
@@ -74,10 +74,10 @@
       "summary": "$270.00 paid of $270.00 · ABN ✓ · 4 lines · signed",
       "cost": "rule",
       "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
-      "rule": "Paid in full, valid tax invoice, itemised, signed",
+      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
       "found": "$270.00 received against $270.00 charged · ABN present · 4 itemised lines · signed",
       "verdict": "pass",
-      "conclusion": "Complete and paid"
+      "conclusion": "Complete — member paid in full"
     },
     {
       "id": "SIG-CLAIM-VALUE",

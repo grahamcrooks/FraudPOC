@@ -74,7 +74,7 @@
       "summary": "2 of 11 terms matched",
       "cost": "rule",
       "lookedAt": "Extracted receipt text",
-      "rule": "11 disqualifying terms, maintained by the fraud team",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
       "found": "\"treatment plan and quotation\" in the header, \"this is not a tax invoice\" in the footer",
       "verdict": "fail",
       "conclusion": "Classified as a quotation"
@@ -85,7 +85,7 @@
       "summary": "$0.00 paid of $448.00",
       "cost": "rule",
       "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
-      "rule": "Paid in full, valid tax invoice, itemised, signed",
+      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
       "found": "$0.00 received against $448.00 charged · ABN present · 3 itemised lines · not signed",
       "verdict": "fail",
       "conclusion": "Nothing has been paid"
