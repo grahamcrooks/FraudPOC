@@ -77,10 +77,11 @@ Each step has three parts:
   - Phase 3: graph traversal through an MCP connection to the graph, up to three hops across member, practice, practitioner, device, submission IP and payment account.
   - Planned and not in this build: phantom ABN, waiver abuse, item code validation (Phase 2), and fraud case similarity matching (Phase 3).
 - **Check**:
-  - There are no signal counts on any column.
-  - Phase 1 shows two sub-headings: pre-flight, and forensic analysis.
+  - The slide is built from the demo's own parts: five white stage panels (sign-in, pre-flight, forensic analysis, Phase 2, Phase 3) under the three phase tags, each with its cost badges and one sample check row from CLM-0841, and the three exits beneath (Reject Document or Needs Review, Pega AIM, adjudication).
+  - The slide carries the "Simulated" label, because the sample rows are CLM-0841's.
   - Phase 2 and Phase 3 each end with an italic "planned" line.
-  - At 1366×768 all three columns fit without clipping.
+  - Presenting: the strip appears complete and still. Rolling demo: CLM-2024-0841 walks the stages one by one within the slide's 11 seconds, ending "sent for adjudication".
+  - At 1366×768, 1440×900 and 1920×1080 everything fits without clipping, clear of the Back and Next buttons.
 
 ### Slide 5: Powered by Pega
 
