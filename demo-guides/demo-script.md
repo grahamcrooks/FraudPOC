@@ -37,7 +37,7 @@ What stops the demo depends on the mode:
 
 | Where you are | What to do |
 | --- | --- |
-| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 10 seconds, or a phase running its checks), so talk over it |
+| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 25 seconds, or a phase running its checks), so talk over it |
 | Presenting, on the slides | Don't press Space unless you mean to move on: it goes to the next slide |
 | Expecting lots of questions | Press P for step-by-step mode. The demo pauses after every phase result until you click Continue |
 | Rolling demo | Space pauses it and shows a banner with Resume and Stop; Space again resumes. R stops it completely |
@@ -139,12 +139,12 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 - **Check**:
   - The portal shows MBR-33291, Carlton VIC 3053, POL-2021-44210, Gold Hospital + Extras.
   - The session chip matches Step 1.
-  - The claim card has two numbered panels: 1 · Receipt (upload and pre-flight) and 2 · Member-Entered Receipt (the form).
+  - The claim card has two numbered panels: 1 · Receipt (upload and pre-flight) and 2 · Extracted from the Receipt (the fields the AI read; the member types nothing).
 
 ### Step 3: Upload and pre-flight
 
 - **Say**: The claimant uploads a dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules do the rest at no AI cost. A quotation, a proforma or an unpaid invoice stops here.
-- **Under the hood**: Seven checks in order, over about 10 seconds. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge.
+- **Under the hood**: Seven checks in order, about 3.5 seconds each, about 25 seconds in all. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
 
   | Check | Cost | Rule |
   | --- | --- | --- |
@@ -337,7 +337,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - Phases pause 5.5 seconds between each other, and the demo holds on each outcome before moving on.
   - Scenarios with a sign-in scene (CLM-0841, CLM-0844) take about 14 seconds longer.
 - **Check**:
-  - Pre-flight runs slower than when presenting: one caption per check, about 3.5 seconds each, about 25 seconds in all.
+  - Pre-flight runs at the same pace as when presenting, about 3.5 seconds a check, but with one caption per check instead of grouped captions.
   - For CLM-0841: Phase 2 starts at about 72 seconds, Phase 3 at about 95 seconds, and the outcome at about 108 seconds.
   - CLM-0847 and CLM-0848 each hold on the reject panel for about 9 seconds. After CLM-0847 comes CLM-0848, then CLM-0841.
   - Space pauses and resumes. There are no console errors.

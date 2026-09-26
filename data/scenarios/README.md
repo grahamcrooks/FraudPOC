@@ -72,7 +72,7 @@ A `capture` records data rather than deciding anything. It has no verdict and us
 | `captured` | The captured values, or `"session"` to build them from this file's session block (device ID · profile · IP · location), so the panel can't disagree with the session chip. |
 | `usedBy` | Which later strategies use the data. |
 
-The checks play in array order across the same 10 seconds as the upload. The running check expands to show its working and collapses to its summary when the next one starts. When pre-flight completes, every check opens and stays open, laid out in two columns, so the resting state (a booth loop, a pause, a screenshot) shows how every verdict was reached. Clicking a check still toggles it.
+The checks play in array order, one every 3.5 seconds (`PF_STEP`), with the What's happening card explaining each (text in `data/check-explainers.js`, keyed by check id). The running check expands to show its working and collapses to its summary when the next one starts. When pre-flight completes, every check opens and stays open, laid out in two columns, so the resting state (a booth loop, a pause, a screenshot) shows how every verdict was reached. Clicking a check still toggles it.
 
 ## Routing after pre-flight
 
@@ -114,14 +114,14 @@ A scenario's own `captions` object wins over the defaults, key by key. Use it fo
 
 ### Pacing
 
-Pre-flight has two paces, tied to the run mode:
+Pre-flight runs at one pace, 3.5 seconds a check, in every mode, so the What's happening card can be read; the captions differ by mode:
 
 | Mode | Pre-flight | Captions |
 | --- | --- | --- |
-| Presenting and step-by-step (the default) | 10 seconds | Grouped: the AI reads, the business rules, the decision |
+| Presenting and step-by-step (the default) | 3.5 seconds a check, about 25 seconds for seven | Grouped: the AI reads, the business rules, the decision |
 | Rolling demo (booth, unattended) | 3.5 seconds a check, about 25 seconds for seven | One per check, then the decision |
 
-The pipeline phases keep their timing in both modes, and each pipeline check shows its own caption. Every timer that waits for pre-flight (the pipeline opening, the rolling demo's next step, the resting state) reads the same duration, `preflightMs()`, so the two paces can't drift apart.
+The pipeline phases keep their timing in both modes, and each pipeline check shows its own caption. Every timer that waits for pre-flight (the pipeline opening, the rolling demo's next step, the resting state) reads the same duration, `preflightMs()`, so nothing can drift apart.
 
 A missing key keeps the previous caption. Each caption stays up at least 2.5 seconds; quick beats queue. Captions are on by default everywhere; C toggles, and `?captions=off` gives a clean take for a recording.
 

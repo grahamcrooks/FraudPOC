@@ -356,6 +356,21 @@ body.run-rolling .presenter-only{display:none}
 .btn-submit:hover{background:var(--red-dark)}
 .btn-cancel{background:transparent;color:var(--text-2);border:1.5px solid var(--border);padding:10px 16px;border-radius:7px;font-size:12px;cursor:pointer;font-family:var(--font)}
 .member-detail{background:var(--white);border:1px solid var(--border);border-radius:12px;padding:13px 15px;margin-bottom:10px}
+/* What's happening card: sits at the top of the left column, beside the check list, never over it */
+.pfx{position:sticky;top:12px;z-index:2;background:var(--white);border:1.5px solid var(--pblue);border-radius:12px;padding:14px 16px;margin-bottom:10px;box-shadow:0 6px 20px rgba(0,31,95,.12)}
+.pfx[hidden]{display:none}
+.pfx.swap .pfx-head,.pfx.swap .pfx-what,.pfx.swap .pfx-why{animation:fadeUp .3s ease}
+.pfx-eyebrow{display:flex;justify-content:space-between;gap:8px;font-size:10px;text-transform:uppercase;letter-spacing:.5px;font-weight:700;color:var(--pblue);margin-bottom:8px}
+.pfx-step{color:var(--text-3);font-weight:600}
+.pfx-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.pfx-ico{font-size:20px;line-height:1}
+.pfx-name{flex:1 0 auto;font-size:15px;font-weight:800;color:var(--navy)}
+.pfx-what{margin:0 0 8px;font-size:13px;line-height:1.5;color:var(--text)}
+.pfx-why{margin:0;font-size:12.5px;line-height:1.5;color:var(--text-2)}
+.pfx-why b{color:var(--navy)}
+.pfx-hint{display:none;margin-top:10px;font-size:11.5px;font-style:italic;color:var(--text-3)}
+.pfx.at-rest .pfx-hint{display:block}
+@media (prefers-reduced-motion:reduce){.pfx.swap .pfx-head,.pfx.swap .pfx-what,.pfx.swap .pfx-why{animation:none}}
 .md-hdr{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600;margin-bottom:9px}
 .md-row{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 0;border-bottom:1px solid #F5F0F0}
 .md-row:last-child{border-bottom:none}
@@ -1174,6 +1189,14 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     <div class="dash-2col">
       <!-- LEFT: member stats + recent claims -->
       <div class="dash-left">
+        <!-- What's happening: plain-English card for the running pre-flight check (data/check-explainers.js) -->
+        <div class="pfx" id="pfx" aria-live="polite" hidden>
+          <div class="pfx-eyebrow"><span>What's happening</span><span class="pfx-step" id="pfx-step"></span></div>
+          <div class="pfx-head"><span class="pfx-ico" id="pfx-ico"></span><span class="pfx-name" id="pfx-name"></span><span class="sig-cost" id="pfx-cost"></span></div>
+          <p class="pfx-what" id="pfx-what"></p>
+          <p class="pfx-why"><b>Why it matters</b> <span id="pfx-why"></span></p>
+          <div class="pfx-hint">Click any check to explain it</div>
+        </div>
         <div class="stat-card" style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:10px"><div class="stat-icon si-red" style="margin-bottom:0">💳</div><div><div class="stat-label">Policy</div><div class="stat-value" id="st-pol" style="font-size:15px">POL-2021-44210</div><div class="stat-sub" id="st-cov">Gold Hospital + Extras</div></div></div></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
           <div class="stat-card"><div class="stat-icon si-green">✅</div><div class="stat-label">Claims This Year</div><div class="stat-value" id="st-cnt" style="font-size:16px">3</div><div class="stat-sub" id="st-amt">$847.00 to date</div></div>
@@ -1207,7 +1230,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
         </div>
         <div class="lodge-section" style="height:100%">
           <div class="lodge-hdr">
-            <div><div class="lodge-hdr-title">Phase 1 Receipt Analysis</div><div class="lodge-hdr-sub" id="form-sub">Checking the member-entered details against the receipt</div></div>
+            <div><div class="lodge-hdr-title">Phase 1 Receipt Analysis</div><div class="lodge-hdr-sub" id="form-sub">Checking the receipt the member uploaded</div></div>
             <div class="lodge-active"><div class="lodge-active-dot"></div>AI Fraud Detection Active</div>
           </div>
           <div class="lodge-body">
@@ -1236,10 +1259,10 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
             </div>
             </div>
             <div class="lodge-group">
-            <div class="lodge-group-hd"><span class="lodge-group-n">2</span>Member-Entered Receipt</div>
+            <div class="lodge-group-hd"><span class="lodge-group-n">2</span>Extracted from the Receipt</div>
             <div class="dataset-intro">
-              <div class="dataset-intro-title">Member-Entered Receipt</div>
-              <div class="dataset-intro-body">The receipt details the member entered when lodging the claim. Phase 1 checks: do they match the receipt itself?</div>
+              <div class="dataset-intro-title">Extracted from the Receipt</div>
+              <div class="dataset-intro-body">What the AI read from the receipt. The member only uploads it: every field below is filled in from the receipt, not typed.</div>
             </div>
             <div class="form-row">
               <div class="form-group"><label class="form-label">Claim Type <span class="req">*</span></label><select class="form-select" id="f-type"><option id="f-type-opt"></option></select></div>
@@ -1500,6 +1523,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 <div class="cap" id="cap" role="status" aria-live="polite"><span class="cap-tag" id="cap-tag"></span><span class="cap-text" id="cap-text"></span></div>
 
 <script src="data/check-captions.js"></script>
+<script src="data/check-explainers.js"></script>
 <script src="data/scenarios/clm-0841.js"></script>
 <script src="data/scenarios/clm-0842.js"></script>
 <script src="data/scenarios/clm-0843.js"></script>
@@ -2073,7 +2097,7 @@ window.addEventListener('keydown',e=>{
 // ══════════════════════════════════════════════════════
 function setScenario(idx){
   Captions.hide();
-  clearAllTimers(); uploaded=false; uploadCount=0; uploadCount=0; curScenario=idx;
+  clearAllTimers(); uploaded=false; uploadCount=0; uploadCount=0; curScenario=idx; Explainer.hide();
   for(let i=0;i<S.length;i++) $('sc'+i).classList.toggle('on',i===idx);
   ScenarioPicker.sync(idx);
   const s=S[idx];
@@ -2086,7 +2110,7 @@ function setScenario(idx){
   $('f-date').value=''; $('f-prov').value=''; $('f-abn').value='';
   $('f-amt').value=''; $('f-codes').value='';
   [ 'f-type','f-date','f-prov','f-abn','f-amt','f-codes' ].forEach(id=>$(id).classList.remove('ai-filled'));
-  txt('form-sub','Checking the member-entered details against the receipt');
+  txt('form-sub','Checking the receipt the member uploaded');
   const uz=$('upload-zone');
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
@@ -2126,19 +2150,20 @@ function startBannerCountdown(secs){
 }
 function hideBanner(){ $('scenario-banner').style.display='none'; clearInterval(countdownInterval); }
 
-// Pre-flight pacing. Presenting (and step-by-step) runs pre-flight in 10 s with
-// grouped captions. The rolling demo is for unattended booth playback, so each
-// check gets its own caption and about 3.5 s, about 25 s for seven checks.
-const PF_BOOTH_STEP=3500;
+// Pre-flight pacing. Every check gets its own PF_STEP in every mode, so the
+// What's happening card can be read, and talked to, as each one runs: about
+// 25 s for seven checks. Captions differ by mode: grouped while presenting
+// (the card carries each check), one per check in the unattended rolling demo.
+const PF_STEP=3500;
 function captionsPerCheck(){ return runMode==='rolling'; }
 function preflightMs(){
   const sigs=scenarioSignals(S[curScenario]);
   if(!sigs) return 10800;
-  return captionsPerCheck()?sigs.length*PF_BOOTH_STEP:10000;
+  return sigs.length*PF_STEP;
 }
 
 function simulateUpload(){
-  hideBanner();
+  hideBanner(); Explainer.hide();
   const s=S[curScenario], pf=PREFLIGHT[curScenario], uz=$('upload-zone');
   uz.innerHTML='<div class="upload-icon">⏫</div><div class="upload-text">Uploading...</div>';
   uploadCount++;
@@ -2197,11 +2222,13 @@ function simulateUpload(){
     }, 10800);
   }
 
-  // Animate fields ONE BY ONE starting at 8.2s (3 second pause after phase 3)
+  // Flash the fields ONE BY ONE just after Field extraction (the second check)
+  // fills them, so the audience sees where they came from
   if(uploadCount===1){
     const fields = ['f-type','f-date','f-prov','f-abn','f-amt','f-codes'];
+    const filledAt = sigs ? 2*PF_STEP-500 : 8200;
     fields.forEach((id, idx) => {
-      const animStart = 8200 + (idx * 200); // 200ms between each
+      const animStart = filledAt + (idx * 200); // 200ms between each
       addTimer(() => {
         const el=$(id);
         el.classList.add('ai-filled');
@@ -2256,6 +2283,25 @@ function simulateUpload(){
 // it found and its conclusion, plus whether it cost an AI call. Content is
 // the signals array in data/scenarios/<claim>.js; nothing here is copy.
 // ══════════════════════════════════════════════════════
+// What's happening card (#pfx): the plain-English explanation of the running
+// pre-flight check, from data/check-explainers.js. It advances with the checks,
+// stays after the run, and a click on any check row brings that check back.
+const Explainer={
+  cur:null,
+  show(sig,i,n){
+    const x=(window.CHECK_EXPLAINERS||{})[sig.id], el=$('pfx');
+    if(!x||!el) return;
+    const cost=SIGNAL_COST[sig.cost]||SIGNAL_COST.rule;
+    txt('pfx-ico',x.icon||''); txt('pfx-name',sig.name); txt('pfx-what',x.what); txt('pfx-why',x.why);
+    txt('pfx-step','Check '+(i+1)+' of '+n);
+    const c=$('pfx-cost'); c.className='sig-cost '+cost.cls; c.textContent=cost.label;
+    el.hidden=false; this.cur=sig.id;
+    el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap');
+  },
+  rest(){ const el=$('pfx'); if(el) el.classList.add('at-rest'); },
+  hide(){ this.cur=null; const el=$('pfx'); if(el){ el.hidden=true; el.classList.remove('at-rest','swap'); } }
+};
+
 const SIGNAL_COST={
   ai:     {label:'AI call',                   cls:'ai'},
   rule:   {label:'Business rule — no AI cost', cls:'rule'},
@@ -2406,7 +2452,12 @@ const SignalPanel={
         dl.append(dt,dd);
       });
       el.querySelector('.sig-concl').textContent='→ …';
-      el.querySelector('.sig-head').addEventListener('click',()=>this.toggle(el));
+      // Pre-flight rows: the first click explains the check in the card; a
+      // click on the check already explained toggles the row as before.
+      el.querySelector('.sig-head').addEventListener('click',()=>{
+        if(list.id==='sig-list'&&Explainer.cur!==sig.id){ Explainer.show(sig,i,sigs.length); return; }
+        this.toggle(el);
+      });
       list.appendChild(el);
       return el;
     });
@@ -2465,12 +2516,10 @@ const SignalPanel={
     const els=this.build(s,sigs,list), n=sigs.length;
     let sch=opts.schedule;
     const perCheck=captionsPerCheck();
-    if(!sch&&perCheck){   // booth: one check, and one caption, every PF_BOOTH_STEP
-      sch=sigs.map((_,i)=>({start:i*PF_BOOTH_STEP, done:i*PF_BOOTH_STEP+PF_BOOTH_STEP-700}));
-    } else if(!sch){   // presenting: back-to-back across 0.8s–9.2s
-      const doneAt=i=>n===1?5000:Math.round(800+i*(8400/(n-1)));
-      sch=sigs.map((_,i)=>({start:i?doneAt(i-1):0, done:doneAt(i)}));
-    }
+    // Pre-flight: one check every PF_STEP in every mode, so each can be explained.
+    if(!sch) sch=sigs.map((_,i)=>({start:i*PF_STEP, done:i*PF_STEP+PF_STEP-700}));
+    // The What's happening card follows the pre-flight panel only, not the phase panels.
+    const explain=!opts.mount;
     // Booth: every check has its own caption. Presenting: grouped by cost
     // (the AI reads, then the business rules; the capture joins the rules),
     // unless the scenario gives a check its own caption to tell its story.
@@ -2484,6 +2533,7 @@ const SignalPanel={
       addTimer(()=>{
         if(i>0){ const pv=sigs[i-1]; if(pv.verdict!=='flag'&&pv.verdict!=='fail') this.toggle(els[i-1],false); }
         this.start(els[i]); Captions.show(cap(sig));
+        if(explain) Explainer.show(sig,i,n);
       },sch[i].start);
       addTimer(()=>{
         this.complete(els[i],sig);
@@ -2493,7 +2543,17 @@ const SignalPanel={
     // Resting state: every check open, showing its full working. Collapsing
     // is for the run only; a click still toggles a check to tidy the view.
     const restAt=opts.restAt!=null?opts.restAt:preflightMs()-100;
-    addTimer(()=>{ els.forEach(el=>this.toggle(el,true)); list.classList.add(opts.restClass||'at-rest'); },restAt);
+    addTimer(()=>{
+      els.forEach(el=>this.toggle(el,true)); list.classList.add(opts.restClass||'at-rest');
+      if(!explain) return;
+      // At rest the card explains why the claim stopped, if it did: the first
+      // routing fail, else the first routing flag, as outcome() decides.
+      const routes=x=>x.cost!=='capture'&&x.routes!==false;
+      let k=sigs.findIndex(x=>routes(x)&&x.verdict==='fail');
+      if(k<0) k=sigs.findIndex(x=>routes(x)&&x.verdict==='flag');
+      if(k>=0) Explainer.show(sigs[k],k,n);
+      Explainer.rest();
+    },restAt);
     if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&opts.onExtracted) addTimer(opts.onExtracted,3000);
   },
 
@@ -2811,7 +2871,7 @@ function restartDemo(){
 
 function closeOverlay(){
   $('overlay').classList.remove('show');
-  clearAllTimers(); uploaded=false; uploadCount=0;
+  clearAllTimers(); uploaded=false; uploadCount=0; Explainer.hide();
   const uz=$('upload-zone');
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';

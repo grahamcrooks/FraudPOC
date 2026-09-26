@@ -31,6 +31,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 ## Data
 
 - [Scenario data](data/scenarios/README.md): per-scenario data files (CLM-0841 to CLM-0848): the session block for the sign-in scene, the pre-flight signals and the checks for each pipeline phase.
+- [Check explainers](data/check-explainers.js): the plain-English text for the What's happening card beside pre-flight: what each check does and why it matters.
 - [Check captions](data/check-captions.js): the default caption for every pre-flight and pipeline check, shared by all scenarios: which component produced the verdict, why it runs where it does and what it costs.
 
 ## Tests
