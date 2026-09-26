@@ -250,13 +250,15 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 #demo-screen{background:var(--white);overflow-y:auto}
 .page{padding-top:0;min-height:calc(100vh - 36px);display:flex;flex-direction:column}
 .nav{height:58px;background:var(--white);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 40px;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,.06)}
-.logo{display:flex;align-items:center;gap:2px;font-size:19px;font-weight:700;color:var(--text)}
+.logo{display:flex;align-items:center;gap:2px;font-size:19px;font-weight:700;color:var(--text);white-space:nowrap}
 .logo-plus{color:var(--red);font-size:21px;font-weight:800}
 .nav-links{display:flex;gap:28px;margin-left:40px}
-.nav-link{font-size:13px;color:var(--text-2);text-decoration:none}
+@media (max-width:1360px){.nav-links{gap:20px;margin-left:28px}}
+/* nowrap: a long member name or suburb in the session chip must squeeze space, not wrap the header */
+.nav-link{font-size:13px;color:var(--text-2);text-decoration:none;white-space:nowrap}
 .nav-right{margin-left:auto;display:flex;align-items:center;gap:10px}
 .member-avatar{width:32px;height:32px;border-radius:50%;background:var(--red);display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;font-weight:700}
-.member-name{font-size:12px;font-weight:500}
+.member-name{font-size:12px;font-weight:500;white-space:nowrap}
 .member-greeting{font-size:10px;color:var(--text-3)}
 .ctx-strip{background:linear-gradient(135deg,#F0F8FE 0%,#E6F3FC 100%);padding:0 40px;display:flex;align-items:center;gap:16px;height:56px;flex-shrink:0;border-bottom:1px solid rgba(0,121,200,.08)}
 .ctx-tag{display:inline-flex;align-items:center;gap:6px;background:var(--red-light);color:var(--red);font-size:11px;font-weight:600;padding:4px 11px;border-radius:20px;border:1px solid rgba(0,121,200,.15);flex-shrink:0}
@@ -800,7 +802,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 
 <!-- CONTROL BAR -->
 <div class="ctrl" id="ctrl">
-  <button class="cbtn" id="btn-rolling" onclick="toggleRolling()" title="Auto-advance slides once, then loop the seven scenarios continuously">▶ Rolling Demo</button>
+  <button class="cbtn" id="btn-rolling" onclick="toggleRolling()" title="Auto-advance slides once, then loop the eight scenarios continuously">▶ Rolling Demo</button>
   <button class="cbtn" id="btn-restart" onclick="restartDemo()" title="Stop everything and return to Slide 1">↩ Restart</button>
   <div class="ctrl-sep"></div>
   <span class="ctrl-lbl" id="ctrl-context">Slides</span>
@@ -812,9 +814,9 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     <button class="sc" onclick="goSlide(4)" id="sb4" title="Why Pega">⑤<span class="sb-name"> Why Pega</span></button>
     <button class="sc" onclick="goSlide(5)" id="sb5" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧<span class="sb-name"> Backup</span></button>
   </div>
-  <!-- Scenario picker: one button and a menu, so the bar fits at 1280px. Keys 1–7 still jump straight to a scenario. -->
+  <!-- Scenario picker: one button and a menu, so the bar fits at 1280px. Keys 1–8 still jump straight to a scenario. -->
   <div id="demo-btns" class="scen-pick" style="display:none">
-    <button class="sc on scen-trigger" id="scen-trigger" onclick="ScenarioPicker.toggle()" aria-haspopup="menu" aria-expanded="false" aria-controls="scen-menu" title="Choose a scenario (or press 1–7)"><span class="dot-indicator dg" id="scen-dot"></span><span id="scen-label">CLM-0841 · Clean</span><span class="scen-caret" aria-hidden="true">▾</span></button>
+    <button class="sc on scen-trigger" id="scen-trigger" onclick="ScenarioPicker.toggle()" aria-haspopup="menu" aria-expanded="false" aria-controls="scen-menu" title="Choose a scenario (or press 1–8)"><span class="dot-indicator dg" id="scen-dot"></span><span id="scen-label">CLM-0841 · Clean</span><span class="scen-caret" aria-hidden="true">▾</span></button>
     <div class="scen-menu" id="scen-menu" role="menu" aria-label="Scenarios" hidden>
       <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(0)" id="sc0"><span class="dot-indicator dg"></span><span class="scen-name">CLM-0841 · Clean</span><kbd>1</kbd></button>
       <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(1)" id="sc1"><span class="dot-indicator dr"></span><span class="scen-name">CLM-0842 · Ph.1 Doc</span><kbd>2</kbd></button>
@@ -823,6 +825,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(4)" id="sc4"><span class="dot-indicator da"></span><span class="scen-name">CLM-0845 · Ph.3 Practitioner</span><kbd>5</kbd></button>
       <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(5)" id="sc5"><span class="dot-indicator dr"></span><span class="scen-name">CLM-0846 · Ph.3 Network</span><kbd>6</kbd></button>
       <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(6)" id="sc6"><span class="dot-indicator dr"></span><span class="scen-name">CLM-0847 · Pre-flight</span><kbd>7</kbd></button>
+      <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(7)" id="sc7"><span class="dot-indicator dr"></span><span class="scen-name">CLM-0848 · Already Paid</span><kbd>8</kbd></button>
     </div>
   </div>
   <div class="ctrl-sep"></div>
@@ -983,8 +986,8 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
             <div class="s2-signals">Pre-flight — one AI read, then business rules at no AI cost</div>
             <ul class="s2-pts s2-pts-tight">
               <li>Receipt type and field extraction with per-field confidence</li>
-              <li>Disqualifying content — quotations, proformas, voids, non-medical</li>
-              <li>Receipt completeness — paid in full, ABN, itemised, signed</li>
+              <li>Disqualifying content — quotations, proformas, voids, PAID stamps, non-medical</li>
+              <li>Receipt completeness — member paid in full, ABN, itemised, signed</li>
               <li>Claim value against the high-value threshold</li>
             </ul>
             <div class="s2-signals s2-layer">Forensic analysis — runs only on receipts that clear pre-flight</div>
@@ -1174,7 +1177,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
         <div class="scenario-banner" id="scenario-banner" style="display:none">
           <div class="sb-top">
             <span class="sb-icon" id="sb-icon">✅</span>
-            <div class="sb-label" id="sb-label">Scenario 1 of 7 — Clean Claim</div>
+            <div class="sb-label" id="sb-label">Scenario 1 of 8 — Clean Claim</div>
             <div class="sb-countdown" id="sb-countdown"></div>
           </div>
           <div class="sb-title" id="sb-title">A legitimate dental claim — watch how all three phases clear</div>
@@ -1481,6 +1484,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 <script src="data/scenarios/clm-0845.js"></script>
 <script src="data/scenarios/clm-0846.js"></script>
 <script src="data/scenarios/clm-0847.js"></script>
+<script src="data/scenarios/clm-0848.js"></script>
 <script>
 // ══════════════════════════════════════════════════════
 // DATA
@@ -1501,24 +1505,28 @@ const PREFLIGHT=[
     conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.93' },
   { doctype:'TAX INVOICE layout · Dental treatment plan and quotation',
     conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.94 · ServiceDate 0.95' },
+  { doctype:'TAX INVOICE · Healthcare Receipt (Physiotherapy) · Allied health schedule applies',
+    conf:'All critical fields above threshold · ProviderABN 0.96 · InvoiceTotal 0.95 · ServiceDate 0.93' },
 ];
 
 const S=[
   {id:'CLM-2024-0841',mbr:'MBR-33291',joined:'Mar 2019',suburb:'Carlton VIC 3053',contact:'Email',member:'James Kowalski',ini:'JK',pol:'POL-2021-44210',cov:'Gold Hospital + Extras',cnt:3,amt:'$847.00',ben:'$1,153',type:'Dental (Extras)',date:'12 Jul 2026',prov:'Bright Smile Dental',abn:'42 198 776 334',clamt:'$312.00',codes:'011, 022, 114',file:'dental_receipt_MBR33291.pdf',fsz:'284 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'clean',
-    preview:{icon:'✅',label:'Scenario 1 of 7 — Clean Claim',title:'A legitimate dental claim — watch how all three phases clear',body:'James lodges a routine dental claim from Bright Smile Dental. The receipt is genuine, the provider is registered and there are no suspicious patterns. This shows what a clean run looks like end-to-end.'}},
+    preview:{icon:'✅',label:'Scenario 1 of 8 — Clean Claim',title:'A legitimate dental claim — watch how all three phases clear',body:'James lodges a routine dental claim from Bright Smile Dental. The receipt is genuine, the provider is registered and there are no suspicious patterns. This shows what a clean run looks like end-to-end.'}},
   {id:'CLM-2024-0842',mbr:'MBR-44712',joined:'Aug 2021',suburb:'Footscray VIC 3011',contact:'Email',member:'Sarah Nguyen',ini:'SN',pol:'POL-2019-88821',cov:'Silver Hospital + Extras',cnt:5,amt:'$1,240.00',ben:'$960',type:'Optical (Extras)',date:'14 Jul 2026',prov:'Vision Direct Pty Ltd',abn:'51 234 567 891',clamt:'$487.50',codes:'10801, 10701, 10501',file:'optical_receipt_MBR44712.pdf',fsz:'391 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph1',
     receiptMismatch:{entered:'$487.50',receipt:'$445.00',diff:'$42.50',pct:'10.8%'},
-    preview:{icon:'🔍',label:'Scenario 2 of 7 — Receipt Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
+    preview:{icon:'🔍',label:'Scenario 2 of 8 — Receipt Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
   {id:'CLM-2024-0843',mbr:'MBR-77834',joined:'Jan 2024',suburb:'Dandenong VIC 3175',contact:'SMS',member:'David Okafor',ini:'DO',pol:'POL-2022-11092',cov:'Bronze Hospital + Extras',cnt:2,amt:'$390.00',ben:'$1,610',type:'Physiotherapy (Extras)',date:'11 Jul 2026',prov:'Active Rehab Centre',abn:'99 000 111 222',clamt:'$195.00',codes:'SP001, SP010',file:'physio_receipt_MBR77834.pdf',fsz:'212 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'fail-ph2',
-    preview:{icon:'🏦',label:'Scenario 3 of 7 — Bank Account Ring',title:'Four practices, one bank account — caught in Phase 2',body:'David\'s physio receipt is genuine and the claim looks ordinary. But ES-003 sees that four unrelated practices have paid into the same bank account in 22 days, and the account name matches none of them.'}},
+    preview:{icon:'🏦',label:'Scenario 3 of 8 — Bank Account Ring',title:'Four practices, one bank account — caught in Phase 2',body:'David\'s physio receipt is genuine and the claim looks ordinary. But ES-003 sees that four unrelated practices have paid into the same bank account in 22 days, and the account name matches none of them.'}},
   {id:'CLM-2024-0844',mbr:'MBR-55901',joined:'Nov 2025',suburb:'Springvale VIC 3171',contact:'SMS',member:'Linda Pham',ini:'LP',pol:'POL-2020-73341',cov:'Gold Hospital + Extras',cnt:7,amt:'$2,100.00',ben:'$400',type:'Dental (Extras)',date:'13 Jul 2026',prov:'Metro Dental Group',abn:'77 345 678 012',clamt:'$264.00',codes:'011, 121',file:'dental_receipt_MBR55901.pdf',fsz:'267 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'fail-ph2',
-    preview:{icon:'📱',label:'Scenario 4 of 7 — Device Ring',title:'Five members, one device — caught in Phase 2',body:'Linda\'s dental claim looks ordinary on its own. But ES-002 sees five unrelated members lodging from the same device in 26 hours — different surnames, addresses and policies. This claim is the one that tips it over the threshold.'}},
+    preview:{icon:'📱',label:'Scenario 4 of 8 — Device Ring',title:'Five members, one device — caught in Phase 2',body:'Linda\'s dental claim looks ordinary on its own. But ES-002 sees five unrelated members lodging from the same device in 26 hours — different surnames, addresses and policies. This claim is the one that tips it over the threshold.'}},
   {id:'CLM-2024-0845',mbr:'MBR-29034',joined:'Jun 2018',suburb:'Brunswick VIC 3056',contact:'Email',member:'Michael Torres',ini:'MT',pol:'POL-2018-55601',cov:'Silver Hospital + Extras',cnt:4,amt:'$920.00',ben:'$580',type:'Optical (Extras)',date:'10 Jul 2026',prov:'ClearView Optometry',abn:'33 456 789 123',clamt:'$390.00',codes:'10801, 10712',file:'optical_receipt_MBR29034.pdf',fsz:'318 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph3',
-    preview:{icon:'🧠',label:'Scenario 5 of 7 — Shared Practitioner',title:'Passes Phases 1 & 2 — the network graph finds the link in Phase 3',body:'Michael\'s optical claim clears receipt forensics and all three event strategies. But the network graph finds a 2-hop path: the optometrist on the claim at ClearView Optometry also bills through two practices already under investigation.'}},
+    preview:{icon:'🧠',label:'Scenario 5 of 8 — Shared Practitioner',title:'Passes Phases 1 & 2 — the network graph finds the link in Phase 3',body:'Michael\'s optical claim clears receipt forensics and all three event strategies. But the network graph finds a 2-hop path: the optometrist on the claim at ClearView Optometry also bills through two practices already under investigation.'}},
   {id:'CLM-2024-0846',mbr:'MBR-61203',joined:'Feb 2026',suburb:'Sunshine VIC 3020',contact:'SMS',member:'Angela Wu',ini:'AW',pol:'POL-2023-98811',cov:'Gold Hospital + Extras',cnt:1,amt:'$195.00',ben:'$1,805',type:'Physiotherapy (Extras)',date:'15 Jul 2026',prov:'Prime Physio & Sports',abn:'55 678 901 234',clamt:'$230.00',codes:'SP001, SP015',file:'physio_receipt_MBR61203.pdf',fsz:'198 KB',h1:'Lodge your physio claim',hs:'Treatment sessions · assessed on submission',outcome:'fail-ph3',
-    preview:{icon:'🕸️',label:'Scenario 6 of 7 — Organised Fraud Ring',title:'Passes Phases 1 & 2 — network graph reveals a fraud ring',body:'Angela\'s claim is clean on the surface and clears both earlier phases. But the network graph traces a 3-hop connection from this provider through a shared IP to a confirmed fraud member — uncovering Community #47, a ring of 14 members and 3 providers.'}},
+    preview:{icon:'🕸️',label:'Scenario 6 of 8 — Organised Fraud Ring',title:'Passes Phases 1 & 2 — network graph reveals a fraud ring',body:'Angela\'s claim is clean on the surface and clears both earlier phases. But the network graph traces a 3-hop connection from this provider through a shared IP to a confirmed fraud member — uncovering Community #47, a ring of 14 members and 3 providers.'}},
   {id:'CLM-2024-0847',mbr:'MBR-80174',joined:'Sep 2022',suburb:'Northcote VIC 3070',contact:'Email',member:'Priya Raman',ini:'PR',pol:'POL-2022-31905',cov:'Gold Hospital + Extras',cnt:2,amt:'$412.00',ben:'$1,588',type:'Dental (Extras)',date:'16 Jul 2026',prov:'Merri Creek Dental Studio',abn:'36 757 192 913',clamt:'$448.00',codes:'012, 114, 532',file:'dental_quote_MBR80174.pdf',fsz:'231 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'reject-preflight',
-    preview:{icon:'🧾',label:'Scenario 7 of 7 — Not a Claimable Receipt',title:'A quotation, not a receipt — stopped in pre-flight',body:'Priya uploads what looks like a dental invoice. It is a treatment plan and quotation for work the claimant has not had done. Caught in pre-flight, before a single forensic AI call is spent on it.'}},
+    preview:{icon:'🧾',label:'Scenario 7 of 8 — Not a Claimable Receipt',title:'A quotation, not a receipt — stopped in pre-flight',body:'Priya uploads what looks like a dental invoice. It is a treatment plan and quotation for work the claimant has not had done. Caught in pre-flight, before a single forensic AI call is spent on it.'}},
+  {id:'CLM-2024-0848',mbr:'MBR-44120',joined:'Mar 2021',suburb:'Ferntree Gully VIC 3156',contact:'Email',member:'Oliver Hartmann',ini:'OH',pol:'POL-2021-19884',cov:'Gold Hospital + Extras',cnt:5,amt:'$1,140.00',ben:'$860',type:'Physiotherapy (Extras)',date:'15 Jul 2026',prov:'Valley Physio & Rehab Centre',abn:'91 632 847 502',clamt:'$270.00',codes:'500, 515, 580, 590',file:'physio_receipt_MBR44120.pdf',fsz:'268 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'reject-preflight',
+    preview:{icon:'🧾',label:'Scenario 8 of 8 — Already Paid',title:'A genuine receipt, already settled — stopped in pre-flight',body:'Oliver uploads a genuine physio receipt, stamped PAID by the practice. The document is authentic in every respect. It is also not claimable — the account is already settled, and the stamp says so.'}},
 ];
 
 // Per-scenario, per-phase one-sentence explanation shown in rolling mode
@@ -1556,6 +1564,7 @@ const PHASE_DESC=[
     ph3:'Tracing the provider\'s network up to 3 hops out — using the device and geolocation signals captured at submission — looking for links into known fraud communities.',
   },
   {}, // CLM-0847: never reaches the pipeline
+  {}, // CLM-0848: never reaches the pipeline
 ];
 
 // Shown in the band AFTER a phase resolves — states the finding.
@@ -1575,6 +1584,7 @@ const PHASE_RESULT_DESC=[
     ph2:'All three event strategies clear — no signal raised. Every strategy sees one claim at a time — no single claim contains the connection.',
     ph3:'3-hop link via the shared submission IP into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
   {}, // CLM-0847: never reaches the pipeline
+  {}, // CLM-0848: never reaches the pipeline
 ];
 
 const PHASES=[
@@ -1654,6 +1664,8 @@ const PHASES=[
     {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Provider ABC → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
   ]}},
   // CLM-0847: rejected at pre-flight, so the pipeline never opens.
+  {ph1:null,ph2:null,ph3:null},
+  // CLM-0848: rejected at pre-flight (PAID stamp), so the pipeline never opens.
   {ph1:null,ph2:null,ph3:null},
 ];
 
@@ -1964,9 +1976,9 @@ function rollingAdvanceAfterPhase(){
 
 // ══════════════════════════════════════════════════════
 // SCENARIO PICKER
-// One trigger in the control bar opens a menu of the seven
+// One trigger in the control bar opens a menu of the eight
 // scenarios. Arrow keys move through it; Esc or a click
-// outside closes it. Keys 1–7 still work from anywhere.
+// outside closes it. Keys 1–8 still work from anywhere.
 // ══════════════════════════════════════════════════════
 const ScenarioPicker={
   isOpen(){ return !$('scen-menu').hidden; },
@@ -2403,7 +2415,8 @@ const SignalPanel={
       const doneAt=i=>n===1?5000:Math.round(800+i*(8400/(n-1)));
       sch=sigs.map((_,i)=>({start:i?doneAt(i-1):0, done:doneAt(i)}));
     }
-    const cap=opts.caption||(sig=>'cost:'+sig.cost);
+    // A check's own caption (preflight:<check id>) wins over its cost type's
+    const cap=opts.caption||(sig=>Captions.lookup('preflight:'+sig.id)?'preflight:'+sig.id:'cost:'+sig.cost);
     sigs.forEach((sig,i)=>{
       addTimer(()=>{
         if(i>0){ const pv=sigs[i-1]; if(pv.verdict!=='flag'&&pv.verdict!=='fail') this.toggle(els[i-1],false); }

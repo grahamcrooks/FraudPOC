@@ -2,7 +2,7 @@
 
 ## Keyboard Shortcuts
 
-- 1-7 → Jump to CLM-0841 through CLM-0847
+- 1-8 → Jump to CLM-0841 through CLM-0848
 - 0 → Restart demo (returns to Slide 1, clears the claim form)
 - D → Go to Demo mode
 - S → Go to Slides mode
@@ -56,7 +56,7 @@
 - Checks: network graph traversal, up to 3 hops from every entity the claim touches. Fraud case similarity matching is planned.
 - Result: PASS or FLAGGED
 
-## The Seven Scenarios at a Glance
+## The Eight Scenarios at a Glance
 
 | ID       | Member  | Ph1  | Ph2  | Ph3  | Outcome                  |
 
@@ -75,6 +75,8 @@
 | CLM-0846 | Angela  | PASS | PASS | FLAG | Phase 3: Network connect |
 
 | CLM-0847 | Priya   | —    | —    | —    | Pre-flight: Quotation rejected |
+
+| CLM-0848 | Oliver  | —    | —    | —    | Pre-flight: Stamped PAID, rejected |
 
 ## Presentation Flow (15-20 minutes)
 

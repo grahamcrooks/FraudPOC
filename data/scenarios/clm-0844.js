@@ -143,10 +143,10 @@
     {
       "id": "SIG-INVALID-KEYWORDS",
       "name": "Disqualifying content",
-      "summary": "10 terms checked · none found",
+      "summary": "11 terms checked · none found",
       "cost": "rule",
       "lookedAt": "Extracted receipt text",
-      "rule": "10 disqualifying terms, for example non-medical, quotation, paid, proforma",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
       "found": "None",
       "verdict": "pass",
       "conclusion": "No disqualifying content"
@@ -154,13 +154,13 @@
     {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Receipt completeness",
-      "summary": "$264.00 paid of $264.00 · ABN ✓ · 2 lines · signed",
+      "summary": "$264.00 received of $264.00 · ABN ✓ · 2 lines · signed",
       "cost": "rule",
       "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
-      "rule": "Paid in full, valid tax invoice, itemised, signed",
+      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
       "found": "$264.00 received against $264.00 charged · ABN present · 2 itemised lines · signed",
       "verdict": "pass",
-      "conclusion": "Complete and paid"
+      "conclusion": "Complete — member paid in full"
     },
     {
       "id": "SIG-CLAIM-VALUE",

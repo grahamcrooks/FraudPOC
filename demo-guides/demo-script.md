@@ -21,7 +21,7 @@ Each step has three parts:
 | --- | --- |
 | S / D | Slides / Demo |
 | ← / → or Space | Previous / next slide |
-| 1 to 7 | Open scenario CLM-0841 to CLM-0847 |
+| 1 to 8 | Open scenario CLM-0841 to CLM-0848 |
 | L | Replay the sign-in scene (or click the session chip in the portal header) |
 | C | Captions on or off |
 | R | Rolling demo on or off. Space pauses and resumes it |
@@ -30,7 +30,7 @@ Each step has three parts:
 | 0 | Restart: back to slide 1, claim form cleared |
 | F | Fullscreen |
 
-### The seven scenarios
+### The eight scenarios
 
 | Key | Claim | Member | Where it stops | Outcome |
 | --- | --- | --- | --- | --- |
@@ -41,6 +41,7 @@ Each step has three parts:
 | 5 | CLM-0845 | Michael Torres | Phase 3, graph | Shared practitioner, SIU queue, HIGH, investigation screen |
 | 6 | CLM-0846 | Angela Wu | Phase 3, graph | Fraud ring Community #47, SIU queue, HIGH |
 | 7 | CLM-0847 | Priya Raman | Pre-flight | Quotation rejected, no pipeline |
+| 8 | CLM-0848 | Oliver Hartmann | Pre-flight | Genuine receipt stamped PAID, rejected, no pipeline |
 
 ## Part 1: The slides
 
@@ -136,8 +137,8 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
   | Receipt type | AI call | Must be a tax invoice from a registered health provider |
   | Field extraction | AI call | Extract provider, ABN, service date, line items and total |
   | Extraction confidence | AI call | Every critical field at or above 0.70, or the claim goes to human review |
-  | Disqualifying content | Business rule | 10 disqualifying terms, for example non-medical, quotation, paid, proforma |
-  | Receipt completeness | Business rule | Paid in full, valid tax invoice, itemised, signed |
+  | Disqualifying content | Business rule | 11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp |
+  | Receipt completeness | Business rule | Amount received recorded against amount charged, valid tax invoice, itemised, signed |
   | Claim value | Business rule | Flag at $5,000 or above |
   | Device and location | Capture | Recorded for later evaluation; no verdict |
 
@@ -290,8 +291,8 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 - **Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work the claimant hasn't had done, and nothing has been paid. Pre-flight catches it with business rules, so no forensic AI is spent and nothing reaches the fraud team. This is the case for cheap checks first.
 - **Under the hood**:
   - The first four checks pass: the layout reads as a receipt, 11 of 11 fields, confidence 0.94.
-  - Disqualifying content fails: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, 2 of 10 terms.
-  - Receipt completeness fails: $0.00 paid of $448.00, not signed.
+  - Disqualifying content fails: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, 2 of 11 terms.
+  - Receipt completeness fails: $0.00 received of $448.00, not signed.
   - Any fail routes to Reject Document.
 - **Check**:
   - There are two FAIL badges. The panel reads "Claim rejected — not a claimable receipt".
@@ -299,22 +300,36 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - The note reads "No forensic AI calls were spent on this claim".
   - Run Fraud Detection does not appear, and the pipeline never opens.
 
+### CLM-0848, Oliver Hartmann: already paid (stops in pre-flight)
+
+- **Say**: Oliver uploads a genuine physio receipt. It's authentic in every respect: the practitioner signed it, the ABN is valid and nothing has been altered. But the practice has stamped it PAID, so the account is already settled and there is nothing left to claim. That's a property of the document, readable from the page, so a business rule catches it in pre-flight at no AI cost.
+- **Under the hood**:
+  - Five checks pass: the physio receipt layout, 11 of 11 fields, confidence 0.93, complete and paid, $270.00 claimable.
+  - Disqualifying content fails: the PAID stamp across the services table, 1 of 11 terms. The rule matches the stamp, not the word "paid" wherever it occurs, so "amount paid", "paid in full", "unpaid" and "prepaid" don't trigger it.
+  - The receipt has no forensic finding, and that matters: the document is genuine, it just isn't claimable.
+  - Any fail routes to Reject Document.
+- **Check**:
+  - There is one FAIL badge, on Disqualifying content. The panel reads "Claim rejected — nothing to claim" with the reason "Receipt is stamped PAID · the account is already settled".
+  - The stage is Reject Document and the status Resolved-Rejected.
+  - The note reads "The receipt is genuine and complete. It simply isn't claimable."
+  - Run Fraud Detection does not appear, and the pipeline never opens.
+
 ## Part 4: Rolling demo
 
 - **Say**: Nothing; it runs unattended, for a stand or a video.
 - **Under the hood**:
-  - R starts it: the slides advance once, then the seven scenarios loop.
+  - R starts it: the slides advance once, then the eight scenarios loop.
   - Each scenario shows a preview banner, then runs end to end with captions.
   - Phases pause 5.5 seconds between each other, and the demo holds on each outcome before moving on.
   - Scenarios with a sign-in scene (CLM-0841, CLM-0844) take about 14 seconds longer.
 - **Check**:
   - For CLM-0841: Phase 2 starts at about 57 seconds, Phase 3 at about 80 seconds, and the outcome at about 93 seconds.
-  - CLM-0847 holds on the reject panel for about 9 seconds, then CLM-0841 starts.
+  - CLM-0847 and CLM-0848 each hold on the reject panel for about 9 seconds. After CLM-0847 comes CLM-0848, then CLM-0841.
   - Space pauses and resumes. There are no console errors.
 
 ## Known limitations
 
-- **Captions** exist for CLM-0841, CLM-0844 and CLM-0847 only. The other scenarios show none.
+- **Captions** exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only. The other scenarios show none. CLM-0848 has two: one on the failing check and one on the outcome.
 - **Simulated data**: every scenario is simulated with illustrative data. Names, numbers and addresses are fictional.
 - **CLM-0846's path** passes through "Provider ABC", a placeholder name.
 - **The claim-to-receipt mismatch weight** (−0.07) is small. A mismatch on an otherwise genuine receipt would still score 0.93 and pass. How a mismatch should be routed on its own is still to be decided.
