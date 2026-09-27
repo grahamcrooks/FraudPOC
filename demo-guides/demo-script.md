@@ -49,7 +49,7 @@ What stops the demo depends on the mode:
 | Key | Claim | Member | Where it stops | Outcome |
 | --- | --- | --- | --- | --- |
 | 1 | CLM-0841 | James Kowalski | Runs all three phases | Clean, sent for adjudication |
-| 2 | CLM-0842 | Sarah Nguyen | Phase 1 | Tampered receipt, score 0.28, investigator queue, HIGH |
+| 2 | CLM-0842 | Sarah Nguyen | Pre-flight reconciliation fails, then Phase 1 | Doctored total, score 0.28, investigator queue, HIGH |
 | 3 | CLM-0843 | David Okafor | Phase 2, ES-003 | Bank account ring, SIU queue, HIGH |
 | 4 | CLM-0844 | Linda Pham | Phase 2, ES-002 | Device ring, SIU queue, HIGH |
 | 5 | CLM-0845 | Michael Torres | Phase 3, graph | Shared practitioner, SIU queue, HIGH, investigation screen |
@@ -293,7 +293,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 - **Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work the claimant hasn't had done, and nothing has been paid. Pre-flight catches it with business rules, so no forensic AI is spent and nothing reaches the fraud team. This is the case for cheap checks first.
 - **Under the hood**:
-  - The first four checks pass: the layout reads as a receipt, 11 of 11 fields, confidence 0.94.
+  - Receipt type, field extraction, line item reconciliation, claim value and extraction confidence pass: the layout reads as a receipt, 11 of 11 fields, the items reconcile to $448.00, confidence 0.94.
   - Disqualifying content fails: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, 2 of 11 terms.
   - Receipt completeness fails: $0.00 received of $448.00, not signed.
   - Any fail routes to Reject Document.
@@ -307,7 +307,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 - **Say**: Oliver uploads a genuine physio receipt. It's authentic in every respect: the practitioner signed it, the ABN is valid and nothing has been altered. But the practice has stamped it PAID, so the account is already settled and there is nothing left to claim. That's a property of the document, readable from the page, so a business rule catches it in pre-flight at no AI cost.
 - **Under the hood**:
-  - Five checks pass: the physio receipt layout, 11 of 11 fields, confidence 0.93, complete and paid, $270.00 claimable.
+  - Six checks pass: the physio receipt layout, 11 of 11 fields, complete and paid, the items reconcile to $270.00, $270.00 claimable, confidence 0.93.
   - Disqualifying content fails: the PAID stamp across the services table, 1 of 11 terms. The rule matches the stamp, not the word "paid" wherever it occurs, so "amount paid", "paid in full", "unpaid" and "prepaid" don't trigger it.
   - The receipt has no forensic finding, and that matters: the document is genuine, it just isn't claimable.
   - Any fail routes to Reject Document.
@@ -336,4 +336,4 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 - **Captions**: every check in every scenario has a caption naming the component behind it, what it's for and what it costs. While presenting, pre-flight shows three (the AI reads, the business rules, the decision); the rolling demo shows one per check. Sign-in, upload and outcome captions exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only.
 - **Simulated data**: every scenario is simulated with illustrative data. Names, numbers and addresses are fictional.
 - **The reconciliation weight** (−0.07) is small. A total that doesn't reconcile, on an otherwise genuine receipt, would still score 0.93 in Phase 1 and pass. How that case should be routed is still to be decided.
-- **Older guides**: the complete, presenter and technical guides are out of date. This script replaces them for running the demo.
+- **Older guides**: the complete, presenter and technical guides are out of date. This script replaces them for running the demo, and [`run-through-script.md`](run-through-script.md) is the presenter's script for the one-hour session.
