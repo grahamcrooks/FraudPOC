@@ -33,6 +33,10 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 - [Scenario data](data/scenarios/README.md): per-scenario data files (CLM-0841 to CLM-0848): the session block for the sign-in scene, the pre-flight signals and the checks for each pipeline phase.
 - [Check captions](data/check-captions.js): the default caption for every pre-flight and pipeline check, shared by all scenarios: which component produced the verdict, why it runs where it does and what it costs.
 
+## Assets
+
+- [Slide images](assets/slides/): the five presentation slides (agenda, problem, business case, three phases, why Pega) as full-slide images, shown by `index.html` on the slides screen.
+
 ## Tests
 
 - [Stage 1 document validity](tests/stage1-document-validity/): test material for Phase 1 receipt forensics (contents to be added).

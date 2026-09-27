@@ -19,40 +19,42 @@
 
 Time: 30 seconds – 1 minute (quick roadmap, don’t over-explain)
 
-### Slide 2: The Problem
+### Slide 2: Problem (why prevention, not just recovery)
 
 - Talk about:
-  - 1–3% of Bupa’s claims are estimated to contain fraud, waste or abuse — a conservative estimate, well below the 3–10% global industry benchmark
-  - Healthcare is Australia’s \#1 most targeted sector for data breaches
-  - Recovery happens after a claim is paid. Prevention happens before. AI is what makes that shift possible.
+  - Hidden anomalies in routine claims — unusual service patterns, duplicate items and incorrect billing buried in high volumes of legitimate claims
+  - Manual review is reactive and slow — rule-based checks and audits catch issues after the claim is paid
+  - Leakage compounds before recovery — losses accumulate across large claim volumes and flow into premiums
+  - Members and providers need protection — fraud undermines trust and inflates the cost of care
+- Useful supporting facts (not on the slide): 1–3% of Bupa’s claims are estimated to contain fraud, waste or abuse, against a 3–10% global benchmark (PKF Littlejohn / CCFS); healthcare is Australia’s most targeted sector for data breaches (OAIC, Jan–Jun 2023)
 
 Time: 1-2 minutes
 
-### Slide 3: The Business Case for Prevention
+### Slide 3: Business Case (the value of earlier detection)
 
-- Talk about:
-  - Background — Bupa has traditionally caught fraud after a claim is paid, through audits and recoveries. This POC tests whether detection can happen before payment.
-  - What the POC will entail — extract and analyse ~10,000 historical claims receipts, replayed initially through Phase 1, with future phases to follow
-  - How the POC will work — Extract, Analyse, Classify, Route, Validate
-  - Expected outcome — fraud detection capability, cases for investigator review, recovery potential (exact figures to be confirmed against the Phase 1 POC results)
-  - What’s needed — an executive project owner, AI Council approval, and resource/budget commitment for the Phase 1 build
+- Talk about the four outcomes: reduce improper payments, prioritise high-risk claims, improve operational efficiency, protect member trust
+- The claims analytics panel is illustrative: the figures are not Bupa data. If asked, say the real numbers come from the Phase 1 POC, which replays about 10,000 historical receipts
 
 Time: 2 minutes
 
-### Slide 4: Three Phases (One Intelligent Pipeline)
+### Slide 4: Three Phases (a practical path from detection to prevention)
 
 - Talk about:
-  - Phase 1 — Receipt Forensics: is this document real and valid?
-  - Phase 2 — Cross-Claim Signals: does this claim make sense?
-  - Phase 3 — Network Intelligence: who else is involved?
-  - Pega Alerts & Investigations Management (AIM) — every AI signal is reviewed by a human investigator; AI assists, humans decide
+  - 01 Detection POC — identify suspicious claims patterns
+  - 02 Workflow & Review — triage, prioritise and investigate cases
+  - 03 Prevention at Scale — real-time intervention and continuous optimisation
+- Note: this slide’s phases are the delivery path. In the demo, “Phase 1, 2, 3” means the three layers of checks every claim goes through (receipt forensics, cross-claim signals, network intelligence). Say so when you move to the demo, so the audience doesn’t mix them up
 
 Time: 2 minutes
 
-### Slide 5: Powered by Pega (Why Pega)
+### Slide 5: Why Pega (decisioning, workflow and orchestration in one platform)
 
 - Talk about:
-  - Proven platform, predictable per-case cost, self-improving, APRA CPS 230 alignment, fast to deploy, human oversight on every case
+  - Decisioning & business rules — real-time rules and AI-driven insights
+  - Case management & workflow — investigations, approvals and communications end to end
+  - Integration across claims data — insurer, provider and member data in one view
+  - Governance, audit trail & scale — compliance, auditability and scale
+- The impact figures at the foot of the slide are illustrative, not measured results
 - Say: “Let me show you how this works in real-time…”
 - Click “Launch Demo →” (or press D) to go to Demo mode
 
