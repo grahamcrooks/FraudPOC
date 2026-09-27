@@ -72,7 +72,7 @@ A `capture` records data rather than deciding anything. It has no verdict and us
 | `captured` | The captured values, or `"session"` to build them from this file's session block (device ID · profile · IP · location), so the panel can't disagree with the session chip. |
 | `usedBy` | Which later strategies use the data. |
 
-The checks play in array order, one every 5 seconds on the first walkthrough while presenting (`PF_STEP_FIRST`) and every 3.5 seconds after that and in the rolling demo (`PF_STEP`), with the What's happening card explaining each (text in `data/check-explainers.js`, keyed by check id). The running check expands to show its working and collapses to its summary when the next one starts. When pre-flight completes, every check opens and stays open, laid out in two columns, so the resting state (a booth loop, a pause, a screenshot) shows how every verdict was reached. Clicking a check still toggles it.
+The checks play in array order, one every 5 seconds (`PF_STEP`) in every mode, with the What's happening card explaining each (text in `data/check-explainers.js`, keyed by check id). The running check expands to show its working and collapses to its summary when the next one starts. When pre-flight completes, every check opens and stays open, laid out in two columns, so the resting state (a booth loop, a pause, a screenshot) shows how every verdict was reached. Clicking a check still toggles it.
 
 ## Routing after pre-flight
 
@@ -118,8 +118,8 @@ Every check gets its own step in every mode, so the What's happening card can be
 
 | Mode | Pre-flight | Captions |
 | --- | --- | --- |
-| Presenting and step-by-step (the default) | 5 seconds a check on the first walkthrough (about 35 seconds for seven; restart brings it back), then 3.5 seconds (about 25) | Grouped: the AI reads, the business rules, the decision |
-| Rolling demo (booth, unattended) | 3.5 seconds a check, about 25 seconds for seven | One per check, then the decision |
+| Presenting and step-by-step (the default) | 5 seconds a check, about 35 seconds for seven | Grouped: the AI reads, the business rules, the decision |
+| Rolling demo (booth, unattended) | 5 seconds a check, about 35 seconds for seven | One per check, then the decision |
 
 The pipeline phases keep their timing in both modes, and each pipeline check shows its own caption. Every timer that waits for pre-flight (the pipeline opening, the rolling demo's next step, the resting state) reads the same duration, `preflightMs()`, so nothing can drift apart.
 
