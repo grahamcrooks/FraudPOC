@@ -74,7 +74,7 @@
 
 | CLM-0841 | James   | PASS | PASS | PASS | Clean - adjudication     |
 
-| CLM-0842 | Sarah   | FAIL | —    | —    | Phase 1: Amount mismatch |
+| CLM-0842 | Sarah   | FAIL | —    | —    | Doctored total: reconciliation fails in pre-flight, Phase 1 forensics |
 
 | CLM-0843 | David   | PASS | FAIL | —    | Phase 2: Bank account ring |
 
@@ -92,7 +92,7 @@
 
 1. **Slides 1-5 (6-8 min):** Agenda, the problem, the business case, the three-phase pipeline, why Pega
 2. **CLM-0841 (2-3 min):** Show clean baseline
-3. **CLM-0842 (2 min):** Show Phase 1 catch (amount mismatch)
+3. **CLM-0842 (2 min):** Show the doctored total: pre-flight reconciliation, then Phase 1 forensics
 4. **CLM-0843 (2 min):** Show Phase 2 catch (fake provider)
 5. **CLM-0845 + AIM (3 min):** Show Phase 3 AI + Investigation case
 6. **Dashboard (opt) (1-2 min):** Show fraud monitoring dashboard

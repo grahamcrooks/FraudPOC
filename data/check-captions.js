@@ -38,6 +38,10 @@ window.CHECK_CAPTIONS = {
     "tag": "Pre-flight · Receipt completeness",
     "text": "Data transform SetMarkerFlagResults. Amount received, ABN, itemisation, signature"
   },
+  "preflight:SIG-LINE-RECONCILIATION": {
+    "tag": "Pre-flight · Line item reconciliation",
+    "text": "Data transform, no AI cost. Arithmetic on the extracted fields: the line items must add up to the total charged"
+  },
   "preflight:SIG-CLAIM-VALUE": {
     "tag": "Pre-flight · Claim value",
     "text": "SetHighValueFlag. Recorded at $5,000 and above as context for later, not a fraud signal. It never routes a claim on its own"
@@ -50,6 +54,10 @@ window.CHECK_CAPTIONS = {
     "tag": "Pre-flight · Decision",
     "text": "Decision table Valid Claim. First matching row wins. Nothing matched, so the claim proceeds"
   },
+  "preflightForensics": {
+    "tag": "Pre-flight · Decision",
+    "text": "Decision table Valid Claim. A total that doesn't reconcile goes to forensics, not rejection: the question is how it was altered"
+  },
   "preflightRejected": {
     "tag": "Pre-flight · Decision",
     "text": "Decision table Valid Claim. First matching row wins. A reject row matched, so the claim stops here"
@@ -57,10 +65,6 @@ window.CHECK_CAPTIONS = {
   "preflightReview": {
     "tag": "Pre-flight · Decision",
     "text": "Decision table Valid Claim. First matching row wins. A review row matched, so a person decides"
-  },
-  "phase1:SIG-P1-MATCH": {
-    "tag": "Phase 1 · Claim-to-receipt match",
-    "text": "Business rule, no AI cost. It runs first because an inflated keyed amount needs no image analysis to spot"
   },
   "phase1:SIG-P1-FONT": {
     "tag": "Phase 1 · Font consistency",

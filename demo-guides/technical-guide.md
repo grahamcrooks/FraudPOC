@@ -34,7 +34,7 @@ slide
 ### 2. Demo Screen (Portal)
 
 "Phase 1 Dataset Analysis" tool with 6 real scenarios - framed as
-validating member-entered data against historical receipts, not a live
+validating receipts from the historical dataset (the member only uploads; every field is extracted), not a live
 claim portal
 
   - "Load Document" upload section (fake, instant completion)
@@ -48,7 +48,7 @@ Accumulated fraud case database
 
   - 24 cases total (6 real + 18 illustrative)
   - Filters: Member, Provider, Date, Outcome
-  - Discrepancy column - claimed-vs-receipt mismatch amount with an ↑ arrow, sortable, blank for clean claims (e.g. CLM-0842: \$42.50 ↑)
+  - Discrepancy column - how far a doctored total exceeds its line items, with an ↑ arrow, sortable, blank for clean claims (e.g. CLM-0842: \$42.50 ↑)
   - Sortable columns
   - Summary statistics
 - Keyboard: no shortcut - click the Portal / Report tabs to switch
@@ -73,14 +73,14 @@ Accumulated fraud case database
 - Result: All phases PASS
 - Purpose: Show normal flow
 
-### CLM-0842: Phase 1 Failure
+### CLM-0842: Doctored Receipt
 
 - Member: Sarah Nguyen
 - Provider: Vision Direct Pty Ltd
 - Type: Optical
-- Amount: \$487.50 (claimed) vs \$445.00 (receipt)
-- Result: FAILS - Claim-to-Receipt Match (amber warning) plus Font Consistency and Metadata & Provenance both fail (red); Phase 1 score 0.28. Phases 2 and 3 never run - this scenario is scoped to Phase 1 only.
-- Purpose: Show receipt forensics catching discrepancies - a dedicated panel appears under the Phase 1 result showing Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) and "Result: MISMATCH DETECTED"
+- Amount: stated total \$487.50 vs line items summing to \$445.00
+- Result: Line item reconciliation FAILS in pre-flight and passes the claim on to forensics; in Phase 1, Font Consistency and Metadata & Provenance both fail (red); Phase 1 score 0.28, including the reconciliation's −0.07. Phases 2 and 3 never run - this scenario is scoped to Phase 1 only.
+- Purpose: Show a doctored total caught by arithmetic and explained by forensics - a panel under the Phase 1 result shows Stated total (\$487.50) vs Line items sum to (\$445.00) vs Discrepancy (\$42.50, 10.8%), "Result: TOTAL ALTERED" and how it was altered
 
 ### CLM-0843: Phase 2 ABN Failure
 
@@ -129,7 +129,7 @@ Accumulated fraud case database
   - Field extraction from document
   - Confidence scoring
   - Disqualifying content detection
-  - Claim-to-Receipt Match (on CLM-0842)
+  - Line item reconciliation (line items against the stated total)
 - Flow (this is the upload-validation sequence, on the claim form before the pipeline modal opens):
   - 0.8s: Document type confirmed ✓
   - 3.0s: Field extraction complete ✓

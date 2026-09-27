@@ -35,6 +35,11 @@ window.CHECK_EXPLAINERS = {
     "what": "Business rules confirm the receipt has what a valid claim needs: the amount received against the amount charged, a valid ABN, itemised services and a signature.",
     "why": "An incomplete receipt goes back to the member instead of on to the fraud checks."
   },
+  "SIG-LINE-RECONCILIATION": {
+    "icon": "🧮",
+    "what": "Adds up the line items the AI read from the receipt and checks they come to the total printed on it.",
+    "why": "Whoever edits a receipt usually changes the total and leaves the breakdown alone. Catching it is simple arithmetic, at no AI cost."
+  },
   "SIG-CLAIM-VALUE": {
     "icon": "💲",
     "what": "Records whether the claim is $5,000 or more. It's context for later checks, not a fraud signal.",

@@ -44,7 +44,7 @@ evidence package.
   - Confidence scoring (Are critical fields above our confidence thresholds?)
   - Disqualifying content (Does it contain warnings like "CANCELLED" or "VOID"?)
   - Font consistency (Do suspicious patterns suggest manipulation?)
-  - Claim-to-Receipt Match (Does the claimed amount match the receipt amount? A mismatch — like CLM-0842 — surfaces a dedicated panel showing member-entered vs receipt figures and the exact discrepancy)
+  - Line item reconciliation, in pre-flight (Do the line items add up to the stated total? A doctored total — like CLM-0842 — fails here and goes on to forensics, which show how it was altered)
 
 Result: PASS or FAIL
 
@@ -93,8 +93,8 @@ PASS → Send for normal adjudication \| FLAGGED → HIGH PRIORITY → SIU
 - Phase 1: FAIL
 - Phase 2: N/A
 - Phase 3: N/A
-- Outcome: Caught in Phase 1 (Claim-to-Receipt mismatch)
-- Demo Point: Shows receipt forensics catching a discrepancy — a dedicated panel shows Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) with "Result: MISMATCH DETECTED"
+- Outcome: Total fails line item reconciliation in pre-flight; caught in Phase 1 forensics
+- Demo Point: Shows a doctored receipt — a panel shows Stated total (\$487.50) vs Line items sum to (\$445.00) vs Discrepancy (\$42.50, 10.8%) with "Result: TOTAL ALTERED"
 
 ### CLM-0843 — David Okafor
 
@@ -141,7 +141,7 @@ PASS → Send for normal adjudication \| FLAGGED → HIGH PRIORITY → SIU
 - Scenario picker - Shows the current claim; click it to choose any of the eight scenarios (CLM-0841 to CLM-0848), or press 1–8
 - ⌨ Presenting - Shows you're in presentation mode
 - ◀ Slides \| Demo ▶ - Toggle between slides and demo mode
-- 📋 Portal - Phase 1 Dataset Analysis tool (default) - validates member-entered data against historical receipts
+- 📋 Portal - Phase 1 Dataset Analysis tool (default) - analyses receipts from the historical dataset (the member only uploads)
 - 📊 Report - Fraud dashboard with all 24 cases
 
 ### Document Validation Sequence
@@ -158,7 +158,7 @@ Click the 📊 Report tab to access the accumulated fraud case database.
 - Shows:
   - 24 fraud cases (6 demo + 18 realistic examples)
   - Filters for member, provider, date, outcome
-  - Discrepancy column - flags claimed-vs-receipt mismatches (e.g. CLM-0842: \$42.50 ↑, 85%, "Mismatch Detected"); blank for clean claims
+  - Discrepancy column - flags doctored totals that exceed their line items (e.g. CLM-0842: \$42.50 ↑, 85%, "Doctored Total"); blank for clean claims
   - Sortable columns
   - Summary statistics
 
