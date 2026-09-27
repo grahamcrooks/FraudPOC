@@ -34,6 +34,10 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 - [Check explainers](data/check-explainers.js): the plain-English text for the What's happening card beside pre-flight: what each check does and why it matters.
 - [Check captions](data/check-captions.js): the default caption for every pre-flight and pipeline check, shared by all scenarios: which component produced the verdict, why it runs where it does and what it costs.
 
+## Assets
+
+- [Slide images](assets/slides/): the five presentation slides (agenda, problem, business case, three phases, why Pega) as full-slide images, shown by `index.html` on the slides screen.
+
 ## Tests
 
 - [Stage 1 document validity](tests/stage1-document-validity/): test material for Phase 1 receipt forensics (contents to be added).

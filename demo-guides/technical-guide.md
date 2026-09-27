@@ -23,10 +23,11 @@ Five presentation slides that set context, plus one manual-access backup
 slide
 
   - Slide 1: Agenda (Background, Quantify Bupa Fraud POC, Target Outcome, Requirements)
-  - Slide 2: The Problem (the fraud estimate and why prevention beats recovery)
-  - Slide 3: The Business Case for Prevention (POC scope, methodology, outcome, requirements)
-  - Slide 4: Three Phases (One Intelligent Pipeline)
-  - Slide 5: Powered by Pega (Why Pega) - ends with the Launch Demo button
+  - Slide 2: Problem (why prevention, not just recovery)
+  - Slide 3: Business Case (the value of earlier detection)
+  - Slide 4: Three Phases (a practical path from detection to prevention)
+  - Slide 5: Why Pega - ends with the Launch Demo button
+  - Slides 1 to 5 are full-slide images in `assets/slides/`
   - Backup slide: "Three Hops" identity-graph diagram - reachable only via the B key or the dashed Backup button, not part of the main sequence or Rolling Demo
 - Keyboard: S = Slides mode, Space / ← → = previous-next slide, B = jump to Backup slide
 

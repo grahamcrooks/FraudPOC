@@ -7,7 +7,8 @@
 - D → Go to Demo mode
 - S → Go to Slides mode
 - R → Toggle Rolling Demo (stops it completely)
-- Space → Next slide (Slides screen) / Pause-Resume (Rolling Demo) / skip the sign-in scene. Does nothing else in the demo
+- Space → Next slide (Slides screen) / Pause-Resume the sign-in scene / Pause-Resume (Rolling Demo). Does nothing else in the demo
+- Esc → Skip the sign-in scene to its end
 - ← → → Previous / Next slide (Slides screen only)
 - F → Toggle Fullscreen
 - P → Toggle Step-by-Step mode (pauses after every phase result until you click Continue)
@@ -17,6 +18,7 @@
 
 ## Stopping and Pausing
 
+- Sign-in scene: Space pauses it where it is; Space again resumes; Esc skips to the end.
 - Presenting: nothing to stop. The demo waits for Run Fraud Detection and Continue; only a step's few seconds of animation can't be paused.
 - On the slides, Space moves to the next slide, so don't press it by accident.
 - Lots of questions expected: press P, and the demo pauses after every phase result.
