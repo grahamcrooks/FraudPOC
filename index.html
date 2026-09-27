@@ -122,39 +122,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .img-slide .snav{background:rgba(2,8,20,.6);border-color:rgba(255,255,255,.25);color:#fff}
 .img-slide .snav.primary{background:var(--teal);border-color:var(--teal)}
 @media (prefers-reduced-motion:reduce){.img-slide.active .ps-img{animation:none}}
-/* ── SLIDES 2–3 — HTML slides in the backup slide's treatment (bk-eyebrow, bk-title,
-   the dark slide gradient). Held dark in both themes, like the image slides. Type is
-   sized by the tighter of width and height so it fits 1366×768 as well as 1920×1080. ── */
-#slides-screen .pslide.hx-slide{background:linear-gradient(145deg,#020B18 0%,#051428 60%,#040F1E 100%);padding:clamp(24px,4.5vh,48px) clamp(28px,5vw,88px) 0}
-.hx-slide .bk-eyebrow{font-size:clamp(12px,min(1vw,1.6vh),15px)}
-.hx-slide .bk-title{margin-top:0;font-size:clamp(26px,min(3.2vw,5.4vh),52px);line-height:1.15;max-width:34ch;text-wrap:balance;margin-bottom:clamp(14px,3vh,32px)}
-.hx-rows{display:flex;flex-direction:column;gap:clamp(8px,1.6vh,16px);flex:1;min-height:0}
-.hx-row{display:grid;grid-template-columns:clamp(150px,15vw,240px) 1fr;gap:clamp(16px,2vw,32px);align-items:start;border-radius:10px;padding:clamp(10px,2vh,22px) clamp(16px,1.8vw,28px);border-left:4px solid #3A5578;background:rgba(255,255,255,.04)}
-.hx-label{font-size:clamp(13px,min(1.1vw,1.8vh),17px);font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:#9FB4D4;padding-top:.2em}
-.hx-desc{font-size:clamp(15px,min(1.35vw,2.2vh),22px);font-weight:600;line-height:1.4;color:#E4ECF7}
-.hx-hard{margin-top:.35em;font-size:clamp(13px,min(1.15vw,1.9vh),19px);line-height:1.45;color:#9FB4D4}
-/* Slide 2: weight rises row by row; the network is the one that matters */
-.hx-w1{border-left-color:#3A5578}
-.hx-w2{border-left-width:6px;border-left-color:var(--teal);background:rgba(16,165,172,.08)}
-.hx-w2 .hx-label{color:#5FD3D9}
-.hx-w3{border-left-width:10px;border-left-color:var(--orange);background:rgba(247,105,35,.12);box-shadow:0 0 0 1px rgba(247,105,35,.35)}
-.hx-w3 .hx-label{color:#FF9B62;font-size:clamp(15px,min(1.3vw,2.1vh),20px)}
-.hx-w3 .hx-desc{color:#fff;font-size:clamp(17px,min(1.55vw,2.6vh),26px);font-weight:700}
-.hx-w3 .hx-hard{color:var(--gold);font-weight:600;font-size:clamp(15px,min(1.3vw,2.2vh),21px)}
-/* Slide 3: numbered questions, coloured as the demo's stages (pre-flight, Phase 1, 2, 3) */
-.hx-q{grid-template-columns:clamp(56px,6vw,96px) 1fr;align-items:center;border-left-color:var(--qc)}
-.hx-num{font-family:'Courier New',monospace;font-size:clamp(28px,min(3vw,5vh),52px);font-weight:800;line-height:1;color:var(--qc)}
-.hx-q .hx-desc{font-size:clamp(17px,min(1.6vw,2.7vh),27px);font-weight:700;color:#fff}
-.hx-q1{--qc:var(--gold)}.hx-q2{--qc:#FF8A47}.hx-q3{--qc:#3CC6CD}.hx-q4{--qc:#9BA2F0}
-/* Footer band: full width, above the dots and buttons */
-.hx-band{margin:clamp(12px,2.4vh,26px) calc(-1 * clamp(28px,5vw,88px)) 0;padding:clamp(14px,2.6vh,28px) clamp(28px,5vw,88px) clamp(56px,9vh,80px);background:linear-gradient(90deg,rgba(255,200,54,.14),rgba(255,200,54,.04));border-top:2px solid rgba(255,200,54,.55);font-size:clamp(19px,min(2vw,3.3vh),34px);font-weight:800;line-height:1.3;color:#fff;text-wrap:balance}
-.hx-band em{font-style:normal;color:var(--gold)}
-.hx-band.sm{font-size:clamp(16px,min(1.5vw,2.6vh),26px);font-weight:700}
-@media (max-width:760px){.hx-row{grid-template-columns:1fr;gap:6px}.hx-q{grid-template-columns:auto 1fr}}
-.hx-slide .sdot{background:rgba(255,255,255,.3)}
-.hx-slide .sdot.on{background:var(--gold)}
-.hx-slide .snav{background:rgba(2,8,20,.6);border-color:rgba(255,255,255,.25);color:#fff}
-.hx-slide .snav.primary{background:var(--teal);border-color:var(--teal)}
 
 
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
@@ -747,7 +714,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
   <div id="slide-btns" style="display:flex;gap:4px">
     <button class="sc slide-on" onclick="goSlide(0)" id="sb0" title="Agenda">①<span class="sb-name"> Agenda</span></button>
     <button class="sc" onclick="goSlide(1)" id="sb1" title="Problem">②<span class="sb-name"> Problem</span></button>
-    <button class="sc" onclick="goSlide(2)" id="sb2" title="Four Questions">③<span class="sb-name"> Four Questions</span></button>
+    <button class="sc" onclick="goSlide(2)" id="sb2" title="Business Case">③<span class="sb-name"> Business Case</span></button>
     <button class="sc" onclick="goSlide(3)" id="sb3" title="Three Phases">④<span class="sb-name"> Three Phases</span></button>
     <button class="sc" onclick="goSlide(4)" id="sb4" title="Why Pega">⑤<span class="sb-name"> Why Pega</span></button>
     <button class="sc" onclick="goSlide(5)" id="sb5" style="border-style:dashed;opacity:.75" title="Backup slide — not part of the main sequence or rolling demo">🔧<span class="sb-name"> Backup</span></button>
@@ -802,43 +769,18 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <div class="slide-nav"><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
-    <!-- SLIDE 2 — THE SHAPE OF THE PROBLEM (HTML; assets/slides/slide-2-problem.webp is kept but unused) -->
-    <div class="pslide dark hx-slide" id="ps1">
-      <div class="bk-eyebrow">The shape of the problem</div>
-      <h2 class="bk-title">Three kinds of fraud. They don't get caught the same way.</h2>
-      <div class="hx-rows">
-        <div class="hx-row hx-w1">
-          <div class="hx-label">The member</div>
-          <div><div class="hx-desc">An altered receipt. A claim submitted twice. A quote claimed as an invoice.</div>
-          <div class="hx-hard">Hard to catch at volume — but the evidence is on the document.</div></div>
-        </div>
-        <div class="hx-row hx-w2">
-          <div class="hx-label">The provider</div>
-          <div><div class="hx-desc">Services billed that were never delivered. Item codes that don't match the treatment.</div>
-          <div class="hx-hard">Every claim is plausible. The pattern only shows across a provider's whole book.</div></div>
-        </div>
-        <div class="hx-row hx-w3">
-          <div class="hx-label">The network</div>
-          <div><div class="hx-desc">Members and providers working together. Recruited members, shared devices, one account collecting from several practices.</div>
-          <div class="hx-hard">Every claim is genuine. Every member is real. No single claim looks wrong, because none of them is.</div></div>
-        </div>
-      </div>
-      <div class="hx-band">Detection gets harder <em>as the money gets bigger.</em></div>
+    <!-- SLIDE 2 — THE PROBLEM -->
+    <div class="pslide dark img-slide" id="ps1">
+      <div class="ps-fill" style="background-image:url(assets/slides/slide-2-problem.webp)"></div>
+      <img class="ps-img" src="assets/slides/slide-2-problem.webp" alt="Problem: why prevention, not just recovery. 01 Hidden anomalies in routine claims. 02 Manual review is reactive and slow. 03 Leakage compounds before recovery. 04 Members and providers need protection.">
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
-    <!-- SLIDE 3 — HOW TO READ WHAT FOLLOWS (HTML; assets/slides/slide-3-business-case.webp is kept but unused) -->
-    <div class="pslide dark hx-slide" id="ps2">
-      <div class="bk-eyebrow">How to read what follows</div>
-      <h2 class="bk-title">Four questions, asked in order. Cheapest first.</h2>
-      <div class="hx-rows">
-        <div class="hx-row hx-q hx-q1"><div class="hx-num">01</div><div><div class="hx-desc">Is this claimable at all?</div><div class="hx-hard">Business rules on the extracted receipt. No AI cost.</div></div></div>
-        <div class="hx-row hx-q hx-q2"><div class="hx-num">02</div><div><div class="hx-desc">Is this receipt genuine?</div><div class="hx-hard">Forensic analysis — but only on receipts that clear the first question.</div></div></div>
-        <div class="hx-row hx-q hx-q3"><div class="hx-num">03</div><div><div class="hx-desc">Does this claim make sense against everything else?</div><div class="hx-hard">Aggregation across claims, in real time. Nothing to do with the document.</div></div></div>
-        <div class="hx-row hx-q hx-q4"><div class="hx-num">04</div><div><div class="hx-desc">Who else is involved?</div><div class="hx-hard">Graph traversal from an entity that has already been flagged.</div></div></div>
-      </div>
-      <div class="hx-band sm">A claim that fails question one never reaches question two. <em>That ordering is the design, not an optimisation.</em></div>
+    <!-- SLIDE 3 — BUSINESS CASE -->
+    <div class="pslide dark img-slide" id="ps2">
+      <div class="ps-fill" style="background-image:url(assets/slides/slide-3-business-case.webp)"></div>
+      <img class="ps-img" src="assets/slides/slide-3-business-case.webp" alt="Business Case: the value of earlier detection. A claims analytics panel beside four outcomes: 01 Reduce improper payments. 02 Prioritise high-risk claims. 03 Improve operational efficiency. 04 Protect member trust.">
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
