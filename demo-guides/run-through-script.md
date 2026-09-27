@@ -1,6 +1,6 @@
 # Run-Through Script: One Hour With Fraud Analysts, Data Scientists and Architects
 
-The presenter's script for the fraud detection POC, in the order the demo runs, with what to say at every step, the detail underneath it, and what the room should leave with. It matches the build on the live site at <https://grahamcrooks.github.io/FraudPOC/> as of 27 September 2026: the five image slides, the eight pre-flight checks at 5 seconds each with the What's happening card, and CLM-0842 as a doctored receipt.
+The presenter's script for the fraud detection POC, in the order the demo runs, with what to say at every step, the detail underneath it, and what the room should leave with. It matches the build on the live site at <https://grahamcrooks.github.io/FraudPOC/> as of 27 September 2026: slides 2 and 3 built in HTML, the eight pre-flight checks at 5 seconds each with the What's happening card, and CLM-0842 as a doctored receipt.
 
 Use it for the in-depth run-through, for Tuesday's full rehearsal on the presenting laptop and projector, and on Wednesday 30 September. [`demo-script.md`](demo-script.md) is the companion for system testing: it has the complete check-by-check test cases. This script is for presenting.
 
@@ -9,7 +9,7 @@ Each step has up to five parts:
 - **On screen**: what the audience is looking at.
 - **Do**: what you press or click.
 - **Say**: the words, in your voice. Adapt them; don't read them.
-- **Under the hood**: the technical detail, for when someone asks. Where it describes Pega, it describes the intended design. Everything on screen is simulated with illustrative data.
+- **Under the hood**: the technical detail, for when someone asks. The rules, checks and decisions are the ones built in Pega; anything planned rather than built is marked as planned. The data on screen is synthetic: made-up claims, receipts and members.
 - **The room**: what each group is listening for, and what they're likely to ask. FA is the fraud analysts, DS the data scientists, AR the architects.
 
 ## What the hour is for
