@@ -56,6 +56,15 @@
   },
   "signals": [
     {
+      "id": "SIG-DEVICE-LOCATION",
+      "name": "Device and location",
+      "summary": "DEV-1196 · Footscray VIC · captured at sign-in",
+      "cost": "capture",
+      "captured": "session",
+      "usedBy": "ES-001 distance anomaly, ES-002 device ring",
+      "conclusion": "Recorded, no evaluation at this stage"
+    },
+    {
       "id": "SIG-DOC-TYPE",
       "name": "Receipt type",
       "summary": "TAX INVOICE · ABN and AHPRA present",
@@ -78,15 +87,15 @@
       "conclusion": "11 of 11 required fields present"
     },
     {
-      "id": "SIG-EXTRACTION-CONFIDENCE",
-      "name": "Extraction confidence",
-      "summary": "lowest 0.93 (InvoiceTotal) · threshold 0.70",
-      "cost": "ai",
-      "lookedAt": "Per-field extraction confidence",
-      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
-      "found": "Lowest was InvoiceTotal at 0.93 · ProviderABN 0.94 · ServiceDate 0.95",
+      "id": "SIG-DOC-COMPLETENESS",
+      "name": "Receipt completeness",
+      "summary": "$264.00 received of $264.00 · ABN ✓ · 2 lines · signed",
+      "cost": "rule",
+      "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
+      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
+      "found": "$264.00 received against $264.00 charged · ABN present · 2 itemised lines · signed",
       "verdict": "pass",
-      "conclusion": "All fields above threshold"
+      "conclusion": "Complete — member paid in full"
     },
     {
       "id": "SIG-INVALID-KEYWORDS",
@@ -98,17 +107,6 @@
       "found": "None",
       "verdict": "pass",
       "conclusion": "No disqualifying content"
-    },
-    {
-      "id": "SIG-DOC-COMPLETENESS",
-      "name": "Receipt completeness",
-      "summary": "$264.00 received of $264.00 · ABN ✓ · 2 lines · signed",
-      "cost": "rule",
-      "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
-      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
-      "found": "$264.00 received against $264.00 charged · ABN present · 2 itemised lines · signed",
-      "verdict": "pass",
-      "conclusion": "Complete — member paid in full"
     },
     {
       "id": "SIG-CLAIM-VALUE",
@@ -123,13 +121,15 @@
       "conclusion": "Under $5,000, no high-value marker"
     },
     {
-      "id": "SIG-DEVICE-LOCATION",
-      "name": "Device and location",
-      "summary": "DEV-1196 · Footscray VIC · captured at sign-in",
-      "cost": "capture",
-      "captured": "session",
-      "usedBy": "ES-001 distance anomaly, ES-002 device ring",
-      "conclusion": "Recorded, no evaluation at this stage"
+      "id": "SIG-EXTRACTION-CONFIDENCE",
+      "name": "Extraction confidence",
+      "summary": "lowest 0.93 (InvoiceTotal) · threshold 0.70",
+      "cost": "ai",
+      "lookedAt": "Per-field extraction confidence",
+      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
+      "found": "Lowest was InvoiceTotal at 0.93 · ProviderABN 0.94 · ServiceDate 0.95",
+      "verdict": "pass",
+      "conclusion": "All fields above threshold"
     }
   ],
   "phase1": [

@@ -38,7 +38,7 @@ What stops the demo depends on the mode:
 | Where you are | What to do |
 | --- | --- |
 | Presenting, in the sign-in scene | Space pauses it where it is, with a "Paused" pill; Space again resumes. Esc skips to the end |
-| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 10 seconds, or a phase running its checks), so talk over it |
+| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 35 seconds, or a phase running its checks), so talk over it |
 | Presenting, on the slides | Don't press Space unless you mean to move on: it goes to the next slide |
 | Expecting lots of questions | Press P for step-by-step mode. The demo pauses after every phase result until you click Continue |
 | Rolling demo | Space pauses it and shows a banner with Resume and Stop; Space again resumes. R stops it completely |
@@ -128,22 +128,22 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 - **Check**:
   - The portal shows MBR-33291, Carlton VIC 3053, POL-2021-44210, Gold Hospital + Extras.
   - The session chip matches Step 1.
-  - The claim card has two numbered panels: 1 · Receipt (upload and pre-flight) and 2 · Member-Entered Receipt (the form).
+  - The claim card has two numbered panels: 1 · Receipt (upload and pre-flight) and 2 · Extracted from the Receipt (the fields the AI read; the member types nothing).
 
 ### Step 3: Upload and pre-flight
 
 - **Say**: The claimant uploads a dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules do the rest at no AI cost. A quotation, a proforma or an unpaid invoice stops here.
-- **Under the hood**: Seven checks in order, over about 10 seconds. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge.
+- **Under the hood**: Seven checks in order, each held for 5 seconds (about 35 seconds in all), time to stop on each and explain it. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
 
   | Check | Cost | Rule |
   | --- | --- | --- |
+  | Device and location | Capture | Recorded for later evaluation; no verdict |
   | Receipt type | AI call | Must be a tax invoice from a registered health provider |
   | Field extraction | AI call | Extract provider, ABN, service date, line items and total |
-  | Extraction confidence | AI call | Every critical field at or above 0.70, or the claim goes to human review |
-  | Disqualifying content | Business rule | 11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp |
   | Receipt completeness | Business rule | Amount received recorded against amount charged, valid tax invoice, itemised, signed |
+  | Disqualifying content | Business rule | 11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp |
   | Claim value | Business rule | Recorded at $5,000 or above as context for later checks; never routes the claim on its own |
-  | Device and location | Capture | Recorded for later evaluation; no verdict |
+  | Extraction confidence | AI call | Every critical field at or above 0.70, or the claim goes to human review |
 
   Routing: any fail sends the claim to **Reject Document** (Resolved-Rejected). Any flag sends it to **Needs Review** (Pending-Review). Claim value is the exception: a high-value claim isn't suspicious, so it's recorded as context for later (a high-value claim from a member in a ring is a different priority from an $80 one) and never routes the claim. All passes open the pipeline. The claim form fields fill from the extraction.
 - **Check**:
@@ -326,8 +326,8 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - Phases pause 5.5 seconds between each other, and the demo holds on each outcome before moving on.
   - Scenarios with a sign-in scene (CLM-0841, CLM-0844) take about 14 seconds longer.
 - **Check**:
-  - Pre-flight runs slower than when presenting: one caption per check, about 3.5 seconds each, about 25 seconds in all.
-  - For CLM-0841: Phase 2 starts at about 72 seconds, Phase 3 at about 95 seconds, and the outcome at about 108 seconds.
+  - Pre-flight runs at the same pace as when presenting, 5 seconds a check (about 35 seconds), but with one caption per check instead of grouped captions.
+  - For CLM-0841: Phase 2 starts at about 83 seconds, Phase 3 at about 106 seconds, and the outcome at about 119 seconds.
   - CLM-0847 and CLM-0848 each hold on the reject panel for about 9 seconds. After CLM-0847 comes CLM-0848, then CLM-0841.
   - Space pauses and resumes. There are no console errors.
 

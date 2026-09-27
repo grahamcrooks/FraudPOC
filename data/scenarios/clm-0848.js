@@ -25,6 +25,15 @@
   },
   "signals": [
     {
+      "id": "SIG-DEVICE-LOCATION",
+      "name": "Device and location",
+      "summary": "DEV-3312 · Ferntree Gully VIC · captured at sign-in",
+      "cost": "capture",
+      "captured": "session",
+      "usedBy": "ES-001 distance anomaly, ES-002 device ring",
+      "conclusion": "Recorded, no evaluation at this stage"
+    },
+    {
       "id": "SIG-DOC-TYPE",
       "name": "Receipt type",
       "summary": "physio receipt layout · ABN and AHPRA present",
@@ -47,15 +56,15 @@
       "conclusion": "All required fields present"
     },
     {
-      "id": "SIG-EXTRACTION-CONFIDENCE",
-      "name": "Extraction confidence",
-      "summary": "lowest 0.93 (ServiceDate) · threshold 0.70",
-      "cost": "ai",
-      "lookedAt": "Per-field extraction confidence",
-      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
-      "found": "Lowest ServiceDate 0.93 · ProviderABN 0.96 · InvoiceTotal 0.95",
+      "id": "SIG-DOC-COMPLETENESS",
+      "name": "Receipt completeness",
+      "summary": "$270.00 received of $270.00 · ABN ✓ · 4 lines · signed",
+      "cost": "rule",
+      "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
+      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
+      "found": "$270.00 received against $270.00 charged · ABN present · 4 itemised lines · signed",
       "verdict": "pass",
-      "conclusion": "All fields above threshold"
+      "conclusion": "Complete — member paid in full"
     },
     {
       "id": "SIG-INVALID-KEYWORDS",
@@ -67,17 +76,6 @@
       "found": "PAID stamp across the services table",
       "verdict": "fail",
       "conclusion": "Account already settled, nothing to claim"
-    },
-    {
-      "id": "SIG-DOC-COMPLETENESS",
-      "name": "Receipt completeness",
-      "summary": "$270.00 received of $270.00 · ABN ✓ · 4 lines · signed",
-      "cost": "rule",
-      "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
-      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
-      "found": "$270.00 received against $270.00 charged · ABN present · 4 itemised lines · signed",
-      "verdict": "pass",
-      "conclusion": "Complete — member paid in full"
     },
     {
       "id": "SIG-CLAIM-VALUE",
@@ -92,13 +90,15 @@
       "conclusion": "Under $5,000, no high-value marker"
     },
     {
-      "id": "SIG-DEVICE-LOCATION",
-      "name": "Device and location",
-      "summary": "DEV-3312 · Ferntree Gully VIC · captured at sign-in",
-      "cost": "capture",
-      "captured": "session",
-      "usedBy": "ES-001 distance anomaly, ES-002 device ring",
-      "conclusion": "Recorded, no evaluation at this stage"
+      "id": "SIG-EXTRACTION-CONFIDENCE",
+      "name": "Extraction confidence",
+      "summary": "lowest 0.93 (ServiceDate) · threshold 0.70",
+      "cost": "ai",
+      "lookedAt": "Per-field extraction confidence",
+      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
+      "found": "Lowest ServiceDate 0.93 · ProviderABN 0.96 · InvoiceTotal 0.95",
+      "verdict": "pass",
+      "conclusion": "All fields above threshold"
     }
   ],
   "outcome": {

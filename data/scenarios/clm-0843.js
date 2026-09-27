@@ -13,6 +13,15 @@
   },
   "signals": [
     {
+      "id": "SIG-DEVICE-LOCATION",
+      "name": "Device and location",
+      "summary": "DEV-8823 · Richmond VIC · captured at sign-in",
+      "cost": "capture",
+      "captured": "session",
+      "usedBy": "ES-001 distance anomaly, ES-002 device ring",
+      "conclusion": "Recorded, no evaluation at this stage"
+    },
+    {
       "id": "SIG-DOC-TYPE",
       "name": "Receipt type",
       "summary": "TAX INVOICE · ABN and AHPRA present",
@@ -35,15 +44,15 @@
       "conclusion": "11 of 11 required fields present"
     },
     {
-      "id": "SIG-EXTRACTION-CONFIDENCE",
-      "name": "Extraction confidence",
-      "summary": "lowest 0.94 (ServiceDate) · threshold 0.70",
-      "cost": "ai",
-      "lookedAt": "Per-field extraction confidence",
-      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
-      "found": "Lowest was ServiceDate at 0.94 · ProviderABN 0.95 · InvoiceTotal 0.96",
+      "id": "SIG-DOC-COMPLETENESS",
+      "name": "Receipt completeness",
+      "summary": "$195.00 received of $195.00 · ABN ✓ · 2 lines · signed",
+      "cost": "rule",
+      "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
+      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
+      "found": "$195.00 received against $195.00 charged · ABN present · 2 itemised lines · signed",
       "verdict": "pass",
-      "conclusion": "All fields above threshold"
+      "conclusion": "Complete — member paid in full"
     },
     {
       "id": "SIG-INVALID-KEYWORDS",
@@ -55,17 +64,6 @@
       "found": "None",
       "verdict": "pass",
       "conclusion": "No disqualifying content"
-    },
-    {
-      "id": "SIG-DOC-COMPLETENESS",
-      "name": "Receipt completeness",
-      "summary": "$195.00 received of $195.00 · ABN ✓ · 2 lines · signed",
-      "cost": "rule",
-      "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
-      "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
-      "found": "$195.00 received against $195.00 charged · ABN present · 2 itemised lines · signed",
-      "verdict": "pass",
-      "conclusion": "Complete — member paid in full"
     },
     {
       "id": "SIG-CLAIM-VALUE",
@@ -80,13 +78,15 @@
       "conclusion": "Under $5,000, no high-value marker"
     },
     {
-      "id": "SIG-DEVICE-LOCATION",
-      "name": "Device and location",
-      "summary": "DEV-8823 · Richmond VIC · captured at sign-in",
-      "cost": "capture",
-      "captured": "session",
-      "usedBy": "ES-001 distance anomaly, ES-002 device ring",
-      "conclusion": "Recorded, no evaluation at this stage"
+      "id": "SIG-EXTRACTION-CONFIDENCE",
+      "name": "Extraction confidence",
+      "summary": "lowest 0.94 (ServiceDate) · threshold 0.70",
+      "cost": "ai",
+      "lookedAt": "Per-field extraction confidence",
+      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
+      "found": "Lowest was ServiceDate at 0.94 · ProviderABN 0.95 · InvoiceTotal 0.96",
+      "verdict": "pass",
+      "conclusion": "All fields above threshold"
     }
   ],
   "phase1": [
