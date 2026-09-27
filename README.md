@@ -4,6 +4,7 @@ A proof of concept showing real-time fraud detection for health insurance claims
 
 ## Demo guides
 
+- [Run-through script](demo-guides/run-through-script.md): the presenter's script for the one-hour session with fraud analysts, data scientists and architects: timings, what to say at every step, the objectives for each group, the decisions to hold the line on and prepared answers.
 - [Demo script](demo-guides/demo-script.md): the current script for running the demo and for system testing: each step with what to say, what happens under the hood, and what to check.
 - [Complete guide](demo-guides/complete-guide.md): overview of the phases, scenarios, controls, dashboard and investigation manager. Out of date; to be rewritten.
 - [Presenter guide](demo-guides/presenter-guide.md): slide-by-slide and scenario-by-scenario script with what to say and timings. Out of date; to be rewritten.
