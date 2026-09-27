@@ -23,7 +23,7 @@ Fraud is cheaper to stop before a claim is paid than to recover after it. This P
 | Group | They should leave believing | Where it lands |
 | --- | --- | --- |
 | Fraud analysts | This takes work off their queue, not onto it. Unclaimable documents never reach them, and what does reach them arrives with the evidence assembled. | Pre-flight rejections (CLM-0847, CLM-0848), the device ring (CLM-0844), the investigation screen |
-| Data scientists | The AI claims are testable and bounded, the score is arithmetic they can check, and the measurement plan is honest about base rates and label bias. | The models moment, the pre-flight card and rows, the Phase 1 score, the measurement plan |
+| Data scientists | The AI claims are testable and bounded, the score is arithmetic they can check, and the limits are stated before they find them. | The models moment, the pre-flight card and rows, the Phase 1 score, the questions |
 | Architects | They know what's real and what's drawn, where AI is spent, where each check runs, and which two decisions are theirs to make. | Slide 3's four questions, the models moment, the What's happening card, the questions |
 
 ### What you'd like from the room
@@ -62,7 +62,7 @@ These came up in preparation. Have the answers ready and don't soften them on th
 1. Open <https://grahamcrooks.github.io/FraudPOC/> and hard-refresh: Ctrl+Shift+R, or Cmd+Shift+R on a Mac. You should see the new slides 2 and 3 ("Three kinds of fraud", "Four questions") and, in the demo, the What's happening card during pre-flight.
 2. Press F for fullscreen. Stay in Presenting mode (the default).
 3. Captions are on. Press C if they compete with you.
-4. Have the rehearsal page open in another tab for the architecture diagram and the measurement table: <https://claude.ai/artifact/UDXWJFLAadiKKFnwEZR3KS>. Some of its scenario notes predate the current build; this script supersedes them.
+4. Have the rehearsal page open in another tab for the architecture diagram, in case the architects ask: <https://claude.ai/artifact/UDXWJFLAadiKKFnwEZR3KS>. Some of its scenario notes predate the current build; this script supersedes them.
 5. Check the projector resolution. The slides fit any screen; the demo is designed for 1366 × 768 and up.
 
 ### Controls
@@ -89,11 +89,11 @@ These came up in preparation. Have the answers ready and don't soften them on th
 
 ### Budget for interruptions
 
-This room asks during the demo, not after. Answer briefly and park anything long for the questions at 46:00.
+This room asks during the demo, not after. Answer briefly and park anything long for the questions at 42:00.
 
 - **5 minutes behind at 25:00**: skip CLM-0847 and run CLM-0848 only. It carries both points: cheap checks first, and the PAID question for the room.
 - **Still behind at 37:00**: open the investigation screen and skip the report.
-- **Never cut** the measurement plan or the questions. They're what this room came for.
+- **Never cut** the models moment or the questions. They're what this room came for.
 
 ## Timing at a glance
 
@@ -108,8 +108,7 @@ This room asks during the demo, not after. Answer briefly and park anything long
 | 33:00–37:00 | CLM-0844: a device ring | Laptop sign-in, Phase 2 |
 | 37:00–40:00 | CLM-0845: a shared practitioner | Phase 3 |
 | 40:00–42:00 | What the investigator gets | Investigation screen, report |
-| 42:00–46:00 | How we'll know if it works | Measurement table (rehearsal page) |
-| 46:00–55:00 | Questions | |
+| 42:00–55:00 | Questions | |
 | 55:00–60:00 | Close: what I'd like from you | |
 
 ## 00:00–03:00 · Open: set the contract
@@ -124,7 +123,7 @@ This room asks during the demo, not after. Answer briefly and park anything long
 
 So here's the contract for the next hour. I'll show you what it does, I'll tell you where it's deliberately incomplete, and I'm not asking you for anything at the end. If you walk out understanding the shape of it well enough to tell me where I'm wrong, that's the outcome I want.
 
-**Say**: One thing before I start. Everything you'll see runs. It's not a mock-up. The receipts are synthetic, the claims are made up, and the member data is invented, but the rules, the checks and the decisions are real, and they run in Pega. Where something is simulated, it says so on screen.
+**Say**: One thing before I start. Everything you'll see runs. It's not a mock-up. The receipts are synthetic, the claims are made up, and the member data is invented, but the rules, checks and decisions are the ones built in Pega. Where something is simulated, it says so on screen.
 
 **Optional**: If the room is small and informal, this replaces the first three paragraphs:
 
@@ -135,8 +134,6 @@ So here's the contract for the next hour. I'll show you what it does, I'll tell 
 - **FA**: listening for whether this adds to their queue or takes work off it. "You know considerably more about it than I do" is for them.
 - **DS**: listening for "AI" claims they can test. "Where it's deliberately incomplete" earns their trust early.
 - **AR**: listening for what's real and what's drawn. "Everything you'll see runs" is the line they'll test.
-
-**Check first**: The demo on screen is the HTML site, and it labels itself "Simulated pipeline · illustrative scenario data". "They run in Pega" holds if the same rules, checks and decisions are built and running in your Pega environment, and you can show that if asked. Be ready to point at where it's labelled simulated.
 
 ## 03:00–08:00 · The problem: three kinds of fraud
 
@@ -219,7 +216,7 @@ So these don't compete. Every signal here is a feature your models can't calcula
 - **DS**: this is their moment. Expect "so where does the model go?" Answer: alongside, fed by these signals as features. Park the detail for questions.
 - **AR**: if they want the full picture of how the pieces connect, the architecture diagram is on the rehearsal page (<https://claude.ai/artifact/UDXWJFLAadiKKFnwEZR3KS>). Keep it for questions rather than spending the two minutes on it.
 
-**Check first**: 08:00 to 10:00 is tight for slide 3, two click-throughs and the models moment. If you're late into it, shorten slides 4 and 5 to a sentence each; don't cut the models moment.
+**Priority**: The models moment is the last thing to cut. It only works pre-empted: once someone asks it out loud, the same answer is a defence rather than evidence you'd already thought about it. Slides 4 and 5 are each recoverable in one sentence. That moment isn't.
 
 ## 10:00–25:00 · CLM-0841: a clean claim, end to end
 
@@ -291,7 +288,7 @@ Talk to each check as the card changes. The table gives what the row shows for J
 
 **The room**:
 
-- **DS**: will ask how 0.70 was set. Answer: a starting point, calibrated on the replay. Park the detail for the measurement plan.
+- **DS**: will ask how 0.70 was set. Answer: a starting point, to be calibrated. Park the detail for questions.
 - **FA**: will like that the term list is theirs to own.
 - **AR**: will ask where the vision model runs. It's one of the two open choices; take it as an action, don't guess.
 
@@ -474,17 +471,25 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 - **FA**: this is the screen they'll judge the whole thing on. Let them read it, and ask what's missing from the evidence package.
 - **Watch for**: the report's fraud score column isn't defined in the demo. CLM-0842 shows 85% there and 0.28 in the pipeline. If asked, the report's score is illustrative; the pipeline's integrity score is the one with defined arithmetic. CLM-0847 and CLM-0848 aren't in the list because pre-flight rejections never become cases.
 
-## 42:00–46:00 · How we'll know if it works
+## 42:00–55:00 · Questions
 
-**On screen**: The measurement table from the rehearsal page, or no screen at all.
+Where the honest answer is "the POC will tell us", say that. This audience trusts it more than a confident guess. Answers marked **Check first** are recommendations: confirm them before you use them.
 
-**Say**: Everything you've seen runs on illustrative data. So how will we know whether it works on ours? Here's the proposal, and I'd rather you pull it apart now than after we've run it.
+### If anyone asks how you'd know it works
+
+This is a backup answer. Never present it unprompted: the sizing conversation is "not this meeting", and raising it would read as an ask.
+
+**How would you know it works?**
+
+**Say**: The honest way is a replay. Take claims you've already paid, run them through, and see what comes out, because you already know the outcome. The output isn't a dollar figure, though. It's a list of claims that went through without question, each with the reason it was flagged, and your team decides which of those are real. That's a separate conversation and it's already happening elsewhere.
+
+**Supporting notes**: only if the conversation goes further.
 
 - **The replay**: about 10,000 historical receipts from a defined period, run through pre-flight and Phase 1 exactly as new claims would be, using only what was known when each claim was lodged.
 - **The truth we compare against**: confirmed fraud from past investigations and recoveries. For the rest, the fraud team reviews what the pipeline flags, and a random sample of what it doesn't. Without that sample we could only ever measure what we already knew how to find.
 - **The baseline**: today's process on the same receipts. The question isn't whether it's good in the abstract; it's whether it finds more fraud than we do now, at the same review capacity.
 
-At a 1 to 3% fraud rate, a system that approves everything is 97% accurate, so accuracy isn't on the list. These are the measures, with targets agreed before we run it, not after:
+At a 1 to 3% fraud rate, a system that approves everything is 97% accurate, so accuracy isn't a useful measure. The measures the replay would use, with targets agreed before it runs:
 
 | Measure | What it tells us | How it's computed | Target |
 | --- | --- | --- | --- |
@@ -496,17 +501,11 @@ At a 1 to 3% fraud rate, a system that approves everything is 97% accurate, so a
 | AI calls and cost per claim | Whether cheap checks first saves money | AI calls per claim, and cost per confirmed referral | Report |
 | Against today's process | Whether it beats what we do now | The same measures for the current rules on the same receipts | Better on precision and recall |
 
-**The room**:
-
 - **DS**: will push for a time-based split if a model comes later, and will point out that past confirmed fraud is biased towards what old rules caught. The random sample answers both.
 - **FA**: the cost of this plan is their review time. Size it with them: how many flagged and sampled claims a week they can take.
 - **AR**: the replay needs a harness that feeds historical receipts into the case with their original timestamps. Phases 2 and 3 need claim events replayed in order, which is why they come after Phase 1.
 
-**Check first**: The random sample and the targets commit the fraud team's time. Agree them with the fraud lead before presenting them as the plan.
-
-## 46:00–55:00 · Questions
-
-Where the honest answer is "the POC will tell us", say that. This audience trusts it more than a confident guess. Answers marked **Check first** are recommendations: confirm them before you use them.
+**Check first**: the random sample and the targets commit the fraud team's time. They're for the separate conversation, not for Wednesday.
 
 ### Fraud analysts
 
@@ -526,7 +525,7 @@ Where the honest answer is "the POC will tell us", say that. This audience trust
 
 **Where's the model? This looks like rules.** Mostly it is, deliberately. AI does perception: reading the receipt, spotting spliced text, overlays and generated images, and walking the graph. Decisions are rules and a decision table, because they have to be explainable and auditable. A trained classifier can come once there are trustworthy labels, and the replay, with the fraud team's review and the random sample, is how we get them.
 
-**How will you measure success?** Precision at the team's real review capacity, recall on known fraud, estimated missed fraud from a random sample, wrongful rejections, and the same measures for today's process on the same receipts, with targets agreed before the run.
+**How will you measure success?** Give the replay answer from "How would you know it works?" above. Go into the measures only if they push.
 
 **Isn't "self-improving" a biased feedback loop?** Yes, if you only learn from what you flag, and that's the right challenge. Investigator decisions only exist for referred claims. **Check first**: the mitigation is the random sample of unflagged claims, kept running after go-live, which is an ongoing commitment of review time.
 
