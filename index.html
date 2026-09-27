@@ -2150,16 +2150,21 @@ function startBannerCountdown(secs){
 }
 function hideBanner(){ $('scenario-banner').style.display='none'; clearInterval(countdownInterval); }
 
-// Pre-flight pacing. Every check gets its own PF_STEP in every mode, so the
-// What's happening card can be read, and talked to, as each one runs: about
-// 25 s for seven checks. Captions differ by mode: grouped while presenting
-// (the card carries each check), one per check in the unattended rolling demo.
-const PF_STEP=3500;
+// Pre-flight pacing. Every check gets its own step in every mode, so the
+// What's happening card can be read, and talked to, as each one runs. The
+// first walkthrough while presenting holds each check for PF_STEP_FIRST (about
+// 35 s for seven), time to stop and explain; after that, and always in the
+// rolling demo, PF_STEP (about 25 s). Restart (0) brings the slow walkthrough
+// back. Captions differ by mode: grouped while presenting (the card carries
+// each check), one per check in the unattended rolling demo.
+const PF_STEP=3500, PF_STEP_FIRST=5000;
+let pfWalked=false;   // set when the first presenting walkthrough completes
+function pfStep(){ return runMode!=='rolling'&&!pfWalked?PF_STEP_FIRST:PF_STEP; }
 function captionsPerCheck(){ return runMode==='rolling'; }
 function preflightMs(){
   const sigs=scenarioSignals(S[curScenario]);
   if(!sigs) return 10800;
-  return sigs.length*PF_STEP;
+  return sigs.length*pfStep();
 }
 
 function simulateUpload(){
@@ -2227,7 +2232,7 @@ function simulateUpload(){
   if(uploadCount===1){
     const fields = ['f-type','f-date','f-prov','f-abn','f-amt','f-codes'];
     const fx = sigs ? sigs.findIndex(x=>x.id==='SIG-FIELD-EXTRACTION') : -1;
-    const filledAt = fx>=0 ? fx*PF_STEP+PF_STEP-500 : 8200;
+    const filledAt = fx>=0 ? (fx+1)*pfStep()-500 : 8200;
     fields.forEach((id, idx) => {
       const animStart = filledAt + (idx * 200); // 200ms between each
       addTimer(() => {
@@ -2245,6 +2250,7 @@ function simulateUpload(){
   addTimer(()=>{
     // Back to the top so the session chip and this summary are both in view.
     if(sigs) $('demo-screen').scrollTo({top:0,behavior:reducedMotion()?'auto':'smooth'});
+    if(runMode!=='rolling') pfWalked=true;   // later pre-flights run at PF_STEP
     const out=sigs?SignalPanel.outcome(sigs):{kind:'pass'};
     if(out.kind!=='pass'){
       // Stop: no pipeline. The claim ends here in Reject Document or Needs Review.
@@ -2517,8 +2523,9 @@ const SignalPanel={
     const els=this.build(s,sigs,list), n=sigs.length;
     let sch=opts.schedule;
     const perCheck=captionsPerCheck();
-    // Pre-flight: one check every PF_STEP in every mode, so each can be explained.
-    if(!sch) sch=sigs.map((_,i)=>({start:i*PF_STEP, done:i*PF_STEP+PF_STEP-700}));
+    // Pre-flight: one check every pfStep() in every mode, so each can be explained.
+    const step=pfStep();
+    if(!sch) sch=sigs.map((_,i)=>({start:i*step, done:(i+1)*step-700}));
     // The What's happening card follows the pre-flight panel only, not the phase panels.
     const explain=!opts.mount;
     // Booth: every check has its own caption. Presenting: grouped by cost
@@ -2864,6 +2871,7 @@ function showFinalState(clean){
 
 function restartDemo(){
   stopRolling();
+  pfWalked=false;   // the next pre-flight is the slow first walkthrough again
   // Slides first, then reset the scenario: with the demo screen hidden, the
   // sign-in scene is held back and plays again when the demo is entered.
   goSlides();

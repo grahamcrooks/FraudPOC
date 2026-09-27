@@ -37,7 +37,7 @@ What stops the demo depends on the mode:
 
 | Where you are | What to do |
 | --- | --- |
-| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 25 seconds, or a phase running its checks), so talk over it |
+| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 25 to 35 seconds, or a phase running its checks), so talk over it |
 | Presenting, on the slides | Don't press Space unless you mean to move on: it goes to the next slide |
 | Expecting lots of questions | Press P for step-by-step mode. The demo pauses after every phase result until you click Continue |
 | Rolling demo | Space pauses it and shows a banner with Resume and Stop; Space again resumes. R stops it completely |
@@ -144,7 +144,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 ### Step 3: Upload and pre-flight
 
 - **Say**: The claimant uploads a dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules do the rest at no AI cost. A quotation, a proforma or an unpaid invoice stops here.
-- **Under the hood**: Seven checks in order, about 3.5 seconds each, about 25 seconds in all. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
+- **Under the hood**: Seven checks in order. The first walkthrough holds each check for 5 seconds (about 35 seconds in all), time to stop on each and explain it; later scenarios run at about 3.5 seconds a check (about 25 seconds). Restart (0) brings the slow walkthrough back. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
 
   | Check | Cost | Rule |
   | --- | --- | --- |
