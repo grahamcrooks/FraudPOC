@@ -90,7 +90,7 @@
 
 ## Presentation Flow (15-20 minutes)
 
-1. **Slides 1-5 (6-8 min):** Agenda, three kinds of fraud, the four questions, the three-phase path, why Pega
+1. **Slides 1-5 (6-8 min):** Agenda, the problem, the business case, the three-phase pipeline, why Pega
 2. **CLM-0841 (2-3 min):** Show clean baseline
 3. **CLM-0842 (2 min):** Show the doctored total: pre-flight reconciliation, then Phase 1 forensics
 4. **CLM-0843 (2 min):** Show Phase 2 catch (fake provider)
