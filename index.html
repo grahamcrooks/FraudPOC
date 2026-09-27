@@ -659,6 +659,11 @@ body.run-rolling .presenter-only{display:none}
 .pf-head{display:flex;align-items:center;gap:10px;font-size:16px;font-weight:800}
 .pf-reject .pf-head{color:#991B1B}
 .pf-review .pf-head{color:#92400E}
+/* Failed but passed on to forensics (onFail: forensics): amber, and it carries on */
+.upload-zone.pf-forensics{border-color:var(--amber-mid);background:#FFFBEB}
+.pf-fx-head{color:#92400E}
+.pf-fx-line{font-size:13px;font-weight:600;color:var(--text);margin-top:6px;line-height:1.5}
+.pf-fx-sum{font-size:11px;color:var(--text-2);margin-top:4px;line-height:1.5}
 .pf-reason{font-size:14px;font-weight:600;color:var(--text);margin:6px 0 8px 32px}
 .pf-meta{display:flex;flex-wrap:wrap;gap:6px;margin-left:32px}
 .pf-pill{font-size:11px;font-weight:700;padding:2px 9px;border-radius:10px;background:var(--white);border:1px solid var(--border);color:var(--text-2)}
@@ -1105,14 +1110,14 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
         <div class="score-reveal" id="ph1-score"><div class="score-num" id="ph1-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Receipt Integrity Score</div><div class="score-verdict" id="ph1-score-verdict">Calculating...</div><div class="score-route" id="ph1-score-route"></div></div></div>
         <div class="result-badge" id="ph1-result"><div class="rb-ico" id="ph1-rb-ico">✅</div><div><div class="rb-title" id="ph1-rb-title">Phase 1 Passed</div><div class="rb-sub" id="ph1-rb-sub">No adverse findings</div></div></div>
         <div class="discrepancy-panel" id="ph1-discrepancy">
-          <div class="discrepancy-title">⚠️ Phase 1 Validation Failed — Member Claim vs Actual Receipt</div>
+          <div class="discrepancy-title">⚠️ Doctored receipt — the total doesn't reconcile to its line items</div>
           <div class="discrepancy-rows">
-            <div class="discrepancy-row"><span>Member Entered</span><span id="dp-entered"></span></div>
-            <div class="discrepancy-row"><span>Receipt Shows</span><span id="dp-receipt"></span></div>
+            <div class="discrepancy-row"><span>Stated total</span><span id="dp-stated"></span></div>
+            <div class="discrepancy-row"><span>Line items sum to</span><span id="dp-items"></span></div>
             <div class="discrepancy-row total"><span>Discrepancy</span><span id="dp-diff"></span></div>
           </div>
-          <div class="discrepancy-result">Result: MISMATCH DETECTED</div>
-          <div class="discrepancy-note">This receipt would be escalated for investigator review.</div>
+          <div class="discrepancy-result">Result: TOTAL ALTERED</div>
+          <div class="discrepancy-note" id="dp-how">This receipt would be escalated for investigator review.</div>
         </div>
         <div class="phase-btns" id="ph1-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
@@ -1266,8 +1271,8 @@ const S=[
   {id:'CLM-2024-0841',mbr:'MBR-33291',joined:'Mar 2019',suburb:'Carlton VIC 3053',contact:'Email',member:'James Kowalski',ini:'JK',pol:'POL-2021-44210',cov:'Gold Hospital + Extras',cnt:3,amt:'$847.00',ben:'$1,153',type:'Dental (Extras)',date:'12 Jul 2026',prov:'Bright Smile Dental',abn:'42 198 776 334',clamt:'$312.00',codes:'011, 022, 114',file:'dental_receipt_MBR33291.pdf',fsz:'284 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'clean',
     preview:{icon:'✅',label:'Scenario 1 of 8 — Clean Claim',title:'A legitimate dental claim — watch how all three phases clear',body:'James lodges a routine dental claim from Bright Smile Dental. The receipt is genuine, the provider is registered and there are no suspicious patterns. This shows what a clean run looks like end-to-end.'}},
   {id:'CLM-2024-0842',mbr:'MBR-44712',joined:'Aug 2021',suburb:'Footscray VIC 3011',contact:'Email',member:'Sarah Nguyen',ini:'SN',pol:'POL-2019-88821',cov:'Silver Hospital + Extras',cnt:5,amt:'$1,240.00',ben:'$960',type:'Optical (Extras)',date:'14 Jul 2026',prov:'Vision Direct Pty Ltd',abn:'51 234 567 891',clamt:'$487.50',codes:'10801, 10701, 10501',file:'optical_receipt_MBR44712.pdf',fsz:'391 KB',h1:'Lodge your optical claim',hs:'Frames and lenses · assessed on submission',outcome:'fail-ph1',
-    receiptMismatch:{entered:'$487.50',receipt:'$445.00',diff:'$42.50',pct:'10.8%'},
-    preview:{icon:'🔍',label:'Scenario 2 of 8 — Receipt Forgery',title:'A tampered receipt stopped in Phase 1',body:'Sarah submits an optical claim but the receipt has been altered — three typefaces spliced together, and the file was authored in Photoshop two days after the service date. Pega catches both before it goes any further.'}},
+    doctoredTotal:{stated:'$487.50',items:'$445.00',diff:'$42.50',pct:'10.8%',how:'How it was altered: three typefaces spliced into the amount and date, and the file edited in Adobe Photoshop two days after the service. Referred to the investigator queue.'},
+    preview:{icon:'🔍',label:'Scenario 2 of 8 — Doctored Receipt',title:'A doctored total caught in pre-flight, explained by forensics',body:'Sarah uploads an optical receipt whose printed total reads $487.50, but its line items add up to $445.00. Pre-flight catches the arithmetic; Phase 1 forensics shows how it was altered: three typefaces spliced into the amount, and a file edited in Photoshop.'}},
   {id:'CLM-2024-0843',mbr:'MBR-77834',joined:'Jan 2024',suburb:'Dandenong VIC 3175',contact:'SMS',member:'David Okafor',ini:'DO',pol:'POL-2022-11092',cov:'Bronze Hospital + Extras',cnt:2,amt:'$390.00',ben:'$1,610',type:'Physiotherapy (Extras)',date:'11 Jul 2026',prov:'Active Rehab Centre',abn:'99 000 111 222',clamt:'$195.00',codes:'SP001, SP010',file:'physio_receipt_MBR77834.pdf',fsz:'212 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'fail-ph2',
     preview:{icon:'🏦',label:'Scenario 3 of 8 — Bank Account Ring',title:'Four practices, one bank account — caught in Phase 2',body:'David\'s physio receipt is genuine and the claim looks ordinary. But ES-003 sees that four unrelated practices have paid into the same bank account in 22 days, and the account name matches none of them.'}},
   {id:'CLM-2024-0844',mbr:'MBR-55901',joined:'Nov 2025',suburb:'Springvale VIC 3171',contact:'SMS',member:'Linda Pham',ini:'LP',pol:'POL-2020-73341',cov:'Gold Hospital + Extras',cnt:7,amt:'$2,100.00',ben:'$400',type:'Dental (Extras)',date:'13 Jul 2026',prov:'Metro Dental Group',abn:'77 345 678 012',clamt:'$264.00',codes:'011, 121',file:'dental_receipt_MBR55901.pdf',fsz:'267 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'fail-ph2',
@@ -1342,7 +1347,6 @@ const PHASE_RESULT_DESC=[
 
 const PHASES=[
   {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
-    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $312.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning receipt typefaces...',pass:'Single uniform typeface throughout — Arial 9pt',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays and stamp manipulation...',pass:'No overlay detected — StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts — generative signature score 0.02',result:'pass',d:10600},
@@ -1356,7 +1360,6 @@ const PHASES=[
     {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal from member node...',pass:'No ring connections detected — graph clear',result:'pass',d:5800,isMCP:true},
   ]}},
   {ph1:{pass:false,score:'0.28',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Below threshold',route:'Routing to Investigator Queue · HIGH priority · SLA 4 hours',checks:[
-    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $487.50 does not match receipt total $445.00 — $42.50 discrepancy flagged for review',result:'warn',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning receipt typefaces...',pass:'',fail:'3 different typefaces detected — Arial 9pt + Helvetica 10pt + Times New Roman 8pt',result:'fail',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting digital overlays...',pass:'No overlay — StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic image generation artefacts...',pass:'No synthetic artefacts detected',result:'pass',d:10600},
@@ -1365,7 +1368,6 @@ const PHASES=[
   /* Phase 2 & 3 hidden for the Phase 1 dataset-processing demo — CLM-0842 stops at Phase 1, ph2/ph3 stay null so their blocks never activate. Data kept, not deleted. */
   ]},ph2:null,ph3:null},
   {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
-    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $195.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning typefaces...',pass:'Calibri 10pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting overlays...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.04',result:'pass',d:10600},
@@ -1377,7 +1379,6 @@ const PHASES=[
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking bank account...',pass:'Single practice',result:'pass',d:6000},
   ]},ph3:null},
   {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
-    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $264.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Times New Roman 10pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.03',result:'pass',d:10600},
@@ -1389,7 +1390,6 @@ const PHASES=[
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
   ]},ph3:null},
   {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
-    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $390.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Helvetica 9pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.05',result:'pass',d:10600},
@@ -1403,7 +1403,6 @@ const PHASES=[
     {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal...',pass:'',fail:'2-hop path — ClearView Optometry → optometrist PR-5518, who also bills through two practices under investigation',result:'fail',d:7200,isMCP:true},
   ]}},
   {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
-    {ico:'📄',name:'Claim-to-Receipt Match',running:'Comparing keyed claim details against the receipt itself...',pass:'Claim amount $230.00 matches receipt total · provider, date and item codes all match',result:'pass',d:2200},
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Arial 10pt — consistent',result:'pass',d:5000},
     {ico:'🎨',name:'Colour & Stamp Analysis',running:'Detecting...',pass:'StampDetectedFlag: FALSE',result:'pass',d:7800},
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.02',result:'pass',d:10600},
@@ -1767,7 +1766,7 @@ function setScenario(idx){
   [ 'f-type','f-date','f-prov','f-abn','f-amt','f-codes' ].forEach(id=>$(id).classList.remove('ai-filled'));
   txt('form-sub','Checking the receipt the member uploaded');
   const uz=$('upload-zone');
-  uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
+  uz.classList.remove('has-file','pf-stop','pf-reject','pf-review','pf-forensics'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
@@ -1901,7 +1900,7 @@ function simulateUpload(){
     // Back to the top so the session chip and this summary are both in view.
     if(sigs) $('demo-screen').scrollTo({top:0,behavior:reducedMotion()?'auto':'smooth'});
     const out=sigs?SignalPanel.outcome(sigs):{kind:'pass'};
-    if(out.kind!=='pass'){
+    if(out.kind==='reject'||out.kind==='review'){
       // Stop: no pipeline. The claim ends here in Reject Document or Needs Review.
       preflightStopped=out.kind;
       Captions.show(out.kind==='reject'?'preflightRejected':'preflightReview');
@@ -1915,16 +1914,30 @@ function simulateUpload(){
       if(runMode==='rolling') addTimer(()=>{ if(!rollingOK()) return; curScenario=(curScenario+1)%S.length; launchRollingDemo(); },9000);
       return;
     }
-    Captions.show('preflightPassed');
     const summary=sigs?SignalPanel.summary(sigs)
       :'Receipt type confirmed · Fields extracted · Confidence thresholds met · Device & location captured · No disqualifying content detected';
-    uz.classList.add('has-file');
-    uz.innerHTML='<div class="upload-icon">✅</div>'
-      +'<div class="upload-text" style="color:#16A34A"><strong>Receipt pre-validated — passing to forensic authentication</strong></div>'
-      +'<div style="font-size:11px;color:#4B7A5A;margin-top:4px;line-height:1.5"></div>';
-    uz.lastElementChild.textContent=summary;
     const rc=$('receipt-card'); rc.style.display='flex';
-    txt('r-name',s.file); txt('r-size',s.fsz+' · Validated · Pre-flight complete');
+    if(out.kind==='forensics'){
+      // Failed, but not rejected: the claim goes on to forensics, and says why.
+      Captions.show('preflightForensics');
+      uz.classList.add('has-file','pf-forensics');
+      uz.innerHTML='<div class="upload-icon">⚠️</div>'
+        +'<div class="upload-text pf-fx-head"><strong></strong></div>'
+        +'<div class="pf-fx-line"></div>'
+        +'<div class="pf-fx-sum"></div>';
+      uz.querySelector('.pf-fx-head strong').textContent=out.items.map(x=>x.name+': '+x.conclusion).join(' · ');
+      uz.querySelector('.pf-fx-line').textContent=out.items.map(x=>x.escalation).filter(Boolean).join(' ');
+      uz.querySelector('.pf-fx-sum').textContent=summary;
+      txt('r-name',s.file); txt('r-size',s.fsz+' · Pre-flight complete · Passed to forensics');
+    } else {
+      Captions.show('preflightPassed');
+      uz.classList.add('has-file');
+      uz.innerHTML='<div class="upload-icon">✅</div>'
+        +'<div class="upload-text" style="color:#16A34A"><strong>Receipt pre-validated — passing to forensic authentication</strong></div>'
+        +'<div style="font-size:11px;color:#4B7A5A;margin-top:4px;line-height:1.5"></div>';
+      uz.lastElementChild.textContent=summary;
+      txt('r-name',s.file); txt('r-size',s.fsz+' · Validated · Pre-flight complete');
+    }
     uploaded=true;
     if(runMode!=='rolling'){
       if($('btn-submit')) $('btn-submit').style.display='none';
@@ -2028,7 +2041,12 @@ const Phase1Score={
   compute(s,checks){
     const d=SCENARIO_DATA[s.id]||{}, sc=d.phase1Scoring; if(!sc) return null;
     const w=sc.weights||{};
-    const rows=checks.map(c=>{
+    // A pre-flight check named in the weights (e.g. line item reconciliation on
+    // a doctored total) carries its verdict into the score, so the outcome
+    // combines both stages.
+    const pre=(scenarioSignals(s)||[]).filter(c=>w[c.id]&&c.verdict&&c.verdict!=='pass')
+      .map(c=>({...c,name:c.name+' (pre-flight)'}));
+    const rows=pre.concat(checks).map(c=>{
       const v=c.verdict||'pass', ded=v==='pass'?0:((w[c.id]||{})[v]);
       if(v!=='pass'&&ded==null) console.warn('No phase1Scoring weight for',c.id,v);
       return {label:c.name,status:v,deduct:ded||0};
@@ -2220,10 +2238,15 @@ const SignalPanel={
   outcome(sigs){
     // Captures and context checks ("routes": false, e.g. claim value) never
     // decide the route, whatever their verdict.
+    // A fail marked "onFail": "forensics" (e.g. a total that doesn't reconcile
+    // to its line items) doesn't reject: it sends the claim on to Phase 1 to
+    // find out how the receipt was altered.
     const decided=sigs.filter(x=>x.cost!=='capture'&&x.routes!==false);
     const fails=decided.filter(x=>x.verdict==='fail'), flags=decided.filter(x=>x.verdict==='flag');
-    if(fails.length) return {kind:'reject',items:fails};
+    const rejects=fails.filter(x=>x.onFail!=='forensics'), toForensics=fails.filter(x=>x.onFail==='forensics');
+    if(rejects.length) return {kind:'reject',items:rejects};
     if(flags.length) return {kind:'review',items:flags};
+    if(toForensics.length) return {kind:'forensics',items:toForensics};
     return {kind:'pass',items:[]};
   },
 
@@ -2420,9 +2443,10 @@ function activatePhase(ph,phData){
       $('ph'+ph+'-block').style.background='#FEF2F2'; $('ph'+ph+'-block').style.borderColor='rgba(220,38,38,.3)'; $('ph'+ph+'-block').style.boxShadow='0 2px 8px rgba(220,38,38,.08)';
       if(ph===1){
         txt('ph1-rb-title','Phase 1 — Suspicious Receipt Detected'); txt('ph1-rb-sub','Receipt integrity score below threshold · Routed to Investigator Queue · HIGH priority · SLA 4 hours');
-        const rm=S[curScenario].receiptMismatch;
+        const rm=S[curScenario].doctoredTotal;
         if(rm && $('ph1-discrepancy')){
-          txt('dp-entered',rm.entered); txt('dp-receipt',rm.receipt); txt('dp-diff',rm.diff+' (claimed amount exceeds receipt by '+rm.pct+')');
+          txt('dp-stated',rm.stated); txt('dp-items',rm.items); txt('dp-diff',rm.diff+' (total inflated by '+rm.pct+')');
+          if(rm.how) txt('dp-how',rm.how);
           $('ph1-discrepancy').classList.add('show');
         }
       }
@@ -2530,7 +2554,7 @@ function closeOverlay(){
   $('overlay').classList.remove('show');
   clearAllTimers(); uploaded=false; uploadCount=0; Explainer.hide();
   const uz=$('upload-zone');
-  uz.classList.remove('has-file','pf-stop','pf-reject','pf-review'); preflightStopped=null;
+  uz.classList.remove('has-file','pf-stop','pf-reject','pf-review','pf-forensics'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none';
@@ -2987,7 +3011,7 @@ function generateFraudDashboardData(){
   let data = [];
   const scenarios = [
     {claim:'CLM-2024-0841',member:'James Kowalski',provider:'Bright Smile Dental',date:'12 Jul 2026',type:'Dental',amount:312,score:8,outcome:'clean'},
-    {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,discrepancy:42.50,score:85,outcome:'high',outcomeLabel:'Mismatch Detected'},
+    {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,discrepancy:42.50,score:85,outcome:'high',outcomeLabel:'Doctored Total'},
     {claim:'CLM-2024-0843',member:'David Okafor',provider:'Active Rehab Centre',date:'11 Jul 2026',type:'Physio',amount:195,score:62,outcome:'suspicious'},
     {claim:'CLM-2024-0844',member:'Linda Pham',provider:'Metro Dental Group',date:'13 Jul 2026',type:'Dental',amount:264,score:58,outcome:'suspicious'},
     {claim:'CLM-2024-0845',member:'Michael Torres',provider:'ClearView Optometry',date:'10 Jul 2026',type:'Optical',amount:390,score:71,outcome:'high'},

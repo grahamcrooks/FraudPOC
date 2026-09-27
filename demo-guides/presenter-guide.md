@@ -77,18 +77,18 @@ Time: 1-2 minutes
 
 Time: 2-3 minutes
 
-### Scenario 2: CLM-0842 (Phase 1 Failure)
+### Scenario 2: CLM-0842 (Doctored Receipt)
 
 - Press: 2
 - What to say:
-  - Now watch what happens when the member-entered data doesn’t match the actual receipt...
+  - Sarah only uploads a receipt, and it’s been doctored. The printed total reads \$487.50, but the line items add up to \$445.00. Whoever edited the PDF changed the number that mattered and left the breakdown alone, which is the usual mistake...
 - What happens:
-  - Member entered \$487.50 but the receipt shows \$445.00
-  - Phase 1: Receipt Forensics → FAILS — Claim-to-Receipt Match (amber warning), plus Font Consistency and Metadata & Provenance both fail (spliced typefaces, Photoshop metadata trail)
-  - A dedicated “Phase 1 Validation Failed” panel appears showing Member Entered (\$487.50) vs Receipt Shows (\$445.00) vs Discrepancy (\$42.50, 10.8%) and “Result: MISMATCH DETECTED”
+  - Pre-flight: Line item reconciliation FAILS (\$100.00 + \$185.00 + \$160.00 = \$445.00 against a stated total of \$487.50). The claim isn’t rejected: “The total doesn’t reconcile. Running forensics to see how it was altered.”
+  - Phase 1: Receipt Forensics → FAILS — Font Consistency and Metadata & Provenance both fail (spliced typefaces in the amount, a Photoshop editing trail), and the reconciliation fail carries into the score: 0.28
+  - A “Doctored receipt” panel appears showing Stated total (\$487.50) vs Line items sum to (\$445.00) vs Discrepancy (\$42.50, 10.8%), “Result: TOTAL ALTERED”, and how it was altered
   - Phases 2 and 3 never run for this claim — it’s scoped to Phase 1 only
   - Escalated to the investigator queue, HIGH priority, 4-hour SLA
-- Key message: Phase 1 catches document and data-entry issues immediately — no bad claims get through, and investigators see exactly what didn’t match.
+- Key message: Simple arithmetic in pre-flight spots the doctored total at no AI cost; forensics then shows how it was done, so the investigator gets both the what and the how.
 
 Time: 2 minutes
 
@@ -144,7 +144,7 @@ Time: 3 minutes (including AIM modal)
 
 - Press: Report tab
 - What to say:
-  - Here is what a real fraud monitoring dashboard looks like. These 24 cases are accumulated intelligence from the pipeline. Investigators can filter by provider or member to see patterns, and the Discrepancy column flags claimed-vs-receipt mismatches like CLM-0842 at a glance.
+  - Here is what a real fraud monitoring dashboard looks like. These 24 cases are accumulated intelligence from the pipeline. Investigators can filter by provider or member to see patterns, and the Discrepancy column flags a doctored total, like CLM-0842's, at a glance.
 - Interact with:
   - Sort by Fraud Score or Discrepancy (click header)
   - Filter by Provider or Member
@@ -158,7 +158,7 @@ Time: 1-2 minutes (optional)
 2. Three phases of increasing sophistication: Document validation \> Pattern detection \> AI matching.
 3. No black-box scoring. Every flagged claim comes with a complete evidence package.
 4. Investigators get zero re-keying. Pega assembles the case automatically.
-5. Catches everything from simple document tampering to sophisticated organised fraud — and Phase 1 alone already catches data-entry mismatches, not just forged documents.
+5. Catches everything from simple document tampering to sophisticated organised fraud — and simple arithmetic in pre-flight already catches a doctored total before any AI forensics runs.
 
 ## Recommended Total Timing
 

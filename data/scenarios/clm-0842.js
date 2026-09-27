@@ -1,4 +1,5 @@
-// Scenario data for CLM-2024-0842 (Sarah Nguyen, optical claim, Phase 1 receipt failure).
+// Scenario data for CLM-2024-0842 (Sarah Nguyen, optical claim, doctored total: fails
+// line item reconciliation in pre-flight, then Phase 1 forensics show how it was altered).
 // Loaded by index.html with a plain <script> tag, so the demo still runs from
 // file:// with no server. Keep the object literal valid JSON.
 (window.SCENARIO_DATA = window.SCENARIO_DATA || {})['CLM-2024-0842'] = {
@@ -35,24 +36,37 @@
     {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
-      "summary": "11 of 11 fields · $445.00 · items 10801, 10701, 10501",
+      "summary": "11 of 11 fields · $487.50 · items 10801, 10701, 10501",
       "cost": "ai",
       "lookedAt": "Full receipt",
       "rule": "Extract provider, ABN, service date, line items and total",
-      "found": "Vision Direct Pty Ltd · items 10801, 10701, 10501 · $445.00 · 14 Jul 2026",
+      "found": "Vision Direct Pty Ltd · items 10801, 10701, 10501 · stated total $487.50 · 14 Jul 2026",
       "verdict": "pass",
       "conclusion": "11 of 11 required fields present"
     },
     {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Receipt completeness",
-      "summary": "$445.00 received of $445.00 · ABN ✓ · 3 lines · signed",
+      "summary": "$487.50 received of $487.50 · ABN ✓ · 3 lines · signed",
       "cost": "rule",
       "lookedAt": "Payment fields, ABN, provider number, line items, practitioner declaration",
       "rule": "Amount received recorded against amount charged, valid tax invoice, itemised, signed",
-      "found": "$445.00 received against $445.00 charged · ABN present · 3 itemised lines · signed",
+      "found": "$487.50 received against $487.50 charged · ABN present · 3 itemised lines · signed",
       "verdict": "pass",
       "conclusion": "Complete — member paid in full"
+    },
+    {
+      "id": "SIG-LINE-RECONCILIATION",
+      "name": "Line item reconciliation",
+      "summary": "items sum to $445.00 · total states $487.50",
+      "cost": "rule",
+      "lookedAt": "Extracted line items against the stated total",
+      "rule": "Line items must sum to the total charged",
+      "found": "$100.00 + $185.00 + $160.00 = $445.00 against a stated total of $487.50 · $42.50 discrepancy",
+      "verdict": "fail",
+      "conclusion": "Total does not reconcile to the line items",
+      "onFail": "forensics",
+      "escalation": "The total doesn't reconcile. Running forensics to see how it was altered."
     },
     {
       "id": "SIG-INVALID-KEYWORDS",
@@ -91,23 +105,11 @@
   ],
   "phase1": [
     {
-      "id": "SIG-P1-MATCH",
-      "name": "Claim-to-receipt match",
-      "summary": "keyed $487.50 vs receipt $445.00 · $42.50 over",
-      "cost": "rule",
-      "delay": 2200,
-      "lookedAt": "Member-keyed claim fields against the extracted receipt",
-      "rule": "Amount, provider, service date and item codes must all match",
-      "found": "Member keyed $487.50, receipt shows $445.00 — $42.50 (10.8%) discrepancy · provider, date and codes match",
-      "verdict": "flag",
-      "conclusion": "Keyed amount exceeds the receipt"
-    },
-    {
       "id": "SIG-P1-FONT",
       "name": "Font consistency",
       "summary": "3 typefaces · breaks in the amount and date",
       "cost": "ai",
-      "delay": 5000,
+      "delay": 2200,
       "lookedAt": "Every text run in the receipt — typeface, size, weight",
       "rule": "A genuine receipt prints in one typeface; spliced text is the commonest alteration",
       "found": "3 typefaces — Arial 9pt, Helvetica 10pt, Times New Roman 8pt · breaks fall in the amount and date fields",
@@ -119,7 +121,7 @@
       "name": "Colour and stamp analysis",
       "summary": "no overlay regions · uniform compression",
       "cost": "ai",
-      "delay": 7800,
+      "delay": 5000,
       "lookedAt": "Colour layers, stamp regions, compression artefacts",
       "rule": "Digital overlays leave colour discontinuities the original scan does not have",
       "found": "No overlay regions · StampDetectedFlag FALSE · uniform compression",
@@ -131,7 +133,7 @@
       "name": "AI-generated detection",
       "summary": "score 0.02 · threshold 0.15",
       "cost": "ai",
-      "delay": 10600,
+      "delay": 7800,
       "lookedAt": "Pixel-level artefacts characteristic of image generators",
       "rule": "Generative signature score at or below 0.15",
       "found": "0.02",
@@ -143,7 +145,7 @@
       "name": "Metadata and provenance",
       "summary": "Photoshop · modified 2 days after service",
       "cost": "rule",
-      "delay": 13200,
+      "delay": 10400,
       "lookedAt": "File authoring trail, creation and modification timestamps",
       "rule": "Authoring software should be practice software, and timestamps must not post-date the service",
       "found": "Authored in Adobe Photoshop · modified 16 Jul 2026, two days after the service · no practice software trail",
@@ -155,7 +157,7 @@
       "name": "Duplicate detection",
       "summary": "0 prior submissions of this fingerprint",
       "cost": "rule",
-      "delay": 15600,
+      "delay": 12800,
       "lookedAt": "Receipt fingerprint against every claim already submitted",
       "rule": "Same practice and receipt number, or an identical fingerprint, is a duplicate",
       "found": "0 prior submissions of this fingerprint",
@@ -167,8 +169,8 @@
     "start": 1.0,
     "threshold": 0.7,
     "weights": {
-      "SIG-P1-MATCH": {
-        "flag": 0.07
+      "SIG-LINE-RECONCILIATION": {
+        "fail": 0.07
       },
       "SIG-P1-FONT": {
         "fail": 0.4

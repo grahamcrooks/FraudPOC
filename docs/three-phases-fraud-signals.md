@@ -21,12 +21,13 @@ alone.
 
 **8 FRAUD SIGNALS**
 
-### Claim-to-receipt match
+### Line item reconciliation
 
-> Cross-checks every claimed detail — the amount, the provider, the
-> service date, the item codes — directly against what the uploaded
-> receipt actually shows. Any discrepancy, however small, is surfaced
-> immediately rather than silently accepted.
+> Adds up the line items extracted from the receipt and checks they come
+> to the total printed on it. Whoever edits a receipt usually changes the
+> total and leaves the breakdown alone. It's arithmetic on the extracted
+> fields, so it runs in pre-flight at no AI cost; a total that doesn't
+> reconcile goes on to forensics to find out how it was altered.
 
 ### AI extracts the text
 

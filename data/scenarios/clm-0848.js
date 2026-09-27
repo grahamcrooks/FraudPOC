@@ -67,6 +67,17 @@
       "conclusion": "Complete — member paid in full"
     },
     {
+      "id": "SIG-LINE-RECONCILIATION",
+      "name": "Line item reconciliation",
+      "summary": "items reconcile to the total",
+      "cost": "rule",
+      "lookedAt": "Extracted line items against the stated total",
+      "rule": "Line items must sum to the total charged",
+      "found": "Items sum to $270.00 · stated total $270.00",
+      "verdict": "pass",
+      "conclusion": "Line items reconcile"
+    },
+    {
       "id": "SIG-INVALID-KEYWORDS",
       "name": "Disqualifying content",
       "summary": "1 of 11 terms matched · PAID stamp",

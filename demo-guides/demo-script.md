@@ -38,7 +38,7 @@ What stops the demo depends on the mode:
 | Where you are | What to do |
 | --- | --- |
 | Presenting, in the sign-in scene | Space pauses it where it is, with a "Paused" pill; Space again resumes. Esc skips to the end |
-| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 35 seconds, or a phase running its checks), so talk over it |
+| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 40 seconds, or a phase running its checks), so talk over it |
 | Presenting, on the slides | Don't press Space unless you mean to move on: it goes to the next slide |
 | Expecting lots of questions | Press P for step-by-step mode. The demo pauses after every phase result until you click Continue |
 | Rolling demo | Space pauses it and shows a banner with Resume and Stop; Space again resumes. R stops it completely |
@@ -133,7 +133,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 ### Step 3: Upload and pre-flight
 
 - **Say**: The claimant uploads a dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules do the rest at no AI cost. A quotation, a proforma or an unpaid invoice stops here.
-- **Under the hood**: Seven checks in order, each held for 5 seconds (about 35 seconds in all), time to stop on each and explain it. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
+- **Under the hood**: Eight checks in order, each held for 5 seconds (about 40 seconds in all), time to stop on each and explain it. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
 
   | Check | Cost | Rule |
   | --- | --- | --- |
@@ -141,25 +141,25 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
   | Receipt type | AI call | Must be a tax invoice from a registered health provider |
   | Field extraction | AI call | Extract provider, ABN, service date, line items and total |
   | Receipt completeness | Business rule | Amount received recorded against amount charged, valid tax invoice, itemised, signed |
+  | Line item reconciliation | Business rule | Line items must sum to the total charged |
   | Disqualifying content | Business rule | 11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp |
   | Claim value | Business rule | Recorded at $5,000 or above as context for later checks; never routes the claim on its own |
   | Extraction confidence | AI call | Every critical field at or above 0.70, or the claim goes to human review |
 
-  Routing: any fail sends the claim to **Reject Document** (Resolved-Rejected). Any flag sends it to **Needs Review** (Pending-Review). Claim value is the exception: a high-value claim isn't suspicious, so it's recorded as context for later (a high-value claim from a member in a ring is a different priority from an $80 one) and never routes the claim. All passes open the pipeline. The claim form fields fill from the extraction.
+  Routing: any fail sends the claim to **Reject Document** (Resolved-Rejected). Any flag sends it to **Needs Review** (Pending-Review). Line item reconciliation is the exception to the first rule: a total that doesn't reconcile to its line items fails, but the claim goes on to Phase 1, because a doctored total is a forensics question: how was it altered? Claim value is the other exception: a high-value claim isn't suspicious, so it's recorded as context for later (a high-value claim from a member in a ring is a different priority from an $80 one) and never routes the claim. All passes open the pipeline. The claim form fields fill from the extraction.
 - **Check**:
   - Each check opens while it runs and closes to a one-line summary when the next starts. At rest they show in two columns.
-  - All seven pass for CLM-0841. The capture reads "DEV-2291 · Carlton VIC · captured at sign-in".
-  - The summary line reads "6 of 6 checks passed · 3 AI calls · 3 business rules · 1 capture recorded".
+  - All eight pass for CLM-0841. The capture reads "DEV-2291 · Carlton VIC · captured at sign-in". Line item reconciliation reads "Items sum to $312.00 · stated total $312.00".
+  - The summary line reads "7 of 7 checks passed · 3 AI calls · 4 business rules · 1 capture recorded".
   - The file card reads "Validated · Pre-flight complete", and "Run Fraud Detection →" appears.
 
 ### Step 4: Phase 1, receipt forensics
 
-- **Say**: The receipt is claimable. Now: is it genuine, and does it match what James keyed in? Six forensic checks look for spliced text, overlays, AI-generated images, a suspicious authoring trail and duplicates. The score starts at 1.00 and only adverse findings take points off. James's receipt has none.
+- **Say**: The receipt is claimable. Now: is it genuine? Five forensic checks look for spliced text, overlays, AI-generated images, a suspicious authoring trail and duplicates. The score starts at 1.00 and only adverse findings take points off. James's receipt has none.
 - **Under the hood**:
 
   | Check | Cost | Rule |
   | --- | --- | --- |
-  | Claim-to-receipt match | Business rule | Amount, provider, service date and item codes must all match |
   | Font consistency | AI call | A genuine receipt prints in one typeface |
   | Colour and stamp analysis | AI call | Digital overlays leave colour discontinuities |
   | AI-generated detection | AI call | Generative signature score at or below 0.15 |
@@ -167,12 +167,12 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
   | Duplicate detection | Business rule | Same practice and receipt number, or identical fingerprint |
 
   Receipt integrity score:
-  - It starts at 1.00, with deductions for adverse findings only: match flag −0.07, font fail −0.40, metadata fail −0.25.
+  - It starts at 1.00, with deductions for adverse findings only: font fail −0.40, metadata fail −0.25. A pre-flight check can carry into the score too: on CLM-0842, the failed line item reconciliation costs −0.07.
   - At or above 0.70 continues; below 0.70 goes to the investigator queue at HIGH priority with a 4-hour SLA.
   - Extraction confidence is not scored here. A low-confidence field is already routed to Needs Review in pre-flight.
   - The total is computed from the lines above it, never typed in.
 - **Check**:
-  - The six checks run about 2.8 seconds apart.
+  - The five checks run about 2.8 seconds apart.
   - The score block lists every check at −0.00, with a total of **1.00** and "Threshold 0.70 — No adverse findings".
   - The result badge reads "Phase 1 Passed — No Adverse Findings".
   - If the panel is taller than the screen, the passing checks close at rest (measured, so this happens at 1080p and below). Their summary lines still carry the figures.
@@ -221,18 +221,18 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 
 For each one, run the steps as in Part 2 and slow down only at the step where it stops.
 
-### CLM-0842, Sarah Nguyen: tampered receipt (stops in Phase 1)
+### CLM-0842, Sarah Nguyen: doctored receipt (fails reconciliation in pre-flight, stops in Phase 1)
 
-- **Say**: Sarah's optical receipt looks fine at a glance and passes pre-flight. Forensics finds three typefaces spliced into the amount and date, and a file made in Photoshop two days after the service. The claimant also keyed $42.50 more than the receipt shows. No single finding is conclusive; together they take the score to 0.28.
+- **Say**: Sarah only uploads a receipt, and it's been doctored. The printed total reads $487.50, but the line items add up to $445.00. Whoever edited the PDF changed the number that mattered and left the breakdown alone, which is the usual mistake. Pre-flight catches the arithmetic at no AI cost. It doesn't reject the claim: it sends it on to forensics to find out how the total was altered. Forensics finds three typefaces spliced into the amount and date, and a file edited in Photoshop two days after the service. Together they take the score to 0.28.
 - **Under the hood**:
-  - Match flag −0.07: keyed $487.50 against a receipt of $445.00.
-  - Font fail −0.40: Arial 9pt, Helvetica 10pt and Times New Roman 8pt.
-  - Metadata fail −0.25: Adobe Photoshop, modified 16 Jul 2026.
+  - Pre-flight, line item reconciliation fails: $100.00 + $185.00 + $160.00 = $445.00 against a stated total of $487.50, a $42.50 discrepancy. The check is marked to go on to forensics rather than reject (`"onFail": "forensics"`).
+  - Phase 1 score: font fail −0.40 (Arial 9pt, Helvetica 10pt and Times New Roman 8pt), metadata fail −0.25 (Adobe Photoshop, modified 16 Jul 2026), and the pre-flight reconciliation fail −0.07.
   - 1.00 − 0.72 = 0.28, below 0.70. The Phase 2 checks show as not run.
 - **Check**:
-  - Deductions are listed largest first. The total is 0.28, "below · SUSPICIOUS".
-  - The flag and both fails stay open; passes may close.
-  - A discrepancy panel shows Member Entered $487.50, Receipt Shows $445.00, a $42.50 difference.
+  - Pre-flight ends amber, not green: "Line item reconciliation: Total does not reconcile to the line items", then "The total doesn't reconcile. Running forensics to see how it was altered." The What's happening card rests on Line item reconciliation, and "Run Fraud Detection →" appears.
+  - In Phase 1, deductions are listed largest first, with "Line item reconciliation (pre-flight)" among them. The total is 0.28, "below · SUSPICIOUS".
+  - Both fails stay open; passes may close.
+  - A panel headed "Doctored receipt" shows stated total $487.50, line items sum to $445.00, a $42.50 discrepancy (total inflated by 10.8%), "Result: TOTAL ALTERED", and how it was altered.
   - The claim is routed to the investigator queue, HIGH, 4-hour SLA. Phases 2 and 3 do not run.
 
 ### CLM-0843, David Okafor: bank account ring (stops in Phase 2, ES-003)
@@ -326,8 +326,8 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - Phases pause 5.5 seconds between each other, and the demo holds on each outcome before moving on.
   - Scenarios with a sign-in scene (CLM-0841, CLM-0844) take about 14 seconds longer.
 - **Check**:
-  - Pre-flight runs at the same pace as when presenting, 5 seconds a check (about 35 seconds), but with one caption per check instead of grouped captions.
-  - For CLM-0841: Phase 2 starts at about 83 seconds, Phase 3 at about 106 seconds, and the outcome at about 119 seconds.
+  - Pre-flight runs at the same pace as when presenting, 5 seconds a check (about 40 seconds), but with one caption per check instead of grouped captions.
+  - For CLM-0841: Phase 2 starts at about 84 seconds, Phase 3 at about 108 seconds, and the outcome at about 120 seconds.
   - CLM-0847 and CLM-0848 each hold on the reject panel for about 9 seconds. After CLM-0847 comes CLM-0848, then CLM-0841.
   - Space pauses and resumes. There are no console errors.
 
@@ -335,5 +335,5 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 - **Captions**: every check in every scenario has a caption naming the component behind it, what it's for and what it costs. While presenting, pre-flight shows three (the AI reads, the business rules, the decision); the rolling demo shows one per check. Sign-in, upload and outcome captions exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only.
 - **Simulated data**: every scenario is simulated with illustrative data. Names, numbers and addresses are fictional.
-- **The claim-to-receipt mismatch weight** (−0.07) is small. A mismatch on an otherwise genuine receipt would still score 0.93 and pass. How a mismatch should be routed on its own is still to be decided.
+- **The reconciliation weight** (−0.07) is small. A total that doesn't reconcile, on an otherwise genuine receipt, would still score 0.93 in Phase 1 and pass. How that case should be routed is still to be decided.
 - **Older guides**: the complete, presenter and technical guides are out of date. This script replaces them for running the demo.

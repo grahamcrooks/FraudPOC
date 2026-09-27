@@ -55,6 +55,17 @@
       "conclusion": "Complete — member paid in full"
     },
     {
+      "id": "SIG-LINE-RECONCILIATION",
+      "name": "Line item reconciliation",
+      "summary": "items reconcile to the total",
+      "cost": "rule",
+      "lookedAt": "Extracted line items against the stated total",
+      "rule": "Line items must sum to the total charged",
+      "found": "Items sum to $230.00 · stated total $230.00",
+      "verdict": "pass",
+      "conclusion": "Line items reconcile"
+    },
+    {
       "id": "SIG-INVALID-KEYWORDS",
       "name": "Disqualifying content",
       "summary": "11 terms checked · none found",
@@ -91,23 +102,11 @@
   ],
   "phase1": [
     {
-      "id": "SIG-P1-MATCH",
-      "name": "Claim-to-receipt match",
-      "summary": "4 of 4 fields match · $230.00 = $230.00",
-      "cost": "rule",
-      "delay": 2200,
-      "lookedAt": "Member-keyed claim fields against the extracted receipt",
-      "rule": "Amount, provider, service date and item codes must all match",
-      "found": "$230.00 = $230.00 · Prime Physio & Sports = Prime Physio & Sports · 15 Jul 2026 = 15 Jul 2026 · SP001, SP015 all present",
-      "verdict": "pass",
-      "conclusion": "Keyed claim matches the receipt"
-    },
-    {
       "id": "SIG-P1-FONT",
       "name": "Font consistency",
       "summary": "1 typeface · Arial 10pt throughout",
       "cost": "ai",
-      "delay": 5000,
+      "delay": 2200,
       "lookedAt": "Every text run in the receipt — typeface, size, weight",
       "rule": "A genuine receipt prints in one typeface; spliced text is the commonest alteration",
       "found": "Arial 10pt throughout · 1 typeface · no size or weight breaks",
@@ -119,7 +118,7 @@
       "name": "Colour and stamp analysis",
       "summary": "no overlay regions · uniform compression",
       "cost": "ai",
-      "delay": 7800,
+      "delay": 5000,
       "lookedAt": "Colour layers, stamp regions, compression artefacts",
       "rule": "Digital overlays leave colour discontinuities the original scan does not have",
       "found": "No overlay regions · StampDetectedFlag FALSE · uniform compression",
@@ -131,7 +130,7 @@
       "name": "AI-generated detection",
       "summary": "score 0.02 · threshold 0.15",
       "cost": "ai",
-      "delay": 10600,
+      "delay": 7800,
       "lookedAt": "Pixel-level artefacts characteristic of image generators",
       "rule": "Generative signature score at or below 0.15",
       "found": "0.02",
@@ -143,7 +142,7 @@
       "name": "Metadata and provenance",
       "summary": "clinic practice software · created 15 Jul 2026 · matches service date",
       "cost": "rule",
-      "delay": 13200,
+      "delay": 10400,
       "lookedAt": "File authoring trail, creation and modification timestamps",
       "rule": "Authoring software should be practice software, and timestamps must not post-date the service",
       "found": "Authored by clinic practice software · created 15 Jul 2026 · not modified since · matches the service date",
@@ -155,7 +154,7 @@
       "name": "Duplicate detection",
       "summary": "0 prior submissions of this fingerprint",
       "cost": "rule",
-      "delay": 15600,
+      "delay": 12800,
       "lookedAt": "Receipt fingerprint against every claim already submitted",
       "rule": "Same practice and receipt number, or an identical fingerprint, is a duplicate",
       "found": "0 prior submissions of this fingerprint",
@@ -167,9 +166,6 @@
     "start": 1.0,
     "threshold": 0.7,
     "weights": {
-      "SIG-P1-MATCH": {
-        "flag": 0.07
-      },
       "SIG-P1-FONT": {
         "fail": 0.4
       },
