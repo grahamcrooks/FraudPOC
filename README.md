@@ -37,7 +37,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 ## Assets
 
-- [Slide images](assets/slides/): the five presentation slides (agenda, problem, business case, three phases, why Pega) as full-slide images, shown by `index.html` on the slides screen.
+- [Slide images](assets/slides/): the presentation slides as full-slide images. `index.html` shows slides 1, 4 and 5 (agenda, three phases, why Pega) from here; slides 2 and 3 are built in HTML, and their earlier images (problem, business case) are kept for the record.
 
 ## Tests
 

@@ -176,7 +176,7 @@ CLM-0845 only: Click "Open Alert & Investigation Manager" after Phase 3
 ## 7. Presentation Flow
 
 1. Recommended Demo Sequence:
-   1. Show Slides 1-5 (Agenda, Problem, Business Case, Three Phases, Why Pega)
+   1. Show Slides 1-5 (Agenda, Problem, Four Questions, Three Phases, Why Pega)
    2. Click "Launch Demo →" (or press D)
    3. Run CLM-0841 (clean baseline)
    4. Run CLM-0842 (Phase 1 failure)

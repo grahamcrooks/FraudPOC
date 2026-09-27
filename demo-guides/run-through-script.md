@@ -49,8 +49,8 @@ These came up in preparation. Have the answers ready and don't soften them on th
 | The PAID stamp (CLM-0848) | "Our position is that PAID means the account is settled, so there's nothing left to claim. That rule needs validating against the fund's provider network, because a practice could stamp it when the member paid at reception." Then ask the room how their provider network uses the stamp. Asking is stronger than softening the rule. |
 | Claim value | Context for later checks, not a fraud signal. It's recorded at $5,000 or above and never routes a claim on its own. Nothing in the demo shows claim value causing an outcome. |
 | The doctored total (CLM-0842) | A total that doesn't reconcile to its line items fails pre-flight but isn't rejected: the question is how it was altered, so the claim goes on to forensics. |
-| Figures on the slides | The claims analytics panel on slide 3 ($270K, +42%, the chart and risk categories) and the impact row on slide 5 (−65%, +40%, +28%) are illustrative, not Bupa data and not measured results. Say so if asked, before anyone else does. |
-| "Phase" means two things | Slide 4's phases are the delivery path (detection POC, workflow and review, prevention at scale). In the demo, Phase 1, 2 and 3 are the three layers of checks every claim goes through. Use the bridge line on slide 4. |
+| Figures on the slides | The impact row on slide 5 (−65%, +40%, +28%) is illustrative, not measured. Say so if asked, before anyone else does. |
+| "Phase" means two things | Slide 4's image shows the delivery path (detection POC, workflow and review, prevention at scale). In the demo, Phase 1, 2 and 3 are three of slide 3's four questions. Use the bridge line on slide 4. |
 | Pre-flight rejections aren't fraud | CLM-0847 and CLM-0848 end in Reject Document, not in the fraud team's queue, and they don't appear in the report. That's correct. |
 | Weights and thresholds | Expert judgement, to be calibrated on the replay. The integrity score is a rule-based score, not a probability. Never call it one. |
 
@@ -58,7 +58,7 @@ These came up in preparation. Have the answers ready and don't soften them on th
 
 ### Set-up
 
-1. Open <https://grahamcrooks.github.io/FraudPOC/> and hard-refresh: Ctrl+Shift+R, or Cmd+Shift+R on a Mac. You should see the image slides and, in the demo, the What's happening card during pre-flight.
+1. Open <https://grahamcrooks.github.io/FraudPOC/> and hard-refresh: Ctrl+Shift+R, or Cmd+Shift+R on a Mac. You should see the new slides 2 and 3 ("Three kinds of fraud", "Four questions") and, in the demo, the What's happening card during pre-flight.
 2. Press F for fullscreen. Stay in Presenting mode (the default).
 3. Captions are on. Press C if they compete with you.
 4. Have the rehearsal page open in another tab for the architecture diagram and the measurement table: <https://claude.ai/artifact/UDXWJFLAadiKKFnwEZR3KS>. Some of its scenario notes predate the current build; this script supersedes them.
@@ -99,7 +99,7 @@ This room asks during the demo, not after. Answer briefly and park anything long
 | Time | Section | On screen |
 | --- | --- | --- |
 | 00:00–03:00 | Open: set the contract | Slide 1 |
-| 03:00–08:00 | The problem, the case and the approach | Slides 2 to 5 |
+| 03:00–08:00 | The problem, the four questions and the approach | Slides 2 to 5 |
 | 08:00–10:00 | How the pieces fit together | Architecture diagram (rehearsal page) |
 | 10:00–25:00 | CLM-0841, a clean claim, end to end | Sign-in, portal, pre-flight, Phases 1 to 3, outcome |
 | 25:00–29:00 | CLM-0847 and CLM-0848: stopped in pre-flight | Reject panels |
@@ -125,27 +125,36 @@ One ground rule. Everything you'll see runs on simulated, illustrative data, and
 - **DS**: listening for "AI" claims they can test. The ground rule earns their trust early.
 - **AR**: listening for what's real and what's drawn. Same answer.
 
-## 03:00–08:00 · The problem, the case and the approach
+## 03:00–08:00 · The problem, the four questions and the approach
 
-### Slide 2: Problem (1½ minutes)
+### Slide 2: The shape of the problem (2 minutes)
 
-**On screen**: "Problem: why prevention, not just recovery", with four cards: hidden anomalies in routine claims, manual review is reactive and slow, leakage compounds before recovery, members and providers need protection.
+**On screen**: "The shape of the problem". Title: "Three kinds of fraud. They don't get caught the same way." Three rows, rising in weight: The member, The provider, The network. The band across the foot: "Detection gets harder as the money gets bigger."
 
-**Say**: You know this better than I do. Fraud hides in routine claims: unusual service patterns, duplicate items and incorrect billing, buried in volumes of legitimate claims. Our review is reactive. Rules and audits find it after we've paid, and by then the leakage has compounded across claim volumes and into premiums. It costs honest members and providers too. We estimate 1 to 3% of claims contain fraud, waste or abuse, against a global range of 3 to 10%, and healthcare is Australia's most targeted sector for data breaches, which is what organised rings feed on. This POC is about deciding before payment.
+**Say**: You know this better than I do. There are three kinds of fraud, and they don't get caught the same way. The member: an altered receipt, a claim submitted twice, a quote claimed as an invoice. Hard to catch at volume, but the evidence is on the document. The provider: services billed that were never delivered, item codes that don't match the treatment. Every claim is plausible; the pattern only shows across a provider's whole book. And the network: members and providers working together, with recruited members, shared devices and one account collecting from several practices. Every claim is genuine and every member is real. No single claim looks wrong, because none of them is. Detection gets harder as the money gets bigger. This work is about deciding before we pay.
 
-**Under the hood**: The sources aren't on the slide, so quote them if you use the figures: PKF Littlejohn / Centre for Counter Fraud Studies for the 3 to 10% range, and the OAIC Notifiable Data Breaches Report, January to June 2023, for the breach ranking.
+**Under the hood**: No figures on the slide. If you want a number: an estimated 1 to 3% of claims contain fraud, waste or abuse, against a global range of 3 to 10% (PKF Littlejohn / Centre for Counter Fraud Studies).
+
+**The room**:
+
+- **FA**: the provider row is their daily work. Nod to it: the demo doesn't cover provider billing patterns yet (item code validation is planned), so don't let the slide promise it.
 
 **The room**:
 
 - **DS**: if someone raises the base rate now, say "exactly, which is why accuracy won't be our measure. I'll show you what will be at minute 42."
 
-### Slide 3: Business Case (1 minute)
+### Slide 3: Four questions (1½ minutes)
 
-**On screen**: "Business Case: the value of earlier detection". A claims analytics panel beside four outcome cards: reduce improper payments, prioritise high-risk claims, improve operational efficiency, protect member trust.
+**On screen**: "How to read what follows". Title: "Four questions, asked in order. Cheapest first." Four numbered rows: 01 Is this claimable at all? 02 Is this receipt genuine? 03 Does this claim make sense against everything else? 04 Who else is involved? The band: "A claim that fails question one never reaches question two. That ordering is the design, not an optimisation."
 
-**Say**: Four outcomes: stop improper payments before they go out, put the highest-risk claims in front of the team first, spend review effort where it counts, and keep premiums fair for honest members. The POC puts real numbers on these by replaying about 10,000 historical receipts, starting with Phase 1. I'll come back to how we'd measure it.
+**Say**: Here's how to read what follows: four questions, asked in order, cheapest first. Is this claimable at all? Business rules on the extracted receipt, at no AI cost. Is this receipt genuine? Forensic analysis, but only on receipts that clear the first question. Does this claim make sense against everything else? Aggregation across claims, in real time, nothing to do with the document. Who else is involved? Graph traversal. A claim that fails question one never reaches question two. That ordering is the design, not an optimisation. Keep these four in your head: the demo walks through them in this order.
 
-**Under the hood**: The analytics panel ($270K, +42%, the monthly chart and the risk categories) is illustrative. It is not Bupa data. Say so before anyone asks.
+**Under the hood**: The four questions are the demo's four stages: 01 is pre-flight, 02 is Phase 1 receipt forensics, 03 is Phase 2 cross-claim signals, 04 is Phase 3 network intelligence. The numbers are coloured to tell them apart.
+
+**The room**:
+
+- **AR**: this is the slide they'll map everything back to. The ordering is why AI is spent in only three places.
+- **DS**: question 04 is the expensive one, which is why it runs last.
 
 ### Slide 4: Three Phases (1½ minutes)
 
@@ -153,7 +162,7 @@ One ground rule. Everything you'll see runs on simulated, illustrative data, and
 
 **Say**: This is the delivery path: a detection POC to find suspicious patterns, then workflow and review so the team can triage and investigate, then prevention at scale with real-time intervention. We're at the first step.
 
-Then the bridge line: *Inside the detection POC, every claim goes through three layers of checks, and in the demo you'll see them called Phase 1, 2 and 3. Receipt forensics: is the receipt genuine and does it match the claim? Cross-claim signals: does this claim fit a pattern across other claims? Network intelligence: is it connected to known fraud or an organised ring?*
+Then the bridge line: *Inside that first step, every claim is asked the four questions from the last slide. In the demo, the first is pre-flight, and the other three are Phase 1 receipt forensics, Phase 2 cross-claim signals and Phase 3 network intelligence.*
 
 **Under the hood**: The slide's phases are delivery stages, not the demo's Phase 1, 2 and 3. The bridge line keeps the two apart. Don't skip it.
 
@@ -541,7 +550,7 @@ Then ask: **what would stop you supporting this?**
 Work through these and note anything that doesn't match this script.
 
 1. Hard-refresh the live site; the slides are the five images and the timing table's slide names match.
-2. Slides: the bridge line on slide 4 comes out naturally, and you say "illustrative" about slides 3 and 5 unprompted.
+2. Slides: slides 2 and 3 are the new HTML ones, the bridge line on slide 4 points back to slide 3's four questions, and you say "illustrative" about slide 5's figures unprompted.
 3. CLM-0841: Space pauses the sign-in; you can talk to all eight pre-flight checks in their 5 seconds each; clicking a check at rest brings its card back; Phase 1 to 3 and the outcome read as above.
 4. CLM-0847 and CLM-0848: the PAID answer, word for word, and the question to the room.
 5. CLM-0842: the two-stage story lands: arithmetic in pre-flight, then how it was done in Phase 1, with the score at 0.28.

@@ -59,7 +59,7 @@ What stops the demo depends on the mode:
 
 ## Part 1: The slides
 
-The five slides are full-slide images in `assets/slides/`. The whole image always shows; on a screen that isn't 16:9, a blurred copy of it fills the edges. They look the same in the light and dark themes.
+Slides 1, 4 and 5 are full-slide images in `assets/slides/`: the whole image always shows, and on a screen that isn't 16:9 a blurred copy of it fills the edges. Slides 2 and 3 are built in HTML, in the backup slide's dark treatment. All five look the same in the light and dark themes.
 
 ### Slide 1: Agenda
 
@@ -67,22 +67,22 @@ The five slides are full-slide images in `assets/slides/`. The whole image alway
 - **Under the hood**: A static image slide.
 - **Check**: The slide shows four agenda items. Next moves to slide 2.
 
-### Slide 2: Problem
+### Slide 2: The shape of the problem
 
-- **Say**: Fraud hides in routine claims. Manual review is reactive: rules and audits catch it after the claim is paid, and by then the leakage has compounded across claim volumes and into premiums. It costs members and providers too. If you want a number: an estimated 1 to 3% of claims contain fraud, waste or abuse, against a global range of 3 to 10% (PKF Littlejohn / CCFS), and healthcare is Australia's most targeted sector for data breaches (OAIC, Jan to Jun 2023).
-- **Under the hood**: A static image slide. The sources aren't on the slide, so quote them if you use the figures.
-- **Check**: Four cards: hidden anomalies, manual review, leakage, protection.
+- **Say**: There are three kinds of fraud, and they don't get caught the same way. The member: an altered receipt, a claim submitted twice, a quote claimed as an invoice. Hard to catch at volume, but the evidence is on the document. The provider: services billed that were never delivered, item codes that don't match the treatment. Every claim is plausible; the pattern only shows across a provider's whole book. And the network: members and providers working together, with recruited members, shared devices and one account collecting from several practices. Every claim is genuine and every member is real. No single claim looks wrong, because none of them is. Detection gets harder as the money gets bigger. If you want a number: an estimated 1 to 3% of claims contain fraud, waste or abuse, against a global range of 3 to 10% (PKF Littlejohn / CCFS).
+- **Under the hood**: An HTML slide. The three rows rise in visual weight, and the network row is the heaviest.
+- **Check**: The eyebrow reads "The shape of the problem" and the title "Three kinds of fraud. They don't get caught the same way." Three rows (The member, The provider, The network), then the full-width band "Detection gets harder as the money gets bigger." Everything fits above the dots and buttons at 1366 × 768 and 1920 × 1080.
 
-### Slide 3: Business Case
+### Slide 3: Four questions
 
-- **Say**: Four outcomes: reduce improper payments, prioritise high-risk claims, improve operational efficiency, protect member trust. The POC replays about 10,000 historical receipts, starting with Phase 1, to put real numbers on these.
-- **Under the hood**: A static image slide. The claims analytics panel ($270K, +42%, the monthly chart and risk categories) is illustrative, not Bupa data. Say so if anyone asks.
-- **Check**: The analytics panel and four outcome cards are fully visible.
+- **Say**: Here's how to read what follows: four questions, asked in order, cheapest first. Is this claimable at all? Business rules on the extracted receipt, at no AI cost. Is this receipt genuine? Forensic analysis, but only on receipts that clear the first question. Does this claim make sense against everything else? Aggregation across claims, in real time, nothing to do with the document. Who else is involved? Graph traversal. A claim that fails question one never reaches question two. That ordering is the design, not an optimisation.
+- **Under the hood**: An HTML slide. The four questions are the demo's four stages: 01 is pre-flight, 02 is Phase 1 receipt forensics, 03 is Phase 2 cross-claim signals, 04 is Phase 3 network intelligence. The numbers are coloured to tell them apart.
+- **Check**: The eyebrow reads "How to read what follows" and the title "Four questions, asked in order. Cheapest first." Four numbered rows, then the band "A claim that fails question one never reaches question two. That ordering is the design, not an optimisation." The slide button reads "Four Questions".
 
 ### Slide 4: Three Phases
 
-- **Say**: A practical path: a detection POC to identify suspicious patterns, then workflow and review to triage and investigate, then prevention at scale with real-time intervention. Then bridge to the demo: inside the detection POC, every claim goes through three layers of checks, which the demo calls Phase 1 receipt forensics, Phase 2 cross-claim signals and Phase 3 network intelligence.
-- **Under the hood**: A static image slide. The delivery phases on the slide are not the demo's Phase 1, 2 and 3; the bridge line above keeps the two apart.
+- **Say**: A practical path: a detection POC to identify suspicious patterns, then workflow and review to triage and investigate, then prevention at scale with real-time intervention. Then bridge to the demo: inside the first step, every claim is asked the four questions from the last slide, which the demo calls pre-flight, then Phase 1 receipt forensics, Phase 2 cross-claim signals and Phase 3 network intelligence.
+- **Under the hood**: A static image slide. The delivery phases on the image are not the demo's Phase 1, 2 and 3; the bridge line above keeps the two apart. The image's alt text describes the demo's three phases.
 - **Check**: Three cards: Detection POC, Workflow & Review, Prevention at Scale.
 
 ### Slide 5: Why Pega

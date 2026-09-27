@@ -19,21 +19,21 @@
 
 Time: 30 seconds – 1 minute (quick roadmap, don’t over-explain)
 
-### Slide 2: Problem (why prevention, not just recovery)
+### Slide 2: The shape of the problem (three kinds of fraud)
 
 - Talk about:
-  - Hidden anomalies in routine claims — unusual service patterns, duplicate items and incorrect billing buried in high volumes of legitimate claims
-  - Manual review is reactive and slow — rule-based checks and audits catch issues after the claim is paid
-  - Leakage compounds before recovery — losses accumulate across large claim volumes and flow into premiums
-  - Members and providers need protection — fraud undermines trust and inflates the cost of care
+  - The member — an altered receipt, a claim submitted twice, a quote claimed as an invoice. Hard at volume, but the evidence is on the document
+  - The provider — services never delivered, item codes that don't match the treatment. The pattern only shows across a provider's whole book
+  - The network — members and providers working together. Every claim is genuine; no single claim looks wrong
+  - Detection gets harder as the money gets bigger
 - Useful supporting facts (not on the slide): 1–3% of Bupa’s claims are estimated to contain fraud, waste or abuse, against a 3–10% global benchmark (PKF Littlejohn / CCFS); healthcare is Australia’s most targeted sector for data breaches (OAIC, Jan–Jun 2023)
 
 Time: 1-2 minutes
 
-### Slide 3: Business Case (the value of earlier detection)
+### Slide 3: Four questions (how to read what follows)
 
-- Talk about the four outcomes: reduce improper payments, prioritise high-risk claims, improve operational efficiency, protect member trust
-- The claims analytics panel is illustrative: the figures are not Bupa data. If asked, say the real numbers come from the Phase 1 POC, which replays about 10,000 historical receipts
+- Talk about the four questions, asked in order, cheapest first: is this claimable at all (pre-flight), is this receipt genuine (Phase 1), does this claim make sense against everything else (Phase 2), who else is involved (Phase 3)
+- A claim that fails question one never reaches question two. That ordering is the design, not an optimisation
 
 Time: 2 minutes
 
