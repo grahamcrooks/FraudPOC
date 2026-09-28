@@ -1257,10 +1257,8 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     <div class="lst-body">
       <div class="lst-screen">
         <div class="lst-id" id="lst-id"></div>
-        <div class="lst-row"><span>Terminal ID</span><b>S04471</b></div>
-        <div class="lst-row"><span>Merchant ID</span><b>00884471</b></div>
-        <div class="lst-row"><span>Provider number</span><b>0004471X</b></div>
-        <div class="lst-row"><span>Connection</span><b id="lst-conn"></b></div>
+        <div class="lst-row"><span>Claim</span><b id="lst-amt"></b></div>
+        <div class="lst-row"><span>Status</span><b>Sent to the fund ✓</b></div>
       </div>
       <div class="lst-keys"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i><i class="lst-x">✕</i><i>0</i><i class="lst-ok">✓</i></div>
       <div class="lst-slot"></div>
@@ -2667,8 +2665,21 @@ const SESSION_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','
 // origin and outline shape from the active frame, so a new frame is a swap:
 // add its markup and an entry here. Member scenarios are phones; the browser
 // is for the ring scenario, where one person on a laptop lodges for several members.
-// The opening channels beat: about 5 seconds at the default pace.
-const SESSION_CHANNELS_MS=3600;
+// The opening channels beat (phone sign-ins only): the terminal's four
+// identifiers fly out one at a time, about 13 seconds at the default pace.
+const TERMINAL_PARTICLE_INTRO=900;
+const TERMINAL_PARTICLE_GAP=1100;
+const SESSION_CHANNELS_MS=TERMINAL_PARTICLE_INTRO+4*TERMINAL_PARTICLE_GAP+1100;
+// What a practice claiming terminal sends with each claim (values fictional).
+function terminalSignals(sess){
+  const hm=(sess.sessionTime||'').slice(11,16);
+  return [
+    {key:'tid', icon:'📟',title:'Terminal ID',    colour:'var(--teal)',  detail:'S04471',                    why:'The physical terminal, registered to the practice'},
+    {key:'mid', icon:'🏦',title:'Merchant ID',    colour:'var(--gold)',  detail:'00884471',                  why:'The practice account receiving the funds'},
+    {key:'prov',icon:'🩺',title:'Provider number',colour:'var(--orange)',detail:'0004471X',                  why:'The practitioner, at this registered practice'},
+    {key:'conn',icon:'🔌',title:'Connection',     colour:'var(--lblue)', detail:'Ethernet'+(hm?' · '+hm:''), why:'How the terminal connected, and when'},
+  ];
+}
 const SESSION_FRAMES={
   phone:  {el:'ls-phone',   aspect:19.5/9, outlineW:.62, outline:'phone',   icon:'📱', verify:'Face ID',
            sim:'Member sign-in on the H+ app · illustrative device and location data'},
@@ -2700,7 +2711,8 @@ const SESSION_SCENE_MS=2000+SESSION_PARTICLES_MS+2000;
 function sessionSceneLeadIn(s){
   const sess=scenarioSession(s);
   if(!sess||!sess.showLogin||reducedMotion()) return 0;
-  return Math.max(0,SESSION_SCENE_MS*SESSION_SCENE_PACE+3000-9000);
+  const channels=sessionFrame(sess)===SESSION_FRAMES.phone?SESSION_CHANNELS_MS:0;
+  return Math.max(0,(SESSION_SCENE_MS+channels)*SESSION_SCENE_PACE+3000-9000);
 }
 
 function scenarioSession(s){ const d=s&&SCENARIO_DATA[s.id]; return (d&&d.session)||null; }
@@ -2861,9 +2873,8 @@ const SessionScene={
   beatChannels(opts){
     const ls=$('ls'), term=$('ls-term'), app=$('ls-chan-app'), phone=$(this.frame.el);
     const s=S[curScenario]||{};
-    const hm=(this.sess.sessionTime||'').slice(11,16);
     txt('lst-id',s.prov||'The practice');
-    txt('lst-conn','Ethernet'+(hm?' · '+hm:''));
+    txt('lst-amt',s.clamt||'');
     txt('ls-sim-txt','Member app and practice claiming terminal · illustrative device and terminal data');
     Captions.show('channels');
     term.style.display=''; app.style.display='';
@@ -2874,14 +2885,41 @@ const SessionScene={
     app.style.left=(pr.left-lr.left+pr.width/2-app.offsetWidth/2)+'px';
     app.style.top=Math.max(8,pr.top-lr.top-app.offsetHeight-10)+'px';
     [term,app].forEach(el=>this.anim(el,[{opacity:0},{opacity:1}],{duration:300,fill:'forwards'}));
-    term.querySelectorAll('.lst-row').forEach((row,i)=>{
-      row.style.opacity='0';
-      this.at(400+i*400,()=>{ row.style.opacity=''; this.anim(row,[{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'none'}],{duration:250}); });
+    // The terminal's identifiers rise out of it and hold beside the phone, where the
+    // app's own fly-ins land next. They leave with the terminal, since this claim
+    // itself came in through the app.
+    const fx=$('ls-fx'), tr=term.querySelector('.lst-body').getBoundingClientRect();
+    const tps=terminalSignals(this.sess).map(sig=>{
+      const el=document.createElement('div');
+      el.className='lsp'; el.style.setProperty('--pc',sig.colour);
+      el.innerHTML='<span class="lsp-ico"></span><span><div class="lsp-t"></div><div class="lsp-v"></div><div class="lsp-why"></div></span>';
+      el.querySelector('.lsp-ico').textContent=sig.icon;
+      el.querySelector('.lsp-t').textContent=sig.title;
+      el.querySelector('.lsp-v').textContent=sig.detail;
+      el.querySelector('.lsp-why').textContent=sig.why;
+      fx.appendChild(el);
+      return {sig,el,w:el.offsetWidth};
+    });
+    const maxW=Math.max(...tps.map(p=>p.w)), gap=16;
+    tps.forEach(p=>{ p.el.style.width=maxW+'px'; p.h=p.el.offsetHeight; });
+    const pv=phone.getBoundingClientRect();
+    const hTot=tps.reduce((a,p)=>a+p.h,0)+gap*(tps.length-1);
+    let x=pv.right+40; if(x+maxW>innerWidth-24) x=Math.max(24,innerWidth-24-maxW);
+    let y=Math.max(12,pv.top+pv.height/2-hTot/2);
+    const sx=tr.left+tr.width/2-maxW/2, sy=tr.top+tr.height*.25;
+    tps.forEach((p,i)=>{
+      const py=y; y+=p.h+gap;
+      this.anim(p.el,[
+        {transform:`translate(${sx}px,${sy}px) scale(.5)`,opacity:0},
+        {transform:`translate(${sx+(x-sx)*.5}px,${Math.min(sy,py)-30}px) scale(.9)`,opacity:1,offset:.5},
+        {transform:`translate(${x}px,${py}px) scale(1)`,opacity:1}
+      ],{duration:950,delay:TERMINAL_PARTICLE_INTRO+i*TERMINAL_PARTICLE_GAP,easing:'cubic-bezier(.3,.7,.3,1)',fill:'both'});
+      this.at(TERMINAL_PARTICLE_INTRO+i*TERMINAL_PARTICLE_GAP,()=>Captions.show('terminal:'+p.sig.key));
     });
     this.at(SESSION_CHANNELS_MS-300,()=>{
-      [term,app].forEach(el=>this.anim(el,[{opacity:1},{opacity:0}],{duration:150,fill:'forwards'}));
+      [term,app,...tps.map(p=>p.el)].forEach(el=>this.anim(el,[{opacity:1},{opacity:0}],{duration:250,fill:'forwards'}));
     });
-    this.at(SESSION_CHANNELS_MS,()=>{ term.style.display='none'; app.style.display='none'; txt('ls-sim-txt',this.frame.sim); });
+    this.at(SESSION_CHANNELS_MS,()=>{ term.style.display='none'; app.style.display='none'; tps.forEach(p=>p.el.remove()); txt('ls-sim-txt',this.frame.sim); });
   },
 
   // Beat 2: three labelled particles lift out of the phone and hold, readable.

@@ -14,6 +14,22 @@ window.CHECK_CAPTIONS = {
     "tag": "How claims arrive",
     "text": "Claims arrive through more than one channel, such as the member's app or the practice's claiming terminal. The app sends device, location and session; the terminal sends terminal ID, merchant ID, provider number and connection"
   },
+  "terminal:tid": {
+    "tag": "Terminal ID",
+    "text": "A unique six-character ID for the physical terminal, registered to the practice"
+  },
+  "terminal:mid": {
+    "tag": "Merchant ID",
+    "text": "The practice's merchant number: the account that receives the funds"
+  },
+  "terminal:prov": {
+    "tag": "Provider number",
+    "text": "Identifies the practitioner at that registered practice location"
+  },
+  "terminal:conn": {
+    "tag": "Connection",
+    "text": "How the terminal connected (Ethernet, Wi-Fi or mobile network), with a timestamp"
+  },
   "cost:ai": {
     "tag": "Pre-flight · AI",
     "text": "One vision model call classifies the document and returns eleven fields, each with its own confidence score"
