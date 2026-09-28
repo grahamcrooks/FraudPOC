@@ -12,7 +12,7 @@
 window.CHECK_CAPTIONS = {
   "channels": {
     "tag": "How claims arrive",
-    "text": "Claims arrive through more than one channel, such as the member's app or the practice's claiming terminal. The app sends device, location and session; the terminal sends terminal ID, merchant ID, provider number and connection"
+    "text": "Claims arrive through more than one channel, such as the member's app or the practice's claiming terminal. The app sends device, geolocation and session; the terminal sends terminal ID, merchant ID, provider number, connection and geolocation"
   },
   "terminal:tid": {
     "tag": "Terminal ID",
@@ -29,6 +29,10 @@ window.CHECK_CAPTIONS = {
   "terminal:conn": {
     "tag": "Connection",
     "text": "How the terminal connected (Ethernet, Wi-Fi or mobile network), with a timestamp"
+  },
+  "terminal:geo": {
+    "tag": "Geolocation",
+    "text": "Approximate, from the terminal's IP address, and compared with the practice's registered address"
   },
   "cost:ai": {
     "tag": "Pre-flight · AI",

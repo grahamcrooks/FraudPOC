@@ -1168,7 +1168,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
-        <div class="p2-planned" id="ph2-planned">Further strategies are planned and not in this build: phantom ABN, waiver abuse, item code validation, and, for provider fraud, a terminal mismatch (a provider number used on a HICAPS terminal registered to a different practice, or connection data placing the terminal away from that practice).</div>
+        <div class="p2-planned" id="ph2-planned">Further strategies are planned and not in this build: phantom ABN, waiver abuse, item code validation, and, for provider fraud, a terminal mismatch (a HICAPS terminal transmitting from an IP address away from its registered practice, for example registered in Brisbane and transmitting from Sydney, or a provider number used on a terminal registered to a different practice).</div>
         <div class="p1-calc" id="ph2-calc"></div>
         <div class="score-reveal" id="ph2-score"><div class="score-num" id="ph2-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Fraud Score</div><div class="score-verdict" id="ph2-score-verdict">Calculating...</div><div class="score-route" id="ph2-score-route"></div></div></div>
         <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No suspicious cross-claim pattern detected</div></div></div>
@@ -2695,13 +2695,13 @@ const SESSION_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','
 // add its markup and an entry here. Member scenarios are phones; the browser
 // is for the ring scenario, where one person on a laptop lodges for several members.
 // Full phone sign-ins open side by side: the practice terminal on the left, the
-// member's phone on the right, each with its cards beneath. The terminal's four
-// identifiers fly out first (about 11 seconds at the default pace), then the phone
+// member's phone on the right, each with its cards beneath. The terminal's five
+// identifiers fly out first (about 13 seconds at the default pace), then the phone
 // signs in and its three fly out; everything then holds for SESSION_DUAL_HOLD_REAL_MS
 // of real time, whatever the pace, before the handoff.
 const TERMINAL_PARTICLE_INTRO=900;
 const TERMINAL_PARTICLE_GAP=1100;
-const SESSION_CHANNELS_MS=TERMINAL_PARTICLE_INTRO+4*TERMINAL_PARTICLE_GAP;
+const SESSION_CHANNELS_MS=TERMINAL_PARTICLE_INTRO+5*TERMINAL_PARTICLE_GAP;
 const SESSION_DUAL_HOLD_REAL_MS=7000;
 // What a practice claiming terminal sends with each claim (values fictional).
 function terminalSignals(sess){
@@ -2711,6 +2711,7 @@ function terminalSignals(sess){
     {key:'mid', icon:'🏦',title:'Merchant ID',    colour:'var(--gold)',  detail:'00884471',                  why:'The practice account receiving the funds'},
     {key:'prov',icon:'🩺',title:'Provider number',colour:'var(--orange)',detail:'0004471X',                  why:'The practitioner, at this registered practice'},
     {key:'conn',icon:'🔌',title:'Connection',     colour:'var(--lblue)', detail:'Ethernet'+(hm?' · '+hm:''), why:'How the terminal connected, and when'},
+    {key:'geo', icon:'📍',title:'Geolocation',    colour:'var(--green-mid)',detail:(sess.location||'')+' · 203.0.113.44', why:'Approximate, from the IP, against the registered practice address'},
   ];
 }
 const SESSION_FRAMES={
@@ -2905,7 +2906,7 @@ const SessionScene={
   },
 
   // Side-by-side layout: terminal (left) and phone (right) at one height, the
-  // terminal's four cards in a 2×2 grid beneath it and the phone's three in a row
+  // terminal's five cards in rows of three beneath it and the phone's three in a row
   // beneath the phone. Cards are built here, hidden, so their slots are known up front.
   layoutDual(){
     const ls=$('ls'), term=$('ls-term'), phone=$(this.frame.el);
@@ -2931,7 +2932,7 @@ const SessionScene={
     const midGap=Math.max(48,lr.width*.06), side=Math.max(20,lr.width*.04), cg=12;
     const colW=Math.min(620,(lr.width-2*side-midGap)/2);
     const c1=lr.width/2-midGap/2-colW/2, c2=lr.width/2+midGap/2+colW/2;
-    const tw=(colW-cg)/2, pw=(colW-2*cg)/3;
+    const tw=(colW-2*cg)/3, pw=tw;
     tps.forEach(p=>{ p.el.style.width=tw+'px'; }); pps.forEach(p=>{ p.el.style.width=pw+'px'; });
     const tH=Math.max(...tps.map(p=>p.el.offsetHeight)), pH=Math.max(...pps.map(p=>p.el.offsetHeight));
     tps.forEach(p=>{ p.el.style.height=tH+'px'; }); pps.forEach(p=>{ p.el.style.height=pH+'px'; });
@@ -2946,7 +2947,7 @@ const SessionScene={
     phone.style.left=(c2-pW/2)+'px'; phone.style.top=blockTop+'px';
     [[pills[0],c1],[pills[1],c2]].forEach(([el,c])=>{ el.style.left=(c-el.offsetWidth/2)+'px'; el.style.top=(blockTop-pillH-12)+'px'; });
     const cy=lr.top+blockTop+devH+gapDC;
-    tps.forEach((p,i)=>{ p.w=tw; p.h=tH; p.x=lr.left+c1-colW/2+(i%2)*(tw+cg); p.y=cy+Math.floor(i/2)*(tH+cg); });
+    tps.forEach((p,i)=>{ p.w=tw; p.h=tH; p.x=lr.left+c1-colW/2+(i%3)*(tw+cg); p.y=cy+Math.floor(i/3)*(tH+cg); });
     pps.forEach((p,i)=>{ p.w=pw; p.h=pH; p.x=lr.left+c2-colW/2+i*(pw+cg); p.y=cy; });
     this.tps=tps; this.particles=pps;
   },
@@ -2965,7 +2966,7 @@ const SessionScene={
     });
   },
 
-  // Beat 0: the practice terminal sends a claim and its four identifiers fly out.
+  // Beat 0: the practice terminal sends a claim and its five identifiers fly out.
   beatChannels(){
     const term=$('ls-term'), s=S[curScenario]||{};
     txt('ls-sim-txt','Member app and practice claiming terminal · illustrative device and terminal data');
