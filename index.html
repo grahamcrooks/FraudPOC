@@ -176,6 +176,7 @@ body.run-rolling .presenter-only{display:none}
 .lodge-body{padding:20px}
 .lodge-group{border:1px solid rgba(0,31,95,.28);border-radius:10px;padding:14px 16px 16px;margin-bottom:16px}
 .lodge-group-hd{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.pf-sep{height:2px;background:var(--navy);border-radius:1px;margin:0 0 16px}
 .lodge-group-n{width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
 .lodge-group .dataset-intro-title{display:none}
 .lodge-section,.stat-card{border-color:rgba(0,31,95,.22)}
@@ -1017,7 +1018,6 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
               <div class="dataset-intro-title">Extracted from the Receipt</div>
               <div class="dataset-intro-body">What the AI read from the receipt. The member only uploads it: every field below is filled in from the receipt, not typed.</div>
             </div>
-            <div class="sig-list pf-stage" id="sig-extract" style="display:none" aria-live="polite"></div>
             <div class="form-row">
               <div class="form-group"><label class="form-label">Claim Type <span class="req">*</span></label><select class="form-select" id="f-type"><option id="f-type-opt"></option></select></div>
               <div class="form-group"><label class="form-label">Service Date <span class="req">*</span></label><input class="form-input" id="f-date" readonly placeholder="Read from receipt"></div>
@@ -1031,7 +1031,8 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
               <div class="form-group"><label class="form-label">Item Codes</label><input class="form-input" id="f-codes" readonly placeholder="Read from receipt"></div>
             </div>
             </div>
-            <!-- 3 · Pre-flight decision: the business rules on the extracted data, shown once a receipt is loaded (capture, extract, then decide) -->
+            <div class="pf-sep" id="pf-sep" style="display:none" aria-hidden="true"></div>
+            <!-- 3 · Pre-flight decision: the checks on the extracted claim data, shown once a receipt is loaded. They start only once panel 2's fields have filled in. -->
             <div class="lodge-group" id="pf-group" style="display:none">
             <div class="lodge-group-hd"><span class="lodge-group-n">3</span>Pre-flight Decision</div>
               <div id="upload-validation" style="display:none">
@@ -1860,8 +1861,8 @@ function setScenario(idx){
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review','pf-forensics'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
-  $('upload-validation').style.display='none'; $('pf-group').style.display='none';
-  ['sig-capture','sig-extract'].forEach(id=>{ $(id).style.display='none'; $(id).innerHTML=''; });
+  $('upload-validation').style.display='none'; $('pf-group').style.display='none'; $('pf-sep').style.display='none';
+  $('sig-capture').style.display='none'; $('sig-capture').innerHTML='';
   // Reset action buttons to default state
   if($('btn-submit')) $('btn-submit').style.display='';
   if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
@@ -1901,11 +1902,23 @@ function hideBanner(){ $('scenario-banner').style.display='none'; clearInterval(
 // each one runs. Captions differ by mode: grouped while presenting (the card
 // carries each check), one per check in the unattended rolling demo.
 const PF_STEP=5000;
+// Between the sign-in capture and the checks, the AI reads the receipt and the
+// claim fields fill in one by one (panel 2). No check starts until they have.
+const PF_FILL=5000;
 function captionsPerCheck(){ return runMode==='rolling'; }
+function pfSchedule(sigs){
+  let t=0, fillAt=null;
+  const sch=sigs.map(sig=>{
+    if(sig.cost!=='capture'&&fillAt===null){ fillAt=t; t+=PF_FILL; }
+    const r={start:t, done:t+PF_STEP-700}; t+=PF_STEP; return r;
+  });
+  if(fillAt===null){ fillAt=t; t+=PF_FILL; }
+  return {sch, fillAt, total:t};
+}
 function preflightMs(){
   const sigs=scenarioSignals(S[curScenario]);
   if(!sigs) return 10800;
-  return sigs.length*PF_STEP;
+  return pfSchedule(sigs).total;
 }
 
 function simulateUpload(){
@@ -1914,12 +1927,12 @@ function simulateUpload(){
   uz.innerHTML='<div class="upload-icon">⏫</div><div class="upload-text">Uploading...</div>';
   uploadCount++;
   Captions.show('upload');
-  const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none'; $('pf-group').style.display=vp.style.display;
+  const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none'; $('pf-group').style.display=vp.style.display; $('pf-sep').style.display=vp.style.display;
   // Scenarios with a signals array in data/scenarios/ get the self-describing
   // panel; the rest keep the original four verdict rows until they have one.
   const sigs=scenarioSignals(s);
   $('sig-list').style.display=sigs?'':'none';
-  ['sig-capture','sig-extract'].forEach(id=>{ $(id).style.display=sigs&&uploadCount===1?'':'none'; });
+  $('sig-capture').style.display=sigs&&uploadCount===1?'':'none';
   [1,2,3,4,5].forEach(i=>{ $('val-step-'+i).style.display=sigs?'none':''; });
 
   const fillFields=()=>{
@@ -1934,7 +1947,21 @@ function simulateUpload(){
   // clearAllTimers() — cancels them instead of letting them fire later
   // and collide with the next scenario's sequence.
   if(sigs){
-    SignalPanel.run(s,sigs,{onExtracted:fillFields});
+    SignalPanel.run(s,sigs);
+    // Panel 2: the claim fields fill in one by one from the AI read, after the
+    // capture and before any check. Each flashes as it arrives.
+    const fillAt=pfSchedule(sigs).fillAt;
+    addTimer(()=>{ Captions.show('extract'); $('f-type').closest('.lodge-group').scrollIntoView({block:'nearest',behavior:reducedMotion()?'auto':'smooth'}); },fillAt);
+    const put=[
+      ['f-type',()=>{ $('f-type-opt').textContent=s.type; $('f-type-opt').value=s.type; }],
+      ['f-date',()=>{ $('f-date').value=s.date; }], ['f-prov',()=>{ $('f-prov').value=s.prov; }],
+      ['f-abn',()=>{ $('f-abn').value=s.abn; }], ['f-amt',()=>{ $('f-amt').value=s.clamt; }],
+      ['f-codes',()=>{ $('f-codes').value=s.codes; }],
+    ];
+    put.forEach(([id,fill],k)=>addTimer(()=>{
+      fill(); const el=$(id); el.classList.add('ai-filled');
+      addTimer(()=>el.classList.remove('ai-filled'),1300);
+    },fillAt+500+k*600));
   } else {
     // Reset all five rows to queued
     [1,2,3,4,5].forEach(i=>{
@@ -1971,10 +1998,9 @@ function simulateUpload(){
 
   // Flash the fields ONE BY ONE just after Field extraction fills them, so
   // the audience sees where they came from
-  if(uploadCount===1){
+  if(uploadCount===1&&!sigs){
     const fields = ['f-type','f-date','f-prov','f-abn','f-amt','f-codes'];
-    const fx = sigs ? sigs.findIndex(x=>x.id==='SIG-FIELD-EXTRACTION') : -1;
-    const filledAt = fx>=0 ? (fx+1)*PF_STEP-500 : 8200;
+    const filledAt = 8200;
     fields.forEach((id, idx) => {
       const animStart = filledAt + (idx * 200); // 200ms between each
       addTimer(() => {
@@ -2048,9 +2074,9 @@ function simulateUpload(){
 // What's happening card (#pfx): the plain-English explanation of the running
 // pre-flight check, from data/check-explainers.js. It advances with the checks,
 // stays after the run, and a click on any check row brings that check back.
-// Pre-flight stage of a check: the sign-in capture, the AI extraction, or the
-// business-rule decision on the extracted data.
-function pfStage(sig){ return sig.cost==='capture'?'capture':sig.cost==='ai'?'extract':'decide'; }
+// Pre-flight stage of a check: the sign-in capture (panel 1), or a check on the
+// extracted claim data (panel 3). The extraction itself is panel 2, the fields filling in.
+function pfStage(sig){ return sig.cost==='capture'?'capture':'decide'; }
 
 const Explainer={
   cur:null, sigs:null,
@@ -2060,7 +2086,7 @@ const Explainer={
     const cost=SIGNAL_COST[sig.cost]||SIGNAL_COST.rule;
     txt('pfx-ico',x.icon||''); txt('pfx-name',sig.name); txt('pfx-what',x.what); txt('pfx-why',x.why);
     const all=this.sigs||[], st=pfStage(sig), grp=all.filter(x=>pfStage(x)===st), k=grp.indexOf(sig);
-    txt('pfx-step', k<0?'Check '+(i+1)+' of '+n : st==='capture'?'Captured at sign-in' : (st==='extract'?'Extract ':'Decide ')+(k+1)+' of '+grp.length);
+    txt('pfx-step', k<0?'Check '+(i+1)+' of '+n : st==='capture'?'Captured at sign-in' : 'Check '+(k+1)+' of '+grp.length);
     const c=$('pfx-cost'); c.className='sig-cost '+cost.cls; c.textContent=cost.label;
     el.hidden=false; this.cur=sig.id;
     el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap');
@@ -2214,13 +2240,13 @@ const SignalPanel={
 
   build(s,sigs,list){
     // Pre-flight splits across the panels in the order things happen: the
-    // sign-in capture (panel 1), the AI extraction (panel 2), then the
-    // business-rule decision (panel 3). Phase panels keep their one mount.
+    // sign-in capture (panel 1), then the checks on the extracted data (panel 3);
+    // panel 2 is the fields filling in between them. Phase panels keep their one mount.
     const pf=!list||list.id==='sig-list';
     list=list||$('sig-list');
-    const mounts=pf?[$('sig-capture'),$('sig-extract'),list]:[list];
+    const mounts=pf?[$('sig-capture'),list]:[list];
     mounts.forEach(m=>{ m.innerHTML=''; m.classList.remove('at-rest','rested'); });
-    const mountFor=sig=>pf?$({capture:'sig-capture',extract:'sig-extract',decide:'sig-list'}[pfStage(sig)]):list;
+    const mountFor=sig=>pf?$({capture:'sig-capture',decide:'sig-list'}[pfStage(sig)]):list;
     return sigs.map((sig,i)=>{
       const el=document.createElement('div');
       el.className='sig'; el.dataset.state='queued'; el.id='sig-'+i;
@@ -2301,7 +2327,7 @@ const SignalPanel={
   // opts.schedule ([{start,done}] in ms; default: pre-flight's 10s window).
   // Each check opens while it runs and closes when the next starts; flags
   // and fails stay open. At opts.restAt every check opens and stays open.
-  //   opts: { mount, schedule, restAt, restClass, caption(sig)→key, onExtracted }
+  //   opts: { mount, schedule, restAt, restClass, caption(sig)→key }
   run(s,sigs,opts){
     opts=opts||{};
     this.scenario=s;
@@ -2310,7 +2336,7 @@ const SignalPanel={
     let sch=opts.schedule;
     const perCheck=captionsPerCheck();
     // Pre-flight: one check every PF_STEP in every mode, so each can be explained.
-    if(!sch) sch=sigs.map((_,i)=>({start:i*PF_STEP, done:(i+1)*PF_STEP-700}));
+    if(!sch) sch=pfSchedule(sigs).sch;
     // The What's happening card follows the pre-flight panel only, not the phase panels.
     const explain=!opts.mount;
     if(explain) Explainer.sigs=sigs;
@@ -2330,17 +2356,14 @@ const SignalPanel={
         this.start(els[i]); Captions.show(cap(sig));
         if(explain) Explainer.show(sig,i,n);
       },sch[i].start);
-      addTimer(()=>{
-        this.complete(els[i],sig);
-        if(sig.id==='SIG-FIELD-EXTRACTION'&&opts.onExtracted) opts.onExtracted();
-      },sch[i].done);
+      addTimer(()=>this.complete(els[i],sig),sch[i].done);
     });
     // Resting state: every check open, showing its full working. Collapsing
     // is for the run only; a click still toggles a check to tidy the view.
     const restAt=opts.restAt!=null?opts.restAt:preflightMs()-100;
     addTimer(()=>{
       els.forEach(el=>this.toggle(el,true));
-      (explain?['sig-capture','sig-extract','sig-list'].map($):[list]).forEach(m=>m.classList.add(opts.restClass||'at-rest'));
+      (explain?['sig-capture','sig-list'].map($):[list]).forEach(m=>m.classList.add(opts.restClass||'at-rest'));
       if(!explain) return;
       // At rest the card explains why the claim stopped, if it did: the first
       // routing fail, else the first routing flag, as outcome() decides.
@@ -2350,7 +2373,6 @@ const SignalPanel={
       if(k>=0) Explainer.show(sigs[k],k,n);
       Explainer.rest();
     },restAt);
-    if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&opts.onExtracted) addTimer(opts.onExtracted,3000);
   },
 
   // Routing, as in the build: any fail → Reject Document; else any flag →
@@ -2685,8 +2707,8 @@ function closeOverlay(){
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review','pf-forensics'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
-  $('upload-validation').style.display='none'; $('pf-group').style.display='none';
-  ['sig-capture','sig-extract'].forEach(id=>{ $(id).style.display='none'; $(id).innerHTML=''; });
+  $('upload-validation').style.display='none'; $('pf-group').style.display='none'; $('pf-sep').style.display='none';
+  $('sig-capture').style.display='none'; $('sig-capture').innerHTML='';
   if($('btn-submit')) $('btn-submit').style.display='';
   if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
 }

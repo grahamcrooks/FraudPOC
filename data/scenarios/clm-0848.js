@@ -34,17 +34,6 @@
       "conclusion": "Recorded, no evaluation at this stage"
     },
     {
-      "id": "SIG-DOC-TYPE",
-      "name": "Receipt type",
-      "summary": "physio receipt layout · ABN and AHPRA present",
-      "cost": "ai",
-      "lookedAt": "Header, footer and declaration text",
-      "rule": "Must be a tax invoice from a registered health provider",
-      "found": "TAX INVOICE layout · ABN 91 632 847 502 · AHPRA present",
-      "verdict": "pass",
-      "conclusion": "Physiotherapy receipt layout"
-    },
-    {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
       "summary": "11 of 11 fields · $270.00 · 4 service lines",
@@ -65,6 +54,17 @@
       "found": "Lowest ServiceDate 0.93 · ProviderABN 0.96 · InvoiceTotal 0.95",
       "verdict": "pass",
       "conclusion": "All fields above threshold"
+    },
+    {
+      "id": "SIG-DOC-TYPE",
+      "name": "Receipt type",
+      "summary": "physio receipt layout · ABN and AHPRA present",
+      "cost": "ai",
+      "lookedAt": "Header, footer and declaration text",
+      "rule": "Must be a tax invoice from a registered health provider",
+      "found": "TAX INVOICE layout · ABN 91 632 847 502 · AHPRA present",
+      "verdict": "pass",
+      "conclusion": "Physiotherapy receipt layout"
     },
     {
       "id": "SIG-DOC-COMPLETENESS",

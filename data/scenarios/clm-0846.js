@@ -22,17 +22,6 @@
       "conclusion": "Recorded, no evaluation at this stage"
     },
     {
-      "id": "SIG-DOC-TYPE",
-      "name": "Receipt type",
-      "summary": "TAX INVOICE · ABN and AHPRA present",
-      "cost": "ai",
-      "lookedAt": "Header, footer and declaration text",
-      "rule": "Must be a tax invoice from a registered health provider",
-      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · allied health item schedule",
-      "verdict": "pass",
-      "conclusion": "Physiotherapy healthcare receipt"
-    },
-    {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
       "summary": "11 of 11 fields · $230.00 · items SP001, SP015",
@@ -53,6 +42,17 @@
       "found": "Lowest was ServiceDate at 0.93 · ProviderABN 0.96 · InvoiceTotal 0.94",
       "verdict": "pass",
       "conclusion": "All fields above threshold"
+    },
+    {
+      "id": "SIG-DOC-TYPE",
+      "name": "Receipt type",
+      "summary": "TAX INVOICE · ABN and AHPRA present",
+      "cost": "ai",
+      "lookedAt": "Header, footer and declaration text",
+      "rule": "Must be a tax invoice from a registered health provider",
+      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · allied health item schedule",
+      "verdict": "pass",
+      "conclusion": "Physiotherapy healthcare receipt"
     },
     {
       "id": "SIG-DOC-COMPLETENESS",

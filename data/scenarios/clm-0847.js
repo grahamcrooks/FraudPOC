@@ -33,17 +33,6 @@
       "conclusion": "Recorded, no evaluation at this stage"
     },
     {
-      "id": "SIG-DOC-TYPE",
-      "name": "Receipt type",
-      "summary": "dental receipt layout · ABN and AHPRA present",
-      "cost": "ai",
-      "lookedAt": "Header, footer and declaration text",
-      "rule": "Must be a tax invoice from a registered health provider",
-      "found": "TAX INVOICE layout · ABN 36 757 192 913 · AHPRA present · ADA item code schedule",
-      "verdict": "pass",
-      "conclusion": "Dental receipt layout"
-    },
-    {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
       "summary": "11 of 11 fields · $448.00 · items 012, 114, 532",
@@ -64,6 +53,17 @@
       "found": "Lowest InvoiceTotal 0.94 · ProviderABN 0.96 · ServiceDate 0.95",
       "verdict": "pass",
       "conclusion": "All fields above threshold"
+    },
+    {
+      "id": "SIG-DOC-TYPE",
+      "name": "Receipt type",
+      "summary": "dental receipt layout · ABN and AHPRA present",
+      "cost": "ai",
+      "lookedAt": "Header, footer and declaration text",
+      "rule": "Must be a tax invoice from a registered health provider",
+      "found": "TAX INVOICE layout · ABN 36 757 192 913 · AHPRA present · ADA item code schedule",
+      "verdict": "pass",
+      "conclusion": "Dental receipt layout"
     },
     {
       "id": "SIG-DOC-COMPLETENESS",
@@ -116,4 +116,4 @@
     "reason": "Quotation, not a tax invoice · nothing paid",
     "note": "No forensic AI calls were spent on this claim. Phases 1, 2 and 3 did not run. Nothing was referred to the fraud team."
   }
-}
+};

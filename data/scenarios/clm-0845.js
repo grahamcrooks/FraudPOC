@@ -22,17 +22,6 @@
       "conclusion": "Recorded, no evaluation at this stage"
     },
     {
-      "id": "SIG-DOC-TYPE",
-      "name": "Receipt type",
-      "summary": "TAX INVOICE · ABN and AHPRA present",
-      "cost": "ai",
-      "lookedAt": "Header, footer and declaration text",
-      "rule": "Must be a tax invoice from a registered health provider",
-      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · optical item schedule",
-      "verdict": "pass",
-      "conclusion": "Optical healthcare receipt"
-    },
-    {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
       "summary": "11 of 11 fields · $390.00 · items 10801, 10712",
@@ -53,6 +42,17 @@
       "found": "Lowest was ServiceDate at 0.91 · ProviderABN 0.97 · InvoiceTotal 0.95",
       "verdict": "pass",
       "conclusion": "All fields above threshold"
+    },
+    {
+      "id": "SIG-DOC-TYPE",
+      "name": "Receipt type",
+      "summary": "TAX INVOICE · ABN and AHPRA present",
+      "cost": "ai",
+      "lookedAt": "Header, footer and declaration text",
+      "rule": "Must be a tax invoice from a registered health provider",
+      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · optical item schedule",
+      "verdict": "pass",
+      "conclusion": "Optical healthcare receipt"
     },
     {
       "id": "SIG-DOC-COMPLETENESS",

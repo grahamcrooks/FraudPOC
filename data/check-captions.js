@@ -34,6 +34,10 @@ window.CHECK_CAPTIONS = {
     "tag": "Geolocation",
     "text": "Approximate, from the terminal's IP address, and compared with the practice's registered address"
   },
+  "extract": {
+    "tag": "Extracted from the receipt",
+    "text": "One AI read of the receipt fills in every claim field and says what kind of document it is. The member types nothing. The checks start once it's done"
+  },
   "cost:ai": {
     "tag": "Pre-flight · AI",
     "text": "One vision model call classifies the document and returns eleven fields, each with its own confidence score"
