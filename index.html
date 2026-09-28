@@ -519,6 +519,19 @@ body.run-rolling .presenter-only{display:none}
 .ls-sim-pill{flex-shrink:0;background:var(--gold);color:var(--navy);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:10px}
 
 /* Phone */
+/* Opening beat: the practice claiming terminal beside the phone, and a label per channel */
+.ls-term{position:absolute;display:flex;flex-direction:column;align-items:center;gap:12px}
+.lst-body{width:min(calc((100vh - 130px - var(--cap-h,0px)) * .34),300px);aspect-ratio:9/15;font-size:clamp(9px,calc((100vh - var(--cap-h,0px)) * .015),14px);background:#1A2233;border-radius:1.4em;padding:1.1em;box-shadow:0 0 0 2px #2A3345,0 30px 80px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:1em}
+.lst-screen{background:#DCE7F3;color:var(--navy);border-radius:.6em;padding:.9em 1em;display:flex;flex-direction:column;gap:.45em;font-variant-numeric:tabular-nums}
+.lst-id{font-family:'Courier New',monospace;font-weight:800;font-size:1.25em}
+.lst-row{display:flex;flex-direction:column;font-size:.95em;line-height:1.3}
+.lst-row span{font-size:.8em;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);font-weight:700}
+.lst-keys{display:grid;grid-template-columns:repeat(3,1fr);gap:.55em;flex:1}
+.lst-keys i{font-style:normal;display:flex;align-items:center;justify-content:center;background:#2A3345;color:#DCE7F3;border-radius:.45em;font-weight:700;font-size:1.1em}
+.lst-keys .lst-x{background:#7F1D1D}.lst-keys .lst-ok{background:#166534}
+.lst-slot{height:.5em;margin:0 18%;border-radius:.3em;background:#0B0F1A}
+.ls-chan{position:absolute;background:var(--navy);color:#fff;border:1px solid rgba(255,255,255,.25);padding:6px 16px;border-radius:20px;font-size:14px;font-weight:700;white-space:nowrap}
+.ls-term .lst-chan{position:static}
 .ls-phone{position:relative;height:min(calc(100vh - 130px),940px);aspect-ratio:9/19.5;font-size:clamp(11px,1.9vh,17px);background:#0B0F1A;border-radius:2.6em;padding:.55em;box-shadow:0 0 0 2px #2A3345,0 30px 80px rgba(0,0,0,.45)}
 .ls-notch{position:absolute;top:.55em;left:50%;transform:translateX(-50%);width:34%;height:1.5em;background:#0B0F1A;border-radius:0 0 .9em .9em;z-index:3}
 .ls-screen{position:relative;height:100%;border-radius:2.1em;background:var(--white);overflow:hidden;display:flex;flex-direction:column}
@@ -1235,6 +1248,21 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       </div>
     </div>
     <div class="lsb-task"><span>⊞</span><span class="ls-clock">9:14</span></div>
+  </div>
+  <!-- Opening beat (CLM-0841): claims arrive two ways, the member's app or the practice's
+       claiming terminal. Drawn, with no brand; the presenter names HICAPS aloud. -->
+  <div class="ls-chan" id="ls-chan-app" style="display:none">Member's H+ app</div>
+  <div class="ls-term" id="ls-term" style="display:none">
+    <div class="ls-chan lst-chan">Practice claiming terminal</div>
+    <div class="lst-body">
+      <div class="lst-screen">
+        <div class="lst-id" id="lst-id">TRM-4471</div>
+        <div class="lst-row"><span>Registered to</span><b id="lst-reg"></b></div>
+        <div class="lst-row"><span>Transacting at</span><b id="lst-at"></b></div>
+      </div>
+      <div class="lst-keys"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i><i class="lst-x">✕</i><i>0</i><i class="lst-ok">✓</i></div>
+      <div class="lst-slot"></div>
+    </div>
   </div>
   <div class="ls-sim"><span class="ls-sim-pill">Simulated</span><span id="ls-sim-txt">Member sign-in on the H+ app · illustrative device and location data</span></div>
 </div>
@@ -2637,6 +2665,8 @@ const SESSION_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','
 // origin and outline shape from the active frame, so a new frame is a swap:
 // add its markup and an entry here. Member scenarios are phones; the browser
 // is for the ring scenario, where one person on a laptop lodges for several members.
+// The opening channels beat: about 5 seconds at the default pace.
+const SESSION_CHANNELS_MS=2600;
 const SESSION_FRAMES={
   phone:  {el:'ls-phone',   aspect:19.5/9, outlineW:.62, outline:'phone',   icon:'📱', verify:'Face ID',
            sim:'Member sign-in on the H+ app · illustrative device and location data'},
@@ -2802,14 +2832,17 @@ const SessionScene={
     Object.values(SESSION_FRAMES).forEach(f=>{ const el=$(f.el); el.style.display=f===this.frame?'':'none'; el.style.opacity=''; });
     ls.classList.add('show'); document.body.classList.add('ls-on');
 
-    let t=0;
+    let t=0, t0=0;
+    // Opening beat on the phone sign-in: both ways a claim arrives, then the
+    // terminal steps aside and the member's sign-in plays as before.
+    if(beats.includes('login')&&this.frame===SESSION_FRAMES.phone){ this.beatChannels(opts); t0=SESSION_CHANNELS_MS; }
     if(beats.includes('login')){
-      Captions.show('signin');
       ls.classList.add('st-login');
-      this.at(450, ()=>{ ls.classList.add('st-bio'); });
-      this.at(1150,()=>{ ls.classList.replace('st-bio','st-ok'); ls.querySelectorAll('.ls-bio-txt').forEach(el=>{ el.textContent='Verified'; }); });
-      this.at(1550,()=>{ ls.classList.remove('st-login','st-ok'); ls.classList.add('st-welcome'); });
-      t=2000;
+      this.at(t0,()=>{ Captions.show('signin'); });
+      this.at(t0+450, ()=>{ ls.classList.add('st-bio'); });
+      this.at(t0+1150,()=>{ ls.classList.replace('st-bio','st-ok'); ls.querySelectorAll('.ls-bio-txt').forEach(el=>{ el.textContent='Verified'; }); });
+      this.at(t0+1550,()=>{ ls.classList.remove('st-login','st-ok'); ls.classList.add('st-welcome'); });
+      t=t0+2000;
     } else {
       ls.classList.add('st-welcome');
       this.anim($(this.frame.el),[{opacity:0},{opacity:1}],{duration:300});
@@ -2820,6 +2853,28 @@ const SessionScene={
     if(handoff){ this.at(t,()=>this.beatHandoff()); t+=1000; }
     if(beats.includes('land')){ this.at(t,()=>this.beatLand(!handoff)); t+=1000; }
     this.at(t,()=>this.end());
+  },
+
+  // Beat 0: the member's app and the practice's claiming terminal side by side.
+  beatChannels(opts){
+    const ls=$('ls'), term=$('ls-term'), app=$('ls-chan-app'), phone=$(this.frame.el);
+    const s=S[curScenario]||{};
+    txt('lst-reg',(s.prov||'The practice')+' · '+(this.sess.location||''));
+    txt('lst-at',(this.sess.location||'')+' ✓');
+    txt('ls-sim-txt','Member app and practice claiming terminal · illustrative device and location data');
+    Captions.show('channels');
+    term.style.display=''; app.style.display='';
+    const lr=ls.getBoundingClientRect(), pr=phone.getBoundingClientRect();
+    const tw=term.offsetWidth, th=term.offsetHeight;
+    term.style.left=Math.max(16,pr.left-lr.left-tw-Math.max(40,pr.width*.25))+'px';
+    term.style.top=(pr.top-lr.top+(pr.height-th)/2)+'px';
+    app.style.left=(pr.left-lr.left+pr.width/2-app.offsetWidth/2)+'px';
+    app.style.top=Math.max(8,pr.top-lr.top-app.offsetHeight-10)+'px';
+    [term,app].forEach(el=>this.anim(el,[{opacity:0},{opacity:1}],{duration:300,fill:'forwards'}));
+    this.at(SESSION_CHANNELS_MS-300,()=>{
+      [term,app].forEach(el=>this.anim(el,[{opacity:1},{opacity:0}],{duration:150,fill:'forwards'}));
+    });
+    this.at(SESSION_CHANNELS_MS,()=>{ term.style.display='none'; app.style.display='none'; txt('ls-sim-txt',this.frame.sim); });
   },
 
   // Beat 2: three labelled particles lift out of the phone and hold, readable.
@@ -2908,6 +2963,7 @@ const SessionScene={
     this.setPaused(false);
     this.anims.forEach(a=>{ try{a.cancel();}catch(e){} }); this.anims=[];
     $('ls-fx').innerHTML=''; this.particles=[];
+    $('ls-term').style.display='none'; $('ls-chan-app').style.display='none';
     if(this.outline){ this.outline.remove(); this.outline=null; }
     const ls=$('ls'); ls.classList.remove('show'); ls.style.opacity=''; document.body.classList.remove('ls-on');
     this.playing=false;
