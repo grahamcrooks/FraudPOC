@@ -11,8 +11,8 @@
 // stamp). See data/scenarios/README.md, "Captions".
 window.CHECK_CAPTIONS = {
   "channels": {
-    "tag": "Two ways in",
-    "text": "Claims arrive two ways: the member's app, or the practice's claiming terminal. Each carries a device and a location"
+    "tag": "How claims arrive",
+    "text": "Claims arrive through more than one channel, such as the member's app or the practice's claiming terminal. The app sends device, location and session; the terminal sends terminal ID, merchant ID, provider number and connection"
   },
   "cost:ai": {
     "tag": "Pre-flight · AI",

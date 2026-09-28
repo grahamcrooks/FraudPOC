@@ -523,7 +523,7 @@ body.run-rolling .presenter-only{display:none}
 .ls-term{position:absolute;display:flex;flex-direction:column;align-items:center;gap:12px}
 .lst-body{width:min(calc((100vh - 130px - var(--cap-h,0px)) * .34),300px);aspect-ratio:9/15;font-size:clamp(9px,calc((100vh - var(--cap-h,0px)) * .015),14px);background:#1A2233;border-radius:1.4em;padding:1.1em;box-shadow:0 0 0 2px #2A3345,0 30px 80px rgba(0,0,0,.45);display:flex;flex-direction:column;gap:1em}
 .lst-screen{background:#DCE7F3;color:var(--navy);border-radius:.6em;padding:.9em 1em;display:flex;flex-direction:column;gap:.45em;font-variant-numeric:tabular-nums}
-.lst-id{font-family:'Courier New',monospace;font-weight:800;font-size:1.25em}
+.lst-id{font-weight:800;font-size:1.15em}
 .lst-row{display:flex;flex-direction:column;font-size:.95em;line-height:1.3}
 .lst-row span{font-size:.8em;text-transform:uppercase;letter-spacing:.5px;color:var(--text-3);font-weight:700}
 .lst-keys{display:grid;grid-template-columns:repeat(3,1fr);gap:.55em;flex:1}
@@ -1152,7 +1152,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
-        <div class="p2-planned" id="ph2-planned">Further strategies are planned and not in this build: phantom ABN, waiver abuse, item code validation, and, for provider fraud, a terminal location anomaly (a HICAPS terminal transacting away from its registered practice address).</div>
+        <div class="p2-planned" id="ph2-planned">Further strategies are planned and not in this build: phantom ABN, waiver abuse, item code validation, and, for provider fraud, a terminal mismatch (a provider number used on a HICAPS terminal registered to a different practice, or connection data placing the terminal away from that practice).</div>
         <div class="p1-calc" id="ph2-calc"></div>
         <div class="score-reveal" id="ph2-score"><div class="score-num" id="ph2-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Fraud Score</div><div class="score-verdict" id="ph2-score-verdict">Calculating...</div><div class="score-route" id="ph2-score-route"></div></div></div>
         <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No suspicious cross-claim pattern detected</div></div></div>
@@ -1249,16 +1249,18 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     </div>
     <div class="lsb-task"><span>⊞</span><span class="ls-clock">9:14</span></div>
   </div>
-  <!-- Opening beat (CLM-0841): claims arrive two ways, the member's app or the practice's
+  <!-- Opening beat (CLM-0841): claims arrive through more than one channel, such as the member's app or the practice's
        claiming terminal. Drawn, with no brand; the presenter names HICAPS aloud. -->
   <div class="ls-chan" id="ls-chan-app" style="display:none">Member's H+ app</div>
   <div class="ls-term" id="ls-term" style="display:none">
     <div class="ls-chan lst-chan">Practice claiming terminal</div>
     <div class="lst-body">
       <div class="lst-screen">
-        <div class="lst-id" id="lst-id">TRM-4471</div>
-        <div class="lst-row"><span>Registered to</span><b id="lst-reg"></b></div>
-        <div class="lst-row"><span>Transacting at</span><b id="lst-at"></b></div>
+        <div class="lst-id" id="lst-id"></div>
+        <div class="lst-row"><span>Terminal ID</span><b>S04471</b></div>
+        <div class="lst-row"><span>Merchant ID</span><b>00884471</b></div>
+        <div class="lst-row"><span>Provider number</span><b>0004471X</b></div>
+        <div class="lst-row"><span>Connection</span><b id="lst-conn"></b></div>
       </div>
       <div class="lst-keys"><i>1</i><i>2</i><i>3</i><i>4</i><i>5</i><i>6</i><i>7</i><i>8</i><i>9</i><i class="lst-x">✕</i><i>0</i><i class="lst-ok">✓</i></div>
       <div class="lst-slot"></div>
@@ -2666,7 +2668,7 @@ const SESSION_MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','
 // add its markup and an entry here. Member scenarios are phones; the browser
 // is for the ring scenario, where one person on a laptop lodges for several members.
 // The opening channels beat: about 5 seconds at the default pace.
-const SESSION_CHANNELS_MS=2600;
+const SESSION_CHANNELS_MS=3600;
 const SESSION_FRAMES={
   phone:  {el:'ls-phone',   aspect:19.5/9, outlineW:.62, outline:'phone',   icon:'📱', verify:'Face ID',
            sim:'Member sign-in on the H+ app · illustrative device and location data'},
@@ -2859,9 +2861,10 @@ const SessionScene={
   beatChannels(opts){
     const ls=$('ls'), term=$('ls-term'), app=$('ls-chan-app'), phone=$(this.frame.el);
     const s=S[curScenario]||{};
-    txt('lst-reg',(s.prov||'The practice')+' · '+(this.sess.location||''));
-    txt('lst-at',(this.sess.location||'')+' ✓');
-    txt('ls-sim-txt','Member app and practice claiming terminal · illustrative device and location data');
+    const hm=(this.sess.sessionTime||'').slice(11,16);
+    txt('lst-id',s.prov||'The practice');
+    txt('lst-conn','Ethernet'+(hm?' · '+hm:''));
+    txt('ls-sim-txt','Member app and practice claiming terminal · illustrative device and terminal data');
     Captions.show('channels');
     term.style.display=''; app.style.display='';
     const lr=ls.getBoundingClientRect(), pr=phone.getBoundingClientRect();
@@ -2871,6 +2874,10 @@ const SessionScene={
     app.style.left=(pr.left-lr.left+pr.width/2-app.offsetWidth/2)+'px';
     app.style.top=Math.max(8,pr.top-lr.top-app.offsetHeight-10)+'px';
     [term,app].forEach(el=>this.anim(el,[{opacity:0},{opacity:1}],{duration:300,fill:'forwards'}));
+    term.querySelectorAll('.lst-row').forEach((row,i)=>{
+      row.style.opacity='0';
+      this.at(400+i*400,()=>{ row.style.opacity=''; this.anim(row,[{opacity:0,transform:'translateY(4px)'},{opacity:1,transform:'none'}],{duration:250}); });
+    });
     this.at(SESSION_CHANNELS_MS-300,()=>{
       [term,app].forEach(el=>this.anim(el,[{opacity:1},{opacity:0}],{duration:150,fill:'forwards'}));
     });
