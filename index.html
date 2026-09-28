@@ -2772,7 +2772,7 @@ function sessionSignals(sess){
   const why=k=>(sess.explain&&sess.explain[k])||SESSION_WHY[k];
   return [
     {key:'device',  icon:(SESSION_FRAMES[sess.frame]||SESSION_FRAMES.phone).icon,title:'Device',  colour:'var(--teal)',  detail:sess.deviceId+' · '+sess.deviceProfile, chip:sess.deviceId, why:why('device')},
-    {key:'location',icon:'📍',title:'Location',colour:'var(--orange)',detail:sess.location+' · '+sess.ipAddress,     chip:sess.location, why:why('location')},
+    {key:'location',icon:'📍',title:'Geolocation',colour:'var(--orange)',detail:sess.location+' · '+sess.ipAddress,     chip:sess.location, why:why('location')},
     {key:'session', icon:'🕒',title:'Session', colour:'var(--gold)',  detail:(t.date?t.date+', ':'')+clock,          chip:clock, why:why('session')},
   ];
 }

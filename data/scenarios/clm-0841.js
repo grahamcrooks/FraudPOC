@@ -115,7 +115,7 @@
       "text": "The phone's fingerprint. ES-002 checks whether other members lodge from it"
     },
     "particle:location": {
-      "tag": "Session capture · Location",
+      "tag": "Session capture · Geolocation",
       "text": "Where the claimant signed in, from the IP. ES-001 checks the distance from home"
     },
     "particle:session": {
