@@ -23,17 +23,6 @@
       "conclusion": "Recorded, no evaluation at this stage"
     },
     {
-      "id": "SIG-DOC-TYPE",
-      "name": "Receipt type",
-      "summary": "TAX INVOICE · ABN and AHPRA present",
-      "cost": "ai",
-      "lookedAt": "Header, footer and declaration text",
-      "rule": "Must be a tax invoice from a registered health provider",
-      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · ADA item code schedule",
-      "verdict": "pass",
-      "conclusion": "Dental healthcare receipt"
-    },
-    {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
       "summary": "11 of 11 fields · $312.00 · items 011, 022, 114",
@@ -56,6 +45,28 @@
       "conclusion": "All fields above threshold"
     },
     {
+      "id": "SIG-DOC-TYPE",
+      "name": "Receipt type",
+      "summary": "TAX INVOICE · ABN and AHPRA present",
+      "cost": "ai",
+      "lookedAt": "Header, footer and declaration text",
+      "rule": "Must be a tax invoice from a registered health provider",
+      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · ADA item code schedule",
+      "verdict": "pass",
+      "conclusion": "Dental healthcare receipt"
+    },
+    {
+      "id": "SIG-INVALID-KEYWORDS",
+      "name": "Disqualifying content",
+      "summary": "11 terms checked · none found",
+      "cost": "rule",
+      "lookedAt": "Extracted receipt text",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
+      "found": "None",
+      "verdict": "pass",
+      "conclusion": "No disqualifying content"
+    },
+    {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Receipt completeness",
       "summary": "$312.00 received of $312.00 · ABN ✓ · 3 lines · signed",
@@ -76,17 +87,6 @@
       "found": "Items sum to $312.00 · stated total $312.00",
       "verdict": "pass",
       "conclusion": "Line items reconcile"
-    },
-    {
-      "id": "SIG-INVALID-KEYWORDS",
-      "name": "Disqualifying content",
-      "summary": "11 terms checked · none found",
-      "cost": "rule",
-      "lookedAt": "Extracted receipt text",
-      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
-      "found": "None",
-      "verdict": "pass",
-      "conclusion": "No disqualifying content"
     },
     {
       "id": "SIG-CLAIM-VALUE",
@@ -137,10 +137,6 @@
     "phase2": {
       "tag": "Phase 2 · Cross-claim signals",
       "text": "Event strategies compare this claim with patterns across all claims"
-    },
-    "phase3": {
-      "tag": "Phase 3 · Network intelligence",
-      "text": "Phase 3 looks beyond this claim, to everything it is connected to"
     },
     "outcome": {
       "tag": "Outcome",
@@ -265,20 +261,52 @@
   },
   "phase3": [
     {
+      "id": "P3-WATCHLIST",
+      "name": "Watchlist match",
+      "summary": "7 entities checked · 0 matches",
+      "cost": "rule",
+      "delay": 1400,
+      "lookedAt": "Every entity on this claim against the confirmed and monitored entity lists: member, practice, ABN, practitioner, device, submission IP, payee account",
+      "rule": "A direct match to a confirmed fraud entity refers the claim. A match to a monitored entity (one under investigation) raises a flag",
+      "found": "7 entities checked · no match on either list",
+      "verdict": "pass",
+      "conclusion": "No entity on this claim is known to us",
+      "metric": "0 confirmed · 0 monitored"
+    },
+    {
       "id": "P3-GRAPH",
       "name": "Network graph",
       "tag": "MCP · Graph",
       "summary": "0 connections within 3 hops",
       "cost": "ai",
-      "delay": 5800,
+      "delay": 3600,
       "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
-      "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
-      "found": "0 connections within 3 hops",
+      "rule": "Any path within 3 hops to a confirmed fraud community or a monitored entity (one under investigation)",
+      "found": "18 entities within 3 hops · none confirmed or monitored",
       "verdict": "pass",
-      "conclusion": "Graph clear"
+      "conclusion": "Graph clear",
+      "metric": "18 entities within 3 hops · 0 confirmed"
+    },
+    {
+      "id": "P3-SIMILARITY",
+      "name": "Fraud case similarity",
+      "tag": "GenAI · Knowledge Buddy",
+      "summary": "412 cases searched · no comparable case",
+      "cost": "ai",
+      "delay": 5800,
+      "lookedAt": "This claim's shape, described in words (services, billing pattern, practitioner and practice relationships), against the closed investigation write-ups in the confirmed case library",
+      "rule": "Retrieval over the case library, grounded in confirmed outcomes, with the matching cases cited. A similarity result alone never routes a claim; it adds weight to other signals",
+      "found": "412 closed cases searched · nothing comparable returned",
+      "verdict": "pass",
+      "conclusion": "No similar confirmed case",
+      "detail": {
+        "What it is": "Pega GenAI Knowledge Buddy: retrieval over the fund's own closed investigations, ingested automatically when an investigator publishes the case write-up. The library can be seeded from existing closed investigations on day one and grows as the system runs"
+      },
+      "metric": "412 cases searched · 0 comparable"
     }
   ],
   "phase3Result": {
-    "action": "No connections to known fraud or to anything under investigation. Claim approved and sent for adjudication."
+    "verdict": "CLEAR",
+    "action": "No entity known, no connection to known fraud, and no comparable confirmed case. Claim approved and sent for adjudication."
   }
 };

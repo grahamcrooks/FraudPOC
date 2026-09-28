@@ -204,6 +204,6 @@ Accumulated fraud case database
 - Phase 1 (Receipt Forensics, inside the pipeline modal):
   - ~17s total (6 sequential checks, last one lands at 15.6s + 1.6s buffer)
 - Phase 2 (Event Strategies):
-  - ~18s total (runs all 8 checks with staggered animation, last one lands at 16.0s + 1.6s buffer)
+  - 40s total: the sign-in capture (4s), the claim fields filling from the AI read (9s), then seven checks sharing the rest; no check starts until every field has filled
 - Phase 3 (Agentic Intelligence):
   - ~7-9s total, varies by scenario (RAG match calculation + network analysis)

@@ -128,23 +128,23 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 - **Check**:
   - The portal shows MBR-33291, Carlton VIC 3053, POL-2021-44210, Gold Hospital + Extras.
   - The session chip matches Step 1.
-  - The claim card has numbered panels in the order things happen: 1 · Receipt (the upload), 2 · Extracted from the Receipt (the fields the AI read; the member types nothing), and 3 · Pre-flight Checks, which appears once a receipt is loaded.
+  - The claim card has numbered panels in the order things happen: 1 · Data extracted from the receipt (the upload, the sign-in capture, then the fields the AI reads; the member types nothing, and nothing is judged), and 2 · Pre-flight checks, which appears once a receipt is loaded.
 
 ### Step 3: Upload and pre-flight
 
 - **Say**: The claimant uploads a dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules do the rest at no AI cost. A quotation, a proforma or an unpaid invoice stops here.
-- **Under the hood**: Eight checks in order, each held for 5 seconds (about 40 seconds in all), time to stop on each and explain it. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
+- **Under the hood**: Pre-flight takes 40 seconds. Panel 1 takes about a third: the sign-in capture (4 seconds), then one AI read fills every claim field, one after another (9 seconds); nothing is judged there. Panel 2's seven checks share the rest, about 4 seconds each, and none starts until every field is filled. Extraction confidence comes second because it gates the rest: if a field was read unreliably, every check after it would be working off a number nobody trusts. Receipt completeness and line item reconciliation sit together, since both read the same payment and line item fields, with claim value after them. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
 
   | Check | Cost | Rule |
   | --- | --- | --- |
-  | Device and location | Capture | Recorded for later evaluation; no verdict |
-  | Receipt type | AI call | Must be a tax invoice from a registered health provider |
-  | Field extraction | AI call | Extract provider, ABN, service date, line items and total |
-  | Receipt completeness | Business rule | Amount received recorded against amount charged, valid tax invoice, itemised, signed |
-  | Line item reconciliation | Business rule | Line items must sum to the total charged |
-  | Disqualifying content | Business rule | 11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp |
-  | Claim value | Business rule | Recorded at $5,000 or above as context for later checks; never routes the claim on its own |
-  | Extraction confidence | AI call | Every critical field at or above 0.70, or the claim goes to human review |
+  | Device and location (panel 1) | Capture | Recorded for later evaluation; no verdict |
+  | 1 Field extraction | AI call | Extract provider, ABN, service date, line items and total |
+  | 2 Extraction confidence | AI call | Every critical field at or above 0.70, or the claim goes to human review |
+  | 3 Receipt type | AI call | Must be a tax invoice from a registered health provider |
+  | 4 Disqualifying content | Business rule | 11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp |
+  | 5 Receipt completeness | Business rule | Amount received recorded against amount charged, valid tax invoice, itemised, signed |
+  | 6 Line item reconciliation | Business rule | Line items must sum to the total charged |
+  | 7 Claim value | Business rule | Recorded at $5,000 or above as context for later checks; never routes the claim on its own |
 
   Routing: any fail sends the claim to **Reject Document** (Resolved-Rejected). Any flag sends it to **Needs Review** (Pending-Review). Line item reconciliation is the exception to the first rule: a total that doesn't reconcile to its line items fails, but the claim goes on to Phase 1, because a doctored total is a forensics question: how was it altered? Claim value is the other exception: a high-value claim isn't suspicious, so it's recorded as context for later (a high-value claim from a member in a ring is a different priority from an $80 one) and never routes the claim. All passes open the pipeline. The claim form fields fill from the extraction.
 - **Check**:
@@ -293,7 +293,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 - **Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work the claimant hasn't had done, and nothing has been paid. Pre-flight catches it with business rules, so no forensic AI is spent and nothing reaches the fraud team. This is the case for cheap checks first.
 - **Under the hood**:
-  - Receipt type, field extraction, line item reconciliation, claim value and extraction confidence pass: the layout reads as a receipt, 11 of 11 fields, the items reconcile to $448.00, confidence 0.94.
+  - Field extraction, extraction confidence, receipt type, line item reconciliation and claim value pass: the layout reads as a receipt, 11 of 11 fields, the items reconcile to $448.00, confidence 0.94.
   - Disqualifying content fails: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, 2 of 11 terms.
   - Receipt completeness fails: $0.00 received of $448.00, not signed.
   - Any fail routes to Reject Document.
@@ -326,7 +326,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - Phases pause 5.5 seconds between each other, and the demo holds on each outcome before moving on.
   - Scenarios with a sign-in scene (CLM-0841, CLM-0844) take about 14 seconds longer.
 - **Check**:
-  - Pre-flight runs at the same pace as when presenting, 5 seconds a check (about 40 seconds), but with one caption per check instead of grouped captions.
+  - Pre-flight runs at the same pace as when presenting (40 seconds: the fields fill, then seven checks), but with one caption per check instead of grouped captions.
   - For CLM-0841: Phase 2 starts at about 84 seconds, Phase 3 at about 108 seconds, and the outcome at about 120 seconds.
   - CLM-0847 and CLM-0848 each hold on the reject panel for about 9 seconds. After CLM-0847 comes CLM-0848, then CLM-0841.
   - Space pauses and resumes. There are no console errors.

@@ -22,17 +22,6 @@
       "conclusion": "Recorded, no evaluation at this stage"
     },
     {
-      "id": "SIG-DOC-TYPE",
-      "name": "Receipt type",
-      "summary": "TAX INVOICE · ABN and AHPRA present",
-      "cost": "ai",
-      "lookedAt": "Header, footer and declaration text",
-      "rule": "Must be a tax invoice from a registered health provider",
-      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · allied health item schedule",
-      "verdict": "pass",
-      "conclusion": "Physiotherapy healthcare receipt"
-    },
-    {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
       "summary": "11 of 11 fields · $230.00 · items SP001, SP015",
@@ -55,6 +44,28 @@
       "conclusion": "All fields above threshold"
     },
     {
+      "id": "SIG-DOC-TYPE",
+      "name": "Receipt type",
+      "summary": "TAX INVOICE · ABN and AHPRA present",
+      "cost": "ai",
+      "lookedAt": "Header, footer and declaration text",
+      "rule": "Must be a tax invoice from a registered health provider",
+      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · allied health item schedule",
+      "verdict": "pass",
+      "conclusion": "Physiotherapy healthcare receipt"
+    },
+    {
+      "id": "SIG-INVALID-KEYWORDS",
+      "name": "Disqualifying content",
+      "summary": "11 terms checked · none found",
+      "cost": "rule",
+      "lookedAt": "Extracted receipt text",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
+      "found": "None",
+      "verdict": "pass",
+      "conclusion": "No disqualifying content"
+    },
+    {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Receipt completeness",
       "summary": "$230.00 received of $230.00 · ABN ✓ · 2 lines · signed",
@@ -75,17 +86,6 @@
       "found": "Items sum to $230.00 · stated total $230.00",
       "verdict": "pass",
       "conclusion": "Line items reconcile"
-    },
-    {
-      "id": "SIG-INVALID-KEYWORDS",
-      "name": "Disqualifying content",
-      "summary": "11 terms checked · none found",
-      "cost": "rule",
-      "lookedAt": "Extracted receipt text",
-      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
-      "found": "None",
-      "verdict": "pass",
-      "conclusion": "No disqualifying content"
     },
     {
       "id": "SIG-CLAIM-VALUE",
@@ -218,20 +218,52 @@
   },
   "phase3": [
     {
+      "id": "P3-WATCHLIST",
+      "name": "Watchlist match",
+      "summary": "7 entities checked · 1 monitored match",
+      "cost": "rule",
+      "delay": 1800,
+      "lookedAt": "Every entity on this claim against the confirmed and monitored entity lists: member, practice, ABN, practitioner, device, submission IP, payee account",
+      "rule": "A direct match to a confirmed fraud entity refers the claim. A match to a monitored entity (one under investigation) raises a flag",
+      "found": "7 entities checked · Prime Physio & Sports appears on the monitored entity list · not confirmed",
+      "verdict": "flag",
+      "conclusion": "The practice on this claim is already under monitoring",
+      "metric": "0 confirmed · 1 monitored"
+    },
+    {
       "id": "P3-GRAPH",
       "name": "Network graph",
       "tag": "MCP · Graph",
       "summary": "3-hop path into Community #47 · 14 members, 3 providers",
       "cost": "ai",
-      "delay": 7800,
+      "delay": 4800,
       "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
-      "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
+      "rule": "Any path within 3 hops to a confirmed fraud community or a monitored entity (one under investigation)",
       "found": "3-hop path: this claim's submission IP 203.0.113.91 → Kestrel Allied Health → confirmed fraud member MBR-99112, in Community #47 of 14 members and 3 providers",
       "verdict": "fail",
-      "conclusion": "Connected to a confirmed fraud community"
+      "conclusion": "Connected to a confirmed fraud community",
+      "metric": "21 entities within 3 hops · 1 confirmed"
+    },
+    {
+      "id": "P3-SIMILARITY",
+      "name": "Fraud case similarity",
+      "tag": "GenAI · Knowledge Buddy",
+      "summary": "412 cases searched · no comparable case",
+      "cost": "ai",
+      "delay": 7800,
+      "lookedAt": "This claim's shape, described in words (services, billing pattern, practitioner and practice relationships), against the closed investigation write-ups in the confirmed case library",
+      "rule": "Retrieval over the case library, grounded in confirmed outcomes, with the matching cases cited. A similarity result alone never routes a claim; it adds weight to other signals",
+      "found": "412 closed cases searched · nothing comparable returned. The Community #47 cases are billing-pattern cases, and this claim's shape differs: the link is structural, not behavioural",
+      "verdict": "pass",
+      "conclusion": "No similar confirmed case",
+      "detail": {
+        "What it is": "Pega GenAI Knowledge Buddy: retrieval over the fund's own closed investigations, ingested automatically when an investigator publishes the case write-up. The library can be seeded from existing closed investigations on day one and grows as the system runs"
+      },
+      "metric": "412 cases searched · 0 comparable"
     }
   ],
   "phase3Result": {
-    "action": "3-hop path into Community #47 — 14 members, 3 providers. Claim referred to the SIU queue, HIGH priority."
+    "verdict": "RING DETECTED",
+    "action": "Connected to a confirmed fraud community: 3-hop path into Community #47, 14 members and 3 providers. Referred to the SIU queue, HIGH priority. The alert is raised against the community, so it covers its claims already assessed and closed."
   }
 };

@@ -34,17 +34,6 @@
       "conclusion": "Recorded, no evaluation at this stage"
     },
     {
-      "id": "SIG-DOC-TYPE",
-      "name": "Receipt type",
-      "summary": "physio receipt layout · ABN and AHPRA present",
-      "cost": "ai",
-      "lookedAt": "Header, footer and declaration text",
-      "rule": "Must be a tax invoice from a registered health provider",
-      "found": "TAX INVOICE layout · ABN 91 632 847 502 · AHPRA present",
-      "verdict": "pass",
-      "conclusion": "Physiotherapy receipt layout"
-    },
-    {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
       "summary": "11 of 11 fields · $270.00 · 4 service lines",
@@ -67,6 +56,28 @@
       "conclusion": "All fields above threshold"
     },
     {
+      "id": "SIG-DOC-TYPE",
+      "name": "Receipt type",
+      "summary": "physio receipt layout · ABN and AHPRA present",
+      "cost": "ai",
+      "lookedAt": "Header, footer and declaration text",
+      "rule": "Must be a tax invoice from a registered health provider",
+      "found": "TAX INVOICE layout · ABN 91 632 847 502 · AHPRA present",
+      "verdict": "pass",
+      "conclusion": "Physiotherapy receipt layout"
+    },
+    {
+      "id": "SIG-INVALID-KEYWORDS",
+      "name": "Disqualifying content",
+      "summary": "1 of 11 terms matched · PAID stamp",
+      "cost": "rule",
+      "lookedAt": "Extracted receipt text and stamps",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
+      "found": "PAID stamp across the services table",
+      "verdict": "fail",
+      "conclusion": "Account already settled, nothing to claim"
+    },
+    {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Receipt completeness",
       "summary": "$270.00 received of $270.00 · ABN ✓ · 4 lines · signed",
@@ -87,17 +98,6 @@
       "found": "Items sum to $270.00 · stated total $270.00",
       "verdict": "pass",
       "conclusion": "Line items reconcile"
-    },
-    {
-      "id": "SIG-INVALID-KEYWORDS",
-      "name": "Disqualifying content",
-      "summary": "1 of 11 terms matched · PAID stamp",
-      "cost": "rule",
-      "lookedAt": "Extracted receipt text and stamps",
-      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
-      "found": "PAID stamp across the services table",
-      "verdict": "fail",
-      "conclusion": "Account already settled, nothing to claim"
     },
     {
       "id": "SIG-CLAIM-VALUE",

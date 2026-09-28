@@ -23,17 +23,6 @@
       "conclusion": "Recorded, no evaluation at this stage"
     },
     {
-      "id": "SIG-DOC-TYPE",
-      "name": "Receipt type",
-      "summary": "TAX INVOICE · ABN and AHPRA present",
-      "cost": "ai",
-      "lookedAt": "Header, footer and declaration text",
-      "rule": "Must be a tax invoice from a registered health provider",
-      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · optical item schedule",
-      "verdict": "pass",
-      "conclusion": "Optical healthcare receipt"
-    },
-    {
       "id": "SIG-FIELD-EXTRACTION",
       "name": "Field extraction",
       "summary": "11 of 11 fields · $487.50 · items 10801, 10701, 10501",
@@ -54,6 +43,28 @@
       "found": "Lowest was ServiceDate at 0.93 · ProviderABN 0.96 · InvoiceTotal 0.94",
       "verdict": "pass",
       "conclusion": "All fields above threshold"
+    },
+    {
+      "id": "SIG-DOC-TYPE",
+      "name": "Receipt type",
+      "summary": "TAX INVOICE · ABN and AHPRA present",
+      "cost": "ai",
+      "lookedAt": "Header, footer and declaration text",
+      "rule": "Must be a tax invoice from a registered health provider",
+      "found": "\"TAX INVOICE\" · ABN present · AHPRA registration present · optical item schedule",
+      "verdict": "pass",
+      "conclusion": "Optical healthcare receipt"
+    },
+    {
+      "id": "SIG-INVALID-KEYWORDS",
+      "name": "Disqualifying content",
+      "summary": "11 terms checked · none found",
+      "cost": "rule",
+      "lookedAt": "Extracted receipt text",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
+      "found": "None",
+      "verdict": "pass",
+      "conclusion": "No disqualifying content"
     },
     {
       "id": "SIG-DOC-COMPLETENESS",
@@ -78,17 +89,6 @@
       "conclusion": "Total does not reconcile to the line items",
       "onFail": "forensics",
       "escalation": "The total doesn't reconcile. Running forensics to see how it was altered."
-    },
-    {
-      "id": "SIG-INVALID-KEYWORDS",
-      "name": "Disqualifying content",
-      "summary": "11 terms checked · none found",
-      "cost": "rule",
-      "lookedAt": "Extracted receipt text",
-      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
-      "found": "None",
-      "verdict": "pass",
-      "conclusion": "No disqualifying content"
     },
     {
       "id": "SIG-CLAIM-VALUE",

@@ -34,6 +34,10 @@ window.CHECK_CAPTIONS = {
     "tag": "Geolocation",
     "text": "Approximate, from the terminal's IP address, and compared with the practice's registered address"
   },
+  "extract": {
+    "tag": "Extracted from the receipt",
+    "text": "One AI read of the receipt fills in every claim field and says what kind of document it is. The member types nothing. The checks start once it's done"
+  },
   "cost:ai": {
     "tag": "Pre-flight · AI",
     "text": "One vision model call classifies the document and returns eleven fields, each with its own confidence score"
@@ -122,8 +126,16 @@ window.CHECK_CAPTIONS = {
     "tag": "Phase 2 · ES-003 Bank account ring",
     "text": "Real-time event strategy. It aggregates the practices paying into one account over a 30-day window, following where the benefit lands"
   },
+  "phase3": {
+    "tag": "Phase 3 · Network intelligence",
+    "text": "Three ways to ask the same question. Is this entity known? Is it connected to one? Does it look like something we've already confirmed? The first costs nothing and finds the least"
+  },
   "phase3:P3-GRAPH": {
     "tag": "Phase 3 · Network graph",
-    "text": "Graph query over MCP, an AI call. It runs last, once the cheaper checks have cleared, and finds links no single claim contains"
+    "text": "Connected: does any path within 3 hops reach a known entity? A graph query over MCP, finding links no single claim contains"
+  },
+  "phase3:P3-SIMILARITY": {
+    "tag": "Phase 3 · Fraud case similarity",
+    "text": "Resembles: does this claim look like a confirmed case, with no identifier in common? Knowledge Buddy searches closed investigations and cites what it finds"
   }
 };

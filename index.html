@@ -176,6 +176,7 @@ body.run-rolling .presenter-only{display:none}
 .lodge-body{padding:20px}
 .lodge-group{border:1px solid rgba(0,31,95,.28);border-radius:10px;padding:14px 16px 16px;margin-bottom:16px}
 .lodge-group-hd{display:flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;color:var(--navy);text-transform:uppercase;letter-spacing:.4px;margin-bottom:10px}
+.pf-sep{height:2px;background:var(--navy);border-radius:1px;margin:0 0 16px}
 .lodge-group-n{width:20px;height:20px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px}
 .lodge-group .dataset-intro-title{display:none}
 .lodge-section,.stat-card{border-color:rgba(0,31,95,.22)}
@@ -675,6 +676,9 @@ body.run-rolling .presenter-only{display:none}
 .p1c-pass{color:var(--green-mid)}
 .p1c-flag{color:#92400E}
 .p1c-fail{color:#DC2626}
+.p1c-flag{color:#92400E}
+.p1-calc.warn{border-color:rgba(217,119,6,.4);background:#FFFBEB}
+.p1-calc.warn .p1c-verdict{color:#92400E}
 .p1c-d{text-align:right;font-weight:600;color:var(--text)}
 .p1c-rule{width:calc(min(280px,100%) + 164px);max-width:444px;border-top:1px solid var(--text-4);margin:4px 0}
 .p1c-total{font-weight:800;color:var(--text);font-size:14px}
@@ -991,8 +995,10 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
             <div class="lodge-active"><div class="lodge-active-dot"></div>AI Fraud Detection Active</div>
           </div>
           <div class="lodge-body">
+            <!-- 1 · Data extracted from the receipt: the receipt, the sign-in capture where it has always been,
+                 then the extraction filling every claim field. Nothing is judged here. -->
             <div class="lodge-group">
-            <div class="lodge-group-hd"><span class="lodge-group-n">1</span>Receipt</div>
+            <div class="lodge-group-hd"><span class="lodge-group-n">1</span>Data extracted from the receipt</div>
             <div class="form-group full" style="margin-bottom:0">
               <div class="sig-list pf-stage" id="sig-capture" style="display:none" aria-live="polite"></div>
               <label class="form-label">Receipt <span class="req">*</span></label>
@@ -1007,14 +1013,10 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
                 <div class="receipt-check">✅</div>
               </div>
             </div>
-            </div>
-            <div class="lodge-group">
-            <div class="lodge-group-hd"><span class="lodge-group-n">2</span>Extracted from the Receipt</div>
-            <div class="dataset-intro">
+            <div class="dataset-intro" style="margin-top:14px">
               <div class="dataset-intro-title">Extracted from the Receipt</div>
               <div class="dataset-intro-body">What the AI read from the receipt. The member only uploads it: every field below is filled in from the receipt, not typed.</div>
             </div>
-            <div class="sig-list pf-stage" id="sig-extract" style="display:none" aria-live="polite"></div>
             <div class="form-row">
               <div class="form-group"><label class="form-label">Claim Type <span class="req">*</span></label><select class="form-select" id="f-type"><option id="f-type-opt"></option></select></div>
               <div class="form-group"><label class="form-label">Service Date <span class="req">*</span></label><input class="form-input" id="f-date" readonly placeholder="Read from receipt"></div>
@@ -1028,9 +1030,10 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
               <div class="form-group"><label class="form-label">Item Codes</label><input class="form-input" id="f-codes" readonly placeholder="Read from receipt"></div>
             </div>
             </div>
-            <!-- 3 · Pre-flight decision: the business rules on the extracted data, shown once a receipt is loaded (capture, extract, then decide) -->
+            <div class="pf-sep" id="pf-sep" style="display:none" aria-hidden="true"></div>
+            <!-- 2 · Pre-flight checks on the extracted claim data, shown once a receipt is loaded. They start only once every panel 1 field has filled in. -->
             <div class="lodge-group" id="pf-group" style="display:none">
-            <div class="lodge-group-hd"><span class="lodge-group-n">3</span>Pre-flight Decision</div>
+            <div class="lodge-group-hd"><span class="lodge-group-n">2</span>Pre-flight checks</div>
               <div id="upload-validation" style="display:none">
                 <div class="sig-list" id="sig-list" style="display:none" aria-live="polite"></div>
                 <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Receipt type confirmed</div><div class="val-detail" id="val-det-1">Checking receipt type...</div></div></div>
@@ -1200,7 +1203,6 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <div class="phase-expanded" id="ph3-expanded">
         <div class="phase-info" id="ph3-info"><div class="phase-info-band" id="ph3-info-band"><div class="phase-info-txt" id="ph3-info-txt"></div></div></div>
         <div class="check-list" id="ph3-checks"></div>
-        <div class="p2-planned" id="ph3-planned">Fraud case similarity matching is planned. It needs a corpus of confirmed cases, which this system produces as it runs.</div>
         <div class="p1-calc" id="ph3-calc"></div>
         <div class="score-reveal" id="ph3-score"><div class="score-num" id="ph3-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label" id="ph3-score-label">Network Analysis</div><div class="score-verdict" id="ph3-score-verdict">Calculating...</div><div class="score-route" id="ph3-score-route"></div></div></div>
         <div class="result-badge" id="ph3-result"><div class="rb-ico" id="ph3-rb-ico">✅</div><div><div class="rb-title" id="ph3-rb-title">Phase 3 Complete</div><div class="rb-sub" id="ph3-rb-sub">No suspicious activity detected</div></div></div>
@@ -1375,7 +1377,7 @@ const PHASE_DESC=[
   { // CLM-0841
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
     ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
-    ph3:'Tracing every entity this claim touches — member, practice, practitioner, device, payment account — up to 3 hops out, looking for links into known fraud.',
+    ph3:'Three checks, from exact to resembling: is any entity on this claim known, is it connected to one within 3 hops, and does it look like a confirmed case?',
   },
   { // CLM-0842
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
@@ -1395,12 +1397,12 @@ const PHASE_DESC=[
   { // CLM-0845
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
     ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
-    ph3:'Tracing every entity this claim touches — member, practice, practitioner, device, payment account — up to 3 hops out, looking for links into known fraud.',
+    ph3:'Three checks, from exact to resembling: is any entity on this claim known, is it connected to one within 3 hops, and does it look like a confirmed case?',
   },
   { // CLM-0846
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
     ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
-    ph3:'Tracing the provider\'s network up to 3 hops out — using the device and geolocation signals captured at submission — looking for links into known fraud communities.',
+    ph3:'Three checks, from exact to resembling: is any entity on this claim known, is it connected to one within 3 hops (using the device and geolocation captured at submission), and does it look like a confirmed case?',
   },
   {}, // CLM-0847: never reaches the pipeline
   {}, // CLM-0848: never reaches the pipeline
@@ -1410,7 +1412,7 @@ const PHASE_DESC=[
 const PHASE_RESULT_DESC=[
   { ph1:'No adverse findings on the receipt.',
     ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern detected.',
-    ph3:'No connections to known fraud or to anything under investigation.' },
+    ph3:'No entity known, no connection within 3 hops, and no comparable confirmed case.' },
   { ph1:'Suspicious receipt — spliced typefaces and a Photoshop metadata trail dated after the service.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'ES-003 found four unrelated practices paying into one account in 22 days — and the account name matches none of them.' },
@@ -1418,10 +1420,10 @@ const PHASE_RESULT_DESC=[
     ph2:'ES-002 found five unrelated members on one device in 26 hours. The four earlier claims were assessed and cleared before the pattern existed; this claim is the one that revealed it.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern in the stream. The risk sits in a relationship between entities, which Phase 3 follows.',
-    ph3:'2-hop path: the optometrist on this claim also bills through two practices under investigation. Phase 2 saw nothing: no single claim contains this connection.' },
+    ph3:'Two weak signals, neither sufficient alone: the optometrist also bills through two practices under investigation, and the claim resembles three confirmed cases with no identifier in common. Referred for review, not to the SIU.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern in the stream. The connection is a relationship in the network, which Phase 3 follows.',
-    ph3:'3-hop link via the shared submission IP into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
+    ph3:'The practice is already monitored, and a 3-hop link via the shared submission IP reaches a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
   {}, // CLM-0847: never reaches the pipeline
   {}, // CLM-0848: never reaches the pipeline
 ];
@@ -1437,8 +1439,10 @@ const PHASES=[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission IP location against the member\'s registered address...',pass:'Lodged near the registered address — no distance grade raised',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Counting distinct members submitting from this device fingerprint...',pass:'No unrelated members on this device in the window',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Counting distinct practices paying into this bank account...',pass:'Account receives payments from a single practice only',result:'pass',d:6000},
-  ]},ph3:{pass:true,score:'0',scoreColor:'#16A34A',scoreLabel:'Network Connections Found',verdict:'CLEAR — No ring detected',route:'Graph traversal clear · Sent for Claim Adjudication',checks:[
-    {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal from member node...',pass:'No ring connections detected — graph clear',result:'pass',d:5800,isMCP:true},
+  ]},ph3:{pass:true,score:'0',scoreColor:'#16A34A',scoreLabel:'Network Connections Found',verdict:'CLEAR — No ring detected',route:'Watchlist, graph and case similarity clear · Sent for Claim Adjudication',checks:[
+    {ico:'📋',name:'Watchlist Match',running:'Checking 7 entities against the confirmed and monitored lists...',pass:'7 entities checked · 0 matches',result:'pass',d:1400},
+    {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal from member node...',pass:'No ring connections detected — graph clear',result:'pass',d:3600,isMCP:true},
+    {ico:'📚',name:'Fraud Case Similarity',running:'Searching closed investigations...',pass:'412 cases searched · no comparable case',result:'pass',d:5800},
   ]}},
   {ph1:{pass:false,score:'0.28',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Below threshold',route:'Routing to Investigator Queue · HIGH priority · SLA 4 hours',checks:[
     {ico:'🔤',name:'Font Consistency',running:'Scanning receipt typefaces...',pass:'',fail:'3 different typefaces detected — Arial 9pt + Helvetica 10pt + Times New Roman 8pt',result:'fail',d:5000},
@@ -1480,8 +1484,10 @@ const PHASES=[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
-  ]},ph3:{pass:false,score:'2',scoreColor:'#DC2626',scoreLabel:'Hops to Practices Under Investigation',verdict:'SHARED PRACTITIONER — 2 practices under investigation',route:'Routing to SIU Queue · HIGH priority · SLA 4 hours',checks:[
-    {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal...',pass:'',fail:'2-hop path — ClearView Optometry → optometrist PR-5518, who also bills through two practices under investigation',result:'fail',d:7200,isMCP:true},
+  ]},ph3:{pass:false,score:'2',scoreColor:'#D97706',scoreLabel:'Weak Signals Raised',verdict:'PATTERN — two weak signals, referred for review',route:'Routing to Investigator Queue · standard priority · two weak signals, neither sufficient alone',checks:[
+    {ico:'📋',name:'Watchlist Match',running:'Checking 7 entities against the confirmed and monitored lists...',pass:'7 entities checked · 0 matches',result:'pass',d:1600},
+    {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal...',pass:'2-hop path — ClearView Optometry → optometrist PR-5518, who also bills through two practices under investigation',result:'warn',d:4400,isMCP:true},
+    {ico:'📚',name:'Fraud Case Similarity',running:'Searching closed investigations...',pass:'3 comparable closed cases · no shared entities',result:'warn',d:7200},
   ]}},
   {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Arial 10pt — consistent',result:'pass',d:5000},
@@ -1494,7 +1500,9 @@ const PHASES=[
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
   ]},ph3:{pass:false,score:'3',scoreColor:'#DC2626',scoreLabel:'Hops to Confirmed Fraud Node',verdict:'RING DETECTED — Community #47',route:'14 members · 3 providers · Routing to SIU Queue · HIGH priority',checks:[
-    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Kestrel Allied Health → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
+    {ico:'📋',name:'Watchlist Match',running:'Checking 7 entities against the confirmed and monitored lists...',pass:'Prime Physio & Sports on the monitored list · not confirmed',result:'warn',d:1800},
+    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Kestrel Allied Health → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:4800,isMCP:true},
+    {ico:'📚',name:'Fraud Case Similarity',running:'Searching closed investigations...',pass:'412 cases searched · no comparable case',result:'pass',d:7800},
   ]}},
   // CLM-0847: rejected at pre-flight, so the pipeline never opens.
   {ph1:null,ph2:null,ph3:null},
@@ -1852,8 +1860,8 @@ function setScenario(idx){
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review','pf-forensics'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
-  $('upload-validation').style.display='none'; $('pf-group').style.display='none';
-  ['sig-capture','sig-extract'].forEach(id=>{ $(id).style.display='none'; $(id).innerHTML=''; });
+  $('upload-validation').style.display='none'; $('pf-group').style.display='none'; $('pf-sep').style.display='none';
+  $('sig-capture').style.display='none'; $('sig-capture').innerHTML='';
   // Reset action buttons to default state
   if($('btn-submit')) $('btn-submit').style.display='';
   if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
@@ -1888,16 +1896,32 @@ function startBannerCountdown(secs){
 }
 function hideBanner(){ $('scenario-banner').style.display='none'; clearInterval(countdownInterval); }
 
-// Pre-flight pacing. Every check holds for PF_STEP in every mode (about 35 s
-// for seven), so the What's happening card can be read, and talked to, as
-// each one runs. Captions differ by mode: grouped while presenting (the card
+// Pre-flight pacing, the same in every mode, so the What's happening card can
+// be read, and talked to, as each check runs (about 3.9 s each for seven).
+// Captions differ by mode: grouped while presenting (the card
 // carries each check), one per check in the unattended rolling demo.
-const PF_STEP=5000;
+// Pre-flight runs in a fixed PF_TOTAL, so rolling mode keeps its timing. Panel 1
+// takes about a third: the sign-in capture (PF_CAPTURE), then the AI read filling
+// every claim field one by one (PF_FILL). Panel 2's checks share the rest, and
+// none starts until the last field has filled.
+const PF_TOTAL=40000, PF_CAPTURE=4000, PF_FILL=9000;
 function captionsPerCheck(){ return runMode==='rolling'; }
+function pfSchedule(sigs){
+  const cap=sigs.filter(x=>x.cost==='capture').length, n=sigs.length-cap;
+  const step=(PF_TOTAL-cap*PF_CAPTURE-PF_FILL)/Math.max(1,n);
+  let t=0, fillAt=null;
+  const sch=sigs.map(sig=>{
+    const len=sig.cost==='capture'?PF_CAPTURE:step;
+    if(sig.cost!=='capture'&&fillAt===null){ fillAt=t; t+=PF_FILL; }
+    const r={start:t, done:t+len-700}; t+=len; return r;
+  });
+  if(fillAt===null){ fillAt=t; t+=PF_FILL; }
+  return {sch, fillAt, total:Math.round(t)};
+}
 function preflightMs(){
   const sigs=scenarioSignals(S[curScenario]);
   if(!sigs) return 10800;
-  return sigs.length*PF_STEP;
+  return pfSchedule(sigs).total;
 }
 
 function simulateUpload(){
@@ -1906,12 +1930,12 @@ function simulateUpload(){
   uz.innerHTML='<div class="upload-icon">⏫</div><div class="upload-text">Uploading...</div>';
   uploadCount++;
   Captions.show('upload');
-  const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none'; $('pf-group').style.display=vp.style.display;
+  const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none'; $('pf-group').style.display=vp.style.display; $('pf-sep').style.display=vp.style.display;
   // Scenarios with a signals array in data/scenarios/ get the self-describing
   // panel; the rest keep the original four verdict rows until they have one.
   const sigs=scenarioSignals(s);
   $('sig-list').style.display=sigs?'':'none';
-  ['sig-capture','sig-extract'].forEach(id=>{ $(id).style.display=sigs&&uploadCount===1?'':'none'; });
+  $('sig-capture').style.display=sigs&&uploadCount===1?'':'none';
   [1,2,3,4,5].forEach(i=>{ $('val-step-'+i).style.display=sigs?'none':''; });
 
   const fillFields=()=>{
@@ -1926,7 +1950,21 @@ function simulateUpload(){
   // clearAllTimers() — cancels them instead of letting them fire later
   // and collide with the next scenario's sequence.
   if(sigs){
-    SignalPanel.run(s,sigs,{onExtracted:fillFields});
+    SignalPanel.run(s,sigs);
+    // Panel 1: the claim fields fill in one by one from the AI read, after the
+    // capture and before any check. Each flashes as it arrives.
+    const fillAt=pfSchedule(sigs).fillAt;
+    addTimer(()=>{ Captions.show('extract'); $('f-type').closest('.lodge-group').scrollIntoView({block:'nearest',behavior:reducedMotion()?'auto':'smooth'}); },fillAt);
+    const put=[
+      ['f-type',()=>{ $('f-type-opt').textContent=s.type; $('f-type-opt').value=s.type; }],
+      ['f-date',()=>{ $('f-date').value=s.date; }], ['f-prov',()=>{ $('f-prov').value=s.prov; }],
+      ['f-abn',()=>{ $('f-abn').value=s.abn; }], ['f-amt',()=>{ $('f-amt').value=s.clamt; }],
+      ['f-codes',()=>{ $('f-codes').value=s.codes; }],
+    ];
+    put.forEach(([id,fill],k)=>addTimer(()=>{
+      fill(); const el=$(id); el.classList.add('ai-filled');
+      addTimer(()=>el.classList.remove('ai-filled'),1300);
+    },fillAt+600+k*1300));
   } else {
     // Reset all five rows to queued
     [1,2,3,4,5].forEach(i=>{
@@ -1963,10 +2001,9 @@ function simulateUpload(){
 
   // Flash the fields ONE BY ONE just after Field extraction fills them, so
   // the audience sees where they came from
-  if(uploadCount===1){
+  if(uploadCount===1&&!sigs){
     const fields = ['f-type','f-date','f-prov','f-abn','f-amt','f-codes'];
-    const fx = sigs ? sigs.findIndex(x=>x.id==='SIG-FIELD-EXTRACTION') : -1;
-    const filledAt = fx>=0 ? (fx+1)*PF_STEP-500 : 8200;
+    const filledAt = 8200;
     fields.forEach((id, idx) => {
       const animStart = filledAt + (idx * 200); // 200ms between each
       addTimer(() => {
@@ -2040,9 +2077,9 @@ function simulateUpload(){
 // What's happening card (#pfx): the plain-English explanation of the running
 // pre-flight check, from data/check-explainers.js. It advances with the checks,
 // stays after the run, and a click on any check row brings that check back.
-// Pre-flight stage of a check: the sign-in capture, the AI extraction, or the
-// business-rule decision on the extracted data.
-function pfStage(sig){ return sig.cost==='capture'?'capture':sig.cost==='ai'?'extract':'decide'; }
+// Pre-flight stage of a check: the sign-in capture (top of panel 1), or a check on
+// the extracted claim data (panel 2). The fields filling in sit between them, in panel 1.
+function pfStage(sig){ return sig.cost==='capture'?'capture':'decide'; }
 
 const Explainer={
   cur:null, sigs:null,
@@ -2052,7 +2089,7 @@ const Explainer={
     const cost=SIGNAL_COST[sig.cost]||SIGNAL_COST.rule;
     txt('pfx-ico',x.icon||''); txt('pfx-name',sig.name); txt('pfx-what',x.what); txt('pfx-why',x.why);
     const all=this.sigs||[], st=pfStage(sig), grp=all.filter(x=>pfStage(x)===st), k=grp.indexOf(sig);
-    txt('pfx-step', k<0?'Check '+(i+1)+' of '+n : st==='capture'?'Captured at sign-in' : (st==='extract'?'Extract ':'Decide ')+(k+1)+' of '+grp.length);
+    txt('pfx-step', k<0?'Check '+(i+1)+' of '+n : st==='capture'?'Captured at sign-in' : 'Check '+(k+1)+' of '+grp.length);
     const c=$('pfx-cost'); c.className='sig-cost '+cost.cls; c.textContent=cost.label;
     el.hidden=false; this.cur=sig.id;
     el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap');
@@ -2098,6 +2135,19 @@ const PhaseSignals={
       return '<div class="p1c-row p2c-row"><span class="p1c-l">'+esc(c.name)+'</span><span class="p2c-s '+(raised(c)?'p1c-fail':'p1c-pass')+'">'+esc(st)+'</span></div>';
     };
     box.className='p1-calc show '+(n?'bad':'ok');
+    // Phase 3 checks carry a metric: the block shows what each one found, then the verdict.
+    if(checks.every(c=>c.metric)){
+      if(n&&!checks.some(c=>c.verdict==='fail')) box.className='p1-calc show warn';
+      const mcls=c=>c.verdict==='fail'?'p1c-fail':c.verdict==='flag'?'p1c-flag':'p1c-pass';
+      const mrow=c=>'<div class="p1c-row p2c-row"><span class="p1c-l">'+esc(c.name)+'</span><span class="p2c-s '+mcls(c)+'">'+esc(c.metric)+'</span></div>';
+      box.innerHTML='<div class="p1c-title">Network intelligence <span>— three degrees of "have we seen this before": known, connected, resembles</span></div>'
+        +checks.map(mrow).join('')
+        +'<div class="p1c-rule"></div>'
+        +'<div class="p1c-row p2c-row p1c-total"><span class="p1c-l">Network verdict</span><span class="p2c-s">'+esc(res.verdict||(n?'SIGNALS RAISED':'CLEAR'))+'</span></div>'
+        +(res.action?'<div class="p1c-verdict">'+esc(res.action)+'</div>':'');
+      setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'end'}),150);
+      return true;
+    }
     box.innerHTML='<div class="p1c-title">'+(ph===2?'Real-time event strategy signals':'Network intelligence signals')+' <span>— each check raises a signal or it doesn\'t</span></div>'
       +checks.map(row).join('')
       +'<div class="p1c-rule"></div>'
@@ -2193,13 +2243,13 @@ const SignalPanel={
 
   build(s,sigs,list){
     // Pre-flight splits across the panels in the order things happen: the
-    // sign-in capture (panel 1), the AI extraction (panel 2), then the
-    // business-rule decision (panel 3). Phase panels keep their one mount.
+    // sign-in capture (top of panel 1), then the checks on the extracted data
+    // (panel 2); the fields fill in between them. Phase panels keep their one mount.
     const pf=!list||list.id==='sig-list';
     list=list||$('sig-list');
-    const mounts=pf?[$('sig-capture'),$('sig-extract'),list]:[list];
+    const mounts=pf?[$('sig-capture'),list]:[list];
     mounts.forEach(m=>{ m.innerHTML=''; m.classList.remove('at-rest','rested'); });
-    const mountFor=sig=>pf?$({capture:'sig-capture',extract:'sig-extract',decide:'sig-list'}[pfStage(sig)]):list;
+    const mountFor=sig=>pf?$({capture:'sig-capture',decide:'sig-list'}[pfStage(sig)]):list;
     return sigs.map((sig,i)=>{
       const el=document.createElement('div');
       el.className='sig'; el.dataset.state='queued'; el.id='sig-'+i;
@@ -2280,7 +2330,7 @@ const SignalPanel={
   // opts.schedule ([{start,done}] in ms; default: pre-flight's 10s window).
   // Each check opens while it runs and closes when the next starts; flags
   // and fails stay open. At opts.restAt every check opens and stays open.
-  //   opts: { mount, schedule, restAt, restClass, caption(sig)→key, onExtracted }
+  //   opts: { mount, schedule, restAt, restClass, caption(sig)→key }
   run(s,sigs,opts){
     opts=opts||{};
     this.scenario=s;
@@ -2288,8 +2338,8 @@ const SignalPanel={
     const els=this.build(s,sigs,list), n=sigs.length;
     let sch=opts.schedule;
     const perCheck=captionsPerCheck();
-    // Pre-flight: one check every PF_STEP in every mode, so each can be explained.
-    if(!sch) sch=sigs.map((_,i)=>({start:i*PF_STEP, done:(i+1)*PF_STEP-700}));
+    // Pre-flight: capture, the field fill, then the checks, on pfSchedule's fixed budget.
+    if(!sch) sch=pfSchedule(sigs).sch;
     // The What's happening card follows the pre-flight panel only, not the phase panels.
     const explain=!opts.mount;
     if(explain) Explainer.sigs=sigs;
@@ -2309,17 +2359,14 @@ const SignalPanel={
         this.start(els[i]); Captions.show(cap(sig));
         if(explain) Explainer.show(sig,i,n);
       },sch[i].start);
-      addTimer(()=>{
-        this.complete(els[i],sig);
-        if(sig.id==='SIG-FIELD-EXTRACTION'&&opts.onExtracted) opts.onExtracted();
-      },sch[i].done);
+      addTimer(()=>this.complete(els[i],sig),sch[i].done);
     });
     // Resting state: every check open, showing its full working. Collapsing
     // is for the run only; a click still toggles a check to tidy the view.
     const restAt=opts.restAt!=null?opts.restAt:preflightMs()-100;
     addTimer(()=>{
       els.forEach(el=>this.toggle(el,true));
-      (explain?['sig-capture','sig-extract','sig-list'].map($):[list]).forEach(m=>m.classList.add(opts.restClass||'at-rest'));
+      (explain?['sig-capture','sig-list'].map($):[list]).forEach(m=>m.classList.add(opts.restClass||'at-rest'));
       if(!explain) return;
       // At rest the card explains why the claim stopped, if it did: the first
       // routing fail, else the first routing flag, as outcome() decides.
@@ -2329,7 +2376,6 @@ const SignalPanel={
       if(k>=0) Explainer.show(sigs[k],k,n);
       Explainer.rest();
     },restAt);
-    if(!sigs.some(x=>x.id==='SIG-FIELD-EXTRACTION')&&opts.onExtracted) addTimer(opts.onExtracted,3000);
   },
 
   // Routing, as in the build: any fail → Reject Document; else any flag →
@@ -2555,7 +2601,12 @@ function activatePhase(ph,phData){
         txt('ph2-rb-title','Phase 2 — Suspicious Pattern Identified');
         txt('ph2-rb-sub',isMed?'Routed to Standard Review Queue · MEDIUM priority · SLA 24 hours':'Routed to SIU Queue · HIGH priority · SLA 4 hours');
       }
-      if(ph===3){ txt('ph3-rb-title','Phase 3 — Suspicious Activity Detected'); txt('ph3-rb-sub','Pattern or ring detected · Routed to Investigation Queue'); }
+      if(ph===3){ txt('ph3-rb-title','Phase 3 — Suspicious Activity Detected'); txt('ph3-rb-sub',phData.route||'Pattern or ring detected · Routed to Investigation Queue'); }
+      // Amber signals only (CLM-0845): referred for review, not escalated
+      if(ph===3&&phData.scoreColor==='#D97706'){
+        rbI.textContent='⚠️'; txt('ph3-badge','⚠ Review'); txt('ph3-rb-title','Phase 3 — Pattern Referred for Review');
+        $('ph3-block').style.background='#FFFBEB'; $('ph3-block').style.borderColor='rgba(217,119,6,.35)'; $('ph3-block').style.boxShadow='0 2px 8px rgba(217,119,6,.08)';
+      }
       if($('ph'+ph+'-continue-btn')) $('ph'+ph+'-continue-btn').style.display='none';
       if($('ph'+ph+'-aim-btn')) $('ph'+ph+'-aim-btn').style.display='';
     }
@@ -2590,7 +2641,9 @@ function showFinalState(clean){
   const ph1pass=pl.ph1?pl.ph1.pass:null;
   const ph2pass=pl.ph2?pl.ph2.pass:null;
   const ph3pass=pl.ph3?pl.ph3.pass:null;
-  const isMedium=pl.ph2&&!pl.ph2.pass&&pl.ph2.scoreColor==='#D97706';
+  // Medium: the flagging phase raised only amber signals (CLM-0845's Phase 3: two weak signals).
+  const medPh=['ph2','ph3'].find(k=>pl[k]&&!pl[k].pass&&pl[k].scoreColor==='#D97706');
+  const isMedium=!!medPh;
   const fs=$('fraud-summary'); fs.style.display='block';
   const badge=$('fs-badge');
   if(clean){
@@ -2604,14 +2657,14 @@ function showFinalState(clean){
   }
   const phases=[
     {ico:'🔍',name:'Phase 1 — Receipt Forensics',pass:ph1pass,skip:false},
-    {ico:'⚡',name:'Phase 2 — Cross-Claim Signals',pass:ph2pass,skip:!pl.ph2},
-    {ico:'🧠',name:'Phase 3 — Network Intelligence',pass:ph3pass,skip:!pl.ph3},
+    {ico:'⚡',name:'Phase 2 — Cross-Claim Signals',pass:ph2pass,skip:!pl.ph2,k:'ph2'},
+    {ico:'🧠',name:'Phase 3 — Network Intelligence',pass:ph3pass,skip:!pl.ph3,k:'ph3'},
   ];
   $('fs-phases').innerHTML=phases.map(p=>{
     let cls,lbl;
     if(p.skip){cls='fsps-skip';lbl='Not reached';}
     else if(p.pass===true){cls='fsps-pass';lbl='✓ Passed';}
-    else if(p.pass===false&&isMedium&&p.ico==='⚡'){cls='fsps-warn';lbl='⚠ Medium Risk';}
+    else if(p.pass===false&&p.k&&p.k===medPh){cls='fsps-warn';lbl='⚠ Medium Risk';}
     else if(p.pass===false){cls='fsps-fail';lbl='✗ Suspicious';}
     else{cls='fsps-skip';lbl='—';}
     return `<div class="fsp-row"><div class="fsp-ico">${p.ico}</div><div class="fsp-name">${p.name}</div><span class="fsp-status ${cls}">${lbl}</span></div>`;
@@ -2628,7 +2681,7 @@ function showFinalState(clean){
     $('ae-badge').textContent=isHigh?'SUSPICIOUS — HIGH PRIORITY':'SUSPICIOUS — MEDIUM PRIORITY';
     $('ae-badge').style.background=isHigh?'rgba(220,38,38,.15)':'rgba(217,119,6,.15)';
     $('ae-badge').style.color=isHigh?'#991B1B':'#92400E';
-    txt('ae-queue',isHigh?'SIU Queue — Specialist Fraud Team':'Standard Review Queue');
+    txt('ae-queue',isHigh?'SIU Queue — Specialist Fraud Team':'Investigator Queue');
     txt('ae-sla',isHigh?'4 hours — Priority':'24 hours — Standard');
     txt('ae-sub','Investigation '+S[curScenario].id.replace('CLM','INV')+' opened · Investigator briefing assembled by Pega Agent');
     const ev=[];
@@ -2657,8 +2710,8 @@ function closeOverlay(){
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review','pf-forensics'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
-  $('upload-validation').style.display='none'; $('pf-group').style.display='none';
-  ['sig-capture','sig-extract'].forEach(id=>{ $(id).style.display='none'; $(id).innerHTML=''; });
+  $('upload-validation').style.display='none'; $('pf-group').style.display='none'; $('pf-sep').style.display='none';
+  $('sig-capture').style.display='none'; $('sig-capture').innerHTML='';
   if($('btn-submit')) $('btn-submit').style.display='';
   if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
 }
@@ -3219,7 +3272,7 @@ function generateFraudDashboardData(){
     {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,discrepancy:42.50,score:85,outcome:'high',outcomeLabel:'Doctored Total'},
     {claim:'CLM-2024-0843',member:'David Okafor',provider:'Active Rehab Centre',date:'11 Jul 2026',type:'Physio',amount:195,score:62,outcome:'suspicious'},
     {claim:'CLM-2024-0844',member:'Linda Pham',provider:'Metro Dental Group',date:'13 Jul 2026',type:'Dental',amount:264,score:58,outcome:'suspicious'},
-    {claim:'CLM-2024-0845',member:'Michael Torres',provider:'ClearView Optometry',date:'10 Jul 2026',type:'Optical',amount:390,score:71,outcome:'high'},
+    {claim:'CLM-2024-0845',member:'Michael Torres',provider:'ClearView Optometry',date:'10 Jul 2026',type:'Optical',amount:390,score:55,outcome:'suspicious'},
     {claim:'CLM-2024-0846',member:'Angela Wu',provider:'Prime Physio & Sports',date:'15 Jul 2026',type:'Physio',amount:230,score:79,outcome:'high'},
   ];
   data = data.concat(scenarios);
@@ -3409,15 +3462,15 @@ showFinalState = function(clean){
           </div>
           <div class="aim-field">
             <div class="aim-label">Queue</div>
-            <div class="aim-value">SIU Queue</div>
+            <div class="aim-value">Investigator Queue</div>
           </div>
           <div class="aim-field">
             <div class="aim-label">SLA</div>
-            <div class="aim-value">4 hours</div>
+            <div class="aim-value">24 hours</div>
           </div>
           <div class="aim-field">
             <div class="aim-label">Priority</div>
-            <div class="aim-value" style="color:#991B1B;font-weight:700">HIGH</div>
+            <div class="aim-value" style="color:#92400E;font-weight:700">STANDARD</div>
           </div>
         </div>
       </div>
@@ -3437,7 +3490,7 @@ showFinalState = function(clean){
           <div class="aim-phase-row">
             <div class="aim-phase-ico">🧠</div>
             <div class="aim-phase-name">Phase 3 — Network Intelligence</div>
-            <div class="aim-phase-status aim-phase-fail">✗ Flagged — Shared Practitioner</div>
+            <div class="aim-phase-status" style="background:#FEF3C7;color:#92400E">⚠ Two weak signals — referred for review</div>
           </div>
         </div>
       </div>
@@ -3455,15 +3508,17 @@ showFinalState = function(clean){
             <div class="aim-evidence-item"><strong>Path:</strong> member → ClearView Optometry → optometrist PR-5518, two hops, found by graph traversal from the entities this claim touches</div>
             <div class="aim-evidence-item"><strong>Shared practitioner:</strong> PR-5518 also bills through Northgate Eyecare and Riverbend Optical, both under investigation</div>
             <div class="aim-evidence-item"><strong>Why earlier phases passed:</strong> the receipt is genuine and no real-time event strategy detects a cross-claim pattern; the connection sits in the practitioner record, not in any single claim</div>
+            <div class="aim-evidence-item"><strong>Case similarity:</strong> 3 closed investigations with the same shape (INV-2025-0117, INV-2025-0342, INV-2026-0058): a practitioner shared across practices, billing concentrated in one item code. No member, practice or account in common with any of them. Cited cases, not a score</div>
+            <div class="aim-evidence-item"><strong>Watchlist:</strong> 7 entities checked, no match on the confirmed or monitored lists</div>
+            <div class="aim-evidence-item"><strong>Why review, not SIU:</strong> two weak signals, neither sufficient alone. A similarity result never routes a claim by itself; here it adds weight to the graph link</div>
             <div class="aim-evidence-item"><strong>Retrospective reach:</strong> the alert attaches to PR-5518, so it covers every claim this practitioner has billed, including claims already assessed and closed</div>
           </div>
-          <div class="aim-planned">Fraud case similarity matching is planned. It needs a corpus of confirmed cases, which this system produces as it runs.</div>
         </div>
       </div>
       <div class="aim-section">
         <div class="aim-section-title">Investigator Briefing</div>
         <div style="font-size:12px;line-height:1.6;color:var(--text-2)">
-          The claim itself is clean: the receipt passes forensics and no cross-claim pattern shows in the stream. The risk is in who delivered the service. The optometrist on this claim also bills through two practices already under investigation, a link no single claim contains.
+          The claim itself is clean: the receipt passes forensics and no cross-claim pattern shows in the stream. The risk is in who delivered the service. The optometrist on this claim also bills through two practices already under investigation, a link no single claim contains, and the claim resembles three confirmed cases. Neither signal alone would refer this claim.
           <br><br>
           <strong>Recommended action:</strong> Link this case to INV-2024-0612 and INV-2024-0688. Ask ClearView Optometry to confirm that PR-5518 delivered the service on 10 Jul 2026 and provide the appointment record. Contact the member to confirm attendance.
         </div>
