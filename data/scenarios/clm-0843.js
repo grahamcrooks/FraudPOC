@@ -44,6 +44,17 @@
       "conclusion": "11 of 11 required fields present"
     },
     {
+      "id": "SIG-EXTRACTION-CONFIDENCE",
+      "name": "Extraction confidence",
+      "summary": "lowest 0.94 (ServiceDate) · threshold 0.70",
+      "cost": "ai",
+      "lookedAt": "Per-field extraction confidence",
+      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
+      "found": "Lowest was ServiceDate at 0.94 · ProviderABN 0.95 · InvoiceTotal 0.96",
+      "verdict": "pass",
+      "conclusion": "All fields above threshold"
+    },
+    {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Receipt completeness",
       "summary": "$195.00 received of $195.00 · ABN ✓ · 2 lines · signed",
@@ -87,17 +98,6 @@
       "found": "$195.00 claimable",
       "verdict": "pass",
       "conclusion": "Under $5,000, no high-value marker"
-    },
-    {
-      "id": "SIG-EXTRACTION-CONFIDENCE",
-      "name": "Extraction confidence",
-      "summary": "lowest 0.94 (ServiceDate) · threshold 0.70",
-      "cost": "ai",
-      "lookedAt": "Per-field extraction confidence",
-      "rule": "Every critical field at or above 0.70, or the claim goes to human review",
-      "found": "Lowest was ServiceDate at 0.94 · ProviderABN 0.95 · InvoiceTotal 0.96",
-      "verdict": "pass",
-      "conclusion": "All fields above threshold"
     }
   ],
   "phase1": [

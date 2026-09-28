@@ -581,6 +581,7 @@ body.run-rolling .presenter-only{display:none}
    Found / → conclusion. Content from data/scenarios/ signals.
 ══════════════════════════════════════════════════════ */
 .sig-list{display:flex;flex-direction:column;gap:6px}
+.pf-stage{margin:0 0 12px}
 .sig{border:1px solid var(--border);border-radius:10px;background:var(--white);transition:opacity .3s,border-color .3s,background .3s}
 .sig[data-state="queued"]{opacity:.4}
 .sig[data-state="running"]{border-color:var(--pblue);background:var(--blue-bg)}
@@ -948,6 +949,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
             <div class="lodge-group">
             <div class="lodge-group-hd"><span class="lodge-group-n">1</span>Receipt</div>
             <div class="form-group full" style="margin-bottom:0">
+              <div class="sig-list pf-stage" id="sig-capture" style="display:none" aria-live="polite"></div>
               <label class="form-label">Receipt <span class="req">*</span></label>
               <div class="upload-zone" id="upload-zone" onclick="simulateUpload()">
                 <div class="upload-icon">📎</div>
@@ -967,6 +969,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
               <div class="dataset-intro-title">Extracted from the Receipt</div>
               <div class="dataset-intro-body">What the AI read from the receipt. The member only uploads it: every field below is filled in from the receipt, not typed.</div>
             </div>
+            <div class="sig-list pf-stage" id="sig-extract" style="display:none" aria-live="polite"></div>
             <div class="form-row">
               <div class="form-group"><label class="form-label">Claim Type <span class="req">*</span></label><select class="form-select" id="f-type"><option id="f-type-opt"></option></select></div>
               <div class="form-group"><label class="form-label">Service Date <span class="req">*</span></label><input class="form-input" id="f-date" readonly placeholder="Read from receipt"></div>
@@ -980,9 +983,9 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
               <div class="form-group"><label class="form-label">Item Codes</label><input class="form-input" id="f-codes" readonly placeholder="Read from receipt"></div>
             </div>
             </div>
-            <!-- 3 · Pre-flight checks: shown once a receipt is loaded, after the extracted fields (upload, extract, then check) -->
+            <!-- 3 · Pre-flight decision: the business rules on the extracted data, shown once a receipt is loaded (capture, extract, then decide) -->
             <div class="lodge-group" id="pf-group" style="display:none">
-            <div class="lodge-group-hd"><span class="lodge-group-n">3</span>Pre-flight Checks</div>
+            <div class="lodge-group-hd"><span class="lodge-group-n">3</span>Pre-flight Decision</div>
               <div id="upload-validation" style="display:none">
                 <div class="sig-list" id="sig-list" style="display:none" aria-live="polite"></div>
                 <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Receipt type confirmed</div><div class="val-detail" id="val-det-1">Checking receipt type...</div></div></div>
@@ -1775,6 +1778,7 @@ function setScenario(idx){
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none'; $('pf-group').style.display='none';
+  ['sig-capture','sig-extract'].forEach(id=>{ $(id).style.display='none'; $(id).innerHTML=''; });
   // Reset action buttons to default state
   if($('btn-submit')) $('btn-submit').style.display='';
   if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
@@ -1832,6 +1836,7 @@ function simulateUpload(){
   // panel; the rest keep the original four verdict rows until they have one.
   const sigs=scenarioSignals(s);
   $('sig-list').style.display=sigs?'':'none';
+  ['sig-capture','sig-extract'].forEach(id=>{ $(id).style.display=sigs&&uploadCount===1?'':'none'; });
   [1,2,3,4,5].forEach(i=>{ $('val-step-'+i).style.display=sigs?'none':''; });
 
   const fillFields=()=>{
@@ -1960,14 +1965,19 @@ function simulateUpload(){
 // What's happening card (#pfx): the plain-English explanation of the running
 // pre-flight check, from data/check-explainers.js. It advances with the checks,
 // stays after the run, and a click on any check row brings that check back.
+// Pre-flight stage of a check: the sign-in capture, the AI extraction, or the
+// business-rule decision on the extracted data.
+function pfStage(sig){ return sig.cost==='capture'?'capture':sig.cost==='ai'?'extract':'decide'; }
+
 const Explainer={
-  cur:null,
+  cur:null, sigs:null,
   show(sig,i,n){
     const x=(window.CHECK_EXPLAINERS||{})[sig.id], el=$('pfx');
     if(!x||!el) return;
     const cost=SIGNAL_COST[sig.cost]||SIGNAL_COST.rule;
     txt('pfx-ico',x.icon||''); txt('pfx-name',sig.name); txt('pfx-what',x.what); txt('pfx-why',x.why);
-    txt('pfx-step','Check '+(i+1)+' of '+n);
+    const all=this.sigs||[], st=pfStage(sig), grp=all.filter(x=>pfStage(x)===st), k=grp.indexOf(sig);
+    txt('pfx-step', k<0?'Check '+(i+1)+' of '+n : st==='capture'?'Captured at sign-in' : (st==='extract'?'Extract ':'Decide ')+(k+1)+' of '+grp.length);
     const c=$('pfx-cost'); c.className='sig-cost '+cost.cls; c.textContent=cost.label;
     el.hidden=false; this.cur=sig.id;
     el.classList.remove('swap'); void el.offsetWidth; el.classList.add('swap');
@@ -2107,7 +2117,14 @@ const SignalPanel={
   },
 
   build(s,sigs,list){
-    list=list||$('sig-list'); list.innerHTML=''; list.classList.remove('at-rest','rested');
+    // Pre-flight splits across the panels in the order things happen: the
+    // sign-in capture (panel 1), the AI extraction (panel 2), then the
+    // business-rule decision (panel 3). Phase panels keep their one mount.
+    const pf=!list||list.id==='sig-list';
+    list=list||$('sig-list');
+    const mounts=pf?[$('sig-capture'),$('sig-extract'),list]:[list];
+    mounts.forEach(m=>{ m.innerHTML=''; m.classList.remove('at-rest','rested'); });
+    const mountFor=sig=>pf?$({capture:'sig-capture',extract:'sig-extract',decide:'sig-list'}[pfStage(sig)]):list;
     return sigs.map((sig,i)=>{
       const el=document.createElement('div');
       el.className='sig'; el.dataset.state='queued'; el.id='sig-'+i;
@@ -2135,10 +2152,10 @@ const SignalPanel={
       // Pre-flight rows: the first click explains the check in the card; a
       // click on the check already explained toggles the row as before.
       el.querySelector('.sig-head').addEventListener('click',()=>{
-        if(list.id==='sig-list'&&Explainer.cur!==sig.id){ Explainer.show(sig,i,sigs.length); return; }
+        if(pf&&Explainer.cur!==sig.id){ Explainer.show(sig,i,sigs.length); return; }
         this.toggle(el);
       });
-      list.appendChild(el);
+      mountFor(sig).appendChild(el);
       return el;
     });
   },
@@ -2200,6 +2217,7 @@ const SignalPanel={
     if(!sch) sch=sigs.map((_,i)=>({start:i*PF_STEP, done:(i+1)*PF_STEP-700}));
     // The What's happening card follows the pre-flight panel only, not the phase panels.
     const explain=!opts.mount;
+    if(explain) Explainer.sigs=sigs;
     // Booth: every check has its own caption. Presenting: grouped by cost
     // (the AI reads, then the business rules; the capture joins the rules),
     // unless the scenario gives a check its own caption to tell its story.
@@ -2225,7 +2243,8 @@ const SignalPanel={
     // is for the run only; a click still toggles a check to tidy the view.
     const restAt=opts.restAt!=null?opts.restAt:preflightMs()-100;
     addTimer(()=>{
-      els.forEach(el=>this.toggle(el,true)); list.classList.add(opts.restClass||'at-rest');
+      els.forEach(el=>this.toggle(el,true));
+      (explain?['sig-capture','sig-extract','sig-list'].map($):[list]).forEach(m=>m.classList.add(opts.restClass||'at-rest'));
       if(!explain) return;
       // At rest the card explains why the claim stopped, if it did: the first
       // routing fail, else the first routing flag, as outcome() decides.
@@ -2564,6 +2583,7 @@ function closeOverlay(){
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
   $('upload-validation').style.display='none'; $('pf-group').style.display='none';
+  ['sig-capture','sig-extract'].forEach(id=>{ $(id).style.display='none'; $(id).innerHTML=''; });
   if($('btn-submit')) $('btn-submit').style.display='';
   if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
 }
