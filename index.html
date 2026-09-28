@@ -668,7 +668,8 @@ body.run-rolling .presenter-only{display:none}
 .check-list .sig-list,.check-list>.sig{width:100%}
 /* Phase 2's three event strategies run side by side on a wide screen: one set,
    evaluated in parallel over the stream. Larger type in the full-screen pipeline. */
-@media (min-width:1100px){#ph2-checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:stretch}}
+@media (min-width:1100px){#ph2-checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:stretch}
+  #ph2-checks .sig-name{flex-basis:calc(100% - 40px)}#ph2-checks .sig-badges{margin-left:32px}}
 @media (min-width:1400px){.ov-card .check-list .sig-name{font-size:15px}.ov-card .check-list .sig-lines,.ov-card .check-list .sig-concl{font-size:14px}}
 .p1-calc{display:none;margin-top:14px;padding:16px 22px;border-radius:13px;background:#F9FAFB;border:2px solid #E5E7EB;font-variant-numeric:tabular-nums}
 .p1-calc.show{display:block;animation:scoreIn .5s ease}
@@ -1198,7 +1199,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
         <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No suspicious cross-claim pattern detected</div></div></div>
         <div class="phase-btns" id="ph2-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
-          <button class="btn-continue" id="ph2-continue-btn" onclick="collapseAndContinue(2)">Continue to Phase 3 — Network Intelligence →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Network graph traversal, up to 3 hops from every entity the claim touches</div></button>
+          <button class="btn-continue" id="ph2-continue-btn" onclick="collapseAndContinue(2)">Continue to Phase 3 — Network Intelligence →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Watchlist match, network graph up to 3 hops, and fraud case similarity</div></button>
           <button class="btn-aim" id="ph2-aim-btn" style="display:none" onclick="showFinalAndAIM()">View Fraud Detection Summary →</button>
         </div>
       </div>
