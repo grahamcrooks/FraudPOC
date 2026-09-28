@@ -218,20 +218,52 @@
   },
   "phase3": [
     {
+      "id": "P3-WATCHLIST",
+      "name": "Watchlist match",
+      "summary": "7 entities checked · 0 matches",
+      "cost": "rule",
+      "delay": 1600,
+      "lookedAt": "Every entity on this claim against the confirmed and monitored entity lists: member, practice, ABN, practitioner, device, submission IP, payee account",
+      "rule": "A direct match to a confirmed fraud entity refers the claim. A match to a monitored entity (one under investigation) raises a flag",
+      "found": "7 entities checked · no match on either list",
+      "verdict": "pass",
+      "conclusion": "No entity on this claim is known to us",
+      "metric": "0 confirmed · 0 monitored"
+    },
+    {
       "id": "P3-GRAPH",
       "name": "Network graph",
       "tag": "MCP · Graph",
-      "summary": "2-hop path to a practitioner shared with 2 practices under investigation",
+      "summary": "2-hop path to a practitioner shared with 2 monitored practices",
+      "cost": "ai",
+      "delay": 4400,
+      "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
+      "rule": "Any path within 3 hops to a confirmed fraud community or a monitored entity (one under investigation)",
+      "found": "2-hop path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both monitored, under investigation",
+      "verdict": "flag",
+      "conclusion": "Practitioner shared with two practices under investigation",
+      "metric": "16 entities within 3 hops · 2 monitored"
+    },
+    {
+      "id": "P3-SIMILARITY",
+      "name": "Fraud case similarity",
+      "tag": "GenAI · Knowledge Buddy",
+      "summary": "3 comparable closed cases · no shared entities",
       "cost": "ai",
       "delay": 7200,
-      "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
-      "rule": "Any path within 3 hops to a confirmed fraud community or an entity under investigation",
-      "found": "2-hop path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation",
-      "verdict": "fail",
-      "conclusion": "Practitioner shared with two practices under investigation"
+      "lookedAt": "This claim's shape, described in words (services, billing pattern, practitioner and practice relationships), against the closed investigation write-ups in the confirmed case library",
+      "rule": "Retrieval over the case library, grounded in confirmed outcomes, with the matching cases cited. A similarity result alone never routes a claim; it adds weight to other signals",
+      "found": "3 closed cases returned with the same shape: a practitioner shared across practices, billing concentrated in one item code (INV-2025-0117, INV-2025-0342, INV-2026-0058). No member, practice or account in common with any of them",
+      "verdict": "flag",
+      "conclusion": "Resembles a confirmed pattern with no identifier in common",
+      "detail": {
+        "What it is": "Pega GenAI Knowledge Buddy: retrieval over the fund's own closed investigations, ingested automatically when an investigator publishes the case write-up. The library can be seeded from existing closed investigations on day one and grows as the system runs"
+      },
+      "metric": "412 cases searched · 3 comparable"
     }
   ],
   "phase3Result": {
-    "action": "2-hop path through ClearView Optometry to a practitioner shared with two practices under investigation. Claim referred to the SIU queue, HIGH priority, with the path attached."
+    "verdict": "PATTERN, REFERRED FOR REVIEW",
+    "action": "Two weak signals, neither sufficient alone: a 2-hop link to practices under investigation, and a resemblance to three confirmed cases. Referred to the Investigator Queue, standard priority, with the path and the cited cases attached."
   }
 };

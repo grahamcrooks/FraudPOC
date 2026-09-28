@@ -675,6 +675,9 @@ body.run-rolling .presenter-only{display:none}
 .p1c-pass{color:var(--green-mid)}
 .p1c-flag{color:#92400E}
 .p1c-fail{color:#DC2626}
+.p1c-flag{color:#92400E}
+.p1-calc.warn{border-color:rgba(217,119,6,.4);background:#FFFBEB}
+.p1-calc.warn .p1c-verdict{color:#92400E}
 .p1c-d{text-align:right;font-weight:600;color:var(--text)}
 .p1c-rule{width:calc(min(280px,100%) + 164px);max-width:444px;border-top:1px solid var(--text-4);margin:4px 0}
 .p1c-total{font-weight:800;color:var(--text);font-size:14px}
@@ -1200,7 +1203,6 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <div class="phase-expanded" id="ph3-expanded">
         <div class="phase-info" id="ph3-info"><div class="phase-info-band" id="ph3-info-band"><div class="phase-info-txt" id="ph3-info-txt"></div></div></div>
         <div class="check-list" id="ph3-checks"></div>
-        <div class="p2-planned" id="ph3-planned">Fraud case similarity matching is planned. It needs a corpus of confirmed cases, which this system produces as it runs.</div>
         <div class="p1-calc" id="ph3-calc"></div>
         <div class="score-reveal" id="ph3-score"><div class="score-num" id="ph3-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label" id="ph3-score-label">Network Analysis</div><div class="score-verdict" id="ph3-score-verdict">Calculating...</div><div class="score-route" id="ph3-score-route"></div></div></div>
         <div class="result-badge" id="ph3-result"><div class="rb-ico" id="ph3-rb-ico">✅</div><div><div class="rb-title" id="ph3-rb-title">Phase 3 Complete</div><div class="rb-sub" id="ph3-rb-sub">No suspicious activity detected</div></div></div>
@@ -1375,7 +1377,7 @@ const PHASE_DESC=[
   { // CLM-0841
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
     ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
-    ph3:'Tracing every entity this claim touches — member, practice, practitioner, device, payment account — up to 3 hops out, looking for links into known fraud.',
+    ph3:'Three checks, from exact to resembling: is any entity on this claim known, is it connected to one within 3 hops, and does it look like a confirmed case?',
   },
   { // CLM-0842
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
@@ -1395,12 +1397,12 @@ const PHASE_DESC=[
   { // CLM-0845
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
     ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
-    ph3:'Tracing every entity this claim touches — member, practice, practitioner, device, payment account — up to 3 hops out, looking for links into known fraud.',
+    ph3:'Three checks, from exact to resembling: is any entity on this claim known, is it connected to one within 3 hops, and does it look like a confirmed case?',
   },
   { // CLM-0846
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
     ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
-    ph3:'Tracing the provider\'s network up to 3 hops out — using the device and geolocation signals captured at submission — looking for links into known fraud communities.',
+    ph3:'Three checks, from exact to resembling: is any entity on this claim known, is it connected to one within 3 hops (using the device and geolocation captured at submission), and does it look like a confirmed case?',
   },
   {}, // CLM-0847: never reaches the pipeline
   {}, // CLM-0848: never reaches the pipeline
@@ -1410,7 +1412,7 @@ const PHASE_DESC=[
 const PHASE_RESULT_DESC=[
   { ph1:'No adverse findings on the receipt.',
     ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern detected.',
-    ph3:'No connections to known fraud or to anything under investigation.' },
+    ph3:'No entity known, no connection within 3 hops, and no comparable confirmed case.' },
   { ph1:'Suspicious receipt — spliced typefaces and a Photoshop metadata trail dated after the service.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'ES-003 found four unrelated practices paying into one account in 22 days — and the account name matches none of them.' },
@@ -1418,10 +1420,10 @@ const PHASE_RESULT_DESC=[
     ph2:'ES-002 found five unrelated members on one device in 26 hours. The four earlier claims were assessed and cleared before the pattern existed; this claim is the one that revealed it.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern in the stream. The risk sits in a relationship between entities, which Phase 3 follows.',
-    ph3:'2-hop path: the optometrist on this claim also bills through two practices under investigation. Phase 2 saw nothing: no single claim contains this connection.' },
+    ph3:'Two weak signals, neither sufficient alone: the optometrist also bills through two practices under investigation, and the claim resembles three confirmed cases with no identifier in common. Referred for review, not to the SIU.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern in the stream. The connection is a relationship in the network, which Phase 3 follows.',
-    ph3:'3-hop link via the shared submission IP into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
+    ph3:'The practice is already monitored, and a 3-hop link via the shared submission IP reaches a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
   {}, // CLM-0847: never reaches the pipeline
   {}, // CLM-0848: never reaches the pipeline
 ];
@@ -1437,8 +1439,10 @@ const PHASES=[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Comparing submission IP location against the member\'s registered address...',pass:'Lodged near the registered address — no distance grade raised',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Counting distinct members submitting from this device fingerprint...',pass:'No unrelated members on this device in the window',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Counting distinct practices paying into this bank account...',pass:'Account receives payments from a single practice only',result:'pass',d:6000},
-  ]},ph3:{pass:true,score:'0',scoreColor:'#16A34A',scoreLabel:'Network Connections Found',verdict:'CLEAR — No ring detected',route:'Graph traversal clear · Sent for Claim Adjudication',checks:[
-    {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal from member node...',pass:'No ring connections detected — graph clear',result:'pass',d:5800,isMCP:true},
+  ]},ph3:{pass:true,score:'0',scoreColor:'#16A34A',scoreLabel:'Network Connections Found',verdict:'CLEAR — No ring detected',route:'Watchlist, graph and case similarity clear · Sent for Claim Adjudication',checks:[
+    {ico:'📋',name:'Watchlist Match',running:'Checking 7 entities against the confirmed and monitored lists...',pass:'7 entities checked · 0 matches',result:'pass',d:1400},
+    {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal from member node...',pass:'No ring connections detected — graph clear',result:'pass',d:3600,isMCP:true},
+    {ico:'📚',name:'Fraud Case Similarity',running:'Searching closed investigations...',pass:'412 cases searched · no comparable case',result:'pass',d:5800},
   ]}},
   {ph1:{pass:false,score:'0.28',scoreColor:'#DC2626',verdict:'SUSPICIOUS — Below threshold',route:'Routing to Investigator Queue · HIGH priority · SLA 4 hours',checks:[
     {ico:'🔤',name:'Font Consistency',running:'Scanning receipt typefaces...',pass:'',fail:'3 different typefaces detected — Arial 9pt + Helvetica 10pt + Times New Roman 8pt',result:'fail',d:5000},
@@ -1480,8 +1484,10 @@ const PHASES=[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
-  ]},ph3:{pass:false,score:'2',scoreColor:'#DC2626',scoreLabel:'Hops to Practices Under Investigation',verdict:'SHARED PRACTITIONER — 2 practices under investigation',route:'Routing to SIU Queue · HIGH priority · SLA 4 hours',checks:[
-    {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal...',pass:'',fail:'2-hop path — ClearView Optometry → optometrist PR-5518, who also bills through two practices under investigation',result:'fail',d:7200,isMCP:true},
+  ]},ph3:{pass:false,score:'2',scoreColor:'#D97706',scoreLabel:'Weak Signals Raised',verdict:'PATTERN — two weak signals, referred for review',route:'Routing to Investigator Queue · standard priority · two weak signals, neither sufficient alone',checks:[
+    {ico:'📋',name:'Watchlist Match',running:'Checking 7 entities against the confirmed and monitored lists...',pass:'7 entities checked · 0 matches',result:'pass',d:1600},
+    {ico:'🕸️',name:'Network Graph Intelligence',running:'Running 3-hop graph traversal...',pass:'2-hop path — ClearView Optometry → optometrist PR-5518, who also bills through two practices under investigation',result:'warn',d:4400,isMCP:true},
+    {ico:'📚',name:'Fraud Case Similarity',running:'Searching closed investigations...',pass:'3 comparable closed cases · no shared entities',result:'warn',d:7200},
   ]}},
   {ph1:{pass:true,score:'1.00',scoreColor:'#16A34A',verdict:'No adverse findings',route:'Routing to Phase 2 Cross-Claim Signals',checks:[
     {ico:'🔤',name:'Font Consistency',running:'Scanning...',pass:'Arial 10pt — consistent',result:'pass',d:5000},
@@ -1494,7 +1500,9 @@ const PHASES=[
     {ico:'📱',name:'ES-002 Device Ring',running:'Checking...',pass:'Normal',result:'pass',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
   ]},ph3:{pass:false,score:'3',scoreColor:'#DC2626',scoreLabel:'Hops to Confirmed Fraud Node',verdict:'RING DETECTED — Community #47',route:'14 members · 3 providers · Routing to SIU Queue · HIGH priority',checks:[
-    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Kestrel Allied Health → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:7800,isMCP:true},
+    {ico:'📋',name:'Watchlist Match',running:'Checking 7 entities against the confirmed and monitored lists...',pass:'Prime Physio & Sports on the monitored list · not confirmed',result:'warn',d:1800},
+    {ico:'🕸️',name:'Network Graph Intelligence — 3-Hop Traversal',running:'Querying the relationship graph via MCP · Tracing connections up to 3 degrees...',pass:'',fail:'Ring detected — Provider connects via IP 203.0.113.91 (captured at sign-in) → Kestrel Allied Health → confirmed fraud member MBR-99112. Community #47: 14 members, 3 providers. HIGH confidence.',result:'fail',d:4800,isMCP:true},
+    {ico:'📚',name:'Fraud Case Similarity',running:'Searching closed investigations...',pass:'412 cases searched · no comparable case',result:'pass',d:7800},
   ]}},
   // CLM-0847: rejected at pre-flight, so the pipeline never opens.
   {ph1:null,ph2:null,ph3:null},
@@ -2098,6 +2106,19 @@ const PhaseSignals={
       return '<div class="p1c-row p2c-row"><span class="p1c-l">'+esc(c.name)+'</span><span class="p2c-s '+(raised(c)?'p1c-fail':'p1c-pass')+'">'+esc(st)+'</span></div>';
     };
     box.className='p1-calc show '+(n?'bad':'ok');
+    // Phase 3 checks carry a metric: the block shows what each one found, then the verdict.
+    if(checks.every(c=>c.metric)){
+      if(n&&!checks.some(c=>c.verdict==='fail')) box.className='p1-calc show warn';
+      const mcls=c=>c.verdict==='fail'?'p1c-fail':c.verdict==='flag'?'p1c-flag':'p1c-pass';
+      const mrow=c=>'<div class="p1c-row p2c-row"><span class="p1c-l">'+esc(c.name)+'</span><span class="p2c-s '+mcls(c)+'">'+esc(c.metric)+'</span></div>';
+      box.innerHTML='<div class="p1c-title">Network intelligence <span>— three degrees of "have we seen this before": known, connected, resembles</span></div>'
+        +checks.map(mrow).join('')
+        +'<div class="p1c-rule"></div>'
+        +'<div class="p1c-row p2c-row p1c-total"><span class="p1c-l">Network verdict</span><span class="p2c-s">'+esc(res.verdict||(n?'SIGNALS RAISED':'CLEAR'))+'</span></div>'
+        +(res.action?'<div class="p1c-verdict">'+esc(res.action)+'</div>':'');
+      setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'end'}),150);
+      return true;
+    }
     box.innerHTML='<div class="p1c-title">'+(ph===2?'Real-time event strategy signals':'Network intelligence signals')+' <span>— each check raises a signal or it doesn\'t</span></div>'
       +checks.map(row).join('')
       +'<div class="p1c-rule"></div>'
@@ -2555,7 +2576,12 @@ function activatePhase(ph,phData){
         txt('ph2-rb-title','Phase 2 — Suspicious Pattern Identified');
         txt('ph2-rb-sub',isMed?'Routed to Standard Review Queue · MEDIUM priority · SLA 24 hours':'Routed to SIU Queue · HIGH priority · SLA 4 hours');
       }
-      if(ph===3){ txt('ph3-rb-title','Phase 3 — Suspicious Activity Detected'); txt('ph3-rb-sub','Pattern or ring detected · Routed to Investigation Queue'); }
+      if(ph===3){ txt('ph3-rb-title','Phase 3 — Suspicious Activity Detected'); txt('ph3-rb-sub',phData.route||'Pattern or ring detected · Routed to Investigation Queue'); }
+      // Amber signals only (CLM-0845): referred for review, not escalated
+      if(ph===3&&phData.scoreColor==='#D97706'){
+        rbI.textContent='⚠️'; txt('ph3-badge','⚠ Review'); txt('ph3-rb-title','Phase 3 — Pattern Referred for Review');
+        $('ph3-block').style.background='#FFFBEB'; $('ph3-block').style.borderColor='rgba(217,119,6,.35)'; $('ph3-block').style.boxShadow='0 2px 8px rgba(217,119,6,.08)';
+      }
       if($('ph'+ph+'-continue-btn')) $('ph'+ph+'-continue-btn').style.display='none';
       if($('ph'+ph+'-aim-btn')) $('ph'+ph+'-aim-btn').style.display='';
     }
@@ -2590,7 +2616,9 @@ function showFinalState(clean){
   const ph1pass=pl.ph1?pl.ph1.pass:null;
   const ph2pass=pl.ph2?pl.ph2.pass:null;
   const ph3pass=pl.ph3?pl.ph3.pass:null;
-  const isMedium=pl.ph2&&!pl.ph2.pass&&pl.ph2.scoreColor==='#D97706';
+  // Medium: the flagging phase raised only amber signals (CLM-0845's Phase 3: two weak signals).
+  const medPh=['ph2','ph3'].find(k=>pl[k]&&!pl[k].pass&&pl[k].scoreColor==='#D97706');
+  const isMedium=!!medPh;
   const fs=$('fraud-summary'); fs.style.display='block';
   const badge=$('fs-badge');
   if(clean){
@@ -2604,14 +2632,14 @@ function showFinalState(clean){
   }
   const phases=[
     {ico:'🔍',name:'Phase 1 — Receipt Forensics',pass:ph1pass,skip:false},
-    {ico:'⚡',name:'Phase 2 — Cross-Claim Signals',pass:ph2pass,skip:!pl.ph2},
-    {ico:'🧠',name:'Phase 3 — Network Intelligence',pass:ph3pass,skip:!pl.ph3},
+    {ico:'⚡',name:'Phase 2 — Cross-Claim Signals',pass:ph2pass,skip:!pl.ph2,k:'ph2'},
+    {ico:'🧠',name:'Phase 3 — Network Intelligence',pass:ph3pass,skip:!pl.ph3,k:'ph3'},
   ];
   $('fs-phases').innerHTML=phases.map(p=>{
     let cls,lbl;
     if(p.skip){cls='fsps-skip';lbl='Not reached';}
     else if(p.pass===true){cls='fsps-pass';lbl='✓ Passed';}
-    else if(p.pass===false&&isMedium&&p.ico==='⚡'){cls='fsps-warn';lbl='⚠ Medium Risk';}
+    else if(p.pass===false&&p.k&&p.k===medPh){cls='fsps-warn';lbl='⚠ Medium Risk';}
     else if(p.pass===false){cls='fsps-fail';lbl='✗ Suspicious';}
     else{cls='fsps-skip';lbl='—';}
     return `<div class="fsp-row"><div class="fsp-ico">${p.ico}</div><div class="fsp-name">${p.name}</div><span class="fsp-status ${cls}">${lbl}</span></div>`;
@@ -2628,7 +2656,7 @@ function showFinalState(clean){
     $('ae-badge').textContent=isHigh?'SUSPICIOUS — HIGH PRIORITY':'SUSPICIOUS — MEDIUM PRIORITY';
     $('ae-badge').style.background=isHigh?'rgba(220,38,38,.15)':'rgba(217,119,6,.15)';
     $('ae-badge').style.color=isHigh?'#991B1B':'#92400E';
-    txt('ae-queue',isHigh?'SIU Queue — Specialist Fraud Team':'Standard Review Queue');
+    txt('ae-queue',isHigh?'SIU Queue — Specialist Fraud Team':'Investigator Queue');
     txt('ae-sla',isHigh?'4 hours — Priority':'24 hours — Standard');
     txt('ae-sub','Investigation '+S[curScenario].id.replace('CLM','INV')+' opened · Investigator briefing assembled by Pega Agent');
     const ev=[];
@@ -3219,7 +3247,7 @@ function generateFraudDashboardData(){
     {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,discrepancy:42.50,score:85,outcome:'high',outcomeLabel:'Doctored Total'},
     {claim:'CLM-2024-0843',member:'David Okafor',provider:'Active Rehab Centre',date:'11 Jul 2026',type:'Physio',amount:195,score:62,outcome:'suspicious'},
     {claim:'CLM-2024-0844',member:'Linda Pham',provider:'Metro Dental Group',date:'13 Jul 2026',type:'Dental',amount:264,score:58,outcome:'suspicious'},
-    {claim:'CLM-2024-0845',member:'Michael Torres',provider:'ClearView Optometry',date:'10 Jul 2026',type:'Optical',amount:390,score:71,outcome:'high'},
+    {claim:'CLM-2024-0845',member:'Michael Torres',provider:'ClearView Optometry',date:'10 Jul 2026',type:'Optical',amount:390,score:55,outcome:'suspicious'},
     {claim:'CLM-2024-0846',member:'Angela Wu',provider:'Prime Physio & Sports',date:'15 Jul 2026',type:'Physio',amount:230,score:79,outcome:'high'},
   ];
   data = data.concat(scenarios);
@@ -3409,15 +3437,15 @@ showFinalState = function(clean){
           </div>
           <div class="aim-field">
             <div class="aim-label">Queue</div>
-            <div class="aim-value">SIU Queue</div>
+            <div class="aim-value">Investigator Queue</div>
           </div>
           <div class="aim-field">
             <div class="aim-label">SLA</div>
-            <div class="aim-value">4 hours</div>
+            <div class="aim-value">24 hours</div>
           </div>
           <div class="aim-field">
             <div class="aim-label">Priority</div>
-            <div class="aim-value" style="color:#991B1B;font-weight:700">HIGH</div>
+            <div class="aim-value" style="color:#92400E;font-weight:700">STANDARD</div>
           </div>
         </div>
       </div>
@@ -3437,7 +3465,7 @@ showFinalState = function(clean){
           <div class="aim-phase-row">
             <div class="aim-phase-ico">🧠</div>
             <div class="aim-phase-name">Phase 3 — Network Intelligence</div>
-            <div class="aim-phase-status aim-phase-fail">✗ Flagged — Shared Practitioner</div>
+            <div class="aim-phase-status" style="background:#FEF3C7;color:#92400E">⚠ Two weak signals — referred for review</div>
           </div>
         </div>
       </div>
@@ -3455,15 +3483,17 @@ showFinalState = function(clean){
             <div class="aim-evidence-item"><strong>Path:</strong> member → ClearView Optometry → optometrist PR-5518, two hops, found by graph traversal from the entities this claim touches</div>
             <div class="aim-evidence-item"><strong>Shared practitioner:</strong> PR-5518 also bills through Northgate Eyecare and Riverbend Optical, both under investigation</div>
             <div class="aim-evidence-item"><strong>Why earlier phases passed:</strong> the receipt is genuine and no real-time event strategy detects a cross-claim pattern; the connection sits in the practitioner record, not in any single claim</div>
+            <div class="aim-evidence-item"><strong>Case similarity:</strong> 3 closed investigations with the same shape (INV-2025-0117, INV-2025-0342, INV-2026-0058): a practitioner shared across practices, billing concentrated in one item code. No member, practice or account in common with any of them. Cited cases, not a score</div>
+            <div class="aim-evidence-item"><strong>Watchlist:</strong> 7 entities checked, no match on the confirmed or monitored lists</div>
+            <div class="aim-evidence-item"><strong>Why review, not SIU:</strong> two weak signals, neither sufficient alone. A similarity result never routes a claim by itself; here it adds weight to the graph link</div>
             <div class="aim-evidence-item"><strong>Retrospective reach:</strong> the alert attaches to PR-5518, so it covers every claim this practitioner has billed, including claims already assessed and closed</div>
           </div>
-          <div class="aim-planned">Fraud case similarity matching is planned. It needs a corpus of confirmed cases, which this system produces as it runs.</div>
         </div>
       </div>
       <div class="aim-section">
         <div class="aim-section-title">Investigator Briefing</div>
         <div style="font-size:12px;line-height:1.6;color:var(--text-2)">
-          The claim itself is clean: the receipt passes forensics and no cross-claim pattern shows in the stream. The risk is in who delivered the service. The optometrist on this claim also bills through two practices already under investigation, a link no single claim contains.
+          The claim itself is clean: the receipt passes forensics and no cross-claim pattern shows in the stream. The risk is in who delivered the service. The optometrist on this claim also bills through two practices already under investigation, a link no single claim contains, and the claim resembles three confirmed cases. Neither signal alone would refer this claim.
           <br><br>
           <strong>Recommended action:</strong> Link this case to INV-2024-0612 and INV-2024-0688. Ask ClearView Optometry to confirm that PR-5518 delivered the service on 10 Jul 2026 and provide the appointment record. Contact the member to confirm attendance.
         </div>

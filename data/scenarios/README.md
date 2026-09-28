@@ -149,13 +149,13 @@ The score deducts for adverse findings only. Extraction confidence is not eviden
 
 ## Phase 2 and Phase 3 arrays
 
-`phase2` (cross-claim signals) and `phase3` (network intelligence) use the same shape as `phase1`, on the same renderer: single column, every check open at rest. Phase 2 holds the three Pega Event Strategies in this build (`ES-001` distance anomaly, `ES-002` device ring, `ES-003` bank account ring), all cost `rule`. Phase 3 holds `P3-GRAPH` (network graph traversal, up to 3 hops from every entity the claim touches), cost `ai`. Fraud case similarity matching is planned, not built, and shows as a planned line under the Phase 3 checks, as the planned strategies do under Phase 2. An optional `tag` adds a pill after the check name, for example `"MCP · Graph"`. A check that didn't run has `"verdict": "skipped"`.
+`phase2` (cross-claim signals) and `phase3` (network intelligence) use the same shape as `phase1`, on the same renderer: single column, every check open at rest. Phase 2 holds the three Pega Event Strategies in this build (`ES-001` distance anomaly, `ES-002` device ring, `ES-003` bank account ring), all cost `rule`. Phase 3 holds three checks, in escalating order of "have we seen this before": `P3-WATCHLIST` (exact: any entity on the claim on the confirmed or monitored list), cost `rule`; `P3-GRAPH` (connected: any path within 3 hops to a known entity), cost `ai`; and `P3-SIMILARITY` (resembles: the claim's shape against closed investigation write-ups, via Pega GenAI Knowledge Buddy), cost `ai`. Similarity returns cited cases, never a score, and a similarity result alone never routes a claim. "Monitored" means under investigation. Each Phase 3 check also has a `metric`, one line shown in the phase's derivation block (for example `"0 confirmed · 1 monitored"`), and `phase3Result` has a `verdict` for the block's last line (for example `"RING DETECTED"`). An optional `tag` adds a pill after the check name, for example `"MCP · Graph"`. A check that didn't run has `"verdict": "skipped"`.
 
 Captions for each check use the key `phase2:<check id>` or `phase3:<check id>`, for example `phase2:ES-003`.
 
 ## Phase 2 and Phase 3 results
 
-These phases count signals rather than score. Under the checks the modal lists each one as no signal, SIGNAL or not run, then "Signals raised n of N", then the `action` line from `phase2Result` or `phase3Result`:
+These phases count signals rather than score. For Phase 2, under the checks the modal lists each one as no signal, SIGNAL or not run, then "Signals raised n of N", then the `action` line from `phase2Result`. Phase 3 lists each check's `metric`, then "Network verdict" from `phase3Result.verdict`, then its `action`. A Phase 3 with flags but no fail shows amber and routes for review:
 
 ```json
 "phase2Result": { "action": "No signal raised. Continuing to Phase 3." }
