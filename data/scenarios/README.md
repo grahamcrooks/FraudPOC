@@ -74,7 +74,7 @@ A `capture` records data rather than deciding anything. It has no verdict and us
 | `captured` | The captured values, or `"session"` to build them from this file's session block (device ID · profile · IP · location), so the panel can't disagree with the session chip. |
 | `usedBy` | Which later strategies use the data. |
 
-The checks play in array order, one every 5 seconds (`PF_STEP`) in every mode, with the What's happening card explaining each (text in `data/check-explainers.js`, keyed by check id). The running check expands to show its working and collapses to its summary when the next one starts. When pre-flight completes, every check opens and stays open, laid out in two columns, so the resting state (a booth loop, a pause, a screenshot) shows how every verdict was reached. Clicking a check still toggles it.
+Pre-flight takes a fixed 40 seconds (`PF_TOTAL`) in every mode. The capture runs first (`PF_CAPTURE`), then the claim fields fill in one by one from the AI read (`PF_FILL`), then the other checks play in array order, sharing the rest of the time equally; none starts until every field has filled. The order is device and location, field extraction, extraction confidence, receipt type, disqualifying content, receipt completeness, line item reconciliation, claim value, with the What's happening card explaining each (text in `data/check-explainers.js`, keyed by check id). The running check expands to show its working and collapses to its summary when the next one starts. When pre-flight completes, every check opens and stays open, laid out in two columns, so the resting state (a booth loop, a pause, a screenshot) shows how every verdict was reached. Clicking a check still toggles it.
 
 ## Routing after pre-flight
 
@@ -121,8 +121,8 @@ Every check gets its own step in every mode, so the What's happening card can be
 
 | Mode | Pre-flight | Captions |
 | --- | --- | --- |
-| Presenting and step-by-step (the default) | 5 seconds a check, about 40 seconds for eight | Grouped: the AI reads, the business rules, the decision |
-| Rolling demo (booth, unattended) | 5 seconds a check, about 40 seconds for eight | One per check, then the decision |
+| Presenting and step-by-step (the default) | 40 seconds: capture, the fields fill, then seven checks of about 4 seconds | Grouped: the AI reads, the business rules, the decision |
+| Rolling demo (booth, unattended) | The same 40 seconds | One per check, then the decision |
 
 The pipeline phases keep their timing in both modes, and each pipeline check shows its own caption. Every timer that waits for pre-flight (the pipeline opening, the rolling demo's next step, the resting state) reads the same duration, `preflightMs()`, so nothing can drift apart.
 

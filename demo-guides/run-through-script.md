@@ -1,6 +1,6 @@
 # Run-Through Script: One Hour With Fraud Analysts, Data Scientists and Architects
 
-The presenter's script for the fraud detection POC, in the order the demo runs, with what to say at every step, the detail underneath it, and what the room should leave with. It matches the build on the live site at <https://grahamcrooks.github.io/FraudPOC/> as of 27 September 2026: the five ChatGPT image slides, the eight pre-flight checks at 5 seconds each with the What's happening card, and CLM-0842 as a doctored receipt.
+The presenter's script for the fraud detection POC, in the order the demo runs, with what to say at every step, the detail underneath it, and what the room should leave with. It matches the build on the live site at <https://grahamcrooks.github.io/FraudPOC/> as of 27 September 2026: the five ChatGPT image slides, pre-flight with the claim data extracted first and then seven checks, with the What's happening card, and CLM-0842 as a doctored receipt.
 
 Use it for the in-depth run-through, for Tuesday's full rehearsal on the presenting laptop and projector, and on Wednesday 30 September. [`demo-script.md`](demo-script.md) is the companion for system testing: it has the complete check-by-check test cases. This script is for presenting.
 
@@ -84,7 +84,7 @@ These came up in preparation. Have the answers ready and don't soften them on th
 ### How pausing works
 
 - **Sign-in scene**: Space pauses it where it is.
-- **Pre-flight**: can't be paused, but it's slow on purpose: 5 seconds a check, 40 seconds for all eight. Talk over it. Once it finishes, click any check to bring its explanation back.
+- **Pre-flight**: can't be paused, but it's slow on purpose: 40 seconds, the fields filling first and then seven checks of about 4 seconds each. Talk over it. Once it finishes, click any check to bring its explanation back.
 - **The pipeline**: it waits for you. It only moves on when you click Run Fraud Detection or Continue. A phase's few seconds of animation can't be paused.
 - **Close the investigation screen with its ✕.** Escape doesn't close it.
 
@@ -256,7 +256,7 @@ The phone shrinks into the header, and the boxes land in the session chip: 📱 
 
 ### The claim portal (about ½ minute)
 
-**On screen**: The H+ member portal. James's policy (POL-2021-44210, Gold Hospital + Extras), claims this year, benefit remaining and member details (MBR-33291, Carlton VIC 3053) on the left. The claim card has numbered panels in the order things happen: 1 · Receipt, 2 · Extracted from the Receipt, and 3 · Pre-flight Checks once a receipt is loaded.
+**On screen**: The H+ member portal. James's policy (POL-2021-44210, Gold Hospital + Extras), claims this year, benefit remaining and member details (MBR-33291, Carlton VIC 3053) on the left. The claim card has numbered panels in the order things happen: 1 · Data extracted from the receipt, and 2 · Pre-flight checks once a receipt is loaded.
 
 **Say**: James is now in the member portal. Notice the second panel: every field in it will be filled from the receipt. The member only uploads a receipt. They type nothing.
 
@@ -264,7 +264,7 @@ The phone shrinks into the header, and the boxes land in the session chip: 📱 
 
 ### Pre-flight: is this a claimable receipt at all? (about 5 minutes)
 
-**Do**: Click Load Receipt. Eight checks run, one every 5 seconds, about 40 seconds in all. The What's happening card at the top of the left column explains each one as it runs.
+**Do**: Click Load Receipt. Panel 1 first: the sign-in capture, then the claim fields fill in one after another from a single AI read (about 13 seconds). Nothing is judged there. Then panel 2's seven checks run, about 4 seconds each, 40 seconds in all. The What's happening card at the top of the left column explains each one as it runs.
 
 **Say, as it starts**: James uploads a dental receipt. Before we spend anything on forensics, pre-flight asks one question: is this a claimable receipt at all? AI reads the receipt once. Then business rules do the rest at no AI cost. A quotation, a proforma, an unpaid invoice or a receipt that doesn't add up is caught here. Watch the card on the left: it says in plain words what each check is doing and why.
 
@@ -272,16 +272,17 @@ Talk to each check as the card changes. The table gives what the row shows for J
 
 | # | Check | On screen for James | Say | Under the hood |
 | --- | --- | --- | --- | --- |
-| 1 | Device and location | DEV-2291 · Carlton VIC · captured at sign-in | The device, location and time from sign-in are attached. Nothing is judged here. | Capture, no verdict. Used by ES-001 distance and ES-002 device ring in Phase 2. |
-| 2 | Receipt type | TAX INVOICE · ABN and AHPRA present · Pass | The AI reads the receipt and decides what it is. Only a genuine tax invoice from a health provider can be claimed, so anything else stops here. | One vision model call classifies the document. It must be a tax invoice from a registered health provider. |
-| 3 | Field extraction | 11 of 11 fields · $312.00 · items 011, 022, 114 · Pass | In the same AI read, it pulls out the eleven details a claim needs. Watch the extracted fields above the checks fill in: the member types nothing. | The same model call returns eleven fields, each with its own confidence score. Every later check works from these fields. |
-| 4 | Receipt completeness | $312.00 received of $312.00 · ABN ✓ · 3 lines · signed · Pass | Business rules confirm the receipt has what a valid claim needs: the amount received against the amount charged, an ABN, itemised services, a signature. | Data transform `SetMarkerFlagResults`, no AI cost. |
-| 5 | Line item reconciliation | Items reconcile to the total (items sum to $312.00 · stated total $312.00) · Pass | Simple arithmetic: do the line items add up to the total printed on the receipt? Whoever edits a receipt usually changes the total and leaves the breakdown alone. Hold that thought. | Data transform, no AI cost. Line items must sum to the total charged. |
-| 6 | Disqualifying content | 11 terms checked · none found · Pass | A rule scans for eleven terms the fraud team maintains: quotation, proforma, non-medical, a PAID stamp. These documents can't be claimed at all. | Data transform `SetKeywordMatchResults`, no AI cost. Matches on the phrase or word boundary, not the substring. |
-| 7 | Claim value | $312.00 claimable · marker at $5,000 · Pass | Records whether the claim is $5,000 or more. It's context for later, not a fraud signal, and it never routes a claim on its own. | `SetHighValueFlag`. `"routes": false`: its verdict never decides the route. |
-| 8 | Extraction confidence | Lowest 0.92 (ServiceDate) · threshold 0.70 · Pass | Every field came back with a confidence score. Any critical field under 0.70 goes to a person rather than being guessed. | Per-field confidence from the same model call. Below 0.70 routes to Needs Review. |
+| Panel 1 | Device and location | DEV-2291 · Carlton VIC · captured at sign-in | The device, location and time from sign-in are attached. Nothing is judged here. | Capture, no verdict. Used by ES-001 distance and ES-002 device ring in Phase 2. |
+| Panel 1 | The fields fill | Claim type, service date, provider, ABN, amount, item codes, one after another | One AI read turns the receipt into a claim. The member types nothing, and nothing is judged yet. The checks wait until every field is in. | One vision model call returns eleven fields, each with its own confidence score, and says what kind of document it is. |
+| 1 | Field extraction | 11 of 11 fields · $312.00 · items 011, 022, 114 · Pass | All eleven details a claim needs came back from that read. | Every later check works from these fields. |
+| 2 | Extraction confidence | Lowest 0.92 (ServiceDate) · threshold 0.70 · Pass | Is the extraction usable at all? Any critical field under 0.70 goes to a person rather than being guessed, so this check comes second: it gates the rest. | Per-field confidence from the same model call. Below 0.70 routes to Needs Review. |
+| 3 | Receipt type | TAX INVOICE · ABN and AHPRA present · Pass | Is this the right kind of document? Only a genuine tax invoice from a health provider can be claimed. | From the same model call: it must be a tax invoice from a registered health provider. |
+| 4 | Disqualifying content | 11 terms checked · none found · Pass | Is it claimable? A rule scans for eleven terms the fraud team maintains: quotation, proforma, non-medical, a PAID stamp. | Data transform `SetKeywordMatchResults`, no AI cost. Matches on the phrase or word boundary, not the substring. |
+| 5 | Receipt completeness | $312.00 received of $312.00 · ABN ✓ · 3 lines · signed · Pass | Complete, and paid by the member: the amount received against the amount charged, an ABN, itemised services, a signature. | Data transform `SetMarkerFlagResults`, no AI cost. |
+| 6 | Line item reconciliation | Items reconcile to the total (items sum to $312.00 · stated total $312.00) · Pass | Right after completeness, on the same fields: do the line items add up to the total printed? Whoever edits a receipt usually changes the total and leaves the breakdown alone. Hold that thought. | Data transform, no AI cost. Line items must sum to the total charged. |
+| 7 | Claim value | $312.00 claimable · marker at $5,000 · Pass | How much is at stake. It's context for later, not a fraud signal, and it never routes a claim on its own. | `SetHighValueFlag`. `"routes": false`: its verdict never decides the route. |
 
-**On screen when it finishes**: Green: "Receipt pre-validated — passing to forensic authentication" and "7 of 7 checks passed · 3 AI calls · 4 business rules · 1 capture recorded". All eight checks open in two columns, each showing what it looked at, the rule and what it found. "Run Fraud Detection →" appears.
+**On screen when it finishes**: Green: "Receipt pre-validated — passing to forensic authentication" and "7 of 7 checks passed · 3 AI calls · 4 business rules · 1 capture recorded". The capture and all seven checks open, each showing what it looked at, the rule and what it found. "Run Fraud Detection →" appears.
 
 **Say, at rest**: Every check shows what it looked at, the rule and what it found. That's the audit trail, on screen. The Valid Claim decision table takes the first matching row. Nothing matched, so the claim goes on. (Click any check to bring its explanation back to the card if someone asks about it.)
 
@@ -378,7 +379,7 @@ On these, talk over pre-flight with the story rather than each check. The card s
 
 **Do**: Press 7, then Load Receipt.
 
-**On screen**: Receipt type, field extraction, line item reconciliation, claim value and extraction confidence pass. Receipt completeness **fails** ($0.00 received of $448.00, "Nothing has been paid") and Disqualifying content **fails** (2 of 11 terms: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, "Classified as a quotation"). The panel reads "Claim rejected — not a claimable receipt", "Quotation, not a tax invoice · nothing paid", Stage: Reject Document, Status: Resolved-Rejected, and "No forensic AI calls were spent on this claim." The card rests on Disqualifying content. Run Fraud Detection doesn't appear.
+**On screen**: Field extraction, extraction confidence, receipt type, line item reconciliation and claim value pass. Receipt completeness **fails** ($0.00 received of $448.00, "Nothing has been paid") and Disqualifying content **fails** (2 of 11 terms: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, "Classified as a quotation"). The panel reads "Claim rejected — not a claimable receipt", "Quotation, not a tax invoice · nothing paid", Stage: Reject Document, Status: Resolved-Rejected, and "No forensic AI calls were spent on this claim." The card rests on Disqualifying content. Run Fraud Detection doesn't appear.
 
 **Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work she hasn't had, and nothing has been paid. Two business rules catch it. No forensic AI is spent, and nothing reaches the fraud team. That's the case for cheap checks first.
 

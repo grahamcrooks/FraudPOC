@@ -66,6 +66,17 @@
       "conclusion": "Dental receipt layout"
     },
     {
+      "id": "SIG-INVALID-KEYWORDS",
+      "name": "Disqualifying content",
+      "summary": "2 of 11 terms matched",
+      "cost": "rule",
+      "lookedAt": "Extracted receipt text",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
+      "found": "\"treatment plan and quotation\" in the header, \"this is not a tax invoice\" in the footer",
+      "verdict": "fail",
+      "conclusion": "Classified as a quotation"
+    },
+    {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Receipt completeness",
       "summary": "$0.00 received of $448.00",
@@ -86,17 +97,6 @@
       "found": "Items sum to $448.00 · stated total $448.00",
       "verdict": "pass",
       "conclusion": "Line items reconcile"
-    },
-    {
-      "id": "SIG-INVALID-KEYWORDS",
-      "name": "Disqualifying content",
-      "summary": "2 of 11 terms matched",
-      "cost": "rule",
-      "lookedAt": "Extracted receipt text",
-      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
-      "found": "\"treatment plan and quotation\" in the header, \"this is not a tax invoice\" in the footer",
-      "verdict": "fail",
-      "conclusion": "Classified as a quotation"
     },
     {
       "id": "SIG-CLAIM-VALUE",

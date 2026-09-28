@@ -995,8 +995,10 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
             <div class="lodge-active"><div class="lodge-active-dot"></div>AI Fraud Detection Active</div>
           </div>
           <div class="lodge-body">
+            <!-- 1 · Data extracted from the receipt: the receipt, the sign-in capture where it has always been,
+                 then the extraction filling every claim field. Nothing is judged here. -->
             <div class="lodge-group">
-            <div class="lodge-group-hd"><span class="lodge-group-n">1</span>Receipt</div>
+            <div class="lodge-group-hd"><span class="lodge-group-n">1</span>Data extracted from the receipt</div>
             <div class="form-group full" style="margin-bottom:0">
               <div class="sig-list pf-stage" id="sig-capture" style="display:none" aria-live="polite"></div>
               <label class="form-label">Receipt <span class="req">*</span></label>
@@ -1011,10 +1013,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
                 <div class="receipt-check">✅</div>
               </div>
             </div>
-            </div>
-            <div class="lodge-group">
-            <div class="lodge-group-hd"><span class="lodge-group-n">2</span>Extracted from the Receipt</div>
-            <div class="dataset-intro">
+            <div class="dataset-intro" style="margin-top:14px">
               <div class="dataset-intro-title">Extracted from the Receipt</div>
               <div class="dataset-intro-body">What the AI read from the receipt. The member only uploads it: every field below is filled in from the receipt, not typed.</div>
             </div>
@@ -1032,9 +1031,9 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
             </div>
             </div>
             <div class="pf-sep" id="pf-sep" style="display:none" aria-hidden="true"></div>
-            <!-- 3 · Pre-flight decision: the checks on the extracted claim data, shown once a receipt is loaded. They start only once panel 2's fields have filled in. -->
+            <!-- 2 · Pre-flight checks on the extracted claim data, shown once a receipt is loaded. They start only once every panel 1 field has filled in. -->
             <div class="lodge-group" id="pf-group" style="display:none">
-            <div class="lodge-group-hd"><span class="lodge-group-n">3</span>Pre-flight Decision</div>
+            <div class="lodge-group-hd"><span class="lodge-group-n">2</span>Pre-flight checks</div>
               <div id="upload-validation" style="display:none">
                 <div class="sig-list" id="sig-list" style="display:none" aria-live="polite"></div>
                 <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Receipt type confirmed</div><div class="val-detail" id="val-det-1">Checking receipt type...</div></div></div>
@@ -1897,23 +1896,27 @@ function startBannerCountdown(secs){
 }
 function hideBanner(){ $('scenario-banner').style.display='none'; clearInterval(countdownInterval); }
 
-// Pre-flight pacing. Every check holds for PF_STEP in every mode (about 35 s
-// for seven), so the What's happening card can be read, and talked to, as
-// each one runs. Captions differ by mode: grouped while presenting (the card
+// Pre-flight pacing, the same in every mode, so the What's happening card can
+// be read, and talked to, as each check runs (about 3.9 s each for seven).
+// Captions differ by mode: grouped while presenting (the card
 // carries each check), one per check in the unattended rolling demo.
-const PF_STEP=5000;
-// Between the sign-in capture and the checks, the AI reads the receipt and the
-// claim fields fill in one by one (panel 2). No check starts until they have.
-const PF_FILL=5000;
+// Pre-flight runs in a fixed PF_TOTAL, so rolling mode keeps its timing. Panel 1
+// takes about a third: the sign-in capture (PF_CAPTURE), then the AI read filling
+// every claim field one by one (PF_FILL). Panel 2's checks share the rest, and
+// none starts until the last field has filled.
+const PF_TOTAL=40000, PF_CAPTURE=4000, PF_FILL=9000;
 function captionsPerCheck(){ return runMode==='rolling'; }
 function pfSchedule(sigs){
+  const cap=sigs.filter(x=>x.cost==='capture').length, n=sigs.length-cap;
+  const step=(PF_TOTAL-cap*PF_CAPTURE-PF_FILL)/Math.max(1,n);
   let t=0, fillAt=null;
   const sch=sigs.map(sig=>{
+    const len=sig.cost==='capture'?PF_CAPTURE:step;
     if(sig.cost!=='capture'&&fillAt===null){ fillAt=t; t+=PF_FILL; }
-    const r={start:t, done:t+PF_STEP-700}; t+=PF_STEP; return r;
+    const r={start:t, done:t+len-700}; t+=len; return r;
   });
   if(fillAt===null){ fillAt=t; t+=PF_FILL; }
-  return {sch, fillAt, total:t};
+  return {sch, fillAt, total:Math.round(t)};
 }
 function preflightMs(){
   const sigs=scenarioSignals(S[curScenario]);
@@ -1948,7 +1951,7 @@ function simulateUpload(){
   // and collide with the next scenario's sequence.
   if(sigs){
     SignalPanel.run(s,sigs);
-    // Panel 2: the claim fields fill in one by one from the AI read, after the
+    // Panel 1: the claim fields fill in one by one from the AI read, after the
     // capture and before any check. Each flashes as it arrives.
     const fillAt=pfSchedule(sigs).fillAt;
     addTimer(()=>{ Captions.show('extract'); $('f-type').closest('.lodge-group').scrollIntoView({block:'nearest',behavior:reducedMotion()?'auto':'smooth'}); },fillAt);
@@ -1961,7 +1964,7 @@ function simulateUpload(){
     put.forEach(([id,fill],k)=>addTimer(()=>{
       fill(); const el=$(id); el.classList.add('ai-filled');
       addTimer(()=>el.classList.remove('ai-filled'),1300);
-    },fillAt+500+k*600));
+    },fillAt+600+k*1300));
   } else {
     // Reset all five rows to queued
     [1,2,3,4,5].forEach(i=>{
@@ -2074,8 +2077,8 @@ function simulateUpload(){
 // What's happening card (#pfx): the plain-English explanation of the running
 // pre-flight check, from data/check-explainers.js. It advances with the checks,
 // stays after the run, and a click on any check row brings that check back.
-// Pre-flight stage of a check: the sign-in capture (panel 1), or a check on the
-// extracted claim data (panel 3). The extraction itself is panel 2, the fields filling in.
+// Pre-flight stage of a check: the sign-in capture (top of panel 1), or a check on
+// the extracted claim data (panel 2). The fields filling in sit between them, in panel 1.
 function pfStage(sig){ return sig.cost==='capture'?'capture':'decide'; }
 
 const Explainer={
@@ -2240,8 +2243,8 @@ const SignalPanel={
 
   build(s,sigs,list){
     // Pre-flight splits across the panels in the order things happen: the
-    // sign-in capture (panel 1), then the checks on the extracted data (panel 3);
-    // panel 2 is the fields filling in between them. Phase panels keep their one mount.
+    // sign-in capture (top of panel 1), then the checks on the extracted data
+    // (panel 2); the fields fill in between them. Phase panels keep their one mount.
     const pf=!list||list.id==='sig-list';
     list=list||$('sig-list');
     const mounts=pf?[$('sig-capture'),list]:[list];
@@ -2335,7 +2338,7 @@ const SignalPanel={
     const els=this.build(s,sigs,list), n=sigs.length;
     let sch=opts.schedule;
     const perCheck=captionsPerCheck();
-    // Pre-flight: one check every PF_STEP in every mode, so each can be explained.
+    // Pre-flight: capture, the field fill, then the checks, on pfSchedule's fixed budget.
     if(!sch) sch=pfSchedule(sigs).sch;
     // The What's happening card follows the pre-flight panel only, not the phase panels.
     const explain=!opts.mount;

@@ -17,7 +17,7 @@ window.CHECK_EXPLAINERS = {
   },
   "SIG-FIELD-EXTRACTION": {
     "icon": "🔍",
-    "what": "In the same AI read, it pulls out the eleven details a claim needs: provider, ABN, service date, item numbers, amounts and more. They fill in the claim; the member types nothing.",
+    "what": "Confirms the AI read of the receipt returned all eleven details a claim needs: provider, ABN, service date, item numbers, amounts and more. They filled in the claim above; the member typed nothing.",
     "why": "Every later check works from these fields, so the receipt is read once and the results are reused."
   },
   "SIG-EXTRACTION-CONFIDENCE": {

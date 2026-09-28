@@ -67,6 +67,17 @@
       "conclusion": "Physiotherapy receipt layout"
     },
     {
+      "id": "SIG-INVALID-KEYWORDS",
+      "name": "Disqualifying content",
+      "summary": "1 of 11 terms matched · PAID stamp",
+      "cost": "rule",
+      "lookedAt": "Extracted receipt text and stamps",
+      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
+      "found": "PAID stamp across the services table",
+      "verdict": "fail",
+      "conclusion": "Account already settled, nothing to claim"
+    },
+    {
       "id": "SIG-DOC-COMPLETENESS",
       "name": "Receipt completeness",
       "summary": "$270.00 received of $270.00 · ABN ✓ · 4 lines · signed",
@@ -87,17 +98,6 @@
       "found": "Items sum to $270.00 · stated total $270.00",
       "verdict": "pass",
       "conclusion": "Line items reconcile"
-    },
-    {
-      "id": "SIG-INVALID-KEYWORDS",
-      "name": "Disqualifying content",
-      "summary": "1 of 11 terms matched · PAID stamp",
-      "cost": "rule",
-      "lookedAt": "Extracted receipt text and stamps",
-      "rule": "11 disqualifying terms, for example non-medical, quotation, proforma, PAID stamp",
-      "found": "PAID stamp across the services table",
-      "verdict": "fail",
-      "conclusion": "Account already settled, nothing to claim"
     },
     {
       "id": "SIG-CLAIM-VALUE",
