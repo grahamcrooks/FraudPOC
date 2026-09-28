@@ -11,8 +11,28 @@
 // stamp). See data/scenarios/README.md, "Captions".
 window.CHECK_CAPTIONS = {
   "channels": {
-    "tag": "Two ways in",
-    "text": "Claims arrive two ways: the member's app, or the practice's claiming terminal. Each carries a device and a location"
+    "tag": "How claims arrive",
+    "text": "Claims arrive through more than one channel, such as the member's app or the practice's claiming terminal. The app sends device, geolocation and session; the terminal sends terminal ID, merchant ID, provider number, connection and geolocation"
+  },
+  "terminal:tid": {
+    "tag": "Terminal ID",
+    "text": "A unique six-character ID for the physical terminal, registered to the practice"
+  },
+  "terminal:mid": {
+    "tag": "Merchant ID",
+    "text": "The practice's merchant number: the account that receives the funds"
+  },
+  "terminal:prov": {
+    "tag": "Provider number",
+    "text": "Identifies the practitioner at that registered practice location"
+  },
+  "terminal:conn": {
+    "tag": "Connection",
+    "text": "How the terminal connected (Ethernet, Wi-Fi or mobile network), with a timestamp"
+  },
+  "terminal:geo": {
+    "tag": "Geolocation",
+    "text": "Approximate, from the terminal's IP address, and compared with the practice's registered address"
   },
   "cost:ai": {
     "tag": "Pre-flight · AI",
