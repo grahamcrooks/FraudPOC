@@ -954,14 +954,6 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
                 <div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div>
                 <div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>
               </div>
-              <div id="upload-validation" style="display:none;margin-top:8px">
-                <div class="sig-list" id="sig-list" style="display:none" aria-live="polite"></div>
-                <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Receipt type confirmed</div><div class="val-detail" id="val-det-1">Checking receipt type...</div></div></div>
-                <div class="val-step" id="val-step-2" style="opacity:.3"><div class="val-ico" id="val-ico-2">⏳</div><div class="val-content"><div class="val-name">Field extraction complete</div><div class="val-detail" id="val-det-2">Extracting provider, amounts and item codes...</div></div></div>
-                <div class="val-step" id="val-step-3" style="opacity:.3"><div class="val-ico" id="val-ico-3">⏳</div><div class="val-content"><div class="val-name">Confidence scoring complete</div><div class="val-detail" id="val-det-3">Scoring extraction confidence per field...</div></div></div>
-                <div class="val-step" id="val-step-4" style="opacity:.3"><div class="val-ico" id="val-ico-4">⏳</div><div class="val-content"><div class="val-name">Pre-flight gate passed</div><div class="val-detail" id="val-det-4">Running disqualifying keyword gate...</div></div></div>
-                <div class="val-step" id="val-step-5" style="opacity:.3"><div class="val-ico" id="val-ico-5">⏳</div><div class="val-content"><div class="val-name">Device &amp; location captured</div><div class="val-detail" id="val-det-5">Capturing submission device and geolocation...</div></div></div>
-              </div>
               <div class="receipt-card" id="receipt-card">
                 <div class="receipt-pdf">📄</div>
                 <div><div style="font-size:12px;font-weight:600" id="r-name">receipt.pdf</div><div style="font-size:11px;color:var(--text-3)" id="r-size">Loading...</div></div>
@@ -988,8 +980,20 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
               <div class="form-group"><label class="form-label">Item Codes</label><input class="form-input" id="f-codes" readonly placeholder="Read from receipt"></div>
             </div>
             </div>
+            <!-- 3 · Pre-flight checks: shown once a receipt is loaded, after the extracted fields (upload, extract, then check) -->
+            <div class="lodge-group" id="pf-group" style="display:none">
+            <div class="lodge-group-hd"><span class="lodge-group-n">3</span>Pre-flight Checks</div>
+              <div id="upload-validation" style="display:none">
+                <div class="sig-list" id="sig-list" style="display:none" aria-live="polite"></div>
+                <div class="val-step" id="val-step-1"><div class="val-ico" id="val-ico-1">🔄</div><div class="val-content"><div class="val-name">Receipt type confirmed</div><div class="val-detail" id="val-det-1">Checking receipt type...</div></div></div>
+                <div class="val-step" id="val-step-2" style="opacity:.3"><div class="val-ico" id="val-ico-2">⏳</div><div class="val-content"><div class="val-name">Field extraction complete</div><div class="val-detail" id="val-det-2">Extracting provider, amounts and item codes...</div></div></div>
+                <div class="val-step" id="val-step-3" style="opacity:.3"><div class="val-ico" id="val-ico-3">⏳</div><div class="val-content"><div class="val-name">Confidence scoring complete</div><div class="val-detail" id="val-det-3">Scoring extraction confidence per field...</div></div></div>
+                <div class="val-step" id="val-step-4" style="opacity:.3"><div class="val-ico" id="val-ico-4">⏳</div><div class="val-content"><div class="val-name">Pre-flight gate passed</div><div class="val-detail" id="val-det-4">Running disqualifying keyword gate...</div></div></div>
+                <div class="val-step" id="val-step-5" style="opacity:.3"><div class="val-ico" id="val-ico-5">⏳</div><div class="val-content"><div class="val-name">Device &amp; location captured</div><div class="val-detail" id="val-det-5">Capturing submission device and geolocation...</div></div></div>
+              </div>
+            </div>
             <div class="form-footer">
-              <div class="form-note">🔒 Secured · Processed by Pega Infinity 26.1 <span class="dataset-badge presenter-only">Presenter note: historical dataset · Phase 1 only</span></div>
+              <div class="form-note">🔒 Secured · Processed by Pega Infinity 26.1</div>
               <div style="display:flex;gap:10px">
                 <button class="btn-cancel" id="btn-savedraft">Save Draft</button>
                 <button class="btn-submit" id="btn-submit" onclick="submitClaim()">Submit Claim →</button>
@@ -1128,14 +1132,14 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       </div>
     </div>
     <div class="phase-block" id="ph2-block" style="display:none">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Cross-Claim Signals</div><div class="phase-question">Does this claim make sense? Comparing it with other claims from the same location, device and bank account.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Cross-Claim Signals</div><div class="phase-question">Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
         <div class="p2-planned" id="ph2-planned">Further strategies — phantom ABN, waiver abuse, item code validation — are planned and not in this build.</div>
         <div class="p1-calc" id="ph2-calc"></div>
         <div class="score-reveal" id="ph2-score"><div class="score-num" id="ph2-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Fraud Score</div><div class="score-verdict" id="ph2-score-verdict">Calculating...</div><div class="score-route" id="ph2-score-route"></div></div></div>
-        <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No fraudulent patterns detected</div></div></div>
+        <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No suspicious cross-claim pattern detected</div></div></div>
         <div class="phase-btns" id="ph2-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
           <button class="btn-continue" id="ph2-continue-btn" onclick="collapseAndContinue(2)">Continue to Phase 3 — Network Intelligence →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Network graph traversal, up to 3 hops from every entity the claim touches</div></button>
@@ -1294,7 +1298,7 @@ const S=[
 const PHASE_DESC=[
   { // CLM-0841
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
+    ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
     ph3:'Tracing every entity this claim touches — member, practice, practitioner, device, payment account — up to 3 hops out, looking for links into known fraud.',
   },
   { // CLM-0842
@@ -1304,22 +1308,22 @@ const PHASE_DESC=[
   },
   { // CLM-0843
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
+    ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
     ph3:null,
   },
   { // CLM-0844
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
+    ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
     ph3:null,
   },
   { // CLM-0845
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
+    ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
     ph3:'Tracing every entity this claim touches — member, practice, practitioner, device, payment account — up to 3 hops out, looking for links into known fraud.',
   },
   { // CLM-0846
     ph1:'Interrogating the receipt for font tampering, digital overlays, AI-generated artefacts and metadata inconsistencies.',
-    ph2:'Running the three Pega Event Strategies: submission distance, device ring and bank account ring.',
+    ph2:'3 real-time event strategies. Claims are continuously evaluated across the event stream using configurable filters, time windows, aggregations and thresholds to detect emerging patterns and risk signals: submission distance, device ring and bank account ring.',
     ph3:'Tracing the provider\'s network up to 3 hops out — using the device and geolocation signals captured at submission — looking for links into known fraud communities.',
   },
   {}, // CLM-0847: never reaches the pipeline
@@ -1329,7 +1333,7 @@ const PHASE_DESC=[
 // Shown in the band AFTER a phase resolves — states the finding.
 const PHASE_RESULT_DESC=[
   { ph1:'No adverse findings on the receipt.',
-    ph2:'All three event strategies clear — no signal raised.',
+    ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern detected.',
     ph3:'No connections to known fraud or to anything under investigation.' },
   { ph1:'Suspicious receipt — spliced typefaces and a Photoshop metadata trail dated after the service.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
@@ -1337,10 +1341,10 @@ const PHASE_RESULT_DESC=[
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'ES-002 found five unrelated members on one device in 26 hours. The four earlier claims were assessed and cleared before the pattern existed; this claim is the one that revealed it.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
-    ph2:'All three event strategies clear. Every strategy sees one claim at a time — no single claim contains the connection.',
+    ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern in the stream. The risk sits in a relationship between entities, which Phase 3 follows.',
     ph3:'2-hop path: the optometrist on this claim also bills through two practices under investigation. Phase 2 saw nothing: no single claim contains this connection.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
-    ph2:'All three event strategies clear — no signal raised. Every strategy sees one claim at a time — no single claim contains the connection.',
+    ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern in the stream. The connection is a relationship in the network, which Phase 3 follows.',
     ph3:'3-hop link via the shared submission IP into a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
   {}, // CLM-0847: never reaches the pipeline
   {}, // CLM-0848: never reaches the pipeline
@@ -1396,7 +1400,7 @@ const PHASES=[
     {ico:'🤖',name:'AI-Generated Detection',running:'Testing for synthetic artefacts...',pass:'No synthetic artefacts — score 0.05',result:'pass',d:10600},
     {ico:'🗂️',name:'Metadata & Provenance',running:'Reading authoring trail...',pass:'Authored by practice software 10 Jul 2026 — matches service date',result:'pass',d:13200},
     {ico:'🧬',name:'Duplicate Detection',running:'Fingerprinting receipt and comparing against submission history...',pass:'No matching receipt found — first submission of this receipt',result:'pass',d:15600},
-  ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — No signal raised',route:'Proceeding to Phase 3 Network Intelligence',checks:[
+  ]},ph2:{pass:true,score:'0.00',scoreColor:'#16A34A',verdict:'CLEAN — No suspicious cross-claim pattern',route:'Proceeding to Phase 3 Network Intelligence',checks:[
     {ico:'📍',name:'ES-001 Distance Anomaly',running:'Verifying...',pass:'Within range',result:'pass',d:2000},
     {ico:'📱',name:'ES-002 Device Ring',running:'Analysing...',pass:'Minor flag — below SIU threshold',result:'warn',d:4000},
     {ico:'🏦',name:'ES-003 Bank Account Ring',running:'Checking...',pass:'Clean',result:'pass',d:6000},
@@ -1770,7 +1774,7 @@ function setScenario(idx){
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review','pf-forensics'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
-  $('upload-validation').style.display='none';
+  $('upload-validation').style.display='none'; $('pf-group').style.display='none';
   // Reset action buttons to default state
   if($('btn-submit')) $('btn-submit').style.display='';
   if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
@@ -1823,7 +1827,7 @@ function simulateUpload(){
   uz.innerHTML='<div class="upload-icon">⏫</div><div class="upload-text">Uploading...</div>';
   uploadCount++;
   Captions.show('upload');
-  const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none';
+  const vp=$('upload-validation'); vp.style.display=uploadCount===1?'block':'none'; $('pf-group').style.display=vp.style.display;
   // Scenarios with a signals array in data/scenarios/ get the self-describing
   // panel; the rest keep the original four verdict rows until they have one.
   const sigs=scenarioSignals(s);
@@ -1975,6 +1979,7 @@ const Explainer={
 const SIGNAL_COST={
   ai:     {label:'AI call',                   cls:'ai'},
   rule:   {label:'Business rule — no AI cost', cls:'rule'},
+  stream: {label:'Real-time event strategy', cls:'rule'},
   capture:{label:'Captured for later evaluation', cls:'capture'}
 };
 const SIGNAL_VERDICT={
@@ -2008,7 +2013,7 @@ const PhaseSignals={
       return '<div class="p1c-row p2c-row"><span class="p1c-l">'+esc(c.name)+'</span><span class="p2c-s '+(raised(c)?'p1c-fail':'p1c-pass')+'">'+esc(st)+'</span></div>';
     };
     box.className='p1-calc show '+(n?'bad':'ok');
-    box.innerHTML='<div class="p1c-title">'+(ph===2?'Event strategy signals':'Network intelligence signals')+' <span>— each check raises a signal or it doesn\'t</span></div>'
+    box.innerHTML='<div class="p1c-title">'+(ph===2?'Real-time event strategy signals':'Network intelligence signals')+' <span>— each check raises a signal or it doesn\'t</span></div>'
       +checks.map(row).join('')
       +'<div class="p1c-rule"></div>'
       +'<div class="p1c-row p2c-row p1c-total"><span class="p1c-l">Signals raised</span><span class="p2c-s">'+n+' of '+checks.length+'</span></div>'
@@ -2432,7 +2437,7 @@ function activatePhase(ph,phData){
       txt('ph'+ph+'-badge','✓ '+(ph===3?'Detection Complete':'Passed'));
       $('ph'+ph+'-block').style.background='#F0FDF4'; $('ph'+ph+'-block').style.borderColor='rgba(22,163,74,.3)'; $('ph'+ph+'-block').style.boxShadow='0 2px 8px rgba(22,163,74,.08)';
       if(ph===1){ txt('ph1-rb-title','Phase 1 Passed — No Adverse Findings'); txt('ph1-rb-sub','No adverse findings on the receipt · Proceeding to Phase 2 Cross-Claim Signals'); }
-      if(ph===2){ txt('ph2-rb-title','Phase 2 Passed — No Fraudulent Patterns Detected'); txt('ph2-rb-sub','All Pega Event Strategies evaluated · Proceeding to Phase 3 Network Intelligence'); }
+      if(ph===2){ txt('ph2-rb-title','Phase 2 Passed — No Suspicious Cross-Claim Pattern Detected'); txt('ph2-rb-sub','All Pega Event Strategies evaluated · Proceeding to Phase 3 Network Intelligence'); }
       if(ph===3){ txt('ph3-rb-title','Phase 3 Complete — No Suspicious Activity'); txt('ph3-rb-sub','All fraud detection phases passed · Sent for Claim Adjudication'); if($('ph3-aim-btn')){ $('ph3-aim-btn').style.display=''; $('ph3-aim-btn').textContent='View Fraud Detection Summary →'; } }
     } else {
       rb.className='result-badge show fail'; rbI.textContent='❌';
@@ -2558,7 +2563,7 @@ function closeOverlay(){
   uz.classList.remove('has-file','pf-stop','pf-reject','pf-review','pf-forensics'); preflightStopped=null;
   uz.innerHTML='<div class="upload-icon">📎</div><div class="upload-text"><strong style="color:var(--red)">Load Receipt</strong></div><div style="font-size:11px;color:var(--text-4);margin-top:3px">Upload a photo or PDF of your itemised receipt</div>';
   $('receipt-card').style.display='none';
-  $('upload-validation').style.display='none';
+  $('upload-validation').style.display='none'; $('pf-group').style.display='none';
   if($('btn-submit')) $('btn-submit').style.display='';
   if($('btn-runpipeline')) $('btn-runpipeline').style.display='none';
 }
@@ -3250,7 +3255,7 @@ showFinalState = function(clean){
           <div class="aim-evidence-list">
             <div class="aim-evidence-item"><strong>Path:</strong> member → ClearView Optometry → optometrist PR-5518, two hops, found by graph traversal from the entities this claim touches</div>
             <div class="aim-evidence-item"><strong>Shared practitioner:</strong> PR-5518 also bills through Northgate Eyecare and Riverbend Optical, both under investigation</div>
-            <div class="aim-evidence-item"><strong>Why earlier phases passed:</strong> the receipt is genuine and no event strategy fires; the connection sits in the practitioner record, not in any single claim</div>
+            <div class="aim-evidence-item"><strong>Why earlier phases passed:</strong> the receipt is genuine and no real-time event strategy detects a cross-claim pattern; the connection sits in the practitioner record, not in any single claim</div>
             <div class="aim-evidence-item"><strong>Retrospective reach:</strong> the alert attaches to PR-5518, so it covers every claim this practitioner has billed, including claims already assessed and closed</div>
           </div>
           <div class="aim-planned">Fraud case similarity matching is planned. It needs a corpus of confirmed cases, which this system produces as it runs.</div>
@@ -3259,7 +3264,7 @@ showFinalState = function(clean){
       <div class="aim-section">
         <div class="aim-section-title">Investigator Briefing</div>
         <div style="font-size:12px;line-height:1.6;color:var(--text-2)">
-          The claim itself is clean: the receipt passes forensics and no event strategy fires. The risk is in who delivered the service. The optometrist on this claim also bills through two practices already under investigation, a link no single claim contains.
+          The claim itself is clean: the receipt passes forensics and no cross-claim pattern shows in the stream. The risk is in who delivered the service. The optometrist on this claim also bills through two practices already under investigation, a link no single claim contains.
           <br><br>
           <strong>Recommended action:</strong> Link this case to INV-2024-0612 and INV-2024-0688. Ask ClearView Optometry to confirm that PR-5518 delivered the service on 10 Jul 2026 and provide the appointment record. Contact the member to confirm attendance.
         </div>
