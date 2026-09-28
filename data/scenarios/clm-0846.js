@@ -180,7 +180,7 @@
       "id": "ES-001",
       "name": "ES-001 Distance anomaly",
       "summary": "about 16 km from registered address · threshold 500 km",
-      "cost": "rule",
+      "cost": "stream",
       "delay": 4000,
       "lookedAt": "Submission IP geolocation against the member's registered address",
       "rule": "Graded — over 500 km moderate, over 1,500 km high, overseas critical",
@@ -192,7 +192,7 @@
       "id": "ES-002",
       "name": "ES-002 Device ring",
       "summary": "1 member on this device · threshold 3",
-      "cost": "rule",
+      "cost": "stream",
       "delay": 10000,
       "lookedAt": "Distinct members submitting from device DEV-2740 in the last 72 hours",
       "rule": "Three or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
@@ -204,7 +204,7 @@
       "id": "ES-003",
       "name": "ES-003 Bank account ring",
       "summary": "1 practice on this account · threshold 3",
-      "cost": "rule",
+      "cost": "stream",
       "delay": 16000,
       "lookedAt": "Distinct practice ABNs paying into this account in the last 30 days",
       "rule": "Three or more unrelated practices converging on one account",
@@ -214,7 +214,7 @@
     }
   ],
   "phase2Result": {
-    "action": "No signal raised. Continuing to Phase 3."
+    "action": "No suspicious cross-claim pattern detected. Continuing to Phase 3."
   },
   "phase3": [
     {

@@ -36,10 +36,11 @@ There's no ask on Wednesday. The opening promises none, and the close keeps that
 
 ### Principles to repeat
 
-1. **Cheap checks first.** AI is spent in three places only: one read in pre-flight, three image checks in Phase 1 and the graph query in Phase 3. Everything else is rules and a decision table, at no AI cost.
+1. **Cheap checks first.** AI is spent in three places only: one read in pre-flight, three image checks in Phase 1 and the graph query in Phase 3. Everything else is business rules, a decision table and three real-time event strategies.
 2. **AI assists, people decide.** Every signal goes to a named investigator in Pega AIM with the evidence attached. Nothing is decided for them.
 3. **Every check shows its working.** What it looked at, the rule and what it found, on screen. That's the audit trail.
-4. **Simulated, and labelled as such.** Every scene is marked Simulated. Names, numbers and addresses are fictional. Where something is planned rather than built, say so.
+4. **Document, then pattern, then network.** Phase 1: is this individual receipt suspicious? Phase 2: is there an emerging pattern across claims over time? Phase 3: are there wider relationships connecting members, providers, devices or claims?
+5. **Simulated, and labelled as such.** Every scene is marked Simulated. Names, numbers and addresses are fictional. Where something is planned rather than built, say so.
 
 ## Decisions to hold the line on
 
@@ -178,7 +179,7 @@ One. Is this claimable at all? Business rules on the extracted receipt. A quotat
 
 Two. Is this receipt genuine? Forensic analysis: fonts, overlays, metadata, authoring trail. That costs money per claim, so it only runs on receipts that clear question one.
 
-Three. Does this claim make sense against everything else we've seen? Aggregation across claims, in real time. Nothing to do with the document.
+Three. Does this claim fit the broader pattern? Real-time event strategies look for patterns across the claims stream over time, using windows, aggregations and thresholds. Nothing to do with the document.
 
 Four. Who else is involved? Graph traversal from an entity we've already flagged.
 
@@ -195,9 +196,9 @@ Four. Who else is involved? Graph traversal from an entity we've already flagged
 
 **On screen**: Slide 4, "Three Phases": the delivery path, Detection POC, Workflow & Review, Prevention at Scale. Slide 5, "Why Pega?".
 
-**Say**, on slide 4: That's the delivery path, and we're at the first step. Inside it, every claim is asked those four questions. In the demo the first is pre-flight, and the other three are Phase 1, 2 and 3.
+**Say**, on slide 4: That's the delivery path, and we're at the first step. Inside it, every claim is asked those four questions. In the demo the first is pre-flight, and the other three are Phase 1, 2 and 3: the document, then the pattern, then the network.
 
-**Say**, on slide 5: It's built on Pega because the rules, the investigation workflow and the audit trail sit in one governed platform.
+**Say**, on slide 5: It's built on Pega because the rules, the investigation workflow and the audit trail sit in one governed platform. And it gives us real-time event intelligence: we detect emerging fraud patterns as claims occur, rather than relying only on retrospective audits.
 
 **Under the hood**: Slide 4's phases are delivery stages, not the demo's Phase 1, 2 and 3; the bridge line keeps them apart. Slide 5's impact row (−65%, +40%, +28%) is illustrative, not measured. Don't quote it.
 
@@ -255,7 +256,7 @@ The phone shrinks into the header, and the boxes land in the session chip: 📱 
 
 ### The claim portal (about ½ minute)
 
-**On screen**: The H+ member portal. James's policy (POL-2021-44210, Gold Hospital + Extras), claims this year, benefit remaining and member details (MBR-33291, Carlton VIC 3053) on the left. The claim card has two numbered panels: 1 · Receipt and 2 · Extracted from the Receipt.
+**On screen**: The H+ member portal. James's policy (POL-2021-44210, Gold Hospital + Extras), claims this year, benefit remaining and member details (MBR-33291, Carlton VIC 3053) on the left. The claim card has numbered panels in the order things happen: 1 · Receipt, 2 · Extracted from the Receipt, and 3 · Pre-flight Checks once a receipt is loaded.
 
 **Say**: James is now in the member portal. Notice the second panel: every field in it will be filled from the receipt. The member only uploads a receipt. They type nothing.
 
@@ -273,7 +274,7 @@ Talk to each check as the card changes. The table gives what the row shows for J
 | --- | --- | --- | --- | --- |
 | 1 | Device and location | DEV-2291 · Carlton VIC · captured at sign-in | The device, location and time from sign-in are attached. Nothing is judged here. | Capture, no verdict. Used by ES-001 distance and ES-002 device ring in Phase 2. |
 | 2 | Receipt type | TAX INVOICE · ABN and AHPRA present · Pass | The AI reads the receipt and decides what it is. Only a genuine tax invoice from a health provider can be claimed, so anything else stops here. | One vision model call classifies the document. It must be a tax invoice from a registered health provider. |
-| 3 | Field extraction | 11 of 11 fields · $312.00 · items 011, 022, 114 · Pass | In the same AI read, it pulls out the eleven details a claim needs. Watch the form on the right fill in: the member types nothing. | The same model call returns eleven fields, each with its own confidence score. Every later check works from these fields. |
+| 3 | Field extraction | 11 of 11 fields · $312.00 · items 011, 022, 114 · Pass | In the same AI read, it pulls out the eleven details a claim needs. Watch the extracted fields above the checks fill in: the member types nothing. | The same model call returns eleven fields, each with its own confidence score. Every later check works from these fields. |
 | 4 | Receipt completeness | $312.00 received of $312.00 · ABN ✓ · 3 lines · signed · Pass | Business rules confirm the receipt has what a valid claim needs: the amount received against the amount charged, an ABN, itemised services, a signature. | Data transform `SetMarkerFlagResults`, no AI cost. |
 | 5 | Line item reconciliation | Items reconcile to the total (items sum to $312.00 · stated total $312.00) · Pass | Simple arithmetic: do the line items add up to the total printed on the receipt? Whoever edits a receipt usually changes the total and leaves the breakdown alone. Hold that thought. | Data transform, no AI cost. Line items must sum to the total charged. |
 | 6 | Disqualifying content | 11 terms checked · none found · Pass | A rule scans for eleven terms the fraud team maintains: quotation, proforma, non-medical, a PAID stamp. These documents can't be claimed at all. | Data transform `SetKeywordMatchResults`, no AI cost. Matches on the phrase or word boundary, not the substring. |
@@ -328,15 +329,15 @@ Then the Receipt integrity score: every check at −0.00, total 1.00, "Threshold
 
 ### Phase 2: does this claim fit a pattern across other claims? (about 2 minutes)
 
-**On screen**: Three checks, 6 seconds apart, all "Business rule — no AI cost":
+**On screen**: The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies." Three checks, 6 seconds apart, each badged "Real-time event strategy":
 
 - ES-001 Distance anomaly: 0.4 km from the registered address, threshold 500 km · Pass
 - ES-002 Device ring: 1 member on this device, threshold 3 · Pass
 - ES-003 Bank account ring: 1 practice on this account, threshold 3 · Pass
 
-"Signals raised 0 of 3" and "No signal raised. Continuing to Phase 3." An italic line lists the planned checks.
+"Signals raised 0 of 3" and "No suspicious cross-claim pattern detected. Continuing to Phase 3." An italic line lists the planned checks.
 
-**Say**: Phase 1 looked at this claim on its own. Phase 2 compares it with every other claim as claims arrive: is it lodged far from home, is the device shared by unrelated members, is the bank account shared by unrelated practices? These are Pega Event Strategies over time windows, at no AI cost. Nothing is raised for James.
+**Say**: Phase 1 asked whether this receipt is suspicious. Phase 2 asks a different question: is there an emerging pattern across claims over time? Three real-time Pega Event Strategies evaluate the claims stream continuously, using filters, time windows, aggregations and thresholds: a claim lodged far from home, one device used by unrelated members, one bank account collecting from unrelated practices. Each strategy raises a signal or it doesn't. Nothing is raised for James: no suspicious cross-claim pattern.
 
 **Under the hood**:
 

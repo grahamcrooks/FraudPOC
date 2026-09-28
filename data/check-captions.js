@@ -88,15 +88,15 @@ window.CHECK_CAPTIONS = {
   },
   "phase2:ES-001": {
     "tag": "Phase 2 · ES-001 Distance anomaly",
-    "text": "Pega Event Strategy, no AI cost. It reads the location captured at sign-in, not anything on the receipt"
+    "text": "Real-time event strategy. It reads the location captured at sign-in, not anything on the receipt, and grades the distance from home"
   },
   "phase2:ES-002": {
     "tag": "Phase 2 · ES-002 Device ring",
-    "text": "Pega Event Strategy, no AI cost. It counts across claims as they arrive, which no single claim can show"
+    "text": "Real-time event strategy. It aggregates distinct members per device over a 72-hour window as claims arrive: a pattern no single claim shows"
   },
   "phase2:ES-003": {
     "tag": "Phase 2 · ES-003 Bank account ring",
-    "text": "Pega Event Strategy, no AI cost. It follows where the benefit lands, not who lodged the claim"
+    "text": "Real-time event strategy. It aggregates the practices paying into one account over a 30-day window, following where the benefit lands"
   },
   "phase3:P3-GRAPH": {
     "tag": "Phase 3 · Network graph",

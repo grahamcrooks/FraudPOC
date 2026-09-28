@@ -128,7 +128,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 - **Check**:
   - The portal shows MBR-33291, Carlton VIC 3053, POL-2021-44210, Gold Hospital + Extras.
   - The session chip matches Step 1.
-  - The claim card has two numbered panels: 1 · Receipt (upload and pre-flight) and 2 · Extracted from the Receipt (the fields the AI read; the member types nothing).
+  - The claim card has numbered panels in the order things happen: 1 · Receipt (the upload), 2 · Extracted from the Receipt (the fields the AI read; the member types nothing), and 3 · Pre-flight Checks, which appears once a receipt is loaded.
 
 ### Step 3: Upload and pre-flight
 
@@ -180,17 +180,17 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 
 ### Step 5: Phase 2, cross-claim signals
 
-- **Say**: A clean receipt isn't a clean claim. Every Phase 1 check looked at this claim on its own. Phase 2 compares it with every other claim: is it lodged far from home, is the device shared by unrelated members, is the bank account shared by unrelated practices? Each strategy either raises a signal or it doesn't.
+- **Say**: A clean receipt isn't a clean claim. Phase 1 asked whether this receipt is suspicious. Phase 2 asks a different question: is there an emerging pattern across claims over time? Three real-time Pega Event Strategies evaluate the claims stream continuously, using filters, time windows, aggregations and thresholds: a claim lodged far from home, one device used by unrelated members, one bank account collecting from unrelated practices. Each strategy raises a signal or it doesn't.
 - **Under the hood**:
-  - Pega Event Strategies run in real time over time windows. All three are business rules with no AI cost.
+  - Three real-time Pega Event Strategies detect patterns across the claims event stream, using filters, time windows, aggregations and thresholds. Their output can triage work, update data or trigger the next action.
     - **ES-001 distance anomaly**: the distance between the submission IP geolocation and the registered address. Graded: over 500 km moderate, over 1,500 km high, overseas critical.
     - **ES-002 device ring**: distinct members on one `DeviceFingerprintID` in 72 hours. Three or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
     - **ES-003 bank account ring**: distinct practice ABNs paying into one account in 30 days. Three or more fires.
   - Planned and not built: phantom ABN, waiver abuse, item code validation.
 - **Check**:
-  - Three checks run 6 seconds apart, in a single column, all "Business rule — no AI cost".
+  - Three checks run 6 seconds apart, in a single column, each badged "Real-time event strategy". The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies."
   - CLM-0841 results: 0.4 km from home, 1 member on the device, 1 practice on the account.
-  - The block reads "Signals raised 0 of 3" and "No signal raised. Continuing to Phase 3."
+  - The block reads "Signals raised 0 of 3" and "No suspicious cross-claim pattern detected. Continuing to Phase 3.", and the result "Phase 2 Passed — No Suspicious Cross-Claim Pattern Detected".
   - The italic planned line shows under the checks.
 
 ### Step 6: Phase 3, network intelligence
