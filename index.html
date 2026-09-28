@@ -45,6 +45,11 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 /* Below 1360px the slide buttons show only their number (the name is in the tooltip) so the bar fits at 1280px */
 @media (max-width:1360px){.sb-name{display:none}}
 .scen-pick{display:flex}
+.scen-chips{display:none;gap:3px}
+.sch{padding:3px 7px}
+.sch kbd{font-family:var(--font);font-size:9px;font-weight:700;opacity:.7}
+.scen-chips[hidden]{display:none!important}
+@media (min-width:1440px){.scen-chips{display:flex}#demo-btns{display:none!important}}
 .scen-caret{font-size:9px;opacity:.8;margin-left:2px}
 .scen-menu{position:fixed;z-index:1;min-width:230px;display:flex;flex-direction:column;gap:4px;padding:6px;background:#07101F;border:1px solid rgba(255,255,255,.15);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .scen-menu[hidden]{display:none}
@@ -763,6 +768,17 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <button class="sc" role="menuitem" onclick="ScenarioPicker.pick(7)" id="sc7"><span class="dot-indicator dr"></span><span class="scen-name">CLM-0848 · Already Paid</span><kbd>8</kbd></button>
     </div>
   </div>
+  <!-- On the demo screen, all eight scenarios as chips when the bar has room (1440px and up); the picker above takes over below that. -->
+  <div class="scen-chips" id="scen-chips" role="group" aria-label="Scenarios" hidden>
+    <button class="sc sch on" onclick="jumpScenario(0)" id="sch0" title="CLM-0841 · Clean (key 1)"><kbd>1</kbd><span class="dot-indicator dg"></span>Clean</button>
+    <button class="sc sch" onclick="jumpScenario(1)" id="sch1" title="CLM-0842 · Phase 1, doctored receipt (key 2)"><kbd>2</kbd><span class="dot-indicator dr"></span>Doc</button>
+    <button class="sc sch" onclick="jumpScenario(2)" id="sch2" title="CLM-0843 · Phase 2, bank account ring (key 3)"><kbd>3</kbd><span class="dot-indicator dr"></span>Account</button>
+    <button class="sc sch" onclick="jumpScenario(3)" id="sch3" title="CLM-0844 · Phase 2, device ring (key 4)"><kbd>4</kbd><span class="dot-indicator da"></span>Device</button>
+    <button class="sc sch" onclick="jumpScenario(4)" id="sch4" title="CLM-0845 · Phase 3, shared practitioner (key 5)"><kbd>5</kbd><span class="dot-indicator da"></span>Practitioner</button>
+    <button class="sc sch" onclick="jumpScenario(5)" id="sch5" title="CLM-0846 · Phase 3, network ring (key 6)"><kbd>6</kbd><span class="dot-indicator dr"></span>Network</button>
+    <button class="sc sch" onclick="jumpScenario(6)" id="sch6" title="CLM-0847 · Rejected in pre-flight (key 7)"><kbd>7</kbd><span class="dot-indicator dr"></span>Pre-flight</button>
+    <button class="sc sch" onclick="jumpScenario(7)" id="sch7" title="CLM-0848 · Already paid, rejected in pre-flight (key 8)"><kbd>8</kbd><span class="dot-indicator dr"></span>Paid</button>
+  </div>
   <div class="ctrl-sep"></div>
   <span class="mode-badge presenting" id="mode-badge">⌨ Presenting</span>
   <!-- RUN MODE BUTTONS -->
@@ -774,8 +790,8 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
   <button class="cbtn on" id="tab-portal-btn" onclick="goPortal()" title="Active claim portal">📋 Portal</button>
   <button class="cbtn" id="tab-dashboard-btn" onclick="goReport()" title="Fraud dashboard">📊 Report</button>
   <div class="ctrl-sep"></div>
-  <button class="cbtn" id="ttheme" onclick="setTheme(theme==='dark'?'light':'dark')" title="Switch to light theme">◻ Light</button>
-  <button class="cbtn" onclick="toggleFS()">⛶ Full</button>
+  <button class="cbtn" id="ttheme" onclick="setTheme(theme==='dark'?'light':'dark')" title="Switch to light theme">◻</button>
+  <button class="cbtn" onclick="toggleFS()" title="Full screen (F)">⛶</button>
 </div>
 
 <!-- PAUSE BANNER -->
@@ -1507,7 +1523,7 @@ function setTheme(t){
   theme=t;
   // One toggle: it names the theme a click switches to
   const next=t==='dark'?'light':'dark';
-  $('ttheme').textContent=next==='light'?'◻ Light':'◼ Dark';
+  $('ttheme').textContent=next==='light'?'◻':'◼';
   $('ttheme').title='Switch to '+next+' theme';
   document.querySelectorAll('.pslide').forEach(s=>{
     s.classList.remove('dark','light');
@@ -1566,7 +1582,7 @@ function goSlides(){
   $('demo-screen').classList.remove('active');
   $('fraud-dashboard').classList.remove('active');
   $('slide-btns').style.display='flex';
-  $('demo-btns').style.display='none';
+  $('demo-btns').style.display='none'; $('scen-chips').hidden=true;
   txt('ctrl-context','Slides');
   $('slides-nav-btn').style.opacity='.4';
   $('demo-nav-btn').style.opacity='1';
@@ -1580,7 +1596,7 @@ function goDemo(){
   $('fraud-dashboard').classList.remove('active');
   $('slides-screen').classList.remove('active');
   $('slide-btns').style.display='none';
-  $('demo-btns').style.display='flex';
+  $('demo-btns').style.display='flex'; $('scen-chips').hidden=false;
   txt('ctrl-context','Demo');
   $('tab-portal-btn').classList.add('on');
   $('tab-dashboard-btn').classList.remove('on');
@@ -1703,7 +1719,7 @@ function launchRollingDemo(){
   $('demo-screen').classList.add('active');
   $('slides-screen').classList.remove('active');
   $('slide-btns').style.display='none';
-  $('demo-btns').style.display='flex';
+  $('demo-btns').style.display='flex'; $('scen-chips').hidden=false;
   txt('ctrl-context','Demo');
   $('slides-nav-btn').style.opacity='1';
   $('demo-nav-btn').style.opacity='.4';
@@ -1784,7 +1800,7 @@ const ScenarioPicker={
     $('scen-trigger').setAttribute('aria-expanded','false');
     if(focusTrigger) $('scen-trigger').focus();
   },
-  pick(i){ this.close(); setScenario(i); },
+  pick(i){ this.close(); jumpScenario(i); },
   sync(i){
     const item=$('sc'+i);
     $('scen-dot').className=item.querySelector('.dot-indicator').className;
@@ -1814,10 +1830,12 @@ window.addEventListener('keydown',e=>{
 // ══════════════════════════════════════════════════════
 // SCENARIO & PORTAL
 // ══════════════════════════════════════════════════════
+// A scenario chip, the picker or keys 1–8: go to the demo from anywhere and start it.
+function jumpScenario(idx){ goDemo(); setScenario(idx); }
 function setScenario(idx){
   Captions.hide();
   clearAllTimers(); uploaded=false; uploadCount=0; uploadCount=0; curScenario=idx; Explainer.hide();
-  for(let i=0;i<S.length;i++) $('sc'+i).classList.toggle('on',i===idx);
+  for(let i=0;i<S.length;i++){ $('sc'+i).classList.toggle('on',i===idx); $('sch'+i).classList.toggle('on',i===idx); }
   ScenarioPicker.sync(idx);
   const s=S[idx];
   $('m-av').textContent=s.ini; txt('m-name',s.member);
