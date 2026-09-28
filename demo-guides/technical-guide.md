@@ -22,7 +22,7 @@ dependencies. All HTML, CSS, and JavaScript are embedded.
 Five presentation slides that set context, plus one manual-access backup
 slide
 
-  - Slide 1: Agenda (Background, Quantify Bupa Fraud POC, Target Outcome, Requirements)
+  - Slide 1: Agenda (Background, Quantify Bupa Claims Fraud, Target Outcome, Requirements)
   - Slide 2: Problem (why prevention, not just recovery)
   - Slide 3: Business Case (the value of earlier detection)
   - Slide 4: Three Phases (a practical path from detection to prevention)

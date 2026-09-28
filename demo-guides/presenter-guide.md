@@ -13,7 +13,7 @@
 
 - Talk about:
   - Background — why prevention, not just recovery
-  - Quantify Bupa Fraud POC — sizing the problem in Bupa’s own claims
+  - Quantify Bupa Claims Fraud — sizing the problem in Bupa’s own claims
   - Target Outcome — what success looks like for Phase 1
   - Requirements — what we’re asking for to get started
 
