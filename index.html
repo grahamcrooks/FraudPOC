@@ -258,9 +258,10 @@ body.run-rolling .presenter-only{display:none}
 /* ══════════════════════════════════════════════════════
    PIPELINE OVERLAY
 ══════════════════════════════════════════════════════ */
-.overlay{position:fixed;inset:0;top:36px;background:rgba(8,14,28,.92);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:opacity .4s;padding:16px;overflow-y:auto}
+.overlay{position:fixed;inset:0;top:36px;background:rgba(8,14,28,.92);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;z-index:500;opacity:0;pointer-events:none;transition:opacity .4s;padding:8px;overflow-y:auto}
 .overlay.show{opacity:1;pointer-events:all}
-.ov-card{background:#FFFFFF;border:1px solid #E5E7EB;border-radius:18px;padding:0 40px 32px;scroll-padding-top:150px;scroll-padding-bottom:20px;width:92vw;max-width:1280px;max-height:calc(100vh - 80px);overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25)}
+/* The pipeline fills the screen below the control bar, like the sign-in scene */
+.ov-card{background:#FFFFFF;border:1px solid #E5E7EB;border-radius:14px;padding:0 40px 32px;scroll-padding-top:150px;scroll-padding-bottom:20px;width:100%;max-width:none;height:calc(100vh - 52px);max-height:calc(100vh - 52px);overflow-y:auto;box-shadow:0 24px 80px rgba(0,0,0,.25)}
 .ov-hdr{display:flex;align-items:center;gap:14px;margin-bottom:22px;padding:32px 0 16px;border-bottom:2px solid #F3F4F6;position:sticky;top:0;background:#FFFFFF;z-index:30}
 .ov-hdr-ico{font-size:36px}
 .ov-hdr-title{font-size:20px;font-weight:800;color:#111827}
@@ -665,6 +666,10 @@ body.run-rolling .presenter-only{display:none}
 .sig[data-verdict="capture"] .sig-concl{color:var(--blue)}
 /* Phase 1 in the pipeline modal: single column, full width */
 .check-list .sig-list,.check-list>.sig{width:100%}
+/* Phase 2's three event strategies run side by side on a wide screen: one set,
+   evaluated in parallel over the stream. Larger type in the full-screen pipeline. */
+@media (min-width:1100px){#ph2-checks{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;align-items:stretch}}
+@media (min-width:1400px){.ov-card .check-list .sig-name{font-size:15px}.ov-card .check-list .sig-lines,.ov-card .check-list .sig-concl{font-size:14px}}
 .p1-calc{display:none;margin-top:14px;padding:16px 22px;border-radius:13px;background:#F9FAFB;border:2px solid #E5E7EB;font-variant-numeric:tabular-nums}
 .p1-calc.show{display:block;animation:scoreIn .5s ease}
 .p1-calc.ok{border-color:rgba(22,163,74,.35)}
@@ -733,7 +738,7 @@ body.run-rolling .presenter-only{display:none}
    end above it (--cap-h is the strip's measured height), so it never covers them */
 body.cap-on{padding-bottom:var(--cap-h,0px)}
 body.cap-on .overlay,body.cap-on .ls{bottom:var(--cap-h,0px)}
-body.cap-on .ov-card{max-height:calc(100vh - 80px - var(--cap-h,0px))}
+body.cap-on .ov-card{height:calc(100vh - 52px - var(--cap-h,0px));max-height:calc(100vh - 52px - var(--cap-h,0px))}
 body.cap-on .ls-phone{height:min(calc(100vh - 130px - var(--cap-h,0px)),940px);font-size:clamp(11px,calc((100vh - var(--cap-h,0px)) * .019),17px)}
 body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) * 1.6));font-size:clamp(10px,calc((100vh - var(--cap-h,0px)) * .0155),15px)}
 /* Narrow screens: the Simulated label wraps to three lines, so the phone leaves room for it */
