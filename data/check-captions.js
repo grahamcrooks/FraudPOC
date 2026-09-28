@@ -10,6 +10,10 @@
 // can still tell its story at a particular beat (for example CLM-0848's PAID
 // stamp). See data/scenarios/README.md, "Captions".
 window.CHECK_CAPTIONS = {
+  "channels": {
+    "tag": "Two ways in",
+    "text": "Claims arrive two ways: the member's app, or the practice's claiming terminal. Each carries a device and a location"
+  },
   "cost:ai": {
     "tag": "Pre-flight · AI",
     "text": "One vision model call classifies the document and returns eleven fields, each with its own confidence score"
