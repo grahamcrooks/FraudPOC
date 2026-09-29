@@ -48,8 +48,9 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .scen-chips{display:none;gap:3px}
 .sch{padding:3px 7px}
 .sch kbd{font-family:var(--font);font-size:9px;font-weight:700;opacity:.7}
+.sch-id{font-variant-numeric:tabular-nums;font-weight:700;margin-right:1px}
 .scen-chips[hidden]{display:none!important}
-@media (min-width:1440px){.scen-chips{display:flex}#demo-btns{display:none!important}}
+@media (min-width:1600px){.scen-chips{display:flex}#demo-btns{display:none!important}}
 .scen-caret{font-size:9px;opacity:.8;margin-left:2px}
 .scen-menu{position:fixed;z-index:1;min-width:230px;display:flex;flex-direction:column;gap:4px;padding:6px;background:#07101F;border:1px solid rgba(255,255,255,.15);border-radius:10px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
 .scen-menu[hidden]{display:none}
@@ -806,14 +807,14 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
   </div>
   <!-- On the demo screen, all eight scenarios as chips when the bar has room (1440px and up); the picker above takes over below that. -->
   <div class="scen-chips" id="scen-chips" role="group" aria-label="Scenarios" hidden>
-    <button class="sc sch on" onclick="jumpScenario(0)" id="sch0" title="CLM-0841 · Clean (key 1)"><kbd>1</kbd><span class="dot-indicator dg"></span>Clean</button>
-    <button class="sc sch" onclick="jumpScenario(1)" id="sch1" title="CLM-0842 · Phase 1, doctored receipt (key 2)"><kbd>2</kbd><span class="dot-indicator dr"></span>Doc</button>
-    <button class="sc sch" onclick="jumpScenario(2)" id="sch2" title="CLM-0843 · Phase 2, bank account ring (key 3)"><kbd>3</kbd><span class="dot-indicator dr"></span>Account</button>
-    <button class="sc sch" onclick="jumpScenario(3)" id="sch3" title="CLM-0844 · Phase 2, device ring (key 4)"><kbd>4</kbd><span class="dot-indicator da"></span>Device</button>
-    <button class="sc sch" onclick="jumpScenario(4)" id="sch4" title="CLM-0845 · Phase 3, shared practitioner (key 5)"><kbd>5</kbd><span class="dot-indicator da"></span>Practitioner</button>
-    <button class="sc sch" onclick="jumpScenario(5)" id="sch5" title="CLM-0846 · Phase 3, network ring (key 6)"><kbd>6</kbd><span class="dot-indicator dr"></span>Network</button>
-    <button class="sc sch" onclick="jumpScenario(6)" id="sch6" title="CLM-0847 · Rejected in pre-flight (key 7)"><kbd>7</kbd><span class="dot-indicator dr"></span>Pre-flight</button>
-    <button class="sc sch" onclick="jumpScenario(7)" id="sch7" title="CLM-0848 · Already paid, rejected in pre-flight (key 8)"><kbd>8</kbd><span class="dot-indicator dr"></span>Paid</button>
+    <button class="sc sch on" onclick="jumpScenario(0)" id="sch0" title="CLM-0841 · Clean (key 1)"><kbd>1</kbd><span class="dot-indicator dg"></span><span class="sch-id">0841</span>Clean</button>
+    <button class="sc sch" onclick="jumpScenario(1)" id="sch1" title="CLM-0842 · Phase 1, doctored receipt (key 2)"><kbd>2</kbd><span class="dot-indicator dr"></span><span class="sch-id">0842</span>Doc</button>
+    <button class="sc sch" onclick="jumpScenario(2)" id="sch2" title="CLM-0843 · Phase 2, bank account ring (key 3)"><kbd>3</kbd><span class="dot-indicator dr"></span><span class="sch-id">0843</span>Account</button>
+    <button class="sc sch" onclick="jumpScenario(3)" id="sch3" title="CLM-0844 · Phase 2, device ring (key 4)"><kbd>4</kbd><span class="dot-indicator da"></span><span class="sch-id">0844</span>Device</button>
+    <button class="sc sch" onclick="jumpScenario(4)" id="sch4" title="CLM-0845 · Phase 3, shared practitioner (key 5)"><kbd>5</kbd><span class="dot-indicator da"></span><span class="sch-id">0845</span>Practitioner</button>
+    <button class="sc sch" onclick="jumpScenario(5)" id="sch5" title="CLM-0846 · Phase 3, network ring (key 6)"><kbd>6</kbd><span class="dot-indicator dr"></span><span class="sch-id">0846</span>Network</button>
+    <button class="sc sch" onclick="jumpScenario(6)" id="sch6" title="CLM-0847 · Rejected in pre-flight (key 7)"><kbd>7</kbd><span class="dot-indicator dr"></span><span class="sch-id">0847</span>Pre-flight</button>
+    <button class="sc sch" onclick="jumpScenario(7)" id="sch7" title="CLM-0848 · Already paid, rejected in pre-flight (key 8)"><kbd>8</kbd><span class="dot-indicator dr"></span><span class="sch-id">0848</span>Paid</button>
   </div>
   <div class="ctrl-sep"></div>
   <span class="mode-badge presenting" id="mode-badge">⌨ Presenting</span>
