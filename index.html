@@ -709,17 +709,18 @@ body.run-rolling .presenter-only{display:none}
 .sig.p2-next{background:var(--blue-bg);border:1.5px dashed var(--pblue)}
 .p2-next .sig-nm{color:var(--pblue)}
 .sig-cost.next{background:var(--lblue);color:var(--blue);border:1px solid rgba(51,65,144,.25)}
-/* Phases 2 and 3: the explanation reads as one line of text, not a navy box, to leave room for the checks */
-#ph2-info,#ph3-info{padding:2px 2px 4px}
-#ph2-info .phase-info-band,#ph3-info .phase-info-band{background:none;box-shadow:none;padding:0;text-align:left}
-#ph2-info .phase-info-txt,#ph3-info .phase-info-txt{color:var(--navy);font-size:13.5px}
-#ph2-info .phase-info-band.alert .phase-info-txt,#ph3-info .phase-info-band.alert .phase-info-txt{color:#991B1B}
+/* Phases 1 to 3: the explanation reads as one line of text, not a navy box, to leave room for the checks */
+#ph1-info,#ph2-info,#ph3-info{padding:2px 2px 4px}
+#ph1-info .phase-info-band,#ph2-info .phase-info-band,#ph3-info .phase-info-band{background:none;box-shadow:none;padding:0;text-align:left}
+#ph1-info .phase-info-txt,#ph2-info .phase-info-txt,#ph3-info .phase-info-txt{color:var(--navy);font-size:13.5px}
+#ph1-info .phase-info-band.alert .phase-info-txt,#ph2-info .phase-info-band.alert .phase-info-txt,#ph3-info .phase-info-band.alert .phase-info-txt{color:#991B1B}
 .p2c-row{grid-template-columns:minmax(200px,280px) 1fr}
 .p2c-s{font-weight:700}
 .p1-calc.p2-compact{padding:10px 18px;margin-top:10px}
 .p2c-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 18px;font-size:13px;color:var(--text-2)}
 .p2-compact .p1c-verdict{margin-top:3px}
 .p1c-action{margin-top:4px;font-size:13px;font-weight:600;color:var(--text)}
+.p1c-sum{font-variant-numeric:tabular-nums;color:var(--text-2)}
 /* Pre-flight terminal outcomes: a fail or flag stops the flow before the pipeline */
 .upload-zone.pf-stop{cursor:default;text-align:left;padding:16px 18px}
 .upload-zone.pf-reject{border:2px solid #DC2626;background:#FEF2F2}
@@ -2172,6 +2173,8 @@ const PhaseSignals={
 // card's visible area, close the passing checks. Flags and fails stay open,
 // and a closed check's summary line still carries its figure and threshold.
 function fitRestingChecks(ph){
+  // Phase 1's checks stay open at rest so every finding's workings stay visible.
+  if(ph===1) return;
   const list=$('ph'+ph+'-checks'), card=list&&list.closest('.ov-card'); if(!card) return;
   const hdr=card.querySelector('.ov-hdr'), info=$('ph'+ph+'-info'), calc=$('ph'+ph+'-calc');
   const top=(info&&info.classList.contains('show')?info:list).getBoundingClientRect().top;
@@ -2212,14 +2215,15 @@ const Phase1Score={
     // single check catches it.
     const rows=r.rows.filter(x=>x.deduct>0).sort((x,y)=>y.deduct-x.deduct).concat(r.rows.filter(x=>x.deduct===0));
     const esc=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-    const line=x=>'<div class="p1c-row"><span class="p1c-l">'+esc(x.label)+'</span><span class="p1c-s p1c-'+esc(x.status)+'">'+esc(x.status)+'</span><span class="p1c-d">'+minus(x.deduct)+'</span></div>';
     const cls=r.above?'ok':'bad';
-    box.className='p1-calc show '+cls;
-    box.innerHTML='<div class="p1c-title">Receipt integrity score <span>— starts at '+f(r.sc.start)+', deducted per finding</span></div>'
-      +'<div class="p1c-row p1c-start"><span class="p1c-l">Starting score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.sc.start)+'</span></div>'
-      +rows.map(line).join('')
-      +'<div class="p1c-rule"></div>'
-      +'<div class="p1c-row p1c-total"><span class="p1c-l">Receipt integrity score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.total)+'</span></div>'
+    // Compact: the arithmetic on one line (start, each deduction, total), then
+    // the threshold and the action, so the checks above can stay open at rest.
+    box.className='p1-calc show p2-compact '+cls;
+    const ded=rows.filter(x=>x.deduct>0), passed=rows.length-ded.length;
+    const sum=ded.length
+      ? f(r.sc.start)+ded.map(x=>' − '+f(x.deduct)+' '+esc(x.label)).join('')+(passed?' · '+passed+' checks passed, no deduction':'')
+      : f(r.sc.start)+' · all '+rows.length+' checks passed, no deductions';
+    box.innerHTML='<div class="p2c-line"><span class="p1c-total">Receipt integrity score '+f(r.total)+'</span><span class="p1c-sum">= '+sum+'</span></div>'
       +'<div class="p1c-verdict">Threshold '+f(r.sc.threshold)+' — '+(!r.above?'below · SUSPICIOUS':r.adverse?'above · CLEAN':'No adverse findings')+'</div>'
       +(r.sc.action?'<div class="p1c-action">'+esc(r.sc.action)+'</div>':'');
     // At rest the score block is the payoff: bring all of it into view.

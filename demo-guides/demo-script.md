@@ -182,12 +182,12 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
   - It starts at 1.00, with deductions for adverse findings only: font fail −0.40, metadata fail −0.25. A pre-flight check can carry into the score too: on CLM-0842, the failed line item reconciliation costs −0.07.
   - At or above 0.70 continues; below 0.70 goes to the investigator queue at HIGH priority with a 4-hour SLA.
   - Extraction confidence is not scored here. A low-confidence field is already routed to Needs Review in pre-flight.
-  - The total is computed from the lines above it, never typed in.
+  - The total is computed from the deductions, never typed in.
 - **Check**:
   - The five checks run about 2.8 seconds apart.
-  - The score block lists every check at −0.00, with a total of **1.00** and "Threshold 0.70 — No adverse findings".
+  - The score is a short block: "Receipt integrity score 1.00 = 1.00 · all 5 checks passed, no deductions", then "Threshold 0.70 — No adverse findings".
   - The result badge reads "Phase 1 Passed — No Adverse Findings".
-  - If the panel is taller than the screen, the passing checks close at rest (measured, so this happens at 1080p and below). Their summary lines still carry the figures.
+  - All five checks stay open at rest, so every finding's workings stay visible; the panel scrolls if it's taller than the screen. The phase explanation is one line of text, not a navy box.
   - "Continue to Phase 2 — Cross-Claim Signals →" appears.
 
 ### Step 5: Phase 2, cross-claim signals
