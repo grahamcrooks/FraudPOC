@@ -115,6 +115,6 @@
   "outcome": {
     "headline": "Claim rejected — nothing to claim",
     "reason": "Receipt is stamped PAID · the account is already settled",
-    "note": "The receipt is genuine and complete. It simply isn't claimable. No forensic AI calls were spent, and nothing was referred to the fraud team."
+    "note": "The receipt is genuine and complete. It simply isn't claimable. No forensic AI checks were run, and nothing was referred to the fraud team."
   }
 };
