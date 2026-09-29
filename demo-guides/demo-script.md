@@ -21,7 +21,7 @@ Each step has three parts:
 | --- | --- |
 | S / D | Slides / Demo |
 | ← / → | Previous / next slide |
-| Space | Next slide on the slides; pauses and resumes the sign-in scene; pauses and resumes the rolling demo. Does nothing else in the demo |
+| Space | Next slide on the slides; pauses and resumes the sign-in scene, pre-flight and a running phase; pauses and resumes the rolling demo |
 | 1 to 8 | Open scenario CLM-0841 to CLM-0848 |
 | L | Replay the sign-in scene (or click the session chip in the portal header). Esc, Enter or a click skips to its end |
 | C | Captions on or off |
@@ -39,7 +39,7 @@ What stops the demo depends on the mode:
 | Where you are | What to do |
 | --- | --- |
 | Presenting, in the sign-in scene | Space pauses it where it is, with a "Paused" pill; Space again resumes. Esc skips to the end |
-| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Receipt Forensics or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 40 seconds, or a phase running its checks), so talk over it |
+| Presenting, in the demo | Space pauses whatever is running (pre-flight or a phase checking), with a purple "Paused · Space to resume" pill; Space again, or a click on the pill, resumes exactly where it stopped. Between steps the demo waits for you anyway: it only moves on when you click Receipt Forensics or Continue |
 | Presenting, on the slides | Don't press Space unless you mean to move on: it goes to the next slide |
 | Expecting lots of questions | Press P for step-by-step mode. The demo pauses after every phase result until you click Continue |
 | Rolling demo | Space pauses it and shows a banner with Resume and Stop; Space again resumes. R stops it completely |

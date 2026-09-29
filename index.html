@@ -439,6 +439,9 @@ body.run-rolling .presenter-only{display:none}
 .fdb-outcome-high{background:#FEE2E2;color:#991B1B}
 
 .gx{position:fixed;inset:0;top:36px;z-index:2500;background:rgba(4,10,24,.96);display:flex;align-items:center;justify-content:center;padding:16px 16px 44px}
+.demo-paused-pill{position:fixed;top:48px;left:50%;transform:translateX(-50%);z-index:2400;background:#7C3AED;color:#fff;border:0;padding:8px 20px;border-radius:30px;font-family:var(--font);font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(124,58,237,.4);cursor:pointer}
+.demo-paused-pill[hidden]{display:none}
+body.demo-paused .overlay *,body.demo-paused #demo-screen *{animation-play-state:paused!important}
 .gx[hidden]{display:none}
 .gx-img{cursor:zoom-in}
 .gx.zoom{overflow:auto;align-items:flex-start;justify-content:flex-start}
@@ -1517,6 +1520,25 @@ const PHASES=[
 let curSlide=0, curScenario=0, uploaded=false, uploadCount=0;
 let preflightStopped=null;   // 'reject' | 'review' when pre-flight ends the claim
 let timers=[], slideTimer=null;
+// Presenting mode: Space pauses whatever is running in the demo (a step's
+// timers and its animations) and resumes it. Rolling mode keeps its own pause.
+const DemoPause={
+  on:false,
+  toggle(){ this.on?this.resume():this.pause(); },
+  pause(){
+    if(this.on) return; this.on=true;
+    const now=Date.now();
+    timers.forEach(t=>{ clearTimeout(t.id); t.id=null; t.left=Math.max(0,t.due-now); });
+    document.body.classList.add('demo-paused'); $('demo-paused').hidden=false;
+  },
+  resume(){
+    if(!this.on) return; this.on=false;
+    const now=Date.now();
+    timers.forEach(t=>{ t.due=now+t.left; t.id=setTimeout(t.run,t.left); });
+    document.body.classList.remove('demo-paused'); $('demo-paused').hidden=true;
+  },
+  reset(){ this.on=false; document.body.classList.remove('demo-paused'); if($('demo-paused')) $('demo-paused').hidden=true; }
+};
 // Run modes: 'manual' | 'stepbystep' | 'rolling'
 let runMode='manual';
 let rollingPaused=false;
@@ -2486,8 +2508,16 @@ const SignalPanel={
 // ══════════════════════════════════════════════════════
 // PIPELINE
 // ══════════════════════════════════════════════════════
-function addTimer(fn,d){ const t=setTimeout(fn,d); timers.push(t); return t; }
-function clearAllTimers(){ timers.forEach(clearTimeout); timers=[]; }
+// Demo timers are pausable: each remembers when it is due, so Space can
+// freeze a running step and resume it exactly where it stopped.
+function addTimer(fn,d){
+  const t={fn,due:Date.now()+d,left:d,id:null};
+  t.run=()=>{ timers=timers.filter(x=>x!==t); fn(); };
+  if(!DemoPause.on) t.id=setTimeout(t.run,d);
+  timers.push(t); return t;
+}
+function clearAllTimers(){ timers.forEach(t=>clearTimeout(t.id)); timers=[]; DemoPause.reset(); }
+
 
 function resetPhaseBlock(ph){
   $('ph'+ph+'-block').classList.remove('active','done');
@@ -2784,6 +2814,7 @@ document.addEventListener('keydown',e=>{
     if(runMode==='rolling'&&!rollingPaused) pauseRolling();
     else if(runMode==='rolling'&&rollingPaused) resumeRolling();
     else if(onSlides) nextSlide();
+    else DemoPause.toggle();
     return;
   }
   if(e.key==='ArrowRight'&&onSlides){ nextSlide(); return; }
@@ -3472,6 +3503,7 @@ showFinalState = function(clean){
 };
 </script>
 <!-- AIM MODAL FOR CLM-0845 -->
+  <button class="demo-paused-pill" id="demo-paused" hidden onclick="DemoPause.resume()">⏸ Paused · Space to resume</button>
   <!-- Network graph explainer: opens over whatever is showing, so the pipeline stays where it was -->
   <div class="gx" id="gx" role="dialog" aria-modal="true" aria-label="How the network graph works" hidden onclick="if(event.target===this)GraphExplainer.close()">
     <img class="gx-img" id="gx-img" onclick="GraphExplainer.zoom()" src="assets/slides/slide-b-network-graph.webp" alt="How the network graph works. Every claim is a set of connections, and the graph follows them. What the graph holds: a claim linked to its member (lodged by), practice (billed by), practitioner (treated by), device and IP address (submitted from) and payment account (paid into), with rings for 1, 2 and 3 hops and paths to a known fraud entity and to one under investigation; anything within 3 hops of either raises a signal. Patterns it finds: shared practitioner, CLM-0845, a practitioner who works at three practices, two under investigation; organised ring, CLM-0846, a claim submitted from an IP address used by a practice linked to a known fraud member in Community #47 of 14 members and 3 providers; device ring, CLM-0844, five unrelated members on one device. Alerts attach to the entity, so they reach claims already assessed, and an investigator decides every case.">

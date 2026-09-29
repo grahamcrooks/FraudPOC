@@ -73,7 +73,7 @@ These came up in preparation. Have the answers ready and don't soften them on th
 | → / ← | Next / previous slide. Space also moves to the next slide, so don't press it by accident on the slides |
 | D / S | Demo / Slides |
 | 1 to 8 | Open CLM-0841 to CLM-0848 |
-| Space | In the sign-in scene: pause, and Space again to resume (a purple "Paused" pill shows). Elsewhere in the demo it does nothing |
+| Space | Pause, and Space again to resume, whatever is running: the sign-in scene, pre-flight or a phase checking (a purple "Paused" pill shows) |
 | Esc | Skip the sign-in scene to its end |
 | L | Replay the sign-in scene |
 | P | Step-by-step: pauses after every phase result until you click Continue |
@@ -85,8 +85,8 @@ These came up in preparation. Have the answers ready and don't soften them on th
 ### How pausing works
 
 - **Sign-in scene**: Space pauses it where it is.
-- **Pre-flight**: can't be paused, but it's slow on purpose: 40 seconds, the fields filling first and then seven checks of about 4 seconds each. Talk over it. Once it finishes, click any check to bring its explanation back.
-- **The pipeline**: it waits for you. It only moves on when you click Receipt Forensics or Continue. A phase's few seconds of animation can't be paused.
+- **Pre-flight**: Space pauses it mid-check and Space again resumes. It's slow on purpose anyway: 40 seconds, the fields filling first and then seven checks of about 4 seconds each. Once it finishes, click any check to bring its explanation back.
+- **The pipeline**: it waits for you between phases, and only moves on when you click Receipt Forensics or Continue. While a phase is checking, Space pauses it.
 - **Close the investigation screen with its ✕.** Escape doesn't close it.
 
 ### Budget for interruptions
