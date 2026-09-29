@@ -440,6 +440,10 @@ body.run-rolling .presenter-only{display:none}
 
 .gx{position:fixed;inset:0;top:36px;z-index:2500;background:rgba(4,10,24,.96);display:flex;align-items:center;justify-content:center;padding:16px 16px 44px}
 .gx[hidden]{display:none}
+.gx-img{cursor:zoom-in}
+.gx.zoom{overflow:auto;align-items:flex-start;justify-content:flex-start}
+.gx.zoom .gx-img{max-width:none;max-height:none;cursor:zoom-out}
+.gx.zoom .gx-close{position:fixed;top:48px}
 .gx-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
 .gx-close{position:absolute;top:12px;right:16px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer}
 .gx-close:hover,.gx-close:focus-visible{background:rgba(255,255,255,.22)}
@@ -1128,7 +1132,8 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     <div class="ov-hdr">
       <div class="ov-hdr-ico">🏥</div>
       <div><div class="ov-hdr-title">Pega Infinity 26.1 — Fraud Detection Pipeline</div><div class="ov-hdr-sub" id="ov-sub">Processing claim · AI-assisted analysis running</div><div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:4px"><div class="ov-ref" id="ov-ref" style="margin-top:0">CLM-2024-0841</div><span class="ov-sim-marker">Simulated pipeline · illustrative scenario data</span></div></div>
-      <div style="margin-left:auto;flex-shrink:0">
+      <div style="margin-left:auto;flex-shrink:0;display:flex;gap:8px">
+        <button class="btn-back" onclick="GraphExplainer.open('workflow')">Case workflow ▸</button>
         <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
       </div>
     </div>
@@ -1203,7 +1208,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
         <div class="result-badge" id="ph3-result"><div class="rb-ico" id="ph3-rb-ico">✅</div><div><div class="rb-title" id="ph3-rb-title">Phase 3 Complete</div><div class="rb-sub" id="ph3-rb-sub">No suspicious activity detected</div></div></div>
         <div class="phase-btns" id="ph3-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
-          <button class="btn-back" onclick="GraphExplainer.open()">How the network graph works ▸</button>
+          <button class="btn-back" onclick="GraphExplainer.open('graph')">How the network graph works ▸</button>
           <button class="btn-aim" id="ph3-aim-btn" style="display:none" onclick="showFinalAndAIM()">View Fraud Detection Summary →</button>
         </div>
       </div>
@@ -1581,15 +1586,29 @@ function clearSlideProgress(){
 // ══════════════════════════════════════════════════════
 // Network graph explainer. Opens over the current screen and closes back to it,
 // so a presenter can explain Phase 3 without losing the pipeline.
+const EXPLAINERS={
+  graph:{src:'assets/slides/slide-b-network-graph.webp',label:'Explainer · illustrative scenario data',name:'How the network graph works'},
+  workflow:{src:'assets/slides/case-workflow-blueprint.webp',label:'Actual · Pega Blueprint case design · click the image to zoom',name:'How a claim moves through the case',
+    alt:'How a claim moves through the case: the Pega Blueprint case design. Primary stages: Receipt Intake (Receive File); Document Extraction (Extract and Validation, Persist Raw Extracted Text, Extract and Persist Structured Data, Review Extracted Structured Data, Check Invalid Document Keywords, Check Document Marker Flags, Reject Gate, Evaluate High-Value Claim); Authentication Forensics (Forensic Analysis, Transform Data, Read Metadata); Forensic Narrative (Narrative Gate, Generate Narrative, Skip Narrative); Score Computation (Compute Scores); Field Validation (Validate Fields); Audit Gate (Audit Decision, Mark Clean, Route Review); Data Enrichment (Link/Lookup Practice, Link Practitioner, Duplicate Check); Event Strategies (Evaluate GEO-001 to GEO-006, Aggregate GEO Signal Score); Network Intelligence (Spinoff Network Intelligence, Wait Network Result, Combine Results). Alternate stages: Reject Document (Reject Case), Needs Review (Investigator Assignment, Notify Investigator), SIU Referral (Refer SIU, Notify SIU).'}
+};
 const GraphExplainer={
-  open(){ const el=$('gx'); el.hidden=false; el.querySelector('.gx-close').focus(); },
-  close(){ $('gx').hidden=true; },
+  graphAlt:null,
+  open(kind){
+    const k=EXPLAINERS[kind]?kind:'graph', x=EXPLAINERS[k], el=$('gx'), img=$('gx-img');
+    if(this.graphAlt===null) this.graphAlt=img.alt;
+    img.src=x.src; img.alt=x.alt||this.graphAlt; txt('gx-sim',x.label);
+    el.setAttribute('aria-label',x.name); el.dataset.kind=k; el.classList.remove('zoom');
+    el.hidden=false; el.querySelector('.gx-close').focus();
+  },
+  // Click the image to see it at full size (scroll to pan); click again to fit.
+  zoom(){ const el=$('gx'); el.classList.toggle('zoom'); el.scrollTop=0; el.scrollLeft=0; },
+  close(){ $('gx').hidden=true; $('gx').classList.remove('zoom'); },
   isOpen(){ return !$('gx').hidden; }
 };
 // Capture phase, so Esc and B close the explainer before any other shortcut runs.
 window.addEventListener('keydown',e=>{
   if(!GraphExplainer.isOpen()) return;
-  if(e.key==='Escape'||e.key==='b'||e.key==='B'){ e.preventDefault(); e.stopImmediatePropagation(); GraphExplainer.close(); }
+  if(e.key==='Escape'||e.key==='b'||e.key==='B'||e.key==='w'||e.key==='W'){ e.preventDefault(); e.stopImmediatePropagation(); GraphExplainer.close(); }
 },true);
 
 function goSlides(){
@@ -2757,7 +2776,8 @@ document.addEventListener('keydown',e=>{
   if(e.key==='r'||e.key==='R'){ toggleRolling(); return; }
   if(e.key==='p'||e.key==='P'){ toggleStepByStep(); return; }
   if(e.key==='s'||e.key==='S'){ goSlides(); return; }
-  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ GraphExplainer.open(); return; }
+  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ GraphExplainer.open('graph'); return; }
+  if((e.key==='w'||e.key==='W')&&runMode!=='rolling'){ GraphExplainer.open('workflow'); return; }
   if(e.key==='d'||e.key==='D'){ goDemo(); return; }
   if(e.key===' '){
     e.preventDefault();
@@ -3454,9 +3474,9 @@ showFinalState = function(clean){
 <!-- AIM MODAL FOR CLM-0845 -->
   <!-- Network graph explainer: opens over whatever is showing, so the pipeline stays where it was -->
   <div class="gx" id="gx" role="dialog" aria-modal="true" aria-label="How the network graph works" hidden onclick="if(event.target===this)GraphExplainer.close()">
-    <img class="gx-img" src="assets/slides/slide-b-network-graph.webp" alt="How the network graph works. Every claim is a set of connections, and the graph follows them. What the graph holds: a claim linked to its member (lodged by), practice (billed by), practitioner (treated by), device and IP address (submitted from) and payment account (paid into), with rings for 1, 2 and 3 hops and paths to a known fraud entity and to one under investigation; anything within 3 hops of either raises a signal. Patterns it finds: shared practitioner, CLM-0845, a practitioner who works at three practices, two under investigation; organised ring, CLM-0846, a claim submitted from an IP address used by a practice linked to a known fraud member in Community #47 of 14 members and 3 providers; device ring, CLM-0844, five unrelated members on one device. Alerts attach to the entity, so they reach claims already assessed, and an investigator decides every case.">
+    <img class="gx-img" id="gx-img" onclick="GraphExplainer.zoom()" src="assets/slides/slide-b-network-graph.webp" alt="How the network graph works. Every claim is a set of connections, and the graph follows them. What the graph holds: a claim linked to its member (lodged by), practice (billed by), practitioner (treated by), device and IP address (submitted from) and payment account (paid into), with rings for 1, 2 and 3 hops and paths to a known fraud entity and to one under investigation; anything within 3 hops of either raises a signal. Patterns it finds: shared practitioner, CLM-0845, a practitioner who works at three practices, two under investigation; organised ring, CLM-0846, a claim submitted from an IP address used by a practice linked to a known fraud member in Community #47 of 14 members and 3 providers; device ring, CLM-0844, five unrelated members on one device. Alerts attach to the entity, so they reach claims already assessed, and an investigator decides every case.">
     <button class="gx-close" onclick="GraphExplainer.close()">✕ Close</button>
-    <span class="gx-sim">Explainer · illustrative scenario data</span>
+    <span class="gx-sim" id="gx-sim">Explainer · illustrative scenario data</span>
   </div>
 <div class="aim-modal" id="aim-modal">
   <div class="aim-modal-content">
