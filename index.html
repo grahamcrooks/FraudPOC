@@ -715,8 +715,7 @@ body.run-rolling .presenter-only{display:none}
 .p2c-row{grid-template-columns:minmax(200px,280px) 1fr}
 .p2c-s{font-weight:700}
 .p1-calc.p2-compact{padding:10px 18px;margin-top:10px}
-.p2c-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 0;font-size:13px;color:var(--text-2)}
-.p2c-item::before{content:'·';margin:0 8px;color:var(--text-4)}
+.p2c-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 18px;font-size:13px;color:var(--text-2)}
 .p2-compact .p1c-verdict{margin-top:3px}
 .p1c-action{margin-top:4px;font-size:13px;font-weight:600;color:var(--text)}
 /* Pre-flight terminal outcomes: a fail or flag stops the flow before the pipeline */
@@ -2173,7 +2172,8 @@ const PhaseSignals={
       const mcls=c=>c.verdict==='fail'?'p1c-fail':c.verdict==='flag'?'p1c-flag':'p1c-pass';
       // Two lines: the verdict with each check's metric inline, then the action.
       box.classList.add('p2-compact');
-      const item=c=>'<span class="p2c-item">'+esc(c.name)+' <span class="p2c-s '+mcls(c)+'">'+esc(c.metric)+'</span></span>';
+      const short={'P3-WATCHLIST':'Watchlist','P3-GRAPH':'Graph','P3-SIMILARITY':'Similarity'};
+      const item=c=>'<span class="p2c-item">'+esc(short[c.id]||c.name)+' <span class="p2c-s '+mcls(c)+'">'+esc(c.metric)+'</span></span>';
       box.innerHTML='<div class="p2c-line"><span class="p1c-total">Network verdict '+esc(res.verdict||(n?'SIGNALS RAISED':'CLEAR'))+'</span>'+checks.map(item).join('')+'</div>'
         +(res.action?'<div class="p1c-verdict">'+esc(res.action)+'</div>':'');
       setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'end'}),150);

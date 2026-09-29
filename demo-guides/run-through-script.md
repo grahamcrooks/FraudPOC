@@ -361,15 +361,16 @@ A two-line summary: "Signals raised 0 of 5 · ES-001 no signal · … · ES-005 
 
 ### Phase 3 and the outcome (about 2 minutes)
 
-**On screen**: One check, Network graph, tagged "MCP · Graph", an AI call: "0 connections within 3 hops" · Pass. "Signals raised 0 of 1" and "No connections to known fraud or to anything under investigation. Claim approved and sent for adjudication." Then the summary: "Fraud Detection — No Suspicious Activity", "Sent for Claim Adjudication".
+**On screen**: The phase explanation is one line: "No entity known, no connection within 3 hops, and no comparable confirmed case." Three checks, each Pass: Watchlist match ("7 entities checked · 0 matches"), Network graph, tagged "MCP · Graph" ("0 connections within 3 hops"), and Fraud case similarity, tagged "GenAI · Knowledge Buddy" ("412 cases searched · no comparable case"). The network graph card stays open with four extra rows: Hops (6, 8 and 4 entities at hops 1, 2 and 3), Relationships (the edges it follows), Analytics (shortest paths, community membership, shared-attribute links) and What it is. A two-line summary: "Network verdict CLEAR · Watchlist 0 confirmed · 0 monitored · Graph 18 entities within 3 hops · 0 confirmed · Similarity 412 cases searched · 0 comparable", then "Claim approved and sent for adjudication." Then the summary: "Fraud Detection — No Suspicious Activity", "Sent for Claim Adjudication".
 
 **Say**: The last question: who else is involved? The graph follows everything this claim touches (member, practice, practitioner, device, IP, payment account) up to three hops out, looking for confirmed fraud or anything under investigation. It runs last because it's the widest search, across everything the claim touches. James is clear, so his claim goes to normal adjudication, with every check recorded. Now let's see where fraud gets stopped.
 
 **Under the hood**:
 
-- One check, P3-GRAPH: a graph query over an MCP connection. Rule: any path within three hops to a confirmed fraud community or an entity under investigation.
+- Three checks, in escalating order of "have we seen this before": P3-WATCHLIST (known: a direct match on the confirmed or monitored lists, a business rule), P3-GRAPH (connected: a graph query over an MCP connection) and P3-SIMILARITY (resembles: Pega GenAI Knowledge Buddy over closed investigations).
+- P3-GRAPH rule: any path within three hops to a confirmed fraud community or an entity under investigation. It follows the edges between members, practices, practitioners, devices, IPs, addresses and accounts, including shared device, account, address, phone or email, and reports shortest paths to flagged entities and membership of confirmed rings such as Community #47.
 - An alert attaches to the entity (a device, an account, a practitioner), so it reaches every claim linked to it, including ones already closed.
-- Fraud case similarity matching is planned. It needs a corpus of confirmed cases, which this system produces as it runs.
+- Similarity never routes a claim on its own; it adds weight to other signals, with the matching cases cited.
 
 **The room**:
 
