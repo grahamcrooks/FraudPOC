@@ -201,7 +201,7 @@
       "cost": "stream",
       "delay": 10000,
       "lookedAt": "Distinct members submitting from device DEV-4417 in the last 72 hours",
-      "rule": "Three or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
+      "rule": "Five or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
       "found": "Not run — Phase 1 stopped the claim",
       "verdict": "skipped",
       "conclusion": "Not run — Phase 1 stopped the claim"

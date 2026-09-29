@@ -28,6 +28,7 @@ Each step has three parts:
 | R | Rolling demo on or off (stops it completely) |
 | P | Step-by-step mode: pauses after every phase result until you click Continue |
 | B | How the network graph works: opens over the current screen; B or Esc closes it (not in rolling mode) |
+| E | How an event strategy works: the device ring timeline and the building blocks (filter, window, count, threshold, signal), over the current screen; E or Esc closes it (not in rolling mode) |
 | W | How a claim moves through the case: the Pega Blueprint case design, over the current screen; click the image to zoom; W or Esc closes it (not in rolling mode) |
 | 0 | Restart: back to slide 1, claim form cleared. The emergency reset |
 | F | Fullscreen |
@@ -197,7 +198,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 - **Under the hood**:
   - Five real-time Pega Event Strategies detect patterns across the claims event stream, using filters, time windows, aggregations and thresholds. Their output can triage work, update data or trigger the next action.
     - **ES-001 distance anomaly**: the distance between the submission IP geolocation and the registered address. Graded: over 500 km moderate, over 1,500 km high, overseas critical.
-    - **ES-002 device ring**: distinct members on one `DeviceFingerprintID` in 72 hours. Three or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
+    - **ES-002 device ring**: distinct members on one `DeviceFingerprintID` in 72 hours. Five or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
     - **ES-003 bank account ring**: distinct practice ABNs paying into one account in 30 days. Three or more fires.
     - **ES-004 phantom ABN**: the billing practice's ABN against the Australian Business Register. A cancelled, deregistered or invalid ABN, or one registered to a different entity, fires.
     - **ES-005 waiver abuse**: waiting-period waivers and practice claim volume over a rolling 90 days. Repeated waivers for one member, or practice volume at three times its 90-day baseline, fires.

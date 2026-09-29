@@ -234,11 +234,11 @@
     {
       "id": "ES-002",
       "name": "ES-002 Device ring",
-      "summary": "1 member on this device · threshold 3",
+      "summary": "1 member on this device · threshold 5",
       "cost": "stream",
       "delay": 10000,
       "lookedAt": "Distinct members submitting from device DEV-2291 in the last 72 hours",
-      "rule": "Three or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
+      "rule": "Five or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
       "found": "1 member on this device — James Kowalski only",
       "verdict": "pass",
       "conclusion": "No device ring"

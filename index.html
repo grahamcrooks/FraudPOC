@@ -1196,6 +1196,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
         <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No suspicious cross-claim pattern detected</div></div></div>
         <div class="phase-btns" id="ph2-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
+          <button class="btn-back" onclick="GraphExplainer.open('strategy')">How an event strategy works ▸</button>
           <button class="btn-continue" id="ph2-continue-btn" onclick="collapseAndContinue(2)">Continue to Phase 3 — Network Intelligence →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Watchlist match, network graph up to 3 hops, and fraud case similarity</div></button>
           <button class="btn-aim" id="ph2-aim-btn" style="display:none" onclick="showFinalAndAIM()">View Fraud Detection Summary →</button>
         </div>
@@ -1610,6 +1611,8 @@ function clearSlideProgress(){
 // so a presenter can explain Phase 3 without losing the pipeline.
 const EXPLAINERS={
   graph:{src:'assets/slides/slide-b-network-graph.webp',label:'Explainer · illustrative scenario data',name:'How the network graph works'},
+  strategy:{src:'assets/slides/event-strategy-explainer.webp',label:'Explainer · illustrative scenario data',name:'How an event strategy works',
+    alt:'How an event strategy works: it watches the stream of claims, not one claim at a time. Device ring, CLM-0844: five members lodge from the same device, DEV-1196, within a 72-hour window over 26 hours. The first four claims are cleared as the count of distinct members rises from 1 to 4; the fifth crosses the threshold of 5 and raises a signal, and the alert attaches to the device so it reaches the earlier claims. The building blocks: filter claims with a device, then a window of the last 72 hours, then count distinct members per device, then a threshold of 5 or more, then a signal that refers the claim and assesses the device. Configured, not coded; five run in this POC; new ones in days.'},
   workflow:{src:'assets/slides/case-workflow-blueprint.webp',label:'Actual · Pega Blueprint case design · click the image to zoom',name:'How a claim moves through the case',
     alt:'How a claim moves through the case: the Pega Blueprint case design. Primary stages: Receipt Intake (Receive File); Document Extraction (Extract and Validation, Persist Raw Extracted Text, Extract and Persist Structured Data, Review Extracted Structured Data, Check Invalid Document Keywords, Check Document Marker Flags, Reject Gate, Evaluate High-Value Claim); Authentication Forensics (Forensic Analysis, Transform Data, Read Metadata); Forensic Narrative (Narrative Gate, Generate Narrative, Skip Narrative); Score Computation (Compute Scores); Field Validation (Validate Fields); Audit Gate (Audit Decision, Mark Clean, Route Review); Data Enrichment (Link/Lookup Practice, Link Practitioner, Duplicate Check); Event Strategies (Evaluate GEO-001 to GEO-006, Aggregate GEO Signal Score); Network Intelligence (Spinoff Network Intelligence, Wait Network Result, Combine Results). Alternate stages: Reject Document (Reject Case), Needs Review (Investigator Assignment, Notify Investigator), SIU Referral (Refer SIU, Notify SIU).'}
 };
@@ -1630,7 +1633,7 @@ const GraphExplainer={
 // Capture phase, so Esc and B close the explainer before any other shortcut runs.
 window.addEventListener('keydown',e=>{
   if(!GraphExplainer.isOpen()) return;
-  if(e.key==='Escape'||e.key==='b'||e.key==='B'||e.key==='w'||e.key==='W'){ e.preventDefault(); e.stopImmediatePropagation(); GraphExplainer.close(); }
+  if(e.key==='Escape'||e.key==='b'||e.key==='B'||e.key==='w'||e.key==='W'||e.key==='e'||e.key==='E'){ e.preventDefault(); e.stopImmediatePropagation(); GraphExplainer.close(); }
 },true);
 
 function goSlides(){
@@ -2808,6 +2811,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='s'||e.key==='S'){ goSlides(); return; }
   if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ GraphExplainer.open('graph'); return; }
   if((e.key==='w'||e.key==='W')&&runMode!=='rolling'){ GraphExplainer.open('workflow'); return; }
+  if((e.key==='e'||e.key==='E')&&runMode!=='rolling'){ GraphExplainer.open('strategy'); return; }
   if(e.key==='d'||e.key==='D'){ goDemo(); return; }
   if(e.key===' '){
     e.preventDefault();

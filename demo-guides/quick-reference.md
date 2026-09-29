@@ -13,6 +13,7 @@
 - F → Toggle Fullscreen
 - P → Toggle Step-by-Step mode (pauses after every phase result until you click Continue)
 - B → How the network graph works, over the current screen; B or Esc closes it (manual mode only)
+- E → How an event strategy works, over the current screen; E or Esc closes it (manual mode only)
 - W → How a claim moves through the case (Pega Blueprint), over the current screen; click to zoom; W or Esc closes it (manual mode only)
 - Esc → Exit fullscreen (standard browser behaviour)
 - L → Replay the sign-in scene (or click the session chip in the portal header)

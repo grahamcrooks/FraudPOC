@@ -37,7 +37,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 ## Assets
 
-- [Slide images](assets/slides/): the five presentation slides (agenda, problem, business case, three phases, why Pega) as full-slide images, shown by `index.html` on the slides screen, `slide-b-network-graph.webp`, the "How the network graph works" explainer, shown as the backup slide and over the pipeline from Phase 3 or the B key, and `case-workflow-blueprint.webp`, the Pega Blueprint case design (stages and steps) joined from two screenshots, shown over any screen from the pipeline's "Case workflow" button or the W key.
+- [Slide images](assets/slides/): the five presentation slides (agenda, problem, business case, three phases, why Pega) as full-slide images, shown by `index.html` on the slides screen, `slide-b-network-graph.webp`, the "How the network graph works" explainer, shown as the backup slide and over the pipeline from Phase 3 or the B key, `event-strategy-explainer.webp`, the "How an event strategy works" explainer, shown over the pipeline from Phase 2 or the E key, and `case-workflow-blueprint.webp`, the Pega Blueprint case design (stages and steps) joined from two screenshots, shown over any screen from the pipeline's "Case workflow" button or the W key.
 
 ## Tests
 
