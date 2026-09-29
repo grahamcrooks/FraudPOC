@@ -22,7 +22,7 @@ Time: 30 seconds – 1 minute (quick roadmap, don’t over-explain)
 ### Slide 2: Problem (why prevention, not just recovery)
 
 - Talk about:
-  - Hidden anomalies in routine claims — unusual service patterns, duplicate items and incorrect billing buried in high volumes of legitimate claims
+  - Hidden anomalies in routine claims — opportunistic fraud, unusual claiming patterns, organised fraud and incorrect billing hidden within high volumes of legitimate claims
   - Manual review is reactive and slow — rule-based checks and audits catch issues after the claim is paid
   - Leakage compounds before recovery — losses accumulate across large claim volumes and flow into premiums
   - Members and providers need protection — fraud undermines trust and inflates the cost of care
