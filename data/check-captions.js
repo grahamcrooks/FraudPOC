@@ -44,7 +44,7 @@ window.CHECK_CAPTIONS = {
   },
   "cost:rule": {
     "tag": "Pre-flight · Rules",
-    "text": "Data transforms apply the business rules, at no AI cost. The sign-in device and location are attached for Phase 2"
+    "text": "Data transforms apply the business rules, included in Pega Platform. The sign-in device and location are attached for Phase 2"
   },
   "preflight:SIG-DOC-TYPE": {
     "tag": "Pre-flight · Receipt type",
@@ -68,7 +68,7 @@ window.CHECK_CAPTIONS = {
   },
   "preflight:SIG-LINE-RECONCILIATION": {
     "tag": "Pre-flight · Line item reconciliation",
-    "text": "Data transform, no AI cost. Arithmetic on the extracted fields: the line items must add up to the total charged"
+    "text": "Data transform, included in Pega Platform. Arithmetic on the extracted fields: the line items must add up to the total charged"
   },
   "preflight:SIG-CLAIM-VALUE": {
     "tag": "Pre-flight · Claim value",
@@ -108,11 +108,11 @@ window.CHECK_CAPTIONS = {
   },
   "phase1:SIG-P1-META": {
     "tag": "Phase 1 · Metadata and provenance",
-    "text": "Business rule on the file's own metadata, no AI cost. The authoring trail travels inside the file"
+    "text": "Business rule on the file's own metadata, included in Pega Platform. The authoring trail travels inside the file"
   },
   "phase1:SIG-P1-DUP": {
     "tag": "Phase 1 · Duplicate detection",
-    "text": "Business rule against every earlier submission, no AI cost. It stops one receipt being claimed twice"
+    "text": "Business rule against every earlier submission, included in Pega Platform. It stops one receipt being claimed twice"
   },
   "phase2:ES-001": {
     "tag": "Phase 2 · ES-001 Distance anomaly",

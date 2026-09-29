@@ -20,7 +20,7 @@
     },
     "preflightRejected": {
       "tag": "Pre-flight rejected",
-      "text": "A genuine receipt, correctly issued, that still isn't claimable. Caught by a business rule at no AI cost"
+      "text": "A genuine receipt, correctly issued, that still isn't claimable. Caught by a business rule included in Pega Platform"
     }
   },
   "signals": [

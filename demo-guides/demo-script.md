@@ -132,7 +132,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 
 ### Step 3: Upload and pre-flight
 
-- **Say**: The claimant uploads a dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules do the rest at no AI cost. A quotation, a proforma or an unpaid invoice stops here.
+- **Say**: The claimant uploads a dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules included in Pega Platform do the rest. A quotation, a proforma or an unpaid invoice stops here.
 - **Under the hood**: Pre-flight takes 40 seconds. Panel 1 takes about a third: the sign-in capture (4 seconds), then one AI read fills every claim field, one after another (9 seconds); nothing is judged there. Panel 2's seven checks share the rest, about 4 seconds each, and none starts until every field is filled. Extraction confidence comes second because it gates the rest: if a field was read unreliably, every check after it would be working off a number nobody trusts. Receipt completeness and line item reconciliation sit together, since both read the same payment and line item fields, with claim value after them. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
 
   | Check | Cost | Rule |
@@ -223,7 +223,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ### CLM-0842, Sarah Nguyen: doctored receipt (fails reconciliation in pre-flight, stops in Phase 1)
 
-- **Say**: Sarah only uploads a receipt, and it's been doctored. The printed total reads $487.50, but the line items add up to $445.00. Whoever edited the PDF changed the number that mattered and left the breakdown alone, which is the usual mistake. Pre-flight catches the arithmetic at no AI cost. It doesn't reject the claim: it sends it on to forensics to find out how the total was altered. Forensics finds three typefaces spliced into the amount and date, and a file edited in Photoshop two days after the service. Together they take the score to 0.28.
+- **Say**: Sarah only uploads a receipt, and it's been doctored. The printed total reads $487.50, but the line items add up to $445.00. Whoever edited the PDF changed the number that mattered and left the breakdown alone, which is the usual mistake. Pre-flight catches the arithmetic with a business rule included in Pega Platform. It doesn't reject the claim: it sends it on to forensics to find out how the total was altered. Forensics finds three typefaces spliced into the amount and date, and a file edited in Photoshop two days after the service. Together they take the score to 0.28.
 - **Under the hood**:
   - Pre-flight, line item reconciliation fails: $100.00 + $185.00 + $160.00 = $445.00 against a stated total of $487.50, a $42.50 discrepancy. The check is marked to go on to forensics rather than reject (`"onFail": "forensics"`).
   - Phase 1 score: font fail −0.40 (Arial 9pt, Helvetica 10pt and Times New Roman 8pt), metadata fail −0.25 (Adobe Photoshop, modified 16 Jul 2026), and the pre-flight reconciliation fail −0.07.
@@ -305,7 +305,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ### CLM-0848, Oliver Hartmann: already paid (stops in pre-flight)
 
-- **Say**: Oliver uploads a genuine physio receipt. It's authentic in every respect: the practitioner signed it, the ABN is valid and nothing has been altered. But the practice has stamped it PAID, so the account is already settled and there is nothing left to claim. That's a property of the document, readable from the page, so a business rule catches it in pre-flight at no AI cost.
+- **Say**: Oliver uploads a genuine physio receipt. It's authentic in every respect: the practitioner signed it, the ABN is valid and nothing has been altered. But the practice has stamped it PAID, so the account is already settled and there is nothing left to claim. That's a property of the document, readable from the page, so a business rule included in Pega Platform catches it in pre-flight.
 - **Under the hood**:
   - Six checks pass: the physio receipt layout, 11 of 11 fields, complete and paid, the items reconcile to $270.00, $270.00 claimable, confidence 0.93.
   - Disqualifying content fails: the PAID stamp across the services table, 1 of 11 terms. The rule matches the stamp, not the word "paid" wherever it occurs, so "amount paid", "paid in full", "unpaid" and "prepaid" don't trigger it.
