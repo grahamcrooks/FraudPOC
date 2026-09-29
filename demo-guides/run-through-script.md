@@ -36,7 +36,7 @@ There's no ask on Wednesday. The opening promises none, and the close keeps that
 
 ### Principles to repeat
 
-1. **Simple checks first.** Instant, deterministic rules run before anything else, so every early decision can be explained in one line and investigators only see claims that deserve them. AI is used in three places only: one read in pre-flight, three image checks in Phase 1 and the graph query in Phase 3. Everything else is business rules, a decision table and three real-time event strategies.
+1. **Simple checks first.** Instant, deterministic rules run before anything else, so every early decision can be explained in one line and investigators only see claims that deserve them. AI is used in three places only: one read in pre-flight, three image checks in Phase 1 and the graph query in Phase 3. Everything else is business rules, a decision table and five real-time event strategies.
 2. **AI assists, people decide.** Every signal goes to a named investigator in Pega AIM with the evidence attached. Nothing is decided for them.
 3. **Every check shows its working.** What it looked at, the rule and what it found, on screen. That's the audit trail.
 4. **Document, then pattern, then network.** Phase 1: is this individual receipt suspicious? Phase 2: is there an emerging pattern across claims over time? Phase 3: are there wider relationships connecting members, providers, devices or claims?
@@ -330,24 +330,28 @@ Then the Receipt integrity score: every check at −0.00, total 1.00, "Threshold
 
 ### Phase 2: does this claim fit a pattern across other claims? (about 2 minutes)
 
-**On screen**: The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies." Three checks, 6 seconds apart, each badged "Real-time event strategy":
+**On screen**: The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable." Five checks, 6 seconds apart, each badged "Real-time event strategy":
 
 - ES-001 Distance anomaly: 0.4 km from the registered address, threshold 500 km · Pass
 - ES-002 Device ring: 1 member on this device, threshold 3 · Pass
 - ES-003 Bank account ring: 1 practice on this account, threshold 3 · Pass
+- ES-004 Phantom ABN: ABN active, registered to the billing practice · Pass
+- ES-005 Waiver abuse: 0 waivers, practice volume 1.1× its 90-day baseline, threshold 3× · Pass
 
-"Signals raised 0 of 3" and "No suspicious cross-claim pattern detected. Continuing to Phase 3." Under the three live checks, four planned strategies show as grey dashed cards marked "Planned — not in this build" (ES-004 phantom ABN, ES-005 waiver abuse, ES-006 item code validation, ES-007 terminal mismatch), then a blue dashed "Your next strategy" card marked "Configurable". The finished stages above sit as single lines.
+A two-line summary: "Signals raised 0 of 5 · ES-001 no signal · … · ES-005 no signal", then "No suspicious cross-claim pattern detected. Continuing to Phase 3." Under the five live checks, two planned strategies show as grey dashed cards marked "Planned — not in this build" (ES-006 item code validation, ES-007 terminal mismatch), then a blue dashed "Your next strategy" card marked "Configurable". The finished stages above sit as single lines.
 
-**Say**: Phase 1 asked whether this receipt is suspicious. Phase 2 asks a different question: is there an emerging pattern across claims over time? Three real-time Pega Event Strategies evaluate the claims stream continuously, using filters, time windows, aggregations and thresholds: a claim lodged far from home, one device used by unrelated members, one bank account collecting from unrelated practices. Each strategy raises a signal or it doesn't. Nothing is raised for James: no suspicious cross-claim pattern.
+**Say**: Phase 1 asked whether this receipt is suspicious. Phase 2 asks a different question: is there an emerging pattern across claims over time? Five real-time Pega Event Strategies evaluate the claims stream continuously, using filters, time windows, aggregations and thresholds: a claim lodged far from home, one device used by unrelated members, one bank account collecting from unrelated practices, a practice billing under an ABN that isn't live, and a run of waiting-period waivers. Each strategy raises a signal or it doesn't. Nothing is raised for James: no suspicious cross-claim pattern.
 
-**Say, pointing at the planned cards**: Three running, four designed, and the eighth is whatever your team spots next month. Each one is configured, not coded: a new pattern becomes a live strategy in days, not a development cycle.
+**Say, pointing at the planned cards**: Five running, two designed, and the eighth is whatever your team spots next month. Each one is configured, not coded: a new pattern becomes a live strategy in days, not a development cycle.
 
 **Under the hood**:
 
 - ES-001: distance from the submission IP's location to the registered address. Graded: over 500 km moderate, over 1,500 km high, overseas critical.
 - ES-002: distinct members on one `DeviceFingerprintID` in 72 hours. Three or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
 - ES-003: distinct practice ABNs paying into one account in 30 days. Three or more fires. It follows where the benefit lands, not who lodged the claim.
-- Planned, not built, and shown as such: ES-004 phantom ABN (ABN checked live against the Australian Business Register), ES-005 waiver abuse (waiting-period waivers and 90-day volume), ES-006 item code validation (codes against provider type) and ES-007 terminal mismatch (a HICAPS terminal used away from its registered practice). Planned cards carry no verdict, so nothing reads as a check that ran.
+- ES-004: the billing practice's ABN against the Australian Business Register. A cancelled, deregistered or invalid ABN, or one registered to a different entity, fires.
+- ES-005: waiting-period waivers and practice claim volume over a rolling 90 days. Repeated waivers for one member, or practice volume at three times its own 90-day baseline, fires.
+- Planned, not built, and shown as such: ES-006 item code validation (codes against provider type) and ES-007 terminal mismatch (a HICAPS terminal used away from its registered practice). Planned cards carry no verdict, so nothing reads as a check that ran.
 
 **The room**:
 
@@ -459,7 +463,7 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 
 **On screen**: Pre-flight, Phase 1 and Phase 2 are clean. In Phase 3, the network graph **fails**: "2-hop path to a practitioner shared with 2 practices under investigation". The path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation. Referred to the SIU queue, HIGH priority, with the path attached.
 
-**Say**: Michael's optical claim clears forensics and all three event strategies. But the graph finds that the optometrist on the claim also bills through two practices already under investigation. The risk isn't in the claim. It's in who delivered the service, and no single claim contains that connection.
+**Say**: Michael's optical claim clears forensics and all five event strategies. But the graph finds that the optometrist on the claim also bills through two practices already under investigation. The risk isn't in the claim. It's in who delivered the service, and no single claim contains that connection.
 
 **The room**:
 

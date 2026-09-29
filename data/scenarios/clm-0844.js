@@ -254,6 +254,30 @@
       "found": "1 practice — Metro Dental Group, ABN 77 345 678 012, its own registered account",
       "verdict": "pass",
       "conclusion": "No account convergence"
+    },
+    {
+      "id": "ES-004",
+      "name": "ES-004 Phantom ABN",
+      "summary": "ABN active · registered to the billing practice",
+      "cost": "stream",
+      "delay": 22000,
+      "lookedAt": "The billing practice's ABN against the Australian Business Register",
+      "rule": "A cancelled, deregistered or invalid ABN, or one registered to a different entity",
+      "found": "ABN 77 345 678 012 · active · registered to Metro Dental Group",
+      "verdict": "pass",
+      "conclusion": "Real, registered practice. No phantom ABN signal"
+    },
+    {
+      "id": "ES-005",
+      "name": "ES-005 Waiver abuse",
+      "summary": "0 waivers · practice volume 0.9× its 90-day baseline · threshold 3×",
+      "cost": "stream",
+      "delay": 28000,
+      "lookedAt": "Waiting-period waivers and claim volume for this member and practice over a rolling 90 days",
+      "rule": "Repeated waiting-period waivers for one member, or practice claim volume at three times its 90-day baseline",
+      "found": "No waivers on this membership · Metro Dental Group at 0.9× its baseline",
+      "verdict": "pass",
+      "conclusion": "No waiver abuse signal"
     }
   ],
   "phase2Result": {

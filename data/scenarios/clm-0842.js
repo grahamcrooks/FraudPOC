@@ -217,6 +217,30 @@
       "found": "Not run — Phase 1 stopped the claim",
       "verdict": "skipped",
       "conclusion": "Not run — Phase 1 stopped the claim"
+    },
+    {
+      "id": "ES-004",
+      "name": "ES-004 Phantom ABN",
+      "summary": "not run",
+      "cost": "stream",
+      "delay": 22000,
+      "lookedAt": "The billing practice's ABN against the Australian Business Register",
+      "rule": "A cancelled, deregistered or invalid ABN, or one registered to a different entity",
+      "found": "Not run — Phase 1 stopped the claim",
+      "verdict": "skipped",
+      "conclusion": "Not run — Phase 1 stopped the claim"
+    },
+    {
+      "id": "ES-005",
+      "name": "ES-005 Waiver abuse",
+      "summary": "not run",
+      "cost": "stream",
+      "delay": 28000,
+      "lookedAt": "Waiting-period waivers and claim volume for this member and practice over a rolling 90 days",
+      "rule": "Repeated waiting-period waivers for one member, or practice claim volume at three times its 90-day baseline",
+      "found": "Not run — Phase 1 stopped the claim",
+      "verdict": "skipped",
+      "conclusion": "Not run — Phase 1 stopped the claim"
     }
   ],
   "phase2Result": {
