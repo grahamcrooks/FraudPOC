@@ -44,19 +44,6 @@ What stops the demo depends on the mode:
 | Rolling demo | Space pauses it and shows a banner with Resume and Stop; Space again resumes. R stops it completely |
 | Anything goes wrong | Press 0: back to slide 1, claim form cleared, then 1 to 8 to reopen a scenario |
 
-### The eight scenarios
-
-| Key | Claim | Member | Where it stops | Outcome |
-| --- | --- | --- | --- | --- |
-| 1 | CLM-0841 | James Kowalski | Runs all three phases | Clean, sent for adjudication |
-| 2 | CLM-0842 | Sarah Nguyen | Pre-flight reconciliation fails, then Phase 1 | Doctored total, score 0.28, investigator queue, HIGH |
-| 3 | CLM-0843 | David Okafor | Phase 2, ES-003 | Bank account ring, SIU queue, HIGH |
-| 4 | CLM-0844 | Linda Pham | Phase 2, ES-002 | Device ring, SIU queue, HIGH |
-| 5 | CLM-0845 | Michael Torres | Phase 3, graph and similarity | Shared practitioner plus resemblance to 3 confirmed cases: two weak signals, investigator queue, standard priority, investigation screen |
-| 6 | CLM-0846 | Angela Wu | Phase 3, graph | Fraud ring Community #47, SIU queue, HIGH |
-| 7 | CLM-0847 | Priya Raman | Pre-flight | Quotation rejected, no pipeline |
-| 8 | CLM-0848 | Oliver Hartmann | Pre-flight | Genuine receipt stamped PAID, rejected, no pipeline |
-
 ## Part 1: The slides
 
 The five slides are full-slide images in `assets/slides/`. The whole image always shows; on a screen that isn't 16:9, a blurred copy of it fills the edges. They look the same in the light and dark themes.
@@ -96,6 +83,23 @@ The five slides are full-slide images in `assets/slides/`. The whole image alway
 - **Say**: Use only if asked. This is the entity model Phase 3 is designed against. It is the target schema, not a claim that it's already running.
 - **Under the hood**: Relationship types: CURRENT_DEVICE, CURRENT_ACCOUNT, SHARED_DEVICE_WITH, SHARED_ACCOUNT_WITH, IS_MEMBER_OF. The slide traces CLM-2024-0846 through a device and a bank account to a confirmed fraud claim and Community #47.
 - **Check**: The B key opens it (not in rolling mode). "Back to Presentation" returns to slide 5.
+
+## Scenario quick reference
+
+Pick the scenarios you need. Press the key to jump straight to one; Part 3 has the detail for each. Times are for presenting, from the run-through script where it runs the scenario.
+
+| Key | Claim | Member | The point it makes | Where it stops | Outcome | Time |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | CLM-0841 | James Kowalski | The clean baseline: every step, explained | Runs all three phases | Clean, sent for adjudication | 15 min |
+| 2 | CLM-0842 | Sarah Nguyen | A doctored receipt: the arithmetic says something is wrong, forensics shows how | Pre-flight reconciliation fails, then Phase 1 | Doctored total, score 0.28, investigator queue, HIGH | 4 min |
+| 3 | CLM-0843 | David Okafor | Follow the money: four practices paying into one bank account | Phase 2, ES-003 | Bank account ring, SIU queue, HIGH | About 3 min |
+| 4 | CLM-0844 | Linda Pham | A device ring no single claim can show | Phase 2, ES-002 | Device ring, SIU queue, HIGH | 4 min |
+| 5 | CLM-0845 | Michael Torres | The risk is in who delivered the service; then the investigation screen | Phase 3, graph and similarity | Two weak signals, investigator queue, standard priority, investigation screen | 3 min, plus 2 for the investigation screen |
+| 6 | CLM-0846 | Angela Wu | An organised ring, three hops away | Phase 3, graph | Fraud ring Community #47, SIU queue, HIGH | About 3 min |
+| 7 | CLM-0847 | Priya Raman | Not claimable: stopped before any forensics | Pre-flight | Quotation rejected, no pipeline | 2 min |
+| 8 | CLM-0848 | Oliver Hartmann | A genuine receipt that still isn't claimable, and the PAID question for the room | Pre-flight | Genuine receipt stamped PAID, rejected, no pipeline | 2 min |
+
+Short on time? CLM-0841, one pre-flight stop (7 or 8), and one scenario from each later phase (2, 4 and 5) cover every layer.
 
 ## Part 2: The process, step by step (CLM-0841)
 
