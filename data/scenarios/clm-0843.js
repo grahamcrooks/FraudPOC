@@ -1,4 +1,4 @@
-// Scenario data for CLM-2024-0843 (David Okafor, physio claim, Phase 2 phantom ABN).
+// Scenario data for CLM-2024-0843 (David Okafor, physio claim, Phase 2 bank account ring, ES-003).
 // Loaded by index.html with a plain <script> tag, so the demo still runs from
 // file:// with no server. Keep the object literal valid JSON.
 (window.SCENARIO_DATA = window.SCENARIO_DATA || {})['CLM-2024-0843'] = {

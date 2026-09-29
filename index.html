@@ -269,6 +269,13 @@ body.run-rolling .presenter-only{display:none}
 .ov-sim-marker{font-size:10px;font-weight:500;color:#9CA3AF;font-style:italic;letter-spacing:.2px}
 .phase-block{margin-bottom:10px;border-radius:12px;overflow:hidden;border:1px solid #E5E7EB;transition:all .4s;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .phase-collapsed{display:flex;align-items:center;gap:12px;padding:14px 18px}
+/* A finished stage, once collapsed, is one plain line with no box */
+.phase-block.done:not(.active){background:none!important;border-color:transparent!important;box-shadow:none!important;margin-bottom:2px}
+.phase-block.done:not(.active) .phase-collapsed{padding:3px 18px;gap:10px}
+.phase-block.done:not(.active) .phase-status-ico{width:26px;height:26px;border-radius:7px;font-size:14px}
+.phase-block.done:not(.active) .phase-name{font-size:14px}
+.phase-block.done:not(.active) .phase-question{display:none}
+.phase-block.done:not(.active) .phase-status-badge{padding:2px 10px}
 .phase-status-ico{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;transition:all .3s}
 .psi-queued{background:#F3F4F6}
 .psi-running{background:#EFF6FF;animation:pulse-blue 1.5s infinite}
@@ -687,8 +694,24 @@ body.run-rolling .presenter-only{display:none}
 .p1c-verdict{margin-top:6px;font-size:14px;font-weight:800}
 .p1-calc.ok .p1c-verdict{color:var(--green-mid)}
 .p1-calc.bad .p1c-verdict{color:#DC2626}
-.p2-planned{display:none;margin-top:8px;font-size:12.5px;font-style:italic;color:var(--text-3)}
-.p2-planned.show{display:block}
+.p2-planned{display:none;margin-top:5px;flex-direction:column;gap:5px}
+.p2-planned.show{display:flex}
+.p2-planned-title{margin:4px 2px 0;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.5px}
+/* Planned strategies: same card shape as the three that run, but dashed and
+   grey with a Planned pill instead of a verdict, so they never read as run */
+.sig.p2-plan{background:var(--canvas);border-style:dashed}
+.p2-plan .sig-head{padding:6px 12px;cursor:default}
+.p2-plan .sig-nm{color:var(--text-2)}
+.p2-plan .sig-sum{color:var(--text-3)}
+.sig-cost.plan{background:var(--white);color:var(--text-3);border:1px dashed var(--text-4)}
+.sig.p2-next{background:var(--blue-bg);border:1.5px dashed var(--pblue)}
+.p2-next .sig-nm{color:var(--pblue)}
+.sig-cost.next{background:var(--lblue);color:var(--blue);border:1px solid rgba(51,65,144,.25)}
+/* Phase 2's explanation reads as one line of text, not a navy box, to leave room for the strategies */
+#ph2-info{padding:2px 2px 4px}
+#ph2-info .phase-info-band{background:none;box-shadow:none;padding:0;text-align:left}
+#ph2-info .phase-info-txt{color:var(--navy);font-size:13.5px}
+#ph2-info .phase-info-band.alert .phase-info-txt{color:#991B1B}
 .p2c-row{grid-template-columns:minmax(200px,280px) 1fr}
 .p2c-s{font-weight:700}
 .p1c-action{margin-top:4px;font-size:13px;font-weight:600;color:var(--text)}
@@ -1154,7 +1177,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
         <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
       </div>
     </div>
-    <div class="phase-block" style="background:#F0FDF4;border-color:rgba(22,163,74,.3);box-shadow:0 2px 8px rgba(22,163,74,.08)">
+    <div class="phase-block done">
       <div class="phase-collapsed"><div class="phase-status-ico psi-pass">📥</div><div class="phase-name">Claim Case Created · Valid Receipt Confirmed</div><span class="phase-status-badge psb-pass">✓ Complete</span></div>
     </div>
     <div class="phase-block" id="ph1-block">
@@ -1183,11 +1206,18 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       </div>
     </div>
     <div class="phase-block" id="ph2-block" style="display:none">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Cross-Claim Signals</div><div class="phase-question">Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Cross-Claim Signals</div><div class="phase-question">Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies running, 4 planned, more configurable.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
-        <div class="p2-planned" id="ph2-planned">Further strategies are planned and not in this build: phantom ABN, waiver abuse, item code validation, and, for provider fraud, a terminal mismatch (a HICAPS terminal transmitting from an IP address away from its registered practice, for example registered in Brisbane and transmitting from Sydney, or a provider number used on a terminal registered to a different practice).</div>
+        <div class="p2-planned" id="ph2-planned">
+          <div class="p2-planned-title">Planned strategies · designed, not in this build</div>
+          <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-004 Phantom ABN</span><span class="sig-sum"> · the provider's ABN checked live against the Australian Business Register; a cancelled ABN is caught at once</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
+          <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-005 Waiver abuse</span><span class="sig-sum"> · excessive use of waiting-period waivers and unusual claim volume in a rolling 90-day window</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
+          <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-006 Item code validation</span><span class="sig-sum"> · item codes checked against what this provider type can bill</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
+          <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-007 Terminal mismatch</span><span class="sig-sum"> · provider fraud: a HICAPS terminal used away from its registered practice, or on another practice's provider number</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
+          <div class="sig p2-plan p2-next"><div class="sig-head"><span class="sig-ico">➕</span><span class="sig-name"><span class="sig-nm">Your next strategy</span><span class="sig-sum"> · new patterns your investigators spot become configured Event Strategies, live in days with no code change</span></span><span class="sig-badges"><span class="sig-cost next">Configurable</span></span></div></div>
+        </div>
         <div class="p1-calc" id="ph2-calc"></div>
         <div class="score-reveal" id="ph2-score"><div class="score-num" id="ph2-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Fraud Score</div><div class="score-verdict" id="ph2-score-verdict">Calculating...</div><div class="score-route" id="ph2-score-route"></div></div></div>
         <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No suspicious cross-claim pattern detected</div></div></div>
@@ -2448,7 +2478,7 @@ function addTimer(fn,d){ const t=setTimeout(fn,d); timers.push(t); return t; }
 function clearAllTimers(){ timers.forEach(clearTimeout); timers=[]; }
 
 function resetPhaseBlock(ph){
-  $('ph'+ph+'-block').classList.remove('active');
+  $('ph'+ph+'-block').classList.remove('active','done');
   $('ph'+ph+'-block').style.background=''; $('ph'+ph+'-block').style.borderColor=''; $('ph'+ph+'-block').style.boxShadow='';
   $('ph'+ph+'-ico').className='phase-status-ico psi-queued';
   $('ph'+ph+'-badge').className='phase-status-badge psb-queued';
@@ -2616,7 +2646,7 @@ function activatePhase(ph,phData){
   },maxD);
 }
 
-function collapsePhase(ph){ $('ph'+ph+'-block').classList.remove('active'); $('ph'+ph+'-btns').classList.remove('show'); }
+function collapsePhase(ph){ const b=$('ph'+ph+'-block'); if(b.classList.contains('active')) b.classList.add('done'); b.classList.remove('active'); $('ph'+ph+'-btns').classList.remove('show'); }
 
 function collapseAndContinue(ph){
   collapsePhase(ph);
