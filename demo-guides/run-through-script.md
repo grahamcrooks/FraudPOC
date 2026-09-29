@@ -462,20 +462,20 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 
 **Do**: Press 5. Load Receipt, Receipt Forensics, Continue to Phase 2, Continue to Phase 3.
 
-**On screen**: Pre-flight, Phase 1 and Phase 2 are clean. In Phase 3, the network graph **fails**: "2-hop path to a practitioner shared with 2 practices under investigation". The path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation. Referred to the SIU queue, HIGH priority, with the path attached.
+**On screen**: Pre-flight, Phase 1 and Phase 2 are clean. In Phase 3, the network graph **flags**: "2-hop path to a practitioner shared with 2 practices under investigation". The path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation. Fraud case similarity also **flags**: three closed investigations with the same shape and no identifier in common. The summary reads "Network verdict PATTERN, REFERRED FOR REVIEW": two weak signals, referred to the investigator queue at standard priority, with the path and the cited cases attached.
 
 **Say**: Michael's optical claim clears forensics and all five event strategies. But the graph finds that the optometrist on the claim also bills through two practices already under investigation. The risk isn't in the claim. It's in who delivered the service, and no single claim contains that connection.
 
 **The room**:
 
-- **DS**: will ask how "under investigation" gets into the graph and how fresh it is. Be clear about what's built (the traversal) and what's planned (similarity matching).
+- **DS**: will ask how "under investigation" gets into the graph and how fresh it is. Similarity never routes a claim on its own; here it adds weight to the graph link, which is why the claim goes to review, not the SIU.
 - **FA**: if they'd rather see an organised ring, run CLM-0846 instead (press 6): a 3-hop path through a shared submission IP into Community #47, a confirmed ring of 14 members and 3 providers.
 
 ## 40:00–42:00 · What the investigator gets
 
 **Do**: On CLM-0845's summary, click "Open Alert & Investigation Manager". Close it with its ✕. Then open the Report.
 
-**On screen**: The investigation screen: the case in the SIU queue with its priority and SLA, the result of every phase with Phase 3 "Flagged — Shared Practitioner", the path chain with the two practices marked under investigation, four evidence lines, the planned-similarity note, and an investigator briefing assembled by a Pega agent. The report: every case, filterable by member, provider, date and outcome.
+**On screen**: The investigation screen: "Two weak signals — referred for review", the case in the investigator queue with its priority and SLA, the result of every phase with Phase 3 "Flagged — Shared Practitioner", the path chain with the two practices marked under investigation, the evidence lines including the three similar closed cases and "Why review, not SIU", and an investigator briefing assembled by a Pega agent. The report: every case, filterable by member, provider, date and outcome.
 
 **Say**: This is what lands in the investigator's queue: the case, its priority and SLA, every phase's result, the path drawn out, and a briefing drafted by a Pega agent for the investigator to review. Nothing is decided for them. The decision is theirs, and it's recorded. Across claims, the report is the team's view of every case.
 

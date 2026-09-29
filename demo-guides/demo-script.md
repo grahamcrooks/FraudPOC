@@ -52,7 +52,7 @@ What stops the demo depends on the mode:
 | 2 | CLM-0842 | Sarah Nguyen | Pre-flight reconciliation fails, then Phase 1 | Doctored total, score 0.28, investigator queue, HIGH |
 | 3 | CLM-0843 | David Okafor | Phase 2, ES-003 | Bank account ring, SIU queue, HIGH |
 | 4 | CLM-0844 | Linda Pham | Phase 2, ES-002 | Device ring, SIU queue, HIGH |
-| 5 | CLM-0845 | Michael Torres | Phase 3, graph | Shared practitioner, SIU queue, HIGH, investigation screen |
+| 5 | CLM-0845 | Michael Torres | Phase 3, graph and similarity | Shared practitioner plus resemblance to 3 confirmed cases: two weak signals, investigator queue, standard priority, investigation screen |
 | 6 | CLM-0846 | Angela Wu | Phase 3, graph | Fraud ring Community #47, SIU queue, HIGH |
 | 7 | CLM-0847 | Priya Raman | Pre-flight | Quotation rejected, no pipeline |
 | 8 | CLM-0848 | Oliver Hartmann | Pre-flight | Genuine receipt stamped PAID, rejected, no pipeline |
@@ -264,15 +264,16 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ### CLM-0845, Michael Torres: shared practitioner (stops in Phase 3)
 
-- **Say**: Michael's optical claim clears forensics and all three strategies. But the optometrist on the claim at ClearView Optometry also bills through two practices already under investigation. The risk isn't in the claim; it's in who delivered the service.
+- **Say**: Michael's optical claim clears forensics and all five strategies. But the optometrist on the claim at ClearView Optometry also bills through two practices already under investigation. The risk isn't in the claim; it's in who delivered the service.
 - **Under the hood**:
   - P3-GRAPH found a 2-hop path: member MBR-29034 → ClearView Optometry → optometrist PR-5518.
   - PR-5518 also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation.
-  - Routed to the SIU queue, HIGH, 4-hour SLA.
+  - P3-SIMILARITY: Knowledge Buddy returns three closed investigations with the same shape (INV-2025-0117, INV-2025-0342, INV-2026-0058) and no identifier in common.
+  - Two weak signals, neither sufficient alone: referred to the investigator queue at standard priority, with the path and the cited cases attached. Not the SIU.
   - The investigation screen assembles the evidence package, with the path drawn out.
 - **Check**:
-  - The block reads "Signals raised 1 of 1".
-  - The fraud summary shows "Open Alert & Investigation Manager".
+  - The two-line summary reads "Network verdict PATTERN, REFERRED FOR REVIEW", with Graph and Similarity in amber.
+  - The fraud summary shows "Open Alert & Investigation Manager". The investigation screen reads "Two weak signals — referred for review" and explains "Why review, not SIU".
   - The investigation screen shows:
     - Phase 3 as "Flagged — Shared Practitioner".
     - The path chain, with the two practices marked under investigation.
