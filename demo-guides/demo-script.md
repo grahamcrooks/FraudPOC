@@ -132,10 +132,10 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 
 ### Step 3: Upload and pre-flight
 
-- **Say**: The claimant uploads a dental receipt. Before any expensive analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules included in Pega Platform do the rest. A quotation, a proforma or an unpaid invoice stops here.
+- **Say**: The claimant uploads a dental receipt. Before any deeper analysis, pre-flight asks one question: is this a claimable receipt at all? AI reads it once, and then business rules included in Pega Platform do the rest. A quotation, a proforma or an unpaid invoice stops here.
 - **Under the hood**: Pre-flight takes 40 seconds. Panel 1 takes about a third: the sign-in capture (4 seconds), then one AI read fills every claim field, one after another (9 seconds); nothing is judged there. Panel 2's seven checks share the rest, about 4 seconds each, and none starts until every field is filled. Extraction confidence comes second because it gates the rest: if a field was read unreliably, every check after it would be working off a number nobody trusts. Receipt completeness and line item reconciliation sit together, since both read the same payment and line item fields, with claim value after them. Each shows what it looked at, the rule, what it found and its conclusion, plus a cost badge. A "What's happening" card at the top of the left column explains the running check in plain English: what it does and why it matters. It stays when pre-flight finishes, showing the check that stopped the claim if one did; click any check to bring up its card, and click it again to collapse the row. The text is in `data/check-explainers.js`.
 
-  | Check | Cost | Rule |
+  | Check | Type | Rule |
   | --- | --- | --- |
   | Device and location (panel 1) | Capture | Recorded for later evaluation; no verdict |
   | 1 Field extraction | AI call | Extract provider, ABN, service date, line items and total |
@@ -158,7 +158,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 - **Say**: The receipt is claimable. Now: is it genuine? Five forensic checks look for spliced text, overlays, AI-generated images, a suspicious authoring trail and duplicates. The score starts at 1.00 and only adverse findings take points off. James's receipt has none.
 - **Under the hood**:
 
-  | Check | Cost | Rule |
+  | Check | Type | Rule |
   | --- | --- | --- |
   | Font consistency | AI call | A genuine receipt prints in one typeface |
   | Colour and stamp analysis | AI call | Digital overlays leave colour discontinuities |
@@ -291,7 +291,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ### CLM-0847, Priya Raman: quotation (stops in pre-flight)
 
-- **Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work the claimant hasn't had done, and nothing has been paid. Pre-flight catches it with business rules, so no forensic AI is spent and nothing reaches the fraud team. This is the case for cheap checks first.
+- **Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work the claimant hasn't had done, and nothing has been paid. Pre-flight catches it with business rules, instantly and with the reason in one line, so no forensics run and nothing reaches the fraud team. This is the case for simple checks first.
 - **Under the hood**:
   - Field extraction, extraction confidence, receipt type, line item reconciliation and claim value pass: the layout reads as a receipt, 11 of 11 fields, the items reconcile to $448.00, confidence 0.94.
   - Disqualifying content fails: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, 2 of 11 terms.
@@ -300,7 +300,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 - **Check**:
   - There are two FAIL badges. The panel reads "Claim rejected — not a claimable receipt".
   - The stage is Reject Document and the status Resolved-Rejected.
-  - The note reads "No forensic AI calls were spent on this claim".
+  - The note reads "No forensic AI checks were run on this claim".
   - Receipt Forensics does not appear, and the pipeline never opens.
 
 ### CLM-0848, Oliver Hartmann: already paid (stops in pre-flight)
@@ -333,7 +333,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 
 ## Known limitations
 
-- **Captions**: every check in every scenario has a caption naming the component behind it, what it's for and what it costs. While presenting, pre-flight shows three (the AI reads, the business rules, the decision); the rolling demo shows one per check. Sign-in, upload and outcome captions exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only.
+- **Captions**: every check in every scenario has a caption naming the component behind it, what it's for and whether it's an AI call or a business rule. While presenting, pre-flight shows three (the AI reads, the business rules, the decision); the rolling demo shows one per check. Sign-in, upload and outcome captions exist for CLM-0841, CLM-0844, CLM-0847 and CLM-0848 only.
 - **Simulated data**: every scenario is simulated with illustrative data. Names, numbers and addresses are fictional.
 - **The reconciliation weight** (−0.07) is small. A total that doesn't reconcile, on an otherwise genuine receipt, would still score 0.93 in Phase 1 and pass. How that case should be routed is still to be decided.
 - **Older guides**: the complete, presenter and technical guides are out of date. This script replaces them for running the demo, and [`run-through-script.md`](run-through-script.md) is the presenter's script for the one-hour session.

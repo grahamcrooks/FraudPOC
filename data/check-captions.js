@@ -3,7 +3,7 @@
 // Keep the object literal valid JSON.
 //
 // Each caption adds what the panel cannot show: which component produced the
-// verdict, why it runs where it does, and what it costs. It never repeats the
+// verdict, why it runs where it does, and whether it's an AI call or a business rule. It never repeats the
 // panel's own Looked at / Rule / Found lines.
 //
 // A scenario's own "captions" block wins over these, key by key, so a scenario
@@ -128,7 +128,7 @@ window.CHECK_CAPTIONS = {
   },
   "phase3": {
     "tag": "Phase 3 · Network intelligence",
-    "text": "Three ways to ask the same question. Is this entity known? Is it connected to one? Does it look like something we've already confirmed? The first costs nothing and finds the least"
+    "text": "Three ways to ask the same question. Is this entity known? Is it connected to one? Does it look like something we've already confirmed? The first is instant and finds the least"
   },
   "phase3:P3-GRAPH": {
     "tag": "Phase 3 · Network graph",

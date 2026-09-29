@@ -56,7 +56,7 @@ The `signals` array drives the Phase 1 panel on the claim lodgement screen. Each
 | `id` | string | Stable ID, for example `SIG-DOC-TYPE`. `SIG-FIELD-EXTRACTION` also fills the claim form when it completes. |
 | `name` | string | Check name. |
 | `summary` | string | One line kept beside the name once the check completes, so a collapsed check still shows how it was decided: the deciding figure and, wherever the rule has one, its threshold ("lowest 0.92 (ServiceDate) · threshold 0.70"). If absent, it is derived from the first figure in `found` plus the rule's threshold. |
-| `cost` | `"ai"`, `"rule"` or `"capture"` | Badge: "AI call — no token cost", "Business rule — included in Pega Platform" or "Captured for later evaluation". This shows why cheap deterministic checks run before model calls. |
+| `cost` | `"ai"`, `"rule"` or `"capture"` | Badge: "AI call — no token cost", "Business rule — included in Pega Platform" or "Captured for later evaluation". This shows why instant, deterministic checks run before model calls. |
 | `lookedAt` | string | What was examined. |
 | `rule` | string | The rule applied. State the threshold wherever one exists ("at or above 0.70", "$5,000 or above"); never "above threshold" on its own. |
 | `found` | string | What was actually found. Hidden until the check completes. |
@@ -99,7 +99,7 @@ The disqualifying content check (`SIG-INVALID-KEYWORDS`) matches 11 terms, inclu
 
 Captions give one line per beat, for the rolling demo and for muted video. Each entry is `{ "tag": "…", "text": "…" }`: a short function tag, then plain, present-tense English.
 
-Every check has a default caption in `data/check-captions.js`, shared by all scenarios. A check caption adds what the panel cannot show: which component produced the verdict (a vision model call, a named data transform or decision table, a Pega Event Strategy, a graph query over MCP), why it runs where it does, and what it costs. It never repeats the panel's own Looked at, Rule and Found lines.
+Every check has a default caption in `data/check-captions.js`, shared by all scenarios. A check caption adds what the panel cannot show: which component produced the verdict (a vision model call, a named data transform or decision table, a Pega Event Strategy, a graph query over MCP), why it runs where it does, and whether it's an AI call or a business rule. It never repeats the panel's own Looked at, Rule and Found lines.
 
 A scenario's own `captions` object wins over the defaults, key by key. Use it for the story beats only a scenario can tell: the sign-in scene, the upload, the phase openings, the outcome, and a check that carries the scenario's point (CLM-0848's PAID stamp). Don't copy a default into a scenario to reword it; change the default.
 

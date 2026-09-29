@@ -114,6 +114,6 @@
   "outcome": {
     "headline": "Claim rejected — not a claimable receipt",
     "reason": "Quotation, not a tax invoice · nothing paid",
-    "note": "No forensic AI calls were spent on this claim. Phases 1, 2 and 3 did not run. Nothing was referred to the fraud team."
+    "note": "No forensic AI checks were run on this claim. Phases 1, 2 and 3 did not run. Nothing was referred to the fraud team."
   }
 };

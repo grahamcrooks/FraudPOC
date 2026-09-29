@@ -24,7 +24,7 @@ Fraud is cheaper to stop before a claim is paid than to recover after it. This P
 | --- | --- | --- |
 | Fraud analysts | This takes work off their queue, not onto it. Unclaimable documents never reach them, and what does reach them arrives with the evidence assembled. | Pre-flight rejections (CLM-0847, CLM-0848), the device ring (CLM-0844), the investigation screen |
 | Data scientists | The AI claims are testable and bounded, the score is arithmetic they can check, and the limits are stated before they find them. | The models moment, the pre-flight card and rows, the Phase 1 score, the questions |
-| Architects | They know what's real and what's drawn, where AI is spent, where each check runs, and which two decisions are theirs to make. | Slide 3's four questions, the models moment, the What's happening card, the questions |
+| Architects | They know what's real and what's drawn, where AI is used, where each check runs, and which two decisions are theirs to make. | Slide 3's four questions, the models moment, the What's happening card, the questions |
 
 ### What you'd like from the room
 
@@ -36,7 +36,7 @@ There's no ask on Wednesday. The opening promises none, and the close keeps that
 
 ### Principles to repeat
 
-1. **Cheap checks first.** AI is spent in three places only: one read in pre-flight, three image checks in Phase 1 and the graph query in Phase 3. Everything else is business rules, a decision table and three real-time event strategies.
+1. **Simple checks first.** Instant, deterministic rules run before anything else, so every early decision can be explained in one line and investigators only see claims that deserve them. AI is used in three places only: one read in pre-flight, three image checks in Phase 1 and the graph query in Phase 3. Everything else is business rules, a decision table and three real-time event strategies.
 2. **AI assists, people decide.** Every signal goes to a named investigator in Pega AIM with the evidence attached. Nothing is decided for them.
 3. **Every check shows its working.** What it looked at, the rule and what it found, on screen. That's the audit trail.
 4. **Document, then pattern, then network.** Phase 1: is this individual receipt suspicious? Phase 2: is there an emerging pattern across claims over time? Phase 3: are there wider relationships connecting members, providers, devices or claims?
@@ -92,7 +92,7 @@ These came up in preparation. Have the answers ready and don't soften them on th
 
 This room asks during the demo, not after. Answer briefly and park anything long for the questions at 42:00.
 
-- **5 minutes behind at 25:00**: skip CLM-0847 and run CLM-0848 only. It carries both points: cheap checks first, and the PAID question for the room.
+- **5 minutes behind at 25:00**: skip CLM-0847 and run CLM-0848 only. It carries both points: simple checks first, and the PAID question for the room.
 - **Still behind at 37:00**: open the investigation screen and skip the report.
 - **Never cut** the models moment or the questions. They're what this room came for.
 
@@ -173,24 +173,24 @@ The network. Members and providers working together. Recruited members, shared d
 
 **Note**: The slide shows the outcomes; your words give the design. Speak the four questions over it, counting them on your fingers if it helps the room hold them. The panel's figures are illustrative: if anyone points at them, say so.
 
-**Say**: Four questions, asked in order, cheapest first.
+**Say**: Four questions, asked in order, simplest first.
 
 One. Is this claimable at all? Business rules on the extracted receipt. A quotation, a gym membership, a receipt already stamped paid. Included in Pega Platform.
 
-Two. Is this receipt genuine? Forensic analysis: fonts, overlays, metadata, authoring trail. That costs money per claim, so it only runs on receipts that clear question one.
+Two. Is this receipt genuine? Forensic analysis: fonts, overlays, metadata, authoring trail. That's deeper analysis, so it only runs on receipts that clear question one.
 
 Three. Does this claim fit the broader pattern? Real-time event strategies look for patterns across the claims stream over time, using windows, aggregations and thresholds. Nothing to do with the document.
 
 Four. Who else is involved? Graph traversal from an entity we've already flagged.
 
-**Say**: A claim that fails question one never reaches question two. That ordering is the design, not an optimisation. There's no sense spending a forensic call on a treatment plan quotation.
+**Say**: A claim that fails question one never reaches question two. That ordering is the design, not an optimisation. There's no sense running forensics on a treatment plan quotation: a rule can say why it's rejected in one line, instantly.
 
-**Under the hood**: The four questions are the demo's four stages: one is pre-flight, two is Phase 1 receipt forensics, three is Phase 2 cross-claim signals, four is Phase 3 network intelligence. AI is spent in three places only: one read in pre-flight, three image checks in Phase 1 and the graph query in Phase 3.
+**Under the hood**: The four questions are the demo's four stages: one is pre-flight, two is Phase 1 receipt forensics, three is Phase 2 cross-claim signals, four is Phase 3 network intelligence. AI is used in three places only: one read in pre-flight, three image checks in Phase 1 and the graph query in Phase 3.
 
 **The room**:
 
 - **AR**: this is the slide they'll map everything back to.
-- **DS**: question 04 is the expensive one, which is why it runs last.
+- **DS**: question 04 is the widest search, across everything the claim touches, which is why it runs last.
 
 ### Slides 4 and 5: click through (about 30 seconds each)
 
@@ -266,7 +266,7 @@ The phone shrinks into the header, and the boxes land in the session chip: 📱 
 
 **Do**: Click Load Receipt. Panel 1 first: the sign-in capture, then the claim fields fill in one after another from a single AI read (about 13 seconds). Nothing is judged there. Then panel 2's seven checks run, about 4 seconds each, 40 seconds in all. The What's happening card at the top of the left column explains each one as it runs.
 
-**Say, as it starts**: James uploads a dental receipt. Before we spend anything on forensics, pre-flight asks one question: is this a claimable receipt at all? AI reads the receipt once. Then business rules included in Pega Platform do the rest. A quotation, a proforma, an unpaid invoice or a receipt that doesn't add up is caught here. Watch the card on the left: it says in plain words what each check is doing and why.
+**Say, as it starts**: James uploads a dental receipt. Before any forensics, pre-flight asks one question: is this a claimable receipt at all? AI reads the receipt once. Then business rules included in Pega Platform do the rest. A quotation, a proforma, an unpaid invoice or a receipt that doesn't add up is caught here. Watch the card on the left: it says in plain words what each check is doing and why.
 
 Talk to each check as the card changes. The table gives what the row shows for James, what to say, and the detail underneath.
 
@@ -290,7 +290,7 @@ Talk to each check as the card changes. The table gives what the row shows for J
 
 - Routing: any fail goes to Reject Document (Resolved-Rejected). Any flag goes to Needs Review (Pending-Review). All passes open the pipeline.
 - Two exceptions. Claim value never routes. Line item reconciliation, on a fail, sends the claim on to forensics instead of rejecting it; you'll see that with CLM-0842.
-- Cost so far: one AI call. The three "AI call" badges are three results from the same read.
+- AI so far: one read. The three "AI call" badges are three results from the same read.
 
 **The room**:
 
@@ -304,7 +304,7 @@ Talk to each check as the card changes. The table gives what the row shows for J
 
 **On screen**:
 
-| Check | Cost | James |
+| Check | Type | James |
 | --- | --- | --- |
 | Font consistency | AI call | 1 typeface, Arial 9pt throughout · Pass |
 | Colour and stamp analysis | AI call | No overlay regions, uniform compression · Pass |
@@ -357,7 +357,7 @@ Then the Receipt integrity score: every check at −0.00, total 1.00, "Threshold
 
 **On screen**: One check, Network graph, tagged "MCP · Graph", an AI call: "0 connections within 3 hops" · Pass. "Signals raised 0 of 1" and "No connections to known fraud or to anything under investigation. Claim approved and sent for adjudication." Then the summary: "Fraud Detection — No Suspicious Activity", "Sent for Claim Adjudication".
 
-**Say**: The last question: who else is involved? The graph follows everything this claim touches (member, practice, practitioner, device, IP, payment account) up to three hops out, looking for confirmed fraud or anything under investigation. It runs last because it's the most expensive check. James is clear, so his claim goes to normal adjudication, with every check recorded. Now let's see where fraud gets stopped.
+**Say**: The last question: who else is involved? The graph follows everything this claim touches (member, practice, practitioner, device, IP, payment account) up to three hops out, looking for confirmed fraud or anything under investigation. It runs last because it's the widest search, across everything the claim touches. James is clear, so his claim goes to normal adjudication, with every check recorded. Now let's see where fraud gets stopped.
 
 **Under the hood**:
 
@@ -379,9 +379,9 @@ On these, talk over pre-flight with the story rather than each check. The card s
 
 **Do**: Press 7, then Load Receipt.
 
-**On screen**: Field extraction, extraction confidence, receipt type, line item reconciliation and claim value pass. Receipt completeness **fails** ($0.00 received of $448.00, "Nothing has been paid") and Disqualifying content **fails** (2 of 11 terms: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, "Classified as a quotation"). The panel reads "Claim rejected — not a claimable receipt", "Quotation, not a tax invoice · nothing paid", Stage: Reject Document, Status: Resolved-Rejected, and "No forensic AI calls were spent on this claim." The card rests on Disqualifying content. Receipt Forensics doesn't appear.
+**On screen**: Field extraction, extraction confidence, receipt type, line item reconciliation and claim value pass. Receipt completeness **fails** ($0.00 received of $448.00, "Nothing has been paid") and Disqualifying content **fails** (2 of 11 terms: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, "Classified as a quotation"). The panel reads "Claim rejected — not a claimable receipt", "Quotation, not a tax invoice · nothing paid", Stage: Reject Document, Status: Resolved-Rejected, and "No forensic AI checks were run on this claim." The card rests on Disqualifying content. Receipt Forensics doesn't appear.
 
-**Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work she hasn't had, and nothing has been paid. Two business rules catch it. No forensic AI is spent, and nothing reaches the fraud team. That's the case for cheap checks first.
+**Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work she hasn't had, and nothing has been paid. Two business rules catch it, instantly, with the reason in one line. No forensics run, and nothing reaches the fraud team. That's the case for simple checks first.
 
 ### CLM-0848, Oliver Hartmann: a genuine receipt, already settled
 
@@ -504,7 +504,7 @@ At a 1 to 3% fraud rate, a system that approves everything is 97% accurate, so a
 | Estimated missed fraud | What it misses that nobody knew about | Fraud found in the random sample of unflagged claims, scaled up | Report |
 | Wrongful pre-flight rejections | Harm to honest members | Claimable receipts rejected in pre-flight, each reviewed by hand | Near zero |
 | Referrals per week | The load on the fraud team | Claims sent to AIM at the chosen thresholds | Within capacity |
-| AI calls and cost per claim | Whether cheap checks first saves money | AI calls per claim, and cost per confirmed referral | Report |
+| Claims stopped before forensics | Whether simple checks first keeps forensics and investigators on the right claims | Share of claims settled in pre-flight, and AI checks per confirmed referral | Report |
 | Against today's process | Whether it beats what we do now | The same measures for the current rules on the same receipts | Better on precision and recall |
 
 - **DS**: will push for a time-based split if a model comes later, and will point out that past confirmed fraud is biased towards what old rules caught. The random sample answers both.
@@ -547,7 +547,7 @@ At a 1 to 3% fraud rate, a system that approves everything is 97% accurate, so a
 
 **Receipts hold health information. Where does the model run?** One of the two open choices, and it has to be settled before the replay touches real receipts: hosting region, data retention and whether receipts leave the tenancy, checked against privacy obligations and CPS 234. Don't guess in the room; take it as an action.
 
-**Who pays for the model calls?** **Check first**: Pega prices per case, so cost scales with claims volume rather than AI usage, but which model calls sit inside that price is a commercial point to confirm with Pega. The design keeps AI calls down anyway: one in pre-flight, and forensics only on claimable receipts.
+**Who pays for the model calls?** The badges say no token cost: Pega prices per case, so cost scales with claims volume rather than AI usage. **Check first**: exactly which model calls sit inside that price is a commercial point to confirm with Pega. The ordering doesn't depend on it: simple checks run first because they're instant, explainable and keep investigators' time for the claims that matter.
 
 **What's captured at sign-in, and on what basis?** The device fingerprint, the IP and its geolocation, and the session time, stored as `GeoSession` and `DeviceSession` on the claim. No browsing history, contacts or background location. The consent and privacy basis needs a formal privacy review before production.
 

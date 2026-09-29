@@ -28,7 +28,7 @@ window.CHECK_EXPLAINERS = {
   "SIG-INVALID-KEYWORDS": {
     "icon": "🚫",
     "what": "A business rule scans the receipt text for eleven disqualifying terms kept by the fraud team, such as quotation, proforma, non-medical and a PAID stamp.",
-    "why": "These documents can't be claimed at all. Catching them here costs nothing and never uses an investigator's time."
+    "why": "These documents can't be claimed at all. Catching them here is instant and never uses an investigator's time."
   },
   "SIG-DOC-COMPLETENESS": {
     "icon": "📋",
