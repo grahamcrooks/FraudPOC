@@ -56,7 +56,7 @@ The `signals` array drives the Phase 1 panel on the claim lodgement screen. Each
 | `id` | string | Stable ID, for example `SIG-DOC-TYPE`. `SIG-FIELD-EXTRACTION` also fills the claim form when it completes. |
 | `name` | string | Check name. |
 | `summary` | string | One line kept beside the name once the check completes, so a collapsed check still shows how it was decided: the deciding figure and, wherever the rule has one, its threshold ("lowest 0.92 (ServiceDate) · threshold 0.70"). If absent, it is derived from the first figure in `found` plus the rule's threshold. |
-| `cost` | `"ai"`, `"rule"` or `"capture"` | Badge: "AI call", "Business rule — no AI cost" or "Captured for later evaluation". This shows why cheap deterministic checks run before model calls. |
+| `cost` | `"ai"`, `"rule"` or `"capture"` | Badge: "AI call — no token cost", "Business rule — included in Pega Platform" or "Captured for later evaluation". This shows why cheap deterministic checks run before model calls. |
 | `lookedAt` | string | What was examined. |
 | `rule` | string | The rule applied. State the threshold wherever one exists ("at or above 0.70", "$5,000 or above"); never "above threshold" on its own. |
 | `found` | string | What was actually found. Hidden until the check completes. |
@@ -87,7 +87,7 @@ Pre-flight decides whether the claim reaches the pipeline at all, as in the buil
 | A check marked `"onFail": "forensics"` fails, and nothing else fails or flags | Continue to the pipeline. The result turns amber, names the failed check and shows its `escalation` line. |
 | All pass | Continue to the pipeline. |
 
-Submit, Run Fraud Detection and the rolling demo all respect the stop; in rolling mode the demo holds on the outcome for nine seconds, then moves to the next scenario.
+Submit, Receipt Forensics and the rolling demo all respect the stop; in rolling mode the demo holds on the outcome for nine seconds, then moves to the next scenario.
 
 The terminal panel's headline and reason come from the deciding checks' conclusions. A scenario can override them with an optional top-level `outcome` object: `{ "headline": "…", "reason": "…", "note": "…" }`.
 

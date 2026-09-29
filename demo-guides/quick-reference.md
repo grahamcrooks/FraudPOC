@@ -19,7 +19,7 @@
 ## Stopping and Pausing
 
 - Sign-in scene: Space pauses it where it is; Space again resumes; Esc skips to the end.
-- Presenting: nothing to stop. The demo waits for Run Fraud Detection and Continue; only a step's few seconds of animation can't be paused.
+- Presenting: nothing to stop. The demo waits for Receipt Forensics and Continue; only a step's few seconds of animation can't be paused.
 - On the slides, Space moves to the next slide, so don't press it by accident.
 - Lots of questions expected: press P, and the demo pauses after every phase result.
 - Rolling Demo: Space pauses and resumes; R stops it completely.
