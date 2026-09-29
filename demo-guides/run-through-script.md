@@ -363,11 +363,11 @@ All five checks stay open. Then the Receipt integrity score as one sum: "Receipt
 - ES-004 Phantom ABN: ABN active, registered to the billing practice · Pass
 - ES-005 Waiver abuse: 0 waivers, practice volume 1.1× its 90-day baseline, threshold 3× · Pass
 
-A two-line summary: "Signals raised 0 of 5 · ES-001 no signal · … · ES-005 no signal", then "No suspicious cross-claim pattern detected. Continuing to Phase 3." Under the five live checks, two planned strategies show as grey dashed cards marked "Planned — not in this build" (ES-006 item code validation, ES-007 terminal mismatch), then a blue dashed "Your next strategy" card marked "Configurable". The finished stages above sit as single lines.
+A two-line summary: "Signals raised 0 of 5 · ES-001 no signal · … · ES-005 no signal", then "No suspicious cross-claim pattern detected. Continuing to Phase 3." The five live checks and ES-007 terminal mismatch fill a three-by-two grid; ES-007 is a grey dashed card marked "Planned — not in this build", showing what it will look at, its rule and why, and no verdict. Below, ES-006 item code validation is a one-line planned card, then a blue dashed "ES-00x User-defined event strategy" card marked "Future · configurable". The finished stages above sit as single lines.
 
 **Say**: Phase 1 asked whether this receipt is suspicious. Phase 2 asks a different question: is there an emerging pattern across claims over time? Five real-time Pega Event Strategies evaluate the claims stream continuously, using filters, time windows, aggregations and thresholds: a claim lodged far from home, one device used by unrelated members, one bank account collecting from unrelated practices, a practice billing under an ABN that isn't live, and a run of waiting-period waivers. Each strategy raises a signal or it doesn't. Nothing is raised for James: no suspicious cross-claim pattern.
 
-**Say, pointing at the planned cards**: Five running, two designed, and the eighth is whatever your team spots next month. Each one is configured, not coded: a new pattern becomes a live strategy in days, not a development cycle.
+**Say, pointing at ES-007 and the ES-00x card**: Five running, two designed, and ES-00x is whatever your team spots next month. Each one is configured, not coded: a new pattern becomes a live strategy in days, not a development cycle.
 
 **Under the hood**:
 

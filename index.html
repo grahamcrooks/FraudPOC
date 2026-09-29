@@ -706,6 +706,9 @@ body.run-rolling .presenter-only{display:none}
 .p2-plan .sig-nm{color:var(--text-2)}
 .p2-plan .sig-sum{color:var(--text-3)}
 .sig-cost.plan{background:var(--white);color:var(--text-3);border:1px dashed var(--text-4)}
+.p2-plan-full .sig-head{cursor:default;padding-bottom:2px}
+.p2-plan-full .sig-lines dd{color:var(--text-2)}
+.p2-plan-full .sig-concl{color:var(--text-3);font-style:italic}
 .sig.p2-next{background:var(--blue-bg);border:1.5px dashed var(--pblue)}
 .p2-next .sig-nm{color:var(--pblue)}
 .sig-cost.next{background:var(--lblue);color:var(--blue);border:1px solid rgba(51,65,144,.25)}
@@ -1162,11 +1165,23 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
+        <!-- ES-007 is planned, not built. It fills the sixth slot of the strategy grid as a full card,
+             dashed and grey with a Planned pill and no verdict, so it never reads as a check that ran. -->
+        <template id="es007-card">
+          <div class="sig p2-plan p2-plan-full open" data-sig="ES-007">
+            <div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-007 Terminal mismatch</span><span class="sig-sum"> · provider fraud at the claiming terminal</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div>
+            <div class="sig-body"><dl class="sig-lines">
+              <dt>Will look at</dt><dd>Terminal ID, merchant ID, provider number, connection and IP location, captured at the practice's claiming terminal</dd>
+              <dt>Rule</dt><dd>A terminal transmitting away from its registered practice (registered in Brisbane, transmitting from Sydney), or a provider number used on a terminal registered to another practice</dd>
+              <dt>Why</dt><dd>Provider fraud no receipt shows: the claim looks genuine, but it wasn't lodged where the practice is</dd>
+            </dl></div>
+            <div class="sig-concl">→ Designed, not run in this build</div>
+          </div>
+        </template>
         <div class="p2-planned" id="ph2-planned">
           <div class="p2-planned-title">Planned strategies · designed, not in this build</div>
           <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-006 Item code validation</span><span class="sig-sum"> · item codes checked against what this provider type can bill</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
-          <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-007 Terminal mismatch</span><span class="sig-sum"> · provider fraud: a HICAPS terminal used away from its registered practice, or on another practice's provider number</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
-          <div class="sig p2-plan p2-next"><div class="sig-head"><span class="sig-ico">➕</span><span class="sig-name"><span class="sig-nm">Your next strategy</span><span class="sig-sum"> · new patterns your investigators spot become configured Event Strategies, live in days with no code change</span></span><span class="sig-badges"><span class="sig-cost next">Configurable</span></span></div></div>
+          <div class="sig p2-plan p2-next"><div class="sig-head"><span class="sig-ico">➕</span><span class="sig-name"><span class="sig-nm">ES-00x User-defined event strategy</span><span class="sig-sum"> · future: a pattern your investigators spot becomes a configured event strategy, live in days with no code change</span></span><span class="sig-badges"><span class="sig-cost next">Future · configurable</span></span></div></div>
         </div>
         <div class="p1-calc" id="ph2-calc"></div>
         <div class="score-reveal" id="ph2-score"><div class="score-num" id="ph2-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Fraud Score</div><div class="score-verdict" id="ph2-score-verdict">Calculating...</div><div class="score-route" id="ph2-score-route"></div></div></div>
@@ -2539,6 +2554,8 @@ function activatePhase(ph,phData){
     const sch=p1.map(c=>({start:c.delay, done:c.delay+1200}));
     maxD=Math.max(...p1.map(c=>c.delay))+1600;
     SignalPanel.run(S[curScenario],p1,{mount:container,schedule:sch,restAt:maxD-300,restClass:'rested',caption:sig=>'phase'+ph+':'+sig.id});
+    // Phase 2: the planned ES-007 takes the grid slot after the five that run.
+    if(ph===2&&$('es007-card')) container.appendChild($('es007-card').content.cloneNode(true));
   } else {
   container.classList.toggle('two-col', phData.checks.length>4);
   phData.checks.forEach((c,i)=>{

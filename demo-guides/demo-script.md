@@ -200,12 +200,12 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
     - **ES-003 bank account ring**: distinct practice ABNs paying into one account in 30 days. Three or more fires.
     - **ES-004 phantom ABN**: the billing practice's ABN against the Australian Business Register. A cancelled, deregistered or invalid ABN, or one registered to a different entity, fires.
     - **ES-005 waiver abuse**: waiting-period waivers and practice claim volume over a rolling 90 days. Repeated waivers for one member, or practice volume at three times its 90-day baseline, fires.
-  - Planned and not built: ES-006 item code validation, ES-007 terminal mismatch. A final card shows that new strategies are configured, not coded.
+  - Planned and not built: ES-006 item code validation, ES-007 terminal mismatch. ES-007 is shown in full: it will read the terminal ID, merchant ID, provider number, connection and IP location captured at the practice terminal, and fires on a terminal transmitting away from its registered practice or a provider number used on another practice's terminal. The ES-00x card shows that new strategies are configured, not coded.
 - **Check**:
   - Five checks run 6 seconds apart, in a single column, each badged "Real-time event strategy — included in Pega Platform". The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable." The finished stages above collapse to single lines, and the phase explanation is a line of text, not a navy box.
   - CLM-0841 results: 0.4 km from home, 1 member on the device, 1 practice on the account, ABN active, 0 waivers at 1.1× baseline.
   - The two-line summary reads "Signals raised 0 of 5", each strategy with "no signal", then "No suspicious cross-claim pattern detected. Continuing to Phase 3.", and the result "Phase 2 Passed — No Suspicious Cross-Claim Pattern Detected".
-  - Two grey dashed cards (ES-006, ES-007) follow the checks, each marked "Planned — not in this build", then a blue dashed "Your next strategy" card marked "Configurable". None carries a verdict.
+  - At 1100px and wider, the five checks and ES-007 fill a three-by-two grid. ES-007 is grey and dashed, marked "Planned — not in this build", with Will look at, Rule and Why lines and "→ Designed, not run in this build". Below, ES-006 is a one-line planned card, then a blue dashed "ES-00x User-defined event strategy" card marked "Future · configurable". None of the planned cards carries a verdict.
 
 ### Step 6: Phase 3, network intelligence
 
