@@ -28,6 +28,7 @@ Each step has three parts:
 | R | Rolling demo on or off (stops it completely) |
 | P | Step-by-step mode: pauses after every phase result until you click Continue |
 | B | How the network graph works: opens over the current screen; B or Esc closes it (not in rolling mode) |
+| W | How a claim moves through the case: the Pega Blueprint case design, over the current screen; click the image to zoom; W or Esc closes it (not in rolling mode) |
 | 0 | Restart: back to slide 1, claim form cleared. The emergency reset |
 | F | Fullscreen |
 

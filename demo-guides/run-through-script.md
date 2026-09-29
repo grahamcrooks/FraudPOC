@@ -79,6 +79,7 @@ These came up in preparation. Have the answers ready and don't soften them on th
 | P | Step-by-step: pauses after every phase result until you click Continue |
 | C | Captions on or off |
 | B | How the network graph works: opens over the current screen, B or Esc closes it |
+| W | How a claim moves through the case: the Pega Blueprint case design, over the current screen; click to zoom; W or Esc closes it |
 | 0 | Emergency reset: slide 1, claim form cleared. Then 1 to 8 to reopen a scenario |
 
 ### How pausing works
@@ -324,6 +325,8 @@ Talk to each check as the card changes. The table gives what the row shows for J
 - **AR**: will ask where the vision model runs. It's one of the two open choices; take it as an action, don't guess.
 
 ### Phase 1: is the receipt genuine? (about 3 minutes)
+
+**Optional, as the pipeline opens**: Click "Case workflow ▸" in the pipeline header (or press W) to show the case as it's designed in Pega Blueprint, the actual design, not a drawing: "This is the whole journey as a Pega case. Receipt intake and extraction are pre-flight, authentication forensics is Phase 1, event strategies are Phase 2, network intelligence is Phase 3, and the grey stages on the right are the three exits." Click the image to zoom in on a stage. Close with ✕ or Esc. About a minute.
 
 **Do**: Click Receipt Forensics →. The pipeline opens. Five checks run about 2.8 seconds apart.
 
