@@ -27,7 +27,7 @@ Each step has three parts:
 | C | Captions on or off |
 | R | Rolling demo on or off (stops it completely) |
 | P | Step-by-step mode: pauses after every phase result until you click Continue |
-| B | Backup slide (not in rolling mode) |
+| B | How the network graph works: opens over the current screen; B or Esc closes it (not in rolling mode) |
 | 0 | Restart: back to slide 1, claim form cleared. The emergency reset |
 | F | Fullscreen |
 
@@ -78,11 +78,11 @@ The five slides are full-slide images in `assets/slides/`. The whole image alway
 - **Under the hood**: A static image slide. The impact figures at the foot (-65%, +40%, +28%) are illustrative, not measured. Launch Demo opens the claim portal.
 - **Check**: Launch Demo opens the portal on CLM-0841 and the sign-in scene starts.
 
-### Backup slide (B): What "Three Hops" Actually Means
+### Backup: How the network graph works
 
-- **Say**: Use only if asked. This is the entity model Phase 3 is designed against. It is the target schema, not a claim that it's already running.
-- **Under the hood**: Relationship types: CURRENT_DEVICE, CURRENT_ACCOUNT, SHARED_DEVICE_WITH, SHARED_ACCOUNT_WITH, IS_MEMBER_OF. The slide traces CLM-2024-0846 through a device and a bank account to a confirmed fraud claim and Community #47.
-- **Check**: The B key opens it (not in rolling mode). "Back to Presentation" returns to slide 5.
+- **Say**: Use when Phase 3 needs explaining. Every claim is a set of connections: member, practice, practitioner, device, IP address, payment account. The graph stores those connections, so it can follow them three hops out. Then point at the pattern that matches the claim on screen: shared practitioner (CLM-0845), organised ring (CLM-0846) or device ring (CLM-0844).
+- **Under the hood**: The left panel is what the graph holds, with 1, 2 and 3 hop rings and paths to a known fraud entity and to one under investigation. The right panel is three patterns it finds, each labelled with its demo claim. It describes the target design; the demo data is illustrative.
+- **Check**: The "How the network graph works ▸" button at the end of Phase 3, or the B key (not in rolling mode), opens the image over the current screen. ✕, Esc or B closes it and the pipeline is where it was. The "🔧 Backup" slide button shows the same image as slide 6; "Back to Presentation" returns to slide 5.
 
 ## Scenario quick reference
 
@@ -182,12 +182,12 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
   - It starts at 1.00, with deductions for adverse findings only: font fail −0.40, metadata fail −0.25. A pre-flight check can carry into the score too: on CLM-0842, the failed line item reconciliation costs −0.07.
   - At or above 0.70 continues; below 0.70 goes to the investigator queue at HIGH priority with a 4-hour SLA.
   - Extraction confidence is not scored here. A low-confidence field is already routed to Needs Review in pre-flight.
-  - The total is computed from the lines above it, never typed in.
+  - The total is computed from the deductions, never typed in.
 - **Check**:
   - The five checks run about 2.8 seconds apart.
-  - The score block lists every check at −0.00, with a total of **1.00** and "Threshold 0.70 — No adverse findings".
+  - The score is a short block: "Receipt integrity score 1.00 = 1.00 · all 5 checks passed, no deductions", then "Threshold 0.70 — No adverse findings".
   - The result badge reads "Phase 1 Passed — No Adverse Findings".
-  - If the panel is taller than the screen, the passing checks close at rest (measured, so this happens at 1080p and below). Their summary lines still carry the figures.
+  - All five checks stay open at rest, so every finding's workings stay visible; the panel scrolls if it's taller than the screen. The phase explanation is one line of text, not a navy box.
   - "Continue to Phase 2 — Cross-Claim Signals →" appears.
 
 ### Step 5: Phase 2, cross-claim signals
@@ -200,12 +200,12 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
     - **ES-003 bank account ring**: distinct practice ABNs paying into one account in 30 days. Three or more fires.
     - **ES-004 phantom ABN**: the billing practice's ABN against the Australian Business Register. A cancelled, deregistered or invalid ABN, or one registered to a different entity, fires.
     - **ES-005 waiver abuse**: waiting-period waivers and practice claim volume over a rolling 90 days. Repeated waivers for one member, or practice volume at three times its 90-day baseline, fires.
-  - Planned and not built: ES-006 item code validation, ES-007 terminal mismatch. A final card shows that new strategies are configured, not coded.
+  - Planned and not built: ES-006 item code validation, ES-007 terminal mismatch. ES-007 is shown in full: it will read the terminal ID, merchant ID, provider number, connection and IP location captured at the practice terminal, and fires on a terminal transmitting away from its registered practice or a provider number used on another practice's terminal. The ES-00x card shows that new strategies are configured, not coded.
 - **Check**:
   - Five checks run 6 seconds apart, in a single column, each badged "Real-time event strategy — included in Pega Platform". The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable." The finished stages above collapse to single lines, and the phase explanation is a line of text, not a navy box.
   - CLM-0841 results: 0.4 km from home, 1 member on the device, 1 practice on the account, ABN active, 0 waivers at 1.1× baseline.
   - The two-line summary reads "Signals raised 0 of 5", each strategy with "no signal", then "No suspicious cross-claim pattern detected. Continuing to Phase 3.", and the result "Phase 2 Passed — No Suspicious Cross-Claim Pattern Detected".
-  - Two grey dashed cards (ES-006, ES-007) follow the checks, each marked "Planned — not in this build", then a blue dashed "Your next strategy" card marked "Configurable". None carries a verdict.
+  - At 1100px and wider, the five checks and ES-007 fill a three-by-two grid. ES-007 is grey and dashed, marked "Planned — not in this build", with Will look at, Rule and Why lines and "→ Designed, not run in this build". Below, ES-006 is a one-line planned card, then a blue dashed "ES-00x User-defined event strategy" card marked "Future · configurable". None of the planned cards carries a verdict.
 
 ### Step 6: Phase 3, network intelligence
 
@@ -299,7 +299,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 - **Under the hood**:
   - P3-GRAPH found a 3-hop path: submission IP 203.0.113.91 → Kestrel Allied Health → confirmed fraud member MBR-99112, in Community #47.
   - Phase 2 saw nothing, because no single claim contains this connection.
-  - The backup slide shows the same pattern as a schema.
+  - "How the network graph works ▸" opens the explainer; its Organised ring card is this path.
 - **Check**:
   - The block reads "Signals raised 1 of 1" and "3-hop path into Community #47 — 14 members, 3 providers".
   - The claim goes to the SIU queue, HIGH.

@@ -12,7 +12,7 @@
 - ← → → Previous / Next slide (Slides screen only)
 - F → Toggle Fullscreen
 - P → Toggle Step-by-Step mode (pauses after every phase result until you click Continue)
-- B → Jump to the Backup slide (manual mode only)
+- B → How the network graph works, over the current screen; B or Esc closes it (manual mode only)
 - Esc → Exit fullscreen (standard browser behaviour)
 - L → Replay the sign-in scene (or click the session chip in the portal header)
 
@@ -56,7 +56,7 @@
 
 **Question:** Does this claim make sense?
 
-- Checks: ES-001 distance anomaly, ES-002 device ring, ES-003 bank account ring, ES-004 phantom ABN, ES-005 waiver abuse (Pega Event Strategies). Planned, shown as cards with no verdict: ES-006 item code validation, ES-007 terminal mismatch, then "Your next strategy" (configurable).
+- Checks: ES-001 distance anomaly, ES-002 device ring, ES-003 bank account ring, ES-004 phantom ABN, ES-005 waiver abuse (Pega Event Strategies). Planned, shown as cards with no verdict: ES-006 item code validation, ES-007 terminal mismatch (shown in full), then "ES-00x User-defined event strategy" (future, configurable).
 - Result: PASS or FAIL
 
 ### Phase 3: Network Intelligence 🧠

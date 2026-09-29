@@ -79,18 +79,6 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .pslide{width:100%;position:absolute;inset:0;overflow:hidden;display:none;flex-direction:column;justify-content:flex-start;padding:36px 72px 54px}
 .pslide.active{display:flex}
 .pslide.dark{background:linear-gradient(145deg,#020B18 0%,#051428 60%,#040F1E 100%)}
-.bk-eyebrow{font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#F76923;margin-bottom:10px}
-.bk-title{font-size:clamp(26px,3.4vw,40px);font-weight:800;color:#fff;margin-bottom:8px}
-.bk-sub{font-size:clamp(13px,1.3vw,16px);color:#9FB4D4;margin-bottom:18px}
-.bk-svg{width:100%;flex:1;max-height:480px}
-.bk-ntitle{font-family:'Inter',sans-serif;font-size:15px;font-weight:700;fill:#fff}
-.bk-nsub{font-family:'Inter',sans-serif;font-size:11.5px;fill:#9FB4D4}
-.bk-nbadge{font-family:'Inter',sans-serif;font-size:11px;font-weight:600;fill:#FFE8C2}
-.bk-elbl{font-family:'Courier New',monospace;font-size:11px;fill:#7C93B8;text-anchor:middle}
-.bk-elbl-hot{fill:#FFC836;font-weight:700}
-.bk-elbl-warm{fill:#F76923;font-weight:700;text-anchor:start}
-.bk-hop{font-family:'Inter',sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;fill:#4A6488;text-anchor:middle}
-.bk-note{font-size:11.5px;color:#6B84A8;font-style:italic;margin-top:6px;max-width:900px}
 .pslide.light{background:linear-gradient(145deg,#F0F4FF 0%,#E8EEF8 60%,#EDF2FF 100%)}
 
 /* Progress dots */
@@ -450,6 +438,12 @@ body.run-rolling .presenter-only{display:none}
 .fdb-outcome-suspicious{background:#FEF3C7;color:#92400E}
 .fdb-outcome-high{background:#FEE2E2;color:#991B1B}
 
+.gx{position:fixed;inset:0;top:36px;z-index:2500;background:rgba(4,10,24,.96);display:flex;align-items:center;justify-content:center;padding:16px 16px 44px}
+.gx[hidden]{display:none}
+.gx-img{max-width:100%;max-height:100%;object-fit:contain;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+.gx-close{position:absolute;top:12px;right:16px;background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:6px 14px;font-family:var(--font);font-size:13px;font-weight:600;cursor:pointer}
+.gx-close:hover,.gx-close:focus-visible{background:rgba(255,255,255,.22)}
+.gx-sim{position:absolute;left:16px;bottom:14px;font-size:11px;font-style:italic;color:#9CA3AF}
 .aim-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:3000;align-items:center;justify-content:center;padding:20px}
 .aim-modal.show{display:flex;animation:fadeIn .3s ease}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -712,20 +706,24 @@ body.run-rolling .presenter-only{display:none}
 .p2-plan .sig-nm{color:var(--text-2)}
 .p2-plan .sig-sum{color:var(--text-3)}
 .sig-cost.plan{background:var(--white);color:var(--text-3);border:1px dashed var(--text-4)}
+.p2-plan-full .sig-head{cursor:default;padding-bottom:2px}
+.p2-plan-full .sig-lines dd{color:var(--text-2)}
+.p2-plan-full .sig-concl{color:var(--text-3);font-style:italic}
 .sig.p2-next{background:var(--blue-bg);border:1.5px dashed var(--pblue)}
 .p2-next .sig-nm{color:var(--pblue)}
 .sig-cost.next{background:var(--lblue);color:var(--blue);border:1px solid rgba(51,65,144,.25)}
-/* Phases 2 and 3: the explanation reads as one line of text, not a navy box, to leave room for the checks */
-#ph2-info,#ph3-info{padding:2px 2px 4px}
-#ph2-info .phase-info-band,#ph3-info .phase-info-band{background:none;box-shadow:none;padding:0;text-align:left}
-#ph2-info .phase-info-txt,#ph3-info .phase-info-txt{color:var(--navy);font-size:13.5px}
-#ph2-info .phase-info-band.alert .phase-info-txt,#ph3-info .phase-info-band.alert .phase-info-txt{color:#991B1B}
+/* Phases 1 to 3: the explanation reads as one line of text, not a navy box, to leave room for the checks */
+#ph1-info,#ph2-info,#ph3-info{padding:2px 2px 4px}
+#ph1-info .phase-info-band,#ph2-info .phase-info-band,#ph3-info .phase-info-band{background:none;box-shadow:none;padding:0;text-align:left}
+#ph1-info .phase-info-txt,#ph2-info .phase-info-txt,#ph3-info .phase-info-txt{color:var(--navy);font-size:13.5px}
+#ph1-info .phase-info-band.alert .phase-info-txt,#ph2-info .phase-info-band.alert .phase-info-txt,#ph3-info .phase-info-band.alert .phase-info-txt{color:#991B1B}
 .p2c-row{grid-template-columns:minmax(200px,280px) 1fr}
 .p2c-s{font-weight:700}
 .p1-calc.p2-compact{padding:10px 18px;margin-top:10px}
 .p2c-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 18px;font-size:13px;color:var(--text-2)}
 .p2-compact .p1c-verdict{margin-top:3px}
 .p1c-action{margin-top:4px;font-size:13px;font-weight:600;color:var(--text)}
+.p1c-sum{font-variant-numeric:tabular-nums;color:var(--text-2)}
 /* Pre-flight terminal outcomes: a fail or flag stops the flow before the pipeline */
 .upload-zone.pf-stop{cursor:default;text-align:left;padding:16px 18px}
 .upload-zone.pf-reject{border:2px solid #DC2626;background:#FEF2F2}
@@ -885,64 +883,10 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="goDemo()">Launch Demo →</button></div>
     </div>
 
-    <!-- SLIDE 6 — BACKUP: IDENTITY GRAPH (manual access only, not in main sequence or rolling loop) -->
-    <div class="pslide dark" id="ps5">
-      <div class="bk-eyebrow">Backup — technical detail</div>
-      <div class="bk-title">What "Three Hops" Actually Means</div>
-      <div class="bk-sub">The entity model Phase 3 is designed against — real relationship types, not just a diagram.</div>
-      <svg class="bk-svg" viewBox="0 0 1400 460" xmlns="http://www.w3.org/2000/svg">
-        <!-- edges: origin -> satellites -->
-        <line x1="230" y1="230" x2="400" y2="120" stroke="#3A5578" stroke-width="1.5"/>
-        <line x1="230" y1="230" x2="400" y2="340" stroke="#3A5578" stroke-width="1.5"/>
-        <!-- edges: satellites -> confirmed fraud claim (the "aha" edges) -->
-        <line x1="560" y1="120" x2="760" y2="200" stroke="#FFC836" stroke-width="2" stroke-dasharray="6,5"/>
-        <line x1="560" y1="340" x2="760" y2="260" stroke="#FFC836" stroke-width="2" stroke-dasharray="6,5"/>
-        <!-- edge: confirmed claim -> fraud ring -->
-        <line x1="960" y1="230" x2="1080" y2="230" stroke="#F76923" stroke-width="2.5"/>
-
-        <!-- edge labels -->
-        <text x="300" y="160" class="bk-elbl">CURRENT_DEVICE</text>
-        <text x="300" y="300" class="bk-elbl">CURRENT_ACCOUNT</text>
-        <text x="640" y="145" class="bk-elbl bk-elbl-hot">SHARED_DEVICE_WITH</text>
-        <text x="640" y="320" class="bk-elbl bk-elbl-hot">SHARED_ACCOUNT_WITH</text>
-        <text x="965" y="215" class="bk-elbl bk-elbl-warm">IS_MEMBER_OF</text>
-
-        <!-- hop markers -->
-        <text x="480" y="400" class="bk-hop">HOP 1</text>
-        <text x="850" y="400" class="bk-hop">HOP 2</text>
-        <text x="1130" y="400" class="bk-hop">HOP 3</text>
-
-        <!-- node: origin claim -->
-        <g transform="translate(40,200)">
-          <rect width="190" height="60" rx="14" fill="#0D2B52" stroke="#334190" stroke-width="1.5"/>
-          <text x="95" y="26" class="bk-ntitle" text-anchor="middle">CLM-2024-0846</text>
-          <text x="95" y="44" class="bk-nsub" text-anchor="middle">Claim under review</text>
-        </g>
-        <!-- node: device -->
-        <g transform="translate(400,92)">
-          <rect width="160" height="52" rx="26" fill="#3D3210" stroke="#FFC836" stroke-width="1.5"/>
-          <text x="80" y="32" class="bk-ntitle" text-anchor="middle" fill="#FFE08A">Device</text>
-        </g>
-        <!-- node: bank account -->
-        <g transform="translate(400,314)">
-          <rect width="160" height="52" rx="26" fill="#3D3210" stroke="#FFC836" stroke-width="1.5"/>
-          <text x="80" y="32" class="bk-ntitle" text-anchor="middle" fill="#FFE08A">Bank Account</text>
-        </g>
-        <!-- node: confirmed fraud claim -->
-        <g transform="translate(760,175)">
-          <rect width="200" height="60" rx="14" fill="#3D0F16" stroke="#C8102E" stroke-width="1.5"/>
-          <text x="100" y="26" class="bk-ntitle" text-anchor="middle" fill="#FFC3CE">CLM-2024-0733</text>
-          <text x="100" y="44" class="bk-nsub" text-anchor="middle" fill="#E89AA5">Confirmed fraud</text>
-        </g>
-        <!-- node: fraud ring -->
-        <g transform="translate(1080,182)">
-          <rect width="240" height="96" rx="16" fill="#402B08" stroke="#F76923" stroke-width="2"/>
-          <text x="120" y="34" class="bk-ntitle" text-anchor="middle" fill="#FFD199">FraudRing</text>
-          <text x="120" y="54" class="bk-nsub" text-anchor="middle" fill="#FFD199">Community #47</text>
-          <text x="120" y="76" class="bk-nbadge" text-anchor="middle">14 members · 3 providers</text>
-        </g>
-      </svg>
-      <div class="bk-note">Adapted from a standard identity-graph pattern used for fraud-ring detection · this is the target schema we'd build with Bupa's data, not a claim that it's already running.</div>
+    <!-- SLIDE 6 — BACKUP: HOW THE NETWORK GRAPH WORKS (manual access only, not in main sequence or rolling loop; the B key opens the same image over any screen) -->
+    <div class="pslide dark img-slide" id="ps5">
+      <div class="ps-fill" style="background-image:url(assets/slides/slide-b-network-graph.webp)"></div>
+      <img class="ps-img" src="assets/slides/slide-b-network-graph.webp" alt="How the network graph works. Every claim is a set of connections, and the graph follows them. What the graph holds: a claim linked to its member (lodged by), practice (billed by), practitioner (treated by), device and IP address (submitted from) and payment account (paid into), with rings for 1, 2 and 3 hops and paths to a known fraud entity and to one under investigation; anything within 3 hops of either raises a signal. Patterns it finds: shared practitioner, CLM-0845, a practitioner who works at three practices, two under investigation; organised ring, CLM-0846, a claim submitted from an IP address used by a practice linked to a known fraud member in Community #47 of 14 members and 3 providers; device ring, CLM-0844, five unrelated members on one device. Alerts attach to the entity, so they reach claims already assessed, and an investigator decides every case.">
       <div class="slide-nav"><button class="snav" onclick="goSlide(4)">← Back to Presentation</button></div>
     </div>
   </div>
@@ -1221,11 +1165,23 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
+        <!-- ES-007 is planned, not built. It fills the sixth slot of the strategy grid as a full card,
+             dashed and grey with a Planned pill and no verdict, so it never reads as a check that ran. -->
+        <template id="es007-card">
+          <div class="sig p2-plan p2-plan-full open" data-sig="ES-007">
+            <div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-007 Terminal mismatch</span><span class="sig-sum"> · provider fraud at the claiming terminal</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div>
+            <div class="sig-body"><dl class="sig-lines">
+              <dt>Will look at</dt><dd>Terminal ID, merchant ID, provider number, connection and IP location, captured at the practice's claiming terminal</dd>
+              <dt>Rule</dt><dd>A terminal transmitting away from its registered practice (registered in Brisbane, transmitting from Sydney), or a provider number used on a terminal registered to another practice</dd>
+              <dt>Why</dt><dd>Provider fraud no receipt shows: the claim looks genuine, but it wasn't lodged where the practice is</dd>
+            </dl></div>
+            <div class="sig-concl">→ Designed, not run in this build</div>
+          </div>
+        </template>
         <div class="p2-planned" id="ph2-planned">
           <div class="p2-planned-title">Planned strategies · designed, not in this build</div>
           <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-006 Item code validation</span><span class="sig-sum"> · item codes checked against what this provider type can bill</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
-          <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-007 Terminal mismatch</span><span class="sig-sum"> · provider fraud: a HICAPS terminal used away from its registered practice, or on another practice's provider number</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
-          <div class="sig p2-plan p2-next"><div class="sig-head"><span class="sig-ico">➕</span><span class="sig-name"><span class="sig-nm">Your next strategy</span><span class="sig-sum"> · new patterns your investigators spot become configured Event Strategies, live in days with no code change</span></span><span class="sig-badges"><span class="sig-cost next">Configurable</span></span></div></div>
+          <div class="sig p2-plan p2-next"><div class="sig-head"><span class="sig-ico">➕</span><span class="sig-name"><span class="sig-nm">ES-00x User-defined event strategy</span><span class="sig-sum"> · future: a pattern your investigators spot becomes a configured event strategy, live in days with no code change</span></span><span class="sig-badges"><span class="sig-cost next">Future · configurable</span></span></div></div>
         </div>
         <div class="p1-calc" id="ph2-calc"></div>
         <div class="score-reveal" id="ph2-score"><div class="score-num" id="ph2-score-num" style="color:#86EFAC">—</div><div class="score-divider"></div><div><div class="score-label">Fraud Score</div><div class="score-verdict" id="ph2-score-verdict">Calculating...</div><div class="score-route" id="ph2-score-route"></div></div></div>
@@ -1247,6 +1203,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
         <div class="result-badge" id="ph3-result"><div class="rb-ico" id="ph3-rb-ico">✅</div><div><div class="rb-title" id="ph3-rb-title">Phase 3 Complete</div><div class="rb-sub" id="ph3-rb-sub">No suspicious activity detected</div></div></div>
         <div class="phase-btns" id="ph3-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
+          <button class="btn-back" onclick="GraphExplainer.open()">How the network graph works ▸</button>
           <button class="btn-aim" id="ph3-aim-btn" style="display:none" onclick="showFinalAndAIM()">View Fraud Detection Summary →</button>
         </div>
       </div>
@@ -1622,6 +1579,19 @@ function clearSlideProgress(){
 // ══════════════════════════════════════════════════════
 // SCREEN ROUTING
 // ══════════════════════════════════════════════════════
+// Network graph explainer. Opens over the current screen and closes back to it,
+// so a presenter can explain Phase 3 without losing the pipeline.
+const GraphExplainer={
+  open(){ const el=$('gx'); el.hidden=false; el.querySelector('.gx-close').focus(); },
+  close(){ $('gx').hidden=true; },
+  isOpen(){ return !$('gx').hidden; }
+};
+// Capture phase, so Esc and B close the explainer before any other shortcut runs.
+window.addEventListener('keydown',e=>{
+  if(!GraphExplainer.isOpen()) return;
+  if(e.key==='Escape'||e.key==='b'||e.key==='B'){ e.preventDefault(); e.stopImmediatePropagation(); GraphExplainer.close(); }
+},true);
+
 function goSlides(){
   SessionScene.finish(); Captions.hide();
   clearSlideTimer();
@@ -2218,6 +2188,8 @@ const PhaseSignals={
 // card's visible area, close the passing checks. Flags and fails stay open,
 // and a closed check's summary line still carries its figure and threshold.
 function fitRestingChecks(ph){
+  // Phase 1's checks stay open at rest so every finding's workings stay visible.
+  if(ph===1) return;
   const list=$('ph'+ph+'-checks'), card=list&&list.closest('.ov-card'); if(!card) return;
   const hdr=card.querySelector('.ov-hdr'), info=$('ph'+ph+'-info'), calc=$('ph'+ph+'-calc');
   const top=(info&&info.classList.contains('show')?info:list).getBoundingClientRect().top;
@@ -2258,14 +2230,15 @@ const Phase1Score={
     // single check catches it.
     const rows=r.rows.filter(x=>x.deduct>0).sort((x,y)=>y.deduct-x.deduct).concat(r.rows.filter(x=>x.deduct===0));
     const esc=t=>String(t).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-    const line=x=>'<div class="p1c-row"><span class="p1c-l">'+esc(x.label)+'</span><span class="p1c-s p1c-'+esc(x.status)+'">'+esc(x.status)+'</span><span class="p1c-d">'+minus(x.deduct)+'</span></div>';
     const cls=r.above?'ok':'bad';
-    box.className='p1-calc show '+cls;
-    box.innerHTML='<div class="p1c-title">Receipt integrity score <span>— starts at '+f(r.sc.start)+', deducted per finding</span></div>'
-      +'<div class="p1c-row p1c-start"><span class="p1c-l">Starting score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.sc.start)+'</span></div>'
-      +rows.map(line).join('')
-      +'<div class="p1c-rule"></div>'
-      +'<div class="p1c-row p1c-total"><span class="p1c-l">Receipt integrity score</span><span class="p1c-s"></span><span class="p1c-d">'+f(r.total)+'</span></div>'
+    // Compact: the arithmetic on one line (start, each deduction, total), then
+    // the threshold and the action, so the checks above can stay open at rest.
+    box.className='p1-calc show p2-compact '+cls;
+    const ded=rows.filter(x=>x.deduct>0), passed=rows.length-ded.length;
+    const sum=ded.length
+      ? f(r.sc.start)+ded.map(x=>' − '+f(x.deduct)+' '+esc(x.label)).join('')+(passed?' · '+passed+' checks passed, no deduction':'')
+      : f(r.sc.start)+' · all '+rows.length+' checks passed, no deductions';
+    box.innerHTML='<div class="p2c-line"><span class="p1c-total">Receipt integrity score '+f(r.total)+'</span><span class="p1c-sum">= '+sum+'</span></div>'
       +'<div class="p1c-verdict">Threshold '+f(r.sc.threshold)+' — '+(!r.above?'below · SUSPICIOUS':r.adverse?'above · CLEAN':'No adverse findings')+'</div>'
       +(r.sc.action?'<div class="p1c-action">'+esc(r.sc.action)+'</div>':'');
     // At rest the score block is the payoff: bring all of it into view.
@@ -2581,6 +2554,8 @@ function activatePhase(ph,phData){
     const sch=p1.map(c=>({start:c.delay, done:c.delay+1200}));
     maxD=Math.max(...p1.map(c=>c.delay))+1600;
     SignalPanel.run(S[curScenario],p1,{mount:container,schedule:sch,restAt:maxD-300,restClass:'rested',caption:sig=>'phase'+ph+':'+sig.id});
+    // Phase 2: the planned ES-007 takes the grid slot after the five that run.
+    if(ph===2&&$('es007-card')) container.appendChild($('es007-card').content.cloneNode(true));
   } else {
   container.classList.toggle('two-col', phData.checks.length>4);
   phData.checks.forEach((c,i)=>{
@@ -2782,7 +2757,7 @@ document.addEventListener('keydown',e=>{
   if(e.key==='r'||e.key==='R'){ toggleRolling(); return; }
   if(e.key==='p'||e.key==='P'){ toggleStepByStep(); return; }
   if(e.key==='s'||e.key==='S'){ goSlides(); return; }
-  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ goSlides(); goSlide(5); return; }
+  if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ GraphExplainer.open(); return; }
   if(e.key==='d'||e.key==='D'){ goDemo(); return; }
   if(e.key===' '){
     e.preventDefault();
@@ -3477,6 +3452,12 @@ showFinalState = function(clean){
 };
 </script>
 <!-- AIM MODAL FOR CLM-0845 -->
+  <!-- Network graph explainer: opens over whatever is showing, so the pipeline stays where it was -->
+  <div class="gx" id="gx" role="dialog" aria-modal="true" aria-label="How the network graph works" hidden onclick="if(event.target===this)GraphExplainer.close()">
+    <img class="gx-img" src="assets/slides/slide-b-network-graph.webp" alt="How the network graph works. Every claim is a set of connections, and the graph follows them. What the graph holds: a claim linked to its member (lodged by), practice (billed by), practitioner (treated by), device and IP address (submitted from) and payment account (paid into), with rings for 1, 2 and 3 hops and paths to a known fraud entity and to one under investigation; anything within 3 hops of either raises a signal. Patterns it finds: shared practitioner, CLM-0845, a practitioner who works at three practices, two under investigation; organised ring, CLM-0846, a claim submitted from an IP address used by a practice linked to a known fraud member in Community #47 of 14 members and 3 providers; device ring, CLM-0844, five unrelated members on one device. Alerts attach to the entity, so they reach claims already assessed, and an investigator decides every case.">
+    <button class="gx-close" onclick="GraphExplainer.close()">✕ Close</button>
+    <span class="gx-sim">Explainer · illustrative scenario data</span>
+  </div>
 <div class="aim-modal" id="aim-modal">
   <div class="aim-modal-content">
     <div class="aim-modal-hdr">

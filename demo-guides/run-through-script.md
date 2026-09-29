@@ -78,7 +78,7 @@ These came up in preparation. Have the answers ready and don't soften them on th
 | L | Replay the sign-in scene |
 | P | Step-by-step: pauses after every phase result until you click Continue |
 | C | Captions on or off |
-| B | Backup slide ("three hops") |
+| B | How the network graph works: opens over the current screen, B or Esc closes it |
 | 0 | Emergency reset: slide 1, claim form cleared. Then 1 to 8 to reopen a scenario |
 
 ### How pausing works
@@ -337,7 +337,7 @@ Talk to each check as the card changes. The table gives what the row shows for J
 | Metadata and provenance | Business rule | Clinic practice software, created on the service date · Pass |
 | Duplicate detection | Business rule | 0 prior submissions of this fingerprint · Pass |
 
-Then the Receipt integrity score: every check at −0.00, total 1.00, "Threshold 0.70 — No adverse findings", and "Phase 1 Passed — No Adverse Findings".
+All five checks stay open. Then the Receipt integrity score as one sum: "Receipt integrity score 1.00 = 1.00 · all 5 checks passed, no deductions", "Threshold 0.70 — No adverse findings", and "Phase 1 Passed — No Adverse Findings".
 
 **Say**: The receipt is claimable. Now: is it genuine? Five forensic checks look for spliced text, pasted overlays, AI-generated images, a suspicious authoring trail and duplicates. Three are AI calls on the image; two are rules. The score starts at 1.00 and only adverse findings take points off, and you can check the arithmetic line by line. James has none. But a genuine receipt isn't a clean claim.
 
@@ -348,7 +348,7 @@ Then the Receipt integrity score: every check at −0.00, total 1.00, "Threshold
 - AI-generated detection: scores the image against image-generator signatures, for receipts that were never printed.
 - Metadata and provenance: the authoring trail travels inside the file. Practice software, and timestamps not after the service.
 - Duplicate detection: the same practice and receipt number, or an identical fingerprint, on any earlier submission.
-- Below 0.70 goes to the investigator queue, HIGH priority, 4-hour SLA. The total is computed from the lines above it, never typed in.
+- Below 0.70 goes to the investigator queue, HIGH priority, 4-hour SLA. The total is computed from the deductions, never typed in.
 - Extraction confidence isn't scored here: a low-confidence field is already routed in pre-flight.
 
 **Do**: Click Continue to Phase 2 — Cross-Claim Signals →.
@@ -363,11 +363,11 @@ Then the Receipt integrity score: every check at −0.00, total 1.00, "Threshold
 - ES-004 Phantom ABN: ABN active, registered to the billing practice · Pass
 - ES-005 Waiver abuse: 0 waivers, practice volume 1.1× its 90-day baseline, threshold 3× · Pass
 
-A two-line summary: "Signals raised 0 of 5 · ES-001 no signal · … · ES-005 no signal", then "No suspicious cross-claim pattern detected. Continuing to Phase 3." Under the five live checks, two planned strategies show as grey dashed cards marked "Planned — not in this build" (ES-006 item code validation, ES-007 terminal mismatch), then a blue dashed "Your next strategy" card marked "Configurable". The finished stages above sit as single lines.
+A two-line summary: "Signals raised 0 of 5 · ES-001 no signal · … · ES-005 no signal", then "No suspicious cross-claim pattern detected. Continuing to Phase 3." The five live checks and ES-007 terminal mismatch fill a three-by-two grid; ES-007 is a grey dashed card marked "Planned — not in this build", showing what it will look at, its rule and why, and no verdict. Below, ES-006 item code validation is a one-line planned card, then a blue dashed "ES-00x User-defined event strategy" card marked "Future · configurable". The finished stages above sit as single lines.
 
 **Say**: Phase 1 asked whether this receipt is suspicious. Phase 2 asks a different question: is there an emerging pattern across claims over time? Five real-time Pega Event Strategies evaluate the claims stream continuously, using filters, time windows, aggregations and thresholds: a claim lodged far from home, one device used by unrelated members, one bank account collecting from unrelated practices, a practice billing under an ABN that isn't live, and a run of waiting-period waivers. Each strategy raises a signal or it doesn't. Nothing is raised for James: no suspicious cross-claim pattern.
 
-**Say, pointing at the planned cards**: Five running, two designed, and the eighth is whatever your team spots next month. Each one is configured, not coded: a new pattern becomes a live strategy in days, not a development cycle.
+**Say, pointing at ES-007 and the ES-00x card**: Five running, two designed, and ES-00x is whatever your team spots next month. Each one is configured, not coded: a new pattern becomes a live strategy in days, not a development cycle.
 
 **Under the hood**:
 
@@ -447,7 +447,7 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 
 **Say, at pre-flight**: Sarah uploads an optical receipt, and it's been doctored. The printed total reads $487.50, but the line items add up to $445.00. Whoever edited the PDF changed the number that mattered and left the breakdown alone, which is the usual mistake. Pre-flight catches it with arithmetic, a business rule included in Pega Platform. But it doesn't reject the claim. The question now is how the total was altered, so it goes on to forensics.
 
-**On screen, Phase 1**: Font consistency **fails** (3 typefaces, Arial 9pt, Helvetica 10pt and Times New Roman 8pt, with breaks in the amount and date: "Text has been spliced"). Metadata and provenance **fails** (authored in Adobe Photoshop, modified 16 Jul 2026, two days after the service: "Provenance inconsistent with the service"). The score block lists −0.40 font, −0.25 metadata and −0.07 "Line item reconciliation (pre-flight)", total **0.28**, "Threshold 0.70 — below · SUSPICIOUS". A panel headed "Doctored receipt — the total doesn't reconcile to its line items" shows stated total $487.50, line items sum to $445.00, discrepancy $42.50 (total inflated by 10.8%), "Result: TOTAL ALTERED", and how it was altered.
+**On screen, Phase 1**: Font consistency **fails** (3 typefaces, Arial 9pt, Helvetica 10pt and Times New Roman 8pt, with breaks in the amount and date: "Text has been spliced"). Metadata and provenance **fails** (authored in Adobe Photoshop, modified 16 Jul 2026, two days after the service: "Provenance inconsistent with the service"). The score reads as one sum: "Receipt integrity score 0.28 = 1.00 − 0.40 Font consistency − 0.25 Metadata and provenance − 0.07 Line item reconciliation (pre-flight) · 3 checks passed, no deduction", then "Threshold 0.70 — below · SUSPICIOUS". A panel headed "Doctored receipt — the total doesn't reconcile to its line items" shows stated total $487.50, line items sum to $445.00, discrepancy $42.50 (total inflated by 10.8%), "Result: TOTAL ALTERED", and how it was altered.
 
 **Say, at Phase 1**: Now we know how. Three typefaces spliced into the amount and the date, and a file edited in Photoshop two days after the service. The arithmetic told us something was wrong; forensics shows exactly what was done. No single finding is conclusive. Together, with the reconciliation, they take the score from 1.00 to 0.28, well under 0.70. The claim goes to an investigator at high priority with a four-hour SLA, with both the what and the how. Phases 2 and 3 don't run.
 
@@ -490,6 +490,8 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 **On screen**: Pre-flight, Phase 1 and Phase 2 are clean. In Phase 3, the network graph **flags**: "2-hop path to a practitioner shared with 2 practices under investigation". The path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation. Fraud case similarity also **flags**: three closed investigations with the same shape and no identifier in common. The summary reads "Network verdict PATTERN, REFERRED FOR REVIEW": two weak signals, referred to the investigator queue at standard priority, with the path and the cited cases attached.
 
 **Say**: Michael's optical claim clears forensics and all five event strategies. But the graph finds that the optometrist on the claim also bills through two practices already under investigation. The risk isn't in the claim. It's in who delivered the service, and no single claim contains that connection.
+
+**If the room looks lost**: Click "How the network graph works ▸" at the bottom of Phase 3 (or press B). Point at the left panel, then at the Shared practitioner card: "That path came from this graph. Every claim is a set of connections, and the graph follows them three hops out. This is the pattern you just saw." Close it with ✕ or Esc; the pipeline is where you left it. About a minute.
 
 **The room**:
 

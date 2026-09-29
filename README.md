@@ -37,7 +37,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 ## Assets
 
-- [Slide images](assets/slides/): the five presentation slides (agenda, problem, business case, three phases, why Pega) as full-slide images, shown by `index.html` on the slides screen.
+- [Slide images](assets/slides/): the five presentation slides (agenda, problem, business case, three phases, why Pega) as full-slide images, shown by `index.html` on the slides screen, and `slide-b-network-graph.webp`, the "How the network graph works" explainer, shown as the backup slide and over the pipeline from Phase 3 or the B key.
 
 ## Tests
 
