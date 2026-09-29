@@ -27,7 +27,7 @@ Each step has three parts:
 | C | Captions on or off |
 | R | Rolling demo on or off (stops it completely) |
 | P | Step-by-step mode: pauses after every phase result until you click Continue |
-| B | Backup slide (not in rolling mode) |
+| B | How the network graph works: opens over the current screen; B or Esc closes it (not in rolling mode) |
 | 0 | Restart: back to slide 1, claim form cleared. The emergency reset |
 | F | Fullscreen |
 
@@ -78,11 +78,11 @@ The five slides are full-slide images in `assets/slides/`. The whole image alway
 - **Under the hood**: A static image slide. The impact figures at the foot (-65%, +40%, +28%) are illustrative, not measured. Launch Demo opens the claim portal.
 - **Check**: Launch Demo opens the portal on CLM-0841 and the sign-in scene starts.
 
-### Backup slide (B): What "Three Hops" Actually Means
+### Backup: How the network graph works
 
-- **Say**: Use only if asked. This is the entity model Phase 3 is designed against. It is the target schema, not a claim that it's already running.
-- **Under the hood**: Relationship types: CURRENT_DEVICE, CURRENT_ACCOUNT, SHARED_DEVICE_WITH, SHARED_ACCOUNT_WITH, IS_MEMBER_OF. The slide traces CLM-2024-0846 through a device and a bank account to a confirmed fraud claim and Community #47.
-- **Check**: The B key opens it (not in rolling mode). "Back to Presentation" returns to slide 5.
+- **Say**: Use when Phase 3 needs explaining. Every claim is a set of connections: member, practice, practitioner, device, IP address, payment account. The graph stores those connections, so it can follow them three hops out. Then point at the pattern that matches the claim on screen: shared practitioner (CLM-0845), organised ring (CLM-0846) or device ring (CLM-0844).
+- **Under the hood**: The left panel is what the graph holds, with 1, 2 and 3 hop rings and paths to a known fraud entity and to one under investigation. The right panel is three patterns it finds, each labelled with its demo claim. It describes the target design; the demo data is illustrative.
+- **Check**: The "How the network graph works ▸" button at the end of Phase 3, or the B key (not in rolling mode), opens the image over the current screen. ✕, Esc or B closes it and the pipeline is where it was. The "🔧 Backup" slide button shows the same image as slide 6; "Back to Presentation" returns to slide 5.
 
 ## Scenario quick reference
 
@@ -299,7 +299,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 - **Under the hood**:
   - P3-GRAPH found a 3-hop path: submission IP 203.0.113.91 → Kestrel Allied Health → confirmed fraud member MBR-99112, in Community #47.
   - Phase 2 saw nothing, because no single claim contains this connection.
-  - The backup slide shows the same pattern as a schema.
+  - "How the network graph works ▸" opens the explainer; its Organised ring card is this path.
 - **Check**:
   - The block reads "Signals raised 1 of 1" and "3-hop path into Community #47 — 14 members, 3 providers".
   - The claim goes to the SIU queue, HIGH.

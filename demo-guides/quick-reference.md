@@ -12,7 +12,7 @@
 - ← → → Previous / Next slide (Slides screen only)
 - F → Toggle Fullscreen
 - P → Toggle Step-by-Step mode (pauses after every phase result until you click Continue)
-- B → Jump to the Backup slide (manual mode only)
+- B → How the network graph works, over the current screen; B or Esc closes it (manual mode only)
 - Esc → Exit fullscreen (standard browser behaviour)
 - L → Replay the sign-in scene (or click the session chip in the portal header)
 

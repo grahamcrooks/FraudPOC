@@ -78,7 +78,7 @@ These came up in preparation. Have the answers ready and don't soften them on th
 | L | Replay the sign-in scene |
 | P | Step-by-step: pauses after every phase result until you click Continue |
 | C | Captions on or off |
-| B | Backup slide ("three hops") |
+| B | How the network graph works: opens over the current screen, B or Esc closes it |
 | 0 | Emergency reset: slide 1, claim form cleared. Then 1 to 8 to reopen a scenario |
 
 ### How pausing works
@@ -490,6 +490,8 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 **On screen**: Pre-flight, Phase 1 and Phase 2 are clean. In Phase 3, the network graph **flags**: "2-hop path to a practitioner shared with 2 practices under investigation". The path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation. Fraud case similarity also **flags**: three closed investigations with the same shape and no identifier in common. The summary reads "Network verdict PATTERN, REFERRED FOR REVIEW": two weak signals, referred to the investigator queue at standard priority, with the path and the cited cases attached.
 
 **Say**: Michael's optical claim clears forensics and all five event strategies. But the graph finds that the optometrist on the claim also bills through two practices already under investigation. The risk isn't in the claim. It's in who delivered the service, and no single claim contains that connection.
+
+**If the room looks lost**: Click "How the network graph works ▸" at the bottom of Phase 3 (or press B). Point at the left panel, then at the Shared practitioner card: "That path came from this graph. Every claim is a set of connections, and the graph follows them three hops out. This is the pattern you just saw." Close it with ✕ or Esc; the pipeline is where you left it. About a minute.
 
 **The room**:
 
