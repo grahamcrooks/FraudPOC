@@ -264,6 +264,12 @@
       "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
       "rule": "Any path within 3 hops to a confirmed fraud community or a monitored entity (one under investigation)",
       "found": "2-hop path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both monitored, under investigation",
+      "detail": {
+        "Hops": "Hop 1: 6 entities · Hop 2: 7, including optometrist PR-5518's two other practices, both monitored · Hop 3: 3",
+        "Relationships": "Uses device, submits from IP, paid into account, lives at address, treated by practitioner, practitioner works at practice; and the shared links between members and providers: same device, account, address, phone or email",
+        "Analytics": "Shortest path from every entity to any confirmed or monitored entity · membership of a confirmed fraud community (ring) · shared-attribute links that tie members or providers who look unrelated · 1 path to monitored entities, no confirmed community",
+        "What it is": "A graph of members, practices, practitioners, devices, IPs and payment accounts, built from every claim and sign-in and queried by the Pega agent over MCP. Each path comes back with its edges, so the investigator sees exactly how the claim connects"
+      },
       "verdict": "flag",
       "conclusion": "Practitioner shared with two practices under investigation",
       "metric": "16 entities within 3 hops · 2 monitored"

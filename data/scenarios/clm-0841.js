@@ -307,6 +307,12 @@
       "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
       "rule": "Any path within 3 hops to a confirmed fraud community or a monitored entity (one under investigation)",
       "found": "18 entities within 3 hops · none confirmed or monitored",
+      "detail": {
+        "Hops": "Hop 1: 6 entities (member, practice, practitioner, device, submission IP, payee account) · Hop 2: 8 · Hop 3: 4",
+        "Relationships": "Uses device, submits from IP, paid into account, lives at address, treated by practitioner, practitioner works at practice; and the shared links between members and providers: same device, account, address, phone or email",
+        "Analytics": "Shortest path from every entity to any confirmed or monitored entity · membership of a confirmed fraud community (ring) · shared-attribute links that tie members or providers who look unrelated · none found",
+        "What it is": "A graph of members, practices, practitioners, devices, IPs and payment accounts, built from every claim and sign-in and queried by the Pega agent over MCP. Each path comes back with its edges, so the investigator sees exactly how the claim connects"
+      },
       "verdict": "pass",
       "conclusion": "Graph clear",
       "metric": "18 entities within 3 hops · 0 confirmed"

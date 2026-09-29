@@ -707,16 +707,15 @@ body.run-rolling .presenter-only{display:none}
 .sig.p2-next{background:var(--blue-bg);border:1.5px dashed var(--pblue)}
 .p2-next .sig-nm{color:var(--pblue)}
 .sig-cost.next{background:var(--lblue);color:var(--blue);border:1px solid rgba(51,65,144,.25)}
-/* Phase 2's explanation reads as one line of text, not a navy box, to leave room for the strategies */
-#ph2-info{padding:2px 2px 4px}
-#ph2-info .phase-info-band{background:none;box-shadow:none;padding:0;text-align:left}
-#ph2-info .phase-info-txt{color:var(--navy);font-size:13.5px}
-#ph2-info .phase-info-band.alert .phase-info-txt{color:#991B1B}
+/* Phases 2 and 3: the explanation reads as one line of text, not a navy box, to leave room for the checks */
+#ph2-info,#ph3-info{padding:2px 2px 4px}
+#ph2-info .phase-info-band,#ph3-info .phase-info-band{background:none;box-shadow:none;padding:0;text-align:left}
+#ph2-info .phase-info-txt,#ph3-info .phase-info-txt{color:var(--navy);font-size:13.5px}
+#ph2-info .phase-info-band.alert .phase-info-txt,#ph3-info .phase-info-band.alert .phase-info-txt{color:#991B1B}
 .p2c-row{grid-template-columns:minmax(200px,280px) 1fr}
 .p2c-s{font-weight:700}
 .p1-calc.p2-compact{padding:10px 18px;margin-top:10px}
-.p2c-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 0;font-size:13px;color:var(--text-2)}
-.p2c-item::before{content:'·';margin:0 8px;color:var(--text-4)}
+.p2c-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 18px;font-size:13px;color:var(--text-2)}
 .p2-compact .p1c-verdict{margin-top:3px}
 .p1c-action{margin-top:4px;font-size:13px;font-weight:600;color:var(--text)}
 /* Pre-flight terminal outcomes: a fail or flag stops the flow before the pipeline */
@@ -1397,7 +1396,7 @@ const S=[
   {id:'CLM-2024-0846',mbr:'MBR-61203',joined:'Feb 2026',suburb:'Sunshine VIC 3020',contact:'SMS',member:'Angela Wu',ini:'AW',pol:'POL-2023-98811',cov:'Gold Hospital + Extras',cnt:1,amt:'$195.00',ben:'$1,805',type:'Physiotherapy (Extras)',date:'15 Jul 2026',prov:'Prime Physio & Sports',abn:'55 678 901 234',clamt:'$230.00',codes:'SP001, SP015',file:'physio_receipt_MBR61203.pdf',fsz:'198 KB',h1:'Lodge your physio claim',hs:'Treatment sessions · assessed on submission',outcome:'fail-ph3',
     preview:{icon:'🕸️',label:'Scenario 6 of 8 — Organised Fraud Ring',title:'Passes Phases 1 & 2 — network graph reveals a fraud ring',body:'Angela\'s claim is clean on the surface and clears both earlier phases. But the network graph traces a 3-hop connection from this provider through a shared IP to a confirmed fraud member — uncovering Community #47, a ring of 14 members and 3 providers.'}},
   {id:'CLM-2024-0847',mbr:'MBR-80174',joined:'Sep 2022',suburb:'Northcote VIC 3070',contact:'Email',member:'Priya Raman',ini:'PR',pol:'POL-2022-31905',cov:'Gold Hospital + Extras',cnt:2,amt:'$412.00',ben:'$1,588',type:'Dental (Extras)',date:'16 Jul 2026',prov:'Merri Creek Dental Studio',abn:'36 757 192 913',clamt:'$448.00',codes:'012, 114, 532',file:'dental_quote_MBR80174.pdf',fsz:'231 KB',h1:'Lodge your dental claim',hs:'Most claims assessed within seconds',outcome:'reject-preflight',
-    preview:{icon:'🧾',label:'Scenario 7 of 8 — Not a Claimable Receipt',title:'A quotation, not a receipt — stopped in pre-flight',body:'Priya uploads what looks like a dental invoice. It is a treatment plan and quotation for work the claimant has not had done. Caught in pre-flight, before a single forensic AI call is spent on it.'}},
+    preview:{icon:'🧾',label:'Scenario 7 of 8 — Not a Claimable Receipt',title:'A quotation, not a receipt — stopped in pre-flight',body:'Priya uploads what looks like a dental invoice. It is a treatment plan and quotation for work the claimant has not had done. Caught in pre-flight by business rules, before any forensic check runs.'}},
   {id:'CLM-2024-0848',mbr:'MBR-44120',joined:'Mar 2021',suburb:'Ferntree Gully VIC 3156',contact:'Email',member:'Oliver Hartmann',ini:'OH',pol:'POL-2021-19884',cov:'Gold Hospital + Extras',cnt:5,amt:'$1,140.00',ben:'$860',type:'Physiotherapy (Extras)',date:'15 Jul 2026',prov:'Valley Physio & Rehab Centre',abn:'91 632 847 502',clamt:'$270.00',codes:'500, 515, 580, 590',file:'physio_receipt_MBR44120.pdf',fsz:'268 KB',h1:'Lodge your physio claim',hs:'Benefit entitlement assessed on submission',outcome:'reject-preflight',
     preview:{icon:'🧾',label:'Scenario 8 of 8 — Already Paid',title:'A genuine receipt, already settled — stopped in pre-flight',body:'Oliver uploads a genuine physio receipt, stamped PAID by the practice. The document is authentic in every respect. It is also not claimable — the account is already settled, and the stamp says so.'}},
 ];
@@ -2133,7 +2132,7 @@ const Explainer={
 const SIGNAL_COST={
   ai:     {label:'AI call — no token cost',   cls:'ai'},
   rule:   {label:'Business rule — included in Pega Platform', cls:'rule'},
-  stream: {label:'Real-time event strategy', cls:'rule'},
+  stream: {label:'Real-time event strategy — included in Pega Platform', cls:'rule'},
   capture:{label:'Captured for later evaluation', cls:'capture'}
 };
 const SIGNAL_VERDICT={
@@ -2171,11 +2170,11 @@ const PhaseSignals={
     if(checks.every(c=>c.metric)){
       if(n&&!checks.some(c=>c.verdict==='fail')) box.className='p1-calc show warn';
       const mcls=c=>c.verdict==='fail'?'p1c-fail':c.verdict==='flag'?'p1c-flag':'p1c-pass';
-      const mrow=c=>'<div class="p1c-row p2c-row"><span class="p1c-l">'+esc(c.name)+'</span><span class="p2c-s '+mcls(c)+'">'+esc(c.metric)+'</span></div>';
-      box.innerHTML='<div class="p1c-title">Network intelligence <span>— three degrees of "have we seen this before": known, connected, resembles</span></div>'
-        +checks.map(mrow).join('')
-        +'<div class="p1c-rule"></div>'
-        +'<div class="p1c-row p2c-row p1c-total"><span class="p1c-l">Network verdict</span><span class="p2c-s">'+esc(res.verdict||(n?'SIGNALS RAISED':'CLEAR'))+'</span></div>'
+      // Two lines: the verdict with each check's metric inline, then the action.
+      box.classList.add('p2-compact');
+      const short={'P3-WATCHLIST':'Watchlist','P3-GRAPH':'Graph','P3-SIMILARITY':'Similarity'};
+      const item=c=>'<span class="p2c-item">'+esc(short[c.id]||c.name)+' <span class="p2c-s '+mcls(c)+'">'+esc(c.metric)+'</span></span>';
+      box.innerHTML='<div class="p2c-line"><span class="p1c-total">Network verdict '+esc(res.verdict||(n?'SIGNALS RAISED':'CLEAR'))+'</span>'+checks.map(item).join('')+'</div>'
         +(res.action?'<div class="p1c-verdict">'+esc(res.action)+'</div>':'');
       setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'end'}),150);
       return true;
@@ -2217,7 +2216,8 @@ function fitRestingChecks(ph){
   const bottom=(calc&&calc.classList.contains('show')?calc:list).getBoundingClientRect().bottom;
   const avail=card.clientHeight-(hdr?hdr.offsetHeight:0)-24;
   if(bottom-top<=avail) return;
-  list.querySelectorAll('.sig[data-verdict="pass"]').forEach(el=>SignalPanel.toggle(el,false));
+  // The network graph is the one Phase 3 check the room is shown in full, so it stays open.
+  list.querySelectorAll('.sig[data-verdict="pass"]:not([data-sig="P3-GRAPH"])').forEach(el=>SignalPanel.toggle(el,false));
 }
 
 const Phase1Score={
@@ -2294,7 +2294,7 @@ const SignalPanel={
     const mountFor=sig=>pf?$({capture:'sig-capture',decide:'sig-list'}[pfStage(sig)]):list;
     return sigs.map((sig,i)=>{
       const el=document.createElement('div');
-      el.className='sig'; el.dataset.state='queued'; el.id='sig-'+i;
+      el.className='sig'; el.dataset.state='queued'; el.id='sig-'+i; el.dataset.sig=sig.id||'';
       const cost=SIGNAL_COST[sig.cost]||SIGNAL_COST.rule;
       el.innerHTML=
         '<button type="button" class="sig-head" aria-expanded="false">'

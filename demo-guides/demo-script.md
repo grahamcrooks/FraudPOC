@@ -190,23 +190,23 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
     - **ES-005 waiver abuse**: waiting-period waivers and practice claim volume over a rolling 90 days. Repeated waivers for one member, or practice volume at three times its 90-day baseline, fires.
   - Planned and not built: ES-006 item code validation, ES-007 terminal mismatch. A final card shows that new strategies are configured, not coded.
 - **Check**:
-  - Five checks run 6 seconds apart, in a single column, each badged "Real-time event strategy". The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable." The finished stages above collapse to single lines, and the phase explanation is a line of text, not a navy box.
+  - Five checks run 6 seconds apart, in a single column, each badged "Real-time event strategy — included in Pega Platform". The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable." The finished stages above collapse to single lines, and the phase explanation is a line of text, not a navy box.
   - CLM-0841 results: 0.4 km from home, 1 member on the device, 1 practice on the account, ABN active, 0 waivers at 1.1× baseline.
   - The two-line summary reads "Signals raised 0 of 5", each strategy with "no signal", then "No suspicious cross-claim pattern detected. Continuing to Phase 3.", and the result "Phase 2 Passed — No Suspicious Cross-Claim Pattern Detected".
-  - Four grey dashed cards follow the checks, each marked "Planned — not in this build", then a blue dashed "Your next strategy" card marked "Configurable". None carries a verdict.
+  - Two grey dashed cards (ES-006, ES-007) follow the checks, each marked "Planned — not in this build", then a blue dashed "Your next strategy" card marked "Configurable". None carries a verdict.
 
 ### Step 6: Phase 3, network intelligence
 
 - **Say**: The last question: who else is involved? The graph follows everything this claim touches (member, practice, practitioner, device, IP, payment account) up to three hops out, looking for known fraud or anything under investigation. No single claim contains this kind of connection, which is why the earlier phases can't see it. For James, the graph is clear.
 - **Under the hood**:
-  - One check, P3-GRAPH, an AI call, run as a graph query through MCP (tagged "MCP · Graph").
-  - Rule: any path within 3 hops to a confirmed fraud community or an entity under investigation.
+  - Three checks: P3-WATCHLIST (a business rule on the confirmed and monitored lists), P3-GRAPH (an AI call, run as a graph query through MCP, tagged "MCP · Graph") and P3-SIMILARITY (Pega GenAI Knowledge Buddy over closed investigations).
+  - P3-GRAPH rule: any path within 3 hops to a confirmed fraud community or an entity under investigation. It follows the edges between members, practices, practitioners, devices, IPs, addresses and accounts, and reports shortest paths to flagged entities and membership of confirmed rings.
   - An alert attaches to the entity, so it reaches every claim linked to it, including ones already closed.
-  - Fraud case similarity matching is planned. It needs a corpus of confirmed cases, which this system produces as it runs.
 - **Check**:
-  - One check: "0 connections within 3 hops", pass.
-  - The planned similarity line shows.
-  - The block reads "Signals raised 0 of 1" and "No connections to known fraud or to anything under investigation. Claim approved and sent for adjudication."
+  - The phase explanation is one line of text, not a navy box.
+  - Three checks pass: "7 entities checked · 0 matches", "0 connections within 3 hops" and "412 cases searched · no comparable case".
+  - The network graph card stays open with Hops, Relationships, Analytics and What it is rows under Looked at, Rule and Found.
+  - The two-line summary reads "Network verdict CLEAR", each check's metric inline, then "No entity known, no connection to known fraud, and no comparable confirmed case. Claim approved and sent for adjudication."
 
 ### Step 7: Outcome and routing
 
