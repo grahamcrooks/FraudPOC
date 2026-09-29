@@ -38,7 +38,7 @@ What stops the demo depends on the mode:
 | Where you are | What to do |
 | --- | --- |
 | Presenting, in the sign-in scene | Space pauses it where it is, with a "Paused" pill; Space again resumes. Esc skips to the end |
-| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Run Fraud Detection or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 40 seconds, or a phase running its checks), so talk over it |
+| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Receipt Forensics or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 40 seconds, or a phase running its checks), so talk over it |
 | Presenting, on the slides | Don't press Space unless you mean to move on: it goes to the next slide |
 | Expecting lots of questions | Press P for step-by-step mode. The demo pauses after every phase result until you click Continue |
 | Rolling demo | Space pauses it and shows a banner with Resume and Stop; Space again resumes. R stops it completely |
@@ -151,7 +151,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
   - Each check opens while it runs and closes to a one-line summary when the next starts. At rest they show in two columns.
   - All eight pass for CLM-0841. The capture reads "DEV-2291 · Carlton VIC · captured at sign-in". Line item reconciliation reads "Items sum to $312.00 · stated total $312.00".
   - The summary line reads "7 of 7 checks passed · 3 AI calls · 4 business rules · 1 capture recorded".
-  - The file card reads "Validated · Pre-flight complete", and "Run Fraud Detection →" appears.
+  - The file card reads "Validated · Pre-flight complete", and "Receipt Forensics →" appears.
 
 ### Step 4: Phase 1, receipt forensics
 
@@ -229,7 +229,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - Phase 1 score: font fail −0.40 (Arial 9pt, Helvetica 10pt and Times New Roman 8pt), metadata fail −0.25 (Adobe Photoshop, modified 16 Jul 2026), and the pre-flight reconciliation fail −0.07.
   - 1.00 − 0.72 = 0.28, below 0.70. The Phase 2 checks show as not run.
 - **Check**:
-  - Pre-flight ends amber, not green: "Line item reconciliation: Total does not reconcile to the line items", then "The total doesn't reconcile. Running forensics to see how it was altered." The What's happening card rests on Line item reconciliation, and "Run Fraud Detection →" appears.
+  - Pre-flight ends amber, not green: "Line item reconciliation: Total does not reconcile to the line items", then "The total doesn't reconcile. Running forensics to see how it was altered." The What's happening card rests on Line item reconciliation, and "Receipt Forensics →" appears.
   - In Phase 1, deductions are listed largest first, with "Line item reconciliation (pre-flight)" among them. The total is 0.28, "below · SUSPICIOUS".
   - Both fails stay open; passes may close.
   - A panel headed "Doctored receipt" shows stated total $487.50, line items sum to $445.00, a $42.50 discrepancy (total inflated by 10.8%), "Result: TOTAL ALTERED", and how it was altered.
@@ -301,7 +301,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - There are two FAIL badges. The panel reads "Claim rejected — not a claimable receipt".
   - The stage is Reject Document and the status Resolved-Rejected.
   - The note reads "No forensic AI calls were spent on this claim".
-  - Run Fraud Detection does not appear, and the pipeline never opens.
+  - Receipt Forensics does not appear, and the pipeline never opens.
 
 ### CLM-0848, Oliver Hartmann: already paid (stops in pre-flight)
 
@@ -315,7 +315,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - There is one FAIL badge, on Disqualifying content. The panel reads "Claim rejected — nothing to claim" with the reason "Receipt is stamped PAID · the account is already settled".
   - The stage is Reject Document and the status Resolved-Rejected.
   - The note reads "The receipt is genuine and complete. It simply isn't claimable."
-  - Run Fraud Detection does not appear, and the pipeline never opens.
+  - Receipt Forensics does not appear, and the pipeline never opens.
 
 ## Part 4: Rolling demo
 

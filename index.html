@@ -1048,7 +1048,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
               <div style="display:flex;gap:10px">
                 <button class="btn-cancel" id="btn-savedraft">Save Draft</button>
                 <button class="btn-submit" id="btn-submit" onclick="submitClaim()">Submit Claim →</button>
-                <button class="btn-submit" id="btn-runpipeline" style="display:none;background:#1D4ED8" onclick="openPipeline()">Run Fraud Detection →</button>
+                <button class="btn-submit" id="btn-runpipeline" style="display:none;background:#1D4ED8" onclick="openPipeline()">Receipt Forensics →</button>
               </div>
             </div>
           </div>
@@ -2099,8 +2099,8 @@ const Explainer={
 };
 
 const SIGNAL_COST={
-  ai:     {label:'AI call',                   cls:'ai'},
-  rule:   {label:'Business rule — no AI cost', cls:'rule'},
+  ai:     {label:'AI call — no token cost',   cls:'ai'},
+  rule:   {label:'Business rule — included in Pega Platform', cls:'rule'},
   stream: {label:'Real-time event strategy', cls:'rule'},
   capture:{label:'Captured for later evaluation', cls:'capture'}
 };
@@ -2478,7 +2478,7 @@ function submitClaim(){
   }
   // Already uploaded (manual click of Submit after upload) — in rolling, go straight on.
   if(runMode==='rolling'){ openPipeline(); return; }
-  // Manual mode: reveal the Run Fraud Detection button rather than opening immediately.
+  // Manual mode: reveal the Receipt Forensics button rather than opening immediately.
   if($('btn-submit')) $('btn-submit').style.display='none';
   if($('btn-runpipeline')) $('btn-runpipeline').style.display='';
 }

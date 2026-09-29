@@ -85,7 +85,7 @@ These came up in preparation. Have the answers ready and don't soften them on th
 
 - **Sign-in scene**: Space pauses it where it is.
 - **Pre-flight**: can't be paused, but it's slow on purpose: 40 seconds, the fields filling first and then seven checks of about 4 seconds each. Talk over it. Once it finishes, click any check to bring its explanation back.
-- **The pipeline**: it waits for you. It only moves on when you click Run Fraud Detection or Continue. A phase's few seconds of animation can't be paused.
+- **The pipeline**: it waits for you. It only moves on when you click Receipt Forensics or Continue. A phase's few seconds of animation can't be paused.
 - **Close the investigation screen with its ✕.** Escape doesn't close it.
 
 ### Budget for interruptions
@@ -282,7 +282,7 @@ Talk to each check as the card changes. The table gives what the row shows for J
 | 6 | Line item reconciliation | Items reconcile to the total (items sum to $312.00 · stated total $312.00) · Pass | Right after completeness, on the same fields: do the line items add up to the total printed? Whoever edits a receipt usually changes the total and leaves the breakdown alone. Hold that thought. | Data transform, no AI cost. Line items must sum to the total charged. |
 | 7 | Claim value | $312.00 claimable · marker at $5,000 · Pass | How much is at stake. It's context for later, not a fraud signal, and it never routes a claim on its own. | `SetHighValueFlag`. `"routes": false`: its verdict never decides the route. |
 
-**On screen when it finishes**: Green: "Receipt pre-validated — passing to forensic authentication" and "7 of 7 checks passed · 3 AI calls · 4 business rules · 1 capture recorded". The capture and all seven checks open, each showing what it looked at, the rule and what it found. "Run Fraud Detection →" appears.
+**On screen when it finishes**: Green: "Receipt pre-validated — passing to forensic authentication" and "7 of 7 checks passed · 3 AI calls · 4 business rules · 1 capture recorded". The capture and all seven checks open, each showing what it looked at, the rule and what it found. "Receipt Forensics →" appears.
 
 **Say, at rest**: Every check shows what it looked at, the rule and what it found. That's the audit trail, on screen. The Valid Claim decision table takes the first matching row. Nothing matched, so the claim goes on. (Click any check to bring its explanation back to the card if someone asks about it.)
 
@@ -300,7 +300,7 @@ Talk to each check as the card changes. The table gives what the row shows for J
 
 ### Phase 1: is the receipt genuine? (about 3 minutes)
 
-**Do**: Click Run Fraud Detection →. The pipeline opens. Five checks run about 2.8 seconds apart.
+**Do**: Click Receipt Forensics →. The pipeline opens. Five checks run about 2.8 seconds apart.
 
 **On screen**:
 
@@ -379,7 +379,7 @@ On these, talk over pre-flight with the story rather than each check. The card s
 
 **Do**: Press 7, then Load Receipt.
 
-**On screen**: Field extraction, extraction confidence, receipt type, line item reconciliation and claim value pass. Receipt completeness **fails** ($0.00 received of $448.00, "Nothing has been paid") and Disqualifying content **fails** (2 of 11 terms: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, "Classified as a quotation"). The panel reads "Claim rejected — not a claimable receipt", "Quotation, not a tax invoice · nothing paid", Stage: Reject Document, Status: Resolved-Rejected, and "No forensic AI calls were spent on this claim." The card rests on Disqualifying content. Run Fraud Detection doesn't appear.
+**On screen**: Field extraction, extraction confidence, receipt type, line item reconciliation and claim value pass. Receipt completeness **fails** ($0.00 received of $448.00, "Nothing has been paid") and Disqualifying content **fails** (2 of 11 terms: "treatment plan and quotation" in the header and "this is not a tax invoice" in the footer, "Classified as a quotation"). The panel reads "Claim rejected — not a claimable receipt", "Quotation, not a tax invoice · nothing paid", Stage: Reject Document, Status: Resolved-Rejected, and "No forensic AI calls were spent on this claim." The card rests on Disqualifying content. Receipt Forensics doesn't appear.
 
 **Say**: Priya uploads what looks like a dental invoice. It's a treatment plan and quotation for work she hasn't had, and nothing has been paid. Two business rules catch it. No forensic AI is spent, and nothing reaches the fraud team. That's the case for cheap checks first.
 
@@ -409,9 +409,9 @@ On these, talk over pre-flight with the story rather than each check. The card s
 
 This is the best forensics scene in the demo. Pre-flight catches what's wrong; forensics shows how it was done.
 
-**Do**: Press 2, then Load Receipt. When pre-flight finishes, click Run Fraud Detection →.
+**Do**: Press 2, then Load Receipt. When pre-flight finishes, click Receipt Forensics →.
 
-**On screen, pre-flight**: Field extraction reads a stated total of $487.50. Line item reconciliation **fails**: "$100.00 + $185.00 + $160.00 = $445.00 against a stated total of $487.50 · $42.50 discrepancy", "Total does not reconcile to the line items". Pre-flight ends amber, not green: "Line item reconciliation: Total does not reconcile to the line items", then **"The total doesn't reconcile. Running forensics to see how it was altered."** The card rests on Line item reconciliation, and "Run Fraud Detection →" appears: the claim isn't rejected.
+**On screen, pre-flight**: Field extraction reads a stated total of $487.50. Line item reconciliation **fails**: "$100.00 + $185.00 + $160.00 = $445.00 against a stated total of $487.50 · $42.50 discrepancy", "Total does not reconcile to the line items". Pre-flight ends amber, not green: "Line item reconciliation: Total does not reconcile to the line items", then **"The total doesn't reconcile. Running forensics to see how it was altered."** The card rests on Line item reconciliation, and "Receipt Forensics →" appears: the claim isn't rejected.
 
 **Say, at pre-flight**: Sarah uploads an optical receipt, and it's been doctored. The printed total reads $487.50, but the line items add up to $445.00. Whoever edited the PDF changed the number that mattered and left the breakdown alone, which is the usual mistake. Pre-flight catches it with arithmetic, at no AI cost. But it doesn't reject the claim. The question now is how the total was altered, so it goes on to forensics.
 
@@ -435,7 +435,7 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 
 **Transition**: *Everything so far has been one claim at a time. Here's where that stops working.*
 
-**Do**: Press 4. The sign-in plays in a laptop browser, with a one-time code instead of Face ID. Press Esc if you're short of time. Then Load Receipt, Run Fraud Detection, and Continue through Phase 1.
+**Do**: Press 4. The sign-in plays in a laptop browser, with a one-time code instead of Face ID. Press Esc if you're short of time. Then Load Receipt, Receipt Forensics, and Continue through Phase 1.
 
 **On screen**: The session chip reads 💻 DEV-1196 ⚠ new device, Footscray. Pre-flight and Phase 1 are clean. In Phase 2, ES-002 **fails**: "5 members on one device in 26 hours · threshold 3", "Five unrelated members on one device". "Signals raised 1 of 3". The action line: this claim is marked suspicious and referred; separately, a network assessment is raised against device DEV-1196, covering the four earlier claims that were cleared before the pattern existed.
 
@@ -453,7 +453,7 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 
 **Transition**: *Nothing wrong with this claim. The question is who else is attached to it.*
 
-**Do**: Press 5. Load Receipt, Run Fraud Detection, Continue to Phase 2, Continue to Phase 3.
+**Do**: Press 5. Load Receipt, Receipt Forensics, Continue to Phase 2, Continue to Phase 3.
 
 **On screen**: Pre-flight, Phase 1 and Phase 2 are clean. In Phase 3, the network graph **fails**: "2-hop path to a practitioner shared with 2 practices under investigation". The path: member MBR-29034 → ClearView Optometry → optometrist PR-5518, who also bills through Northgate Eyecare (INV-2024-0612) and Riverbend Optical (INV-2024-0688), both under investigation. Referred to the SIU queue, HIGH priority, with the path attached.
 
