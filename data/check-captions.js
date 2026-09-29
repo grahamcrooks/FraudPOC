@@ -116,23 +116,23 @@ window.CHECK_CAPTIONS = {
   },
   "phase2:ES-001": {
     "tag": "Phase 2 · ES-001 Distance anomaly",
-    "text": "Real-time event strategy. It reads the location captured at sign-in, not anything on the receipt, and grades the distance from home"
+    "text": "Real-time event strategy, included in Pega Platform. It reads the location captured at sign-in, not anything on the receipt, and grades the distance from home"
   },
   "phase2:ES-002": {
     "tag": "Phase 2 · ES-002 Device ring",
-    "text": "Real-time event strategy. It aggregates distinct members per device over a 72-hour window as claims arrive: a pattern no single claim shows"
+    "text": "Real-time event strategy, included in Pega Platform. It aggregates distinct members per device over a 72-hour window as claims arrive: a pattern no single claim shows"
   },
   "phase2:ES-003": {
     "tag": "Phase 2 · ES-003 Bank account ring",
-    "text": "Real-time event strategy. It aggregates the practices paying into one account over a 30-day window, following where the benefit lands"
+    "text": "Real-time event strategy, included in Pega Platform. It aggregates the practices paying into one account over a 30-day window, following where the benefit lands"
   },
   "phase2:ES-004": {
     "tag": "Phase 2 · ES-004 Phantom ABN",
-    "text": "Real-time event strategy. It checks the billing practice's ABN against the Australian Business Register as the claim arrives: a cancelled ABN is caught at once"
+    "text": "Real-time event strategy, included in Pega Platform. It checks the billing practice's ABN against the Australian Business Register as the claim arrives: a cancelled ABN is caught at once"
   },
   "phase2:ES-005": {
     "tag": "Phase 2 · ES-005 Waiver abuse",
-    "text": "Real-time event strategy. It counts waiting-period waivers and practice claim volume over a rolling 90 days, against the practice's own baseline"
+    "text": "Real-time event strategy, included in Pega Platform. It counts waiting-period waivers and practice claim volume over a rolling 90 days, against the practice's own baseline"
   },
   "phase3": {
     "tag": "Phase 3 · Network intelligence",

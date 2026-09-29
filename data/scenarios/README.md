@@ -56,7 +56,7 @@ The `signals` array drives the Phase 1 panel on the claim lodgement screen. Each
 | `id` | string | Stable ID, for example `SIG-DOC-TYPE`. `SIG-FIELD-EXTRACTION` also fills the claim form when it completes. |
 | `name` | string | Check name. |
 | `summary` | string | One line kept beside the name once the check completes, so a collapsed check still shows how it was decided: the deciding figure and, wherever the rule has one, its threshold ("lowest 0.92 (ServiceDate) · threshold 0.70"). If absent, it is derived from the first figure in `found` plus the rule's threshold. |
-| `cost` | `"ai"`, `"rule"` or `"capture"` | Badge: "AI call — no token cost", "Business rule — included in Pega Platform" or "Captured for later evaluation". This shows why instant, deterministic checks run before model calls. |
+| `cost` | `"ai"`, `"rule"`, `"stream"` or `"capture"` | Badge: "AI call — no token cost", "Business rule — included in Pega Platform", "Real-time event strategy — included in Pega Platform" or "Captured for later evaluation". This shows why instant, deterministic checks run before model calls. |
 | `lookedAt` | string | What was examined. |
 | `rule` | string | The rule applied. State the threshold wherever one exists ("at or above 0.70", "$5,000 or above"); never "above threshold" on its own. |
 | `found` | string | What was actually found. Hidden until the check completes. |

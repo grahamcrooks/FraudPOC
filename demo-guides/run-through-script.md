@@ -330,7 +330,7 @@ Then the Receipt integrity score: every check at −0.00, total 1.00, "Threshold
 
 ### Phase 2: does this claim fit a pattern across other claims? (about 2 minutes)
 
-**On screen**: The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable." Five checks, 6 seconds apart, each badged "Real-time event strategy":
+**On screen**: The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable." Five checks, 6 seconds apart, each badged "Real-time event strategy — included in Pega Platform":
 
 - ES-001 Distance anomaly: 0.4 km from the registered address, threshold 500 km · Pass
 - ES-002 Device ring: 1 member on this device, threshold 3 · Pass
