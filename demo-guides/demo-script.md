@@ -21,13 +21,14 @@ Each step has three parts:
 | --- | --- |
 | S / D | Slides / Demo |
 | ← / → | Previous / next slide |
-| Space | Next slide on the slides; pauses and resumes the sign-in scene; pauses and resumes the rolling demo. Does nothing else in the demo |
+| Space | Next slide on the slides; pauses and resumes the sign-in scene, pre-flight and a running phase; pauses and resumes the rolling demo |
 | 1 to 8 | Open scenario CLM-0841 to CLM-0848 |
 | L | Replay the sign-in scene (or click the session chip in the portal header). Esc, Enter or a click skips to its end |
 | C | Captions on or off |
 | R | Rolling demo on or off (stops it completely) |
 | P | Step-by-step mode: pauses after every phase result until you click Continue |
 | B | How the network graph works: opens over the current screen; B or Esc closes it (not in rolling mode) |
+| E | How an event strategy works: the device ring timeline and the building blocks (filter, window, count, threshold, signal), over the current screen; E or Esc closes it (not in rolling mode) |
 | W | How a claim moves through the case: the Pega Blueprint case design, over the current screen; click the image to zoom; W or Esc closes it (not in rolling mode) |
 | 0 | Restart: back to slide 1, claim form cleared. The emergency reset |
 | F | Fullscreen |
@@ -39,7 +40,7 @@ What stops the demo depends on the mode:
 | Where you are | What to do |
 | --- | --- |
 | Presenting, in the sign-in scene | Space pauses it where it is, with a "Paused" pill; Space again resumes. Esc skips to the end |
-| Presenting, in the demo | Nothing to stop. The demo waits for you: it only moves on when you click Receipt Forensics or Continue. The only thing you can't pause is the few seconds a step takes to animate (pre-flight's 40 seconds, or a phase running its checks), so talk over it |
+| Presenting, in the demo | Space pauses whatever is running (pre-flight or a phase checking), with a purple "Paused · Space to resume" pill; Space again, or a click on the pill, resumes exactly where it stopped. Between steps the demo waits for you anyway: it only moves on when you click Receipt Forensics or Continue |
 | Presenting, on the slides | Don't press Space unless you mean to move on: it goes to the next slide |
 | Expecting lots of questions | Press P for step-by-step mode. The demo pauses after every phase result until you click Continue |
 | Rolling demo | Space pauses it and shows a banner with Resume and Stop; Space again resumes. R stops it completely |
@@ -197,7 +198,7 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 - **Under the hood**:
   - Five real-time Pega Event Strategies detect patterns across the claims event stream, using filters, time windows, aggregations and thresholds. Their output can triage work, update data or trigger the next action.
     - **ES-001 distance anomaly**: the distance between the submission IP geolocation and the registered address. Graded: over 500 km moderate, over 1,500 km high, overseas critical.
-    - **ES-002 device ring**: distinct members on one `DeviceFingerprintID` in 72 hours. Three or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
+    - **ES-002 device ring**: distinct members on one `DeviceFingerprintID` in 72 hours. Five or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
     - **ES-003 bank account ring**: distinct practice ABNs paying into one account in 30 days. Three or more fires.
     - **ES-004 phantom ABN**: the billing practice's ABN against the Australian Business Register. A cancelled, deregistered or invalid ABN, or one registered to a different entity, fires.
     - **ES-005 waiver abuse**: waiting-period waivers and practice claim volume over a rolling 90 days. Repeated waivers for one member, or practice volume at three times its 90-day baseline, fires.

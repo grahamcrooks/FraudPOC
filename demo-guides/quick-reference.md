@@ -7,12 +7,13 @@
 - D → Go to Demo mode
 - S → Go to Slides mode
 - R → Toggle Rolling Demo (stops it completely)
-- Space → Next slide (Slides screen) / Pause-Resume the sign-in scene / Pause-Resume (Rolling Demo). Does nothing else in the demo
+- Space → Next slide (Slides screen) / Pause-Resume whatever is running in the demo: sign-in, pre-flight or a phase / Pause-Resume (Rolling Demo)
 - Esc → Skip the sign-in scene to its end
 - ← → → Previous / Next slide (Slides screen only)
 - F → Toggle Fullscreen
 - P → Toggle Step-by-Step mode (pauses after every phase result until you click Continue)
 - B → How the network graph works, over the current screen; B or Esc closes it (manual mode only)
+- E → How an event strategy works, over the current screen; E or Esc closes it (manual mode only)
 - W → How a claim moves through the case (Pega Blueprint), over the current screen; click to zoom; W or Esc closes it (manual mode only)
 - Esc → Exit fullscreen (standard browser behaviour)
 - L → Replay the sign-in scene (or click the session chip in the portal header)
@@ -20,7 +21,7 @@
 ## Stopping and Pausing
 
 - Sign-in scene: Space pauses it where it is; Space again resumes; Esc skips to the end.
-- Presenting: nothing to stop. The demo waits for Receipt Forensics and Continue; only a step's few seconds of animation can't be paused.
+- Presenting: Space pauses pre-flight or a running phase, and Space again resumes. Between steps the demo waits for Receipt Forensics and Continue.
 - On the slides, Space moves to the next slide, so don't press it by accident.
 - Lots of questions expected: press P, and the demo pauses after every phase result.
 - Rolling Demo: Space pauses and resumes; R stops it completely.

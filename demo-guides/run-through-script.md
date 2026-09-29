@@ -73,20 +73,21 @@ These came up in preparation. Have the answers ready and don't soften them on th
 | → / ← | Next / previous slide. Space also moves to the next slide, so don't press it by accident on the slides |
 | D / S | Demo / Slides |
 | 1 to 8 | Open CLM-0841 to CLM-0848 |
-| Space | In the sign-in scene: pause, and Space again to resume (a purple "Paused" pill shows). Elsewhere in the demo it does nothing |
+| Space | Pause, and Space again to resume, whatever is running: the sign-in scene, pre-flight or a phase checking (a purple "Paused" pill shows) |
 | Esc | Skip the sign-in scene to its end |
 | L | Replay the sign-in scene |
 | P | Step-by-step: pauses after every phase result until you click Continue |
 | C | Captions on or off |
 | B | How the network graph works: opens over the current screen, B or Esc closes it |
+| E | How an event strategy works, over the current screen; E or Esc closes it |
 | W | How a claim moves through the case: the Pega Blueprint case design, over the current screen; click to zoom; W or Esc closes it |
 | 0 | Emergency reset: slide 1, claim form cleared. Then 1 to 8 to reopen a scenario |
 
 ### How pausing works
 
 - **Sign-in scene**: Space pauses it where it is.
-- **Pre-flight**: can't be paused, but it's slow on purpose: 40 seconds, the fields filling first and then seven checks of about 4 seconds each. Talk over it. Once it finishes, click any check to bring its explanation back.
-- **The pipeline**: it waits for you. It only moves on when you click Receipt Forensics or Continue. A phase's few seconds of animation can't be paused.
+- **Pre-flight**: Space pauses it mid-check and Space again resumes. It's slow on purpose anyway: 40 seconds, the fields filling first and then seven checks of about 4 seconds each. Once it finishes, click any check to bring its explanation back.
+- **The pipeline**: it waits for you between phases, and only moves on when you click Receipt Forensics or Continue. While a phase is checking, Space pauses it.
 - **Close the investigation screen with its ✕.** Escape doesn't close it.
 
 ### Budget for interruptions
@@ -361,7 +362,7 @@ All five checks stay open. Then the Receipt integrity score as one sum: "Receipt
 **On screen**: The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable." Five checks, 6 seconds apart, each badged "Real-time event strategy — included in Pega Platform":
 
 - ES-001 Distance anomaly: 0.4 km from the registered address, threshold 500 km · Pass
-- ES-002 Device ring: 1 member on this device, threshold 3 · Pass
+- ES-002 Device ring: 1 member on this device, threshold 5 · Pass
 - ES-003 Bank account ring: 1 practice on this account, threshold 3 · Pass
 - ES-004 Phantom ABN: ABN active, registered to the billing practice · Pass
 - ES-005 Waiver abuse: 0 waivers, practice volume 1.1× its 90-day baseline, threshold 3× · Pass
@@ -375,7 +376,7 @@ A two-line summary: "Signals raised 0 of 5 · ES-001 no signal · … · ES-005 
 **Under the hood**:
 
 - ES-001: distance from the submission IP's location to the registered address. Graded: over 500 km moderate, over 1,500 km high, overseas critical.
-- ES-002: distinct members on one `DeviceFingerprintID` in 72 hours. Three or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
+- ES-002: distinct members on one `DeviceFingerprintID` in 72 hours. Five or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
 - ES-003: distinct practice ABNs paying into one account in 30 days. Three or more fires. It follows where the benefit lands, not who lodged the claim.
 - ES-004: the billing practice's ABN against the Australian Business Register. A cancelled, deregistered or invalid ABN, or one registered to a different entity, fires.
 - ES-005: waiting-period waivers and practice claim volume over a rolling 90 days. Repeated waivers for one member, or practice volume at three times its own 90-day baseline, fires.
@@ -472,11 +473,13 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 
 **Do**: Press 4. The sign-in plays in a laptop browser, with a one-time code instead of Face ID. Press Esc if you're short of time. Then Load Receipt, Receipt Forensics, and Continue through Phase 1.
 
-**On screen**: The session chip reads 💻 DEV-1196 ⚠ new device, Footscray. Pre-flight and Phase 1 are clean. In Phase 2, ES-002 **fails**: "5 members on one device in 26 hours · threshold 3", "Five unrelated members on one device". "Signals raised 1 of 3". The action line: this claim is marked suspicious and referred; separately, a network assessment is raised against device DEV-1196, covering the four earlier claims that were cleared before the pattern existed.
+**On screen**: The session chip reads 💻 DEV-1196 ⚠ new device, Footscray. Pre-flight and Phase 1 are clean. In Phase 2, ES-002 **fails**: "5 members on one device in 26 hours · threshold 5", "Five unrelated members on one device". "Signals raised 1 of 3". The action line: this claim is marked suspicious and referred; separately, a network assessment is raised against device DEV-1196, covering the four earlier claims that were cleared before the pattern existed.
 
 **Say**: Linda lodges through the H+ website from a Windows laptop she's never used, in Footscray; she lives in Springvale. Her receipt is genuine and Phase 1 is clean. But five unrelated members have lodged from that laptop in 26 hours, with different surnames, addresses and policies. This claim is the one that tipped it over. The four before it were cleared, because until now there was no pattern to see. So two things happen: this claim is referred, and a network assessment is raised against the device, which reaches back to the four earlier claims.
 
 **Under the hood**: ES-002 counts distinct members per device over 72 hours, as claims arrive. The household exception means families sharing a membership and address don't fire it.
+
+**If the room looks lost**: Click "How an event strategy works ▸" at the bottom of Phase 2 (or press E). Walk the timeline: "Five members, one device, 26 hours. The strategy counts distinct members per device over a 72-hour window. Claims one to four were cleared, because the count was under five. Linda's is the fifth, so it crosses the threshold, and the alert attaches to the device, so it reaches back to the four earlier claims." Then the strip along the bottom: filter, window, count, threshold, signal. Close with ✕ or Esc. About a minute.
 
 **The room**:
 

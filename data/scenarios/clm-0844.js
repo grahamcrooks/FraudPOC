@@ -234,11 +234,11 @@
     {
       "id": "ES-002",
       "name": "ES-002 Device ring",
-      "summary": "5 members on one device in 26 hours · threshold 3",
+      "summary": "5 members on one device in 26 hours · threshold 5",
       "cost": "stream",
       "delay": 10000,
       "lookedAt": "Distinct members submitting from device DEV-1196 in the last 72 hours",
-      "rule": "Three or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
+      "rule": "Five or more unrelated members on one device. Members sharing a membership and address are a household, not a ring",
       "found": "5 distinct members on DEV-1196 in 26 hours — 5 different surnames, 5 different addresses, 5 different policies",
       "verdict": "fail",
       "conclusion": "Five unrelated members on one device"

@@ -439,6 +439,9 @@ body.run-rolling .presenter-only{display:none}
 .fdb-outcome-high{background:#FEE2E2;color:#991B1B}
 
 .gx{position:fixed;inset:0;top:36px;z-index:2500;background:rgba(4,10,24,.96);display:flex;align-items:center;justify-content:center;padding:16px 16px 44px}
+.demo-paused-pill{position:fixed;top:48px;left:50%;transform:translateX(-50%);z-index:2400;background:#7C3AED;color:#fff;border:0;padding:8px 20px;border-radius:30px;font-family:var(--font);font-size:13px;font-weight:700;box-shadow:0 4px 20px rgba(124,58,237,.4);cursor:pointer}
+.demo-paused-pill[hidden]{display:none}
+body.demo-paused .overlay *,body.demo-paused #demo-screen *{animation-play-state:paused!important}
 .gx[hidden]{display:none}
 .gx-img{cursor:zoom-in}
 .gx.zoom{overflow:auto;align-items:flex-start;justify-content:flex-start}
@@ -1193,6 +1196,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
         <div class="result-badge" id="ph2-result"><div class="rb-ico" id="ph2-rb-ico">✅</div><div><div class="rb-title" id="ph2-rb-title">Phase 2 Passed</div><div class="rb-sub" id="ph2-rb-sub">No suspicious cross-claim pattern detected</div></div></div>
         <div class="phase-btns" id="ph2-btns">
           <button class="btn-back" onclick="closeOverlay()">✕ Close</button>
+          <button class="btn-back" onclick="GraphExplainer.open('strategy')">How an event strategy works ▸</button>
           <button class="btn-continue" id="ph2-continue-btn" onclick="collapseAndContinue(2)">Continue to Phase 3 — Network Intelligence →<div style="font-size:11px;font-weight:400;opacity:.8;margin-top:2px">Watchlist match, network graph up to 3 hops, and fraud case similarity</div></button>
           <button class="btn-aim" id="ph2-aim-btn" style="display:none" onclick="showFinalAndAIM()">View Fraud Detection Summary →</button>
         </div>
@@ -1517,6 +1521,25 @@ const PHASES=[
 let curSlide=0, curScenario=0, uploaded=false, uploadCount=0;
 let preflightStopped=null;   // 'reject' | 'review' when pre-flight ends the claim
 let timers=[], slideTimer=null;
+// Presenting mode: Space pauses whatever is running in the demo (a step's
+// timers and its animations) and resumes it. Rolling mode keeps its own pause.
+const DemoPause={
+  on:false,
+  toggle(){ this.on?this.resume():this.pause(); },
+  pause(){
+    if(this.on) return; this.on=true;
+    const now=Date.now();
+    timers.forEach(t=>{ clearTimeout(t.id); t.id=null; t.left=Math.max(0,t.due-now); });
+    document.body.classList.add('demo-paused'); $('demo-paused').hidden=false;
+  },
+  resume(){
+    if(!this.on) return; this.on=false;
+    const now=Date.now();
+    timers.forEach(t=>{ t.due=now+t.left; t.id=setTimeout(t.run,t.left); });
+    document.body.classList.remove('demo-paused'); $('demo-paused').hidden=true;
+  },
+  reset(){ this.on=false; document.body.classList.remove('demo-paused'); if($('demo-paused')) $('demo-paused').hidden=true; }
+};
 // Run modes: 'manual' | 'stepbystep' | 'rolling'
 let runMode='manual';
 let rollingPaused=false;
@@ -1588,6 +1611,8 @@ function clearSlideProgress(){
 // so a presenter can explain Phase 3 without losing the pipeline.
 const EXPLAINERS={
   graph:{src:'assets/slides/slide-b-network-graph.webp',label:'Explainer · illustrative scenario data',name:'How the network graph works'},
+  strategy:{src:'assets/slides/event-strategy-explainer.webp',label:'Explainer · illustrative scenario data',name:'How an event strategy works',
+    alt:'How an event strategy works: it watches the stream of claims, not one claim at a time. Device ring, CLM-0844: five members lodge from the same device, DEV-1196, within a 72-hour window over 26 hours. The first four claims are cleared as the count of distinct members rises from 1 to 4; the fifth crosses the threshold of 5 and raises a signal, and the alert attaches to the device so it reaches the earlier claims. The building blocks: filter claims with a device, then a window of the last 72 hours, then count distinct members per device, then a threshold of 5 or more, then a signal that refers the claim and assesses the device. Configured, not coded; five run in this POC; new ones in days.'},
   workflow:{src:'assets/slides/case-workflow-blueprint.webp',label:'Actual · Pega Blueprint case design · click the image to zoom',name:'How a claim moves through the case',
     alt:'How a claim moves through the case: the Pega Blueprint case design. Primary stages: Receipt Intake (Receive File); Document Extraction (Extract and Validation, Persist Raw Extracted Text, Extract and Persist Structured Data, Review Extracted Structured Data, Check Invalid Document Keywords, Check Document Marker Flags, Reject Gate, Evaluate High-Value Claim); Authentication Forensics (Forensic Analysis, Transform Data, Read Metadata); Forensic Narrative (Narrative Gate, Generate Narrative, Skip Narrative); Score Computation (Compute Scores); Field Validation (Validate Fields); Audit Gate (Audit Decision, Mark Clean, Route Review); Data Enrichment (Link/Lookup Practice, Link Practitioner, Duplicate Check); Event Strategies (Evaluate GEO-001 to GEO-006, Aggregate GEO Signal Score); Network Intelligence (Spinoff Network Intelligence, Wait Network Result, Combine Results). Alternate stages: Reject Document (Reject Case), Needs Review (Investigator Assignment, Notify Investigator), SIU Referral (Refer SIU, Notify SIU).'}
 };
@@ -1608,7 +1633,7 @@ const GraphExplainer={
 // Capture phase, so Esc and B close the explainer before any other shortcut runs.
 window.addEventListener('keydown',e=>{
   if(!GraphExplainer.isOpen()) return;
-  if(e.key==='Escape'||e.key==='b'||e.key==='B'||e.key==='w'||e.key==='W'){ e.preventDefault(); e.stopImmediatePropagation(); GraphExplainer.close(); }
+  if(e.key==='Escape'||e.key==='b'||e.key==='B'||e.key==='w'||e.key==='W'||e.key==='e'||e.key==='E'){ e.preventDefault(); e.stopImmediatePropagation(); GraphExplainer.close(); }
 },true);
 
 function goSlides(){
@@ -2486,8 +2511,16 @@ const SignalPanel={
 // ══════════════════════════════════════════════════════
 // PIPELINE
 // ══════════════════════════════════════════════════════
-function addTimer(fn,d){ const t=setTimeout(fn,d); timers.push(t); return t; }
-function clearAllTimers(){ timers.forEach(clearTimeout); timers=[]; }
+// Demo timers are pausable: each remembers when it is due, so Space can
+// freeze a running step and resume it exactly where it stopped.
+function addTimer(fn,d){
+  const t={fn,due:Date.now()+d,left:d,id:null};
+  t.run=()=>{ timers=timers.filter(x=>x!==t); fn(); };
+  if(!DemoPause.on) t.id=setTimeout(t.run,d);
+  timers.push(t); return t;
+}
+function clearAllTimers(){ timers.forEach(t=>clearTimeout(t.id)); timers=[]; DemoPause.reset(); }
+
 
 function resetPhaseBlock(ph){
   $('ph'+ph+'-block').classList.remove('active','done');
@@ -2778,12 +2811,14 @@ document.addEventListener('keydown',e=>{
   if(e.key==='s'||e.key==='S'){ goSlides(); return; }
   if((e.key==='b'||e.key==='B')&&runMode!=='rolling'){ GraphExplainer.open('graph'); return; }
   if((e.key==='w'||e.key==='W')&&runMode!=='rolling'){ GraphExplainer.open('workflow'); return; }
+  if((e.key==='e'||e.key==='E')&&runMode!=='rolling'){ GraphExplainer.open('strategy'); return; }
   if(e.key==='d'||e.key==='D'){ goDemo(); return; }
   if(e.key===' '){
     e.preventDefault();
     if(runMode==='rolling'&&!rollingPaused) pauseRolling();
     else if(runMode==='rolling'&&rollingPaused) resumeRolling();
     else if(onSlides) nextSlide();
+    else DemoPause.toggle();
     return;
   }
   if(e.key==='ArrowRight'&&onSlides){ nextSlide(); return; }
@@ -3472,6 +3507,7 @@ showFinalState = function(clean){
 };
 </script>
 <!-- AIM MODAL FOR CLM-0845 -->
+  <button class="demo-paused-pill" id="demo-paused" hidden onclick="DemoPause.resume()">⏸ Paused · Space to resume</button>
   <!-- Network graph explainer: opens over whatever is showing, so the pipeline stays where it was -->
   <div class="gx" id="gx" role="dialog" aria-modal="true" aria-label="How the network graph works" hidden onclick="if(event.target===this)GraphExplainer.close()">
     <img class="gx-img" id="gx-img" onclick="GraphExplainer.zoom()" src="assets/slides/slide-b-network-graph.webp" alt="How the network graph works. Every claim is a set of connections, and the graph follows them. What the graph holds: a claim linked to its member (lodged by), practice (billed by), practitioner (treated by), device and IP address (submitted from) and payment account (paid into), with rings for 1, 2 and 3 hops and paths to a known fraud entity and to one under investigation; anything within 3 hops of either raises a signal. Patterns it finds: shared practitioner, CLM-0845, a practitioner who works at three practices, two under investigation; organised ring, CLM-0846, a claim submitted from an IP address used by a practice linked to a known fraud member in Community #47 of 14 members and 3 providers; device ring, CLM-0844, five unrelated members on one device. Alerts attach to the entity, so they reach claims already assessed, and an investigator decides every case.">
