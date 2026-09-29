@@ -559,10 +559,11 @@ body.run-rolling .presenter-only{display:none}
 /* Side-by-side layout: terminal and phone at one height, each with its cards beneath */
 .ls.dual .ls-phone{position:absolute;left:0;top:0}
 .lsp.cmp{padding:8px 12px 8px 10px;gap:10px;border-radius:12px;white-space:normal}
-.lsp.cmp .lsp-ico{font-size:clamp(18px,1.5vw,26px)}
-.lsp.cmp .lsp-t{font-size:clamp(10px,.75vw,13px)}
-.lsp.cmp .lsp-v{font-size:clamp(14px,1.15vw,20px);line-height:1.2}
-.lsp.cmp .lsp-why{display:none}
+.lsp.cmp{align-items:flex-start}
+.lsp.cmp .lsp-ico{font-size:clamp(16px,1.2vw,22px)}
+.lsp.cmp .lsp-t{font-size:clamp(9px,.62vw,11px)}
+.lsp.cmp .lsp-v{font-size:clamp(12px,.85vw,15px);line-height:1.25}
+.lsp.cmp .lsp-why{font-size:clamp(10px,.68vw,12px);line-height:1.3;margin-top:4px}
 .ls-phone{position:relative;height:min(calc(100vh - 130px),940px);aspect-ratio:9/19.5;font-size:clamp(11px,1.9vh,17px);background:#0B0F1A;border-radius:2.6em;padding:.55em;box-shadow:0 0 0 2px #2A3345,0 30px 80px rgba(0,0,0,.45)}
 .ls-notch{position:absolute;top:.55em;left:50%;transform:translateX(-50%);width:34%;height:1.5em;background:#0B0F1A;border-radius:0 0 .9em .9em;z-index:3}
 .ls-screen{position:relative;height:100%;border-radius:2.1em;background:var(--white);overflow:hidden;display:flex;flex-direction:column}
@@ -2827,11 +2828,11 @@ const SESSION_DUAL_HOLD_REAL_MS=7000;
 function terminalSignals(sess){
   const hm=(sess.sessionTime||'').slice(11,16);
   return [
-    {key:'tid', icon:'📟',title:'Terminal ID',    colour:'var(--teal)',  detail:'S04471',                    why:'The physical terminal, registered to the practice'},
-    {key:'mid', icon:'🏦',title:'Merchant ID',    colour:'var(--gold)',  detail:'00884471',                  why:'The practice account receiving the funds'},
-    {key:'prov',icon:'🩺',title:'Provider number',colour:'var(--orange)',detail:'0004471X',                  why:'The practitioner, at this registered practice'},
-    {key:'conn',icon:'🔌',title:'Connection',     colour:'var(--lblue)', detail:'Ethernet'+(hm?' · '+hm:''), why:'How the terminal connected, and when'},
-    {key:'geo', icon:'📍',title:'Geolocation',    colour:'var(--green-mid)',detail:(sess.location||'')+' · 203.0.113.44', why:'Approximate, from the IP, against the registered practice address'},
+    {key:'tid', icon:'📟',title:'Terminal ID',    colour:'var(--teal)',  detail:'S04471',                    why:'Planned ES-007 checks it is used only at its registered practice'},
+    {key:'mid', icon:'🏦',title:'Merchant ID',    colour:'var(--gold)',  detail:'00884471',                  why:'Where the benefit settles; ES-003 watches for accounts shared across practices'},
+    {key:'prov',icon:'🩺',title:'Provider number',colour:'var(--orange)',detail:'0004471X',                  why:'The practitioner; Phase 3 checks who else they bill through'},
+    {key:'conn',icon:'🔌',title:'Connection',     colour:'var(--lblue)', detail:'Ethernet'+(hm?' · '+hm:''), why:'How and when it connected; part of the terminal pattern planned ES-007 watches'},
+    {key:'geo', icon:'📍',title:'Geolocation',    colour:'var(--green-mid)',detail:(sess.location||'')+' · 203.0.113.44', why:'From the IP; planned ES-007 flags a terminal used away from its practice'},
   ];
 }
 const SESSION_FRAMES={
@@ -3037,10 +3038,11 @@ const SessionScene={
     const card=sig=>{
       const el=document.createElement('div');
       el.className='lsp cmp'; el.style.setProperty('--pc',sig.colour);
-      el.innerHTML='<span class="lsp-ico"></span><span><div class="lsp-t"></div><div class="lsp-v"></div></span>';
+      el.innerHTML='<span class="lsp-ico"></span><span><div class="lsp-t"></div><div class="lsp-v"></div><div class="lsp-why"></div></span>';
       el.querySelector('.lsp-ico').textContent=sig.icon;
       el.querySelector('.lsp-t').textContent=sig.title;
       el.querySelector('.lsp-v').textContent=sig.detail;
+      el.querySelector('.lsp-why').textContent=sig.why||'';
       fx.appendChild(el);
       return {sig,el};
     };
