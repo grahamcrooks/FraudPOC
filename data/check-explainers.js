@@ -38,7 +38,7 @@ window.CHECK_EXPLAINERS = {
   "SIG-LINE-RECONCILIATION": {
     "icon": "🧮",
     "what": "Adds up the line items the AI read from the receipt and checks they come to the total printed on it.",
-    "why": "Whoever edits a receipt usually changes the total and leaves the breakdown alone. Catching it is simple arithmetic, at no AI cost."
+    "why": "Whoever edits a receipt usually changes the total and leaves the breakdown alone. Catching it is simple arithmetic, a business rule included in Pega Platform."
   },
   "SIG-CLAIM-VALUE": {
     "icon": "💲",

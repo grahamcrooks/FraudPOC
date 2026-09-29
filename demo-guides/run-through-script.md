@@ -175,7 +175,7 @@ The network. Members and providers working together. Recruited members, shared d
 
 **Say**: Four questions, asked in order, cheapest first.
 
-One. Is this claimable at all? Business rules on the extracted receipt. A quotation, a gym membership, a receipt already stamped paid. No AI cost.
+One. Is this claimable at all? Business rules on the extracted receipt. A quotation, a gym membership, a receipt already stamped paid. Included in Pega Platform.
 
 Two. Is this receipt genuine? Forensic analysis: fonts, overlays, metadata, authoring trail. That costs money per claim, so it only runs on receipts that clear question one.
 
@@ -266,7 +266,7 @@ The phone shrinks into the header, and the boxes land in the session chip: 📱 
 
 **Do**: Click Load Receipt. Panel 1 first: the sign-in capture, then the claim fields fill in one after another from a single AI read (about 13 seconds). Nothing is judged there. Then panel 2's seven checks run, about 4 seconds each, 40 seconds in all. The What's happening card at the top of the left column explains each one as it runs.
 
-**Say, as it starts**: James uploads a dental receipt. Before we spend anything on forensics, pre-flight asks one question: is this a claimable receipt at all? AI reads the receipt once. Then business rules do the rest at no AI cost. A quotation, a proforma, an unpaid invoice or a receipt that doesn't add up is caught here. Watch the card on the left: it says in plain words what each check is doing and why.
+**Say, as it starts**: James uploads a dental receipt. Before we spend anything on forensics, pre-flight asks one question: is this a claimable receipt at all? AI reads the receipt once. Then business rules included in Pega Platform do the rest. A quotation, a proforma, an unpaid invoice or a receipt that doesn't add up is caught here. Watch the card on the left: it says in plain words what each check is doing and why.
 
 Talk to each check as the card changes. The table gives what the row shows for James, what to say, and the detail underneath.
 
@@ -277,9 +277,9 @@ Talk to each check as the card changes. The table gives what the row shows for J
 | 1 | Field extraction | 11 of 11 fields · $312.00 · items 011, 022, 114 · Pass | All eleven details a claim needs came back from that read. | Every later check works from these fields. |
 | 2 | Extraction confidence | Lowest 0.92 (ServiceDate) · threshold 0.70 · Pass | Is the extraction usable at all? Any critical field under 0.70 goes to a person rather than being guessed, so this check comes second: it gates the rest. | Per-field confidence from the same model call. Below 0.70 routes to Needs Review. |
 | 3 | Receipt type | TAX INVOICE · ABN and AHPRA present · Pass | Is this the right kind of document? Only a genuine tax invoice from a health provider can be claimed. | From the same model call: it must be a tax invoice from a registered health provider. |
-| 4 | Disqualifying content | 11 terms checked · none found · Pass | Is it claimable? A rule scans for eleven terms the fraud team maintains: quotation, proforma, non-medical, a PAID stamp. | Data transform `SetKeywordMatchResults`, no AI cost. Matches on the phrase or word boundary, not the substring. |
-| 5 | Receipt completeness | $312.00 received of $312.00 · ABN ✓ · 3 lines · signed · Pass | Complete, and paid by the member: the amount received against the amount charged, an ABN, itemised services, a signature. | Data transform `SetMarkerFlagResults`, no AI cost. |
-| 6 | Line item reconciliation | Items reconcile to the total (items sum to $312.00 · stated total $312.00) · Pass | Right after completeness, on the same fields: do the line items add up to the total printed? Whoever edits a receipt usually changes the total and leaves the breakdown alone. Hold that thought. | Data transform, no AI cost. Line items must sum to the total charged. |
+| 4 | Disqualifying content | 11 terms checked · none found · Pass | Is it claimable? A rule scans for eleven terms the fraud team maintains: quotation, proforma, non-medical, a PAID stamp. | Data transform `SetKeywordMatchResults`, included in Pega Platform. Matches on the phrase or word boundary, not the substring. |
+| 5 | Receipt completeness | $312.00 received of $312.00 · ABN ✓ · 3 lines · signed · Pass | Complete, and paid by the member: the amount received against the amount charged, an ABN, itemised services, a signature. | Data transform `SetMarkerFlagResults`, included in Pega Platform. |
+| 6 | Line item reconciliation | Items reconcile to the total (items sum to $312.00 · stated total $312.00) · Pass | Right after completeness, on the same fields: do the line items add up to the total printed? Whoever edits a receipt usually changes the total and leaves the breakdown alone. Hold that thought. | Data transform, included in Pega Platform. Line items must sum to the total charged. |
 | 7 | Claim value | $312.00 claimable · marker at $5,000 · Pass | How much is at stake. It's context for later, not a fraud signal, and it never routes a claim on its own. | `SetHighValueFlag`. `"routes": false`: its verdict never decides the route. |
 
 **On screen when it finishes**: Green: "Receipt pre-validated — passing to forensic authentication" and "7 of 7 checks passed · 3 AI calls · 4 business rules · 1 capture recorded". The capture and all seven checks open, each showing what it looked at, the rule and what it found. "Receipt Forensics →" appears.
@@ -389,7 +389,7 @@ On these, talk over pre-flight with the story rather than each check. The card s
 
 **On screen**: Every check passes except Disqualifying content, which **fails**: "1 of 11 terms matched · PAID stamp", "Account already settled, nothing to claim". The panel reads "Claim rejected — nothing to claim", "Receipt is stamped PAID · the account is already settled", and "The receipt is genuine and complete. It simply isn't claimable."
 
-**Say**: Oliver's physio receipt is genuine in every respect. The practitioner signed it, the ABN is valid, the line items reconcile and nothing's been altered. But the practice has stamped it PAID, so the account is settled and there's nothing left to claim. The document is fine; it just isn't claimable. That's readable from the page, so a rule catches it at no AI cost.
+**Say**: Oliver's physio receipt is genuine in every respect. The practitioner signed it, the ABN is valid, the line items reconcile and nothing's been altered. But the practice has stamped it PAID, so the account is settled and there's nothing left to claim. The document is fine; it just isn't claimable. That's readable from the page, so a business rule included in Pega Platform catches it.
 
 **Under the hood**:
 
@@ -413,7 +413,7 @@ This is the best forensics scene in the demo. Pre-flight catches what's wrong; f
 
 **On screen, pre-flight**: Field extraction reads a stated total of $487.50. Line item reconciliation **fails**: "$100.00 + $185.00 + $160.00 = $445.00 against a stated total of $487.50 · $42.50 discrepancy", "Total does not reconcile to the line items". Pre-flight ends amber, not green: "Line item reconciliation: Total does not reconcile to the line items", then **"The total doesn't reconcile. Running forensics to see how it was altered."** The card rests on Line item reconciliation, and "Receipt Forensics →" appears: the claim isn't rejected.
 
-**Say, at pre-flight**: Sarah uploads an optical receipt, and it's been doctored. The printed total reads $487.50, but the line items add up to $445.00. Whoever edited the PDF changed the number that mattered and left the breakdown alone, which is the usual mistake. Pre-flight catches it with arithmetic, at no AI cost. But it doesn't reject the claim. The question now is how the total was altered, so it goes on to forensics.
+**Say, at pre-flight**: Sarah uploads an optical receipt, and it's been doctored. The printed total reads $487.50, but the line items add up to $445.00. Whoever edited the PDF changed the number that mattered and left the breakdown alone, which is the usual mistake. Pre-flight catches it with arithmetic, a business rule included in Pega Platform. But it doesn't reject the claim. The question now is how the total was altered, so it goes on to forensics.
 
 **On screen, Phase 1**: Font consistency **fails** (3 typefaces, Arial 9pt, Helvetica 10pt and Times New Roman 8pt, with breaks in the amount and date: "Text has been spliced"). Metadata and provenance **fails** (authored in Adobe Photoshop, modified 16 Jul 2026, two days after the service: "Provenance inconsistent with the service"). The score block lists −0.40 font, −0.25 metadata and −0.07 "Line item reconciliation (pre-flight)", total **0.28**, "Threshold 0.70 — below · SUSPICIOUS". A panel headed "Doctored receipt — the total doesn't reconcile to its line items" shows stated total $487.50, line items sum to $445.00, discrepancy $42.50 (total inflated by 10.8%), "Result: TOTAL ALTERED", and how it was altered.
 

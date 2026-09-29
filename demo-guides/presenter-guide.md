@@ -88,7 +88,7 @@ Time: 2-3 minutes
   - A “Doctored receipt” panel appears showing Stated total (\$487.50) vs Line items sum to (\$445.00) vs Discrepancy (\$42.50, 10.8%), “Result: TOTAL ALTERED”, and how it was altered
   - Phases 2 and 3 never run for this claim — it’s scoped to Phase 1 only
   - Escalated to the investigator queue, HIGH priority, 4-hour SLA
-- Key message: Simple arithmetic in pre-flight spots the doctored total at no AI cost; forensics then shows how it was done, so the investigator gets both the what and the how.
+- Key message: Simple arithmetic in pre-flight spots the doctored total with a business rule included in Pega Platform; forensics then shows how it was done, so the investigator gets both the what and the how.
 
 Time: 2 minutes
 

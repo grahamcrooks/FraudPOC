@@ -26,7 +26,7 @@ alone.
 > Adds up the line items extracted from the receipt and checks they come
 > to the total printed on it. Whoever edits a receipt usually changes the
 > total and leaves the breakdown alone. It's arithmetic on the extracted
-> fields, so it runs in pre-flight at no AI cost; a total that doesn't
+> fields, so it runs in pre-flight as a business rule included in Pega Platform; a total that doesn't
 > reconcile goes on to forensics to find out how it was altered.
 
 ### AI extracts the text
