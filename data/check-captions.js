@@ -40,7 +40,7 @@ window.CHECK_CAPTIONS = {
   },
   "cost:ai": {
     "tag": "Pre-flight · AI",
-    "text": "One vision model call classifies the document and returns eleven fields, each with its own confidence score"
+    "text": "One vision model call, no token cost, classifies the document and returns eleven fields, each with its own confidence score"
   },
   "cost:rule": {
     "tag": "Pre-flight · Rules",
@@ -48,11 +48,11 @@ window.CHECK_CAPTIONS = {
   },
   "preflight:SIG-DOC-TYPE": {
     "tag": "Pre-flight · Receipt type",
-    "text": "Vision model classifies the document. It must be a tax invoice from a registered health provider"
+    "text": "Vision model call, no token cost. It classifies the document, which must be a tax invoice from a registered health provider"
   },
   "preflight:SIG-FIELD-EXTRACTION": {
     "tag": "Pre-flight · Field extraction",
-    "text": "The same model call returns eleven fields, each with its own confidence score"
+    "text": "The same model call, no token cost, returns eleven fields, each with its own confidence score"
   },
   "preflight:SIG-EXTRACTION-CONFIDENCE": {
     "tag": "Pre-flight · Extraction confidence",
@@ -60,11 +60,11 @@ window.CHECK_CAPTIONS = {
   },
   "preflight:SIG-INVALID-KEYWORDS": {
     "tag": "Pre-flight · Disqualifying content",
-    "text": "Data transform SetKeywordMatchResults. Eleven terms, maintained by the fraud team. No AI"
+    "text": "Data transform SetKeywordMatchResults, included in Pega Platform. Eleven terms, maintained by the fraud team"
   },
   "preflight:SIG-DOC-COMPLETENESS": {
     "tag": "Pre-flight · Receipt completeness",
-    "text": "Data transform SetMarkerFlagResults. Amount received, ABN, itemisation, signature"
+    "text": "Data transform SetMarkerFlagResults, included in Pega Platform. Amount received, ABN, itemisation, signature"
   },
   "preflight:SIG-LINE-RECONCILIATION": {
     "tag": "Pre-flight · Line item reconciliation",
@@ -80,31 +80,31 @@ window.CHECK_CAPTIONS = {
   },
   "preflightPassed": {
     "tag": "Pre-flight · Decision",
-    "text": "Decision table Valid Claim. First matching row wins. Nothing matched, so the claim proceeds"
+    "text": "Decision table Valid Claim, included in Pega Platform. First matching row wins. Nothing matched, so the claim proceeds"
   },
   "preflightForensics": {
     "tag": "Pre-flight · Decision",
-    "text": "Decision table Valid Claim. A total that doesn't reconcile goes to forensics, not rejection: the question is how it was altered"
+    "text": "Decision table Valid Claim, included in Pega Platform. A total that doesn't reconcile goes to forensics, not rejection: the question is how it was altered"
   },
   "preflightRejected": {
     "tag": "Pre-flight · Decision",
-    "text": "Decision table Valid Claim. First matching row wins. A reject row matched, so the claim stops here"
+    "text": "Decision table Valid Claim, included in Pega Platform. First matching row wins. A reject row matched, so the claim stops here"
   },
   "preflightReview": {
     "tag": "Pre-flight · Decision",
-    "text": "Decision table Valid Claim. First matching row wins. A review row matched, so a person decides"
+    "text": "Decision table Valid Claim, included in Pega Platform. First matching row wins. A review row matched, so a person decides"
   },
   "phase1:SIG-P1-FONT": {
     "tag": "Phase 1 · Font consistency",
-    "text": "AI call on the receipt image. Text edited into a genuine receipt rarely matches the original typeface"
+    "text": "AI call on the receipt image, no token cost. Text edited into a genuine receipt rarely matches the original typeface"
   },
   "phase1:SIG-P1-COLOUR": {
     "tag": "Phase 1 · Colour and stamp analysis",
-    "text": "AI call on the image's colour layers. It finds figures or stamps pasted onto a genuine scan"
+    "text": "AI call on the image's colour layers, no token cost. It finds figures or stamps pasted onto a genuine scan"
   },
   "phase1:SIG-P1-AIGEN": {
     "tag": "Phase 1 · AI-generated detection",
-    "text": "AI call scoring the image against image-generator signatures. It catches receipts that were never printed"
+    "text": "AI call scoring the image against image-generator signatures, no token cost. It catches receipts that were never printed"
   },
   "phase1:SIG-P1-META": {
     "tag": "Phase 1 · Metadata and provenance",
@@ -140,10 +140,10 @@ window.CHECK_CAPTIONS = {
   },
   "phase3:P3-GRAPH": {
     "tag": "Phase 3 · Network graph",
-    "text": "Connected: does any path within 3 hops reach a known entity? A graph query over MCP, finding links no single claim contains"
+    "text": "Connected: does any path within 3 hops reach a known entity? A graph query over MCP, an AI call with no token cost, finding links no single claim contains"
   },
   "phase3:P3-SIMILARITY": {
     "tag": "Phase 3 · Fraud case similarity",
-    "text": "Resembles: does this claim look like a confirmed case, with no identifier in common? Knowledge Buddy searches closed investigations and cites what it finds"
+    "text": "Resembles: does this claim look like a confirmed case, with no identifier in common? Knowledge Buddy, an AI call with no token cost, searches closed investigations and cites what it finds"
   }
 };
