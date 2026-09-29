@@ -223,6 +223,23 @@ So these don't compete. Every signal here is a feature your models can't calcula
 
 **Priority**: The models moment is the last thing to cut. It only works pre-empted: once someone asks it out loud, the same answer is a defence rather than evidence you'd already thought about it. Slides 4 and 5 are each recoverable in one sentence. That moment isn't.
 
+## Scenario quick reference
+
+Pick the scenarios for the room. Press the key to jump straight to one. The last column shows where each sits in this hour; the two marked alternative are ready if the room asks.
+
+| Key | Claim | Member | The point it makes | Where it stops | Outcome | Time | In this hour |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| 1 | CLM-0841 | James Kowalski | The clean baseline: every step, explained | Runs all three phases | Clean, sent for adjudication | 15 min | 10:00 |
+| 2 | CLM-0842 | Sarah Nguyen | A doctored receipt: the arithmetic says something is wrong, forensics shows how | Pre-flight reconciliation fails, then Phase 1 | Doctored total, score 0.28, investigator queue, HIGH | 4 min | 29:00 |
+| 3 | CLM-0843 | David Okafor | Follow the money: four practices paying into one bank account | Phase 2, ES-003 | Bank account ring, SIU queue, HIGH | About 3 min | Alternative to CLM-0844 |
+| 4 | CLM-0844 | Linda Pham | A device ring no single claim can show | Phase 2, ES-002 | Device ring, SIU queue, HIGH | 4 min | 33:00 |
+| 5 | CLM-0845 | Michael Torres | The risk is in who delivered the service; then the investigation screen | Phase 3, graph and similarity | Two weak signals, investigator queue, standard priority, investigation screen | 3 min, plus 2 for the investigation screen | 37:00 |
+| 6 | CLM-0846 | Angela Wu | An organised ring, three hops away | Phase 3, graph | Fraud ring Community #47, SIU queue, HIGH | About 3 min | Alternative to CLM-0845 |
+| 7 | CLM-0847 | Priya Raman | Not claimable: stopped before any forensics | Pre-flight | Quotation rejected, no pipeline | 2 min | 25:00 |
+| 8 | CLM-0848 | Oliver Hartmann | A genuine receipt that still isn't claimable, and the PAID question for the room | Pre-flight | Genuine receipt stamped PAID, rejected, no pipeline | 2 min | 27:00 |
+
+Short on time? CLM-0841, one pre-flight stop (7 or 8), and one scenario from each later phase (2, 4 and 5) cover every layer.
+
 ## 10:00–25:00 · CLM-0841: a clean claim, end to end
 
 Take your time here. Every later scenario reuses these steps, so this is where the technical questions land.
