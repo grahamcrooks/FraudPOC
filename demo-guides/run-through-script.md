@@ -336,16 +336,18 @@ Then the Receipt integrity score: every check at −0.00, total 1.00, "Threshold
 - ES-002 Device ring: 1 member on this device, threshold 3 · Pass
 - ES-003 Bank account ring: 1 practice on this account, threshold 3 · Pass
 
-"Signals raised 0 of 3" and "No suspicious cross-claim pattern detected. Continuing to Phase 3." An italic line lists the planned checks.
+"Signals raised 0 of 3" and "No suspicious cross-claim pattern detected. Continuing to Phase 3." Under the three live checks, four planned strategies show as grey dashed cards marked "Planned — not in this build" (ES-004 phantom ABN, ES-005 waiver abuse, ES-006 item code validation, ES-007 terminal mismatch), then a blue dashed "Your next strategy" card marked "Configurable". The finished stages above sit as single lines.
 
 **Say**: Phase 1 asked whether this receipt is suspicious. Phase 2 asks a different question: is there an emerging pattern across claims over time? Three real-time Pega Event Strategies evaluate the claims stream continuously, using filters, time windows, aggregations and thresholds: a claim lodged far from home, one device used by unrelated members, one bank account collecting from unrelated practices. Each strategy raises a signal or it doesn't. Nothing is raised for James: no suspicious cross-claim pattern.
+
+**Say, pointing at the planned cards**: Three running, four designed, and the eighth is whatever your team spots next month. Each one is configured, not coded: a new pattern becomes a live strategy in days, not a development cycle.
 
 **Under the hood**:
 
 - ES-001: distance from the submission IP's location to the registered address. Graded: over 500 km moderate, over 1,500 km high, overseas critical.
 - ES-002: distinct members on one `DeviceFingerprintID` in 72 hours. Three or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
 - ES-003: distinct practice ABNs paying into one account in 30 days. Three or more fires. It follows where the benefit lands, not who lodged the claim.
-- Planned, not built: phantom ABN, waiver abuse, item code validation.
+- Planned, not built, and shown as such: ES-004 phantom ABN (ABN checked live against the Australian Business Register), ES-005 waiver abuse (waiting-period waivers and 90-day volume), ES-006 item code validation (codes against provider type) and ES-007 terminal mismatch (a HICAPS terminal used away from its registered practice). Planned cards carry no verdict, so nothing reads as a check that ran.
 
 **The room**:
 

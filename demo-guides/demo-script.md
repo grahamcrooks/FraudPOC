@@ -186,12 +186,12 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
     - **ES-001 distance anomaly**: the distance between the submission IP geolocation and the registered address. Graded: over 500 km moderate, over 1,500 km high, overseas critical.
     - **ES-002 device ring**: distinct members on one `DeviceFingerprintID` in 72 hours. Three or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
     - **ES-003 bank account ring**: distinct practice ABNs paying into one account in 30 days. Three or more fires.
-  - Planned and not built: phantom ABN, waiver abuse, item code validation.
+  - Planned and not built: ES-004 phantom ABN, ES-005 waiver abuse, ES-006 item code validation, ES-007 terminal mismatch. A final card shows that new strategies are configured, not coded.
 - **Check**:
-  - Three checks run 6 seconds apart, in a single column, each badged "Real-time event strategy". The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies."
+  - Three checks run 6 seconds apart, in a single column, each badged "Real-time event strategy". The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies running, 4 planned, more configurable." The finished stages above collapse to single lines, and the phase explanation is a line of text, not a navy box.
   - CLM-0841 results: 0.4 km from home, 1 member on the device, 1 practice on the account.
   - The block reads "Signals raised 0 of 3" and "No suspicious cross-claim pattern detected. Continuing to Phase 3.", and the result "Phase 2 Passed — No Suspicious Cross-Claim Pattern Detected".
-  - The italic planned line shows under the checks.
+  - Four grey dashed cards follow the checks, each marked "Planned — not in this build", then a blue dashed "Your next strategy" card marked "Configurable". None carries a verdict.
 
 ### Step 6: Phase 3, network intelligence
 
