@@ -126,6 +126,14 @@ window.CHECK_CAPTIONS = {
     "tag": "Phase 2 · ES-003 Bank account ring",
     "text": "Real-time event strategy. It aggregates the practices paying into one account over a 30-day window, following where the benefit lands"
   },
+  "phase2:ES-004": {
+    "tag": "Phase 2 · ES-004 Phantom ABN",
+    "text": "Real-time event strategy. It checks the billing practice's ABN against the Australian Business Register as the claim arrives: a cancelled ABN is caught at once"
+  },
+  "phase2:ES-005": {
+    "tag": "Phase 2 · ES-005 Waiver abuse",
+    "text": "Real-time event strategy. It counts waiting-period waivers and practice claim volume over a rolling 90 days, against the practice's own baseline"
+  },
   "phase3": {
     "tag": "Phase 3 · Network intelligence",
     "text": "Three ways to ask the same question. Is this entity known? Is it connected to one? Does it look like something we've already confirmed? The first is instant and finds the least"

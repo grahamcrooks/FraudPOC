@@ -714,6 +714,10 @@ body.run-rolling .presenter-only{display:none}
 #ph2-info .phase-info-band.alert .phase-info-txt{color:#991B1B}
 .p2c-row{grid-template-columns:minmax(200px,280px) 1fr}
 .p2c-s{font-weight:700}
+.p1-calc.p2-compact{padding:10px 18px;margin-top:10px}
+.p2c-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 0;font-size:13px;color:var(--text-2)}
+.p2c-item::before{content:'·';margin:0 8px;color:var(--text-4)}
+.p2-compact .p1c-verdict{margin-top:3px}
 .p1c-action{margin-top:4px;font-size:13px;font-weight:600;color:var(--text)}
 /* Pre-flight terminal outcomes: a fail or flag stops the flow before the pipeline */
 .upload-zone.pf-stop{cursor:default;text-align:left;padding:16px 18px}
@@ -1206,14 +1210,12 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
       </div>
     </div>
     <div class="phase-block" id="ph2-block" style="display:none">
-      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Cross-Claim Signals</div><div class="phase-question">Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies running, 4 planned, more configurable.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
+      <div class="phase-collapsed"><div class="phase-status-ico psi-queued" id="ph2-ico">⚡</div><div class="phase-titlewrap"><div class="phase-name">Phase 2 — Cross-Claim Signals</div><div class="phase-question">Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable.</div></div><span class="phase-status-badge psb-queued" id="ph2-badge">Queued</span></div>
       <div class="phase-expanded" id="ph2-expanded">
         <div class="phase-info" id="ph2-info"><div class="phase-info-band" id="ph2-info-band"><div class="phase-info-txt" id="ph2-info-txt"></div></div></div>
         <div class="check-list" id="ph2-checks"></div>
         <div class="p2-planned" id="ph2-planned">
           <div class="p2-planned-title">Planned strategies · designed, not in this build</div>
-          <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-004 Phantom ABN</span><span class="sig-sum"> · the provider's ABN checked live against the Australian Business Register; a cancelled ABN is caught at once</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
-          <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-005 Waiver abuse</span><span class="sig-sum"> · excessive use of waiting-period waivers and unusual claim volume in a rolling 90-day window</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
           <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-006 Item code validation</span><span class="sig-sum"> · item codes checked against what this provider type can bill</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
           <div class="sig p2-plan"><div class="sig-head"><span class="sig-ico">🗓️</span><span class="sig-name"><span class="sig-nm">ES-007 Terminal mismatch</span><span class="sig-sum"> · provider fraud: a HICAPS terminal used away from its registered practice, or on another practice's provider number</span></span><span class="sig-badges"><span class="sig-cost plan">Planned — not in this build</span></span></div></div>
           <div class="sig p2-plan p2-next"><div class="sig-head"><span class="sig-ico">➕</span><span class="sig-name"><span class="sig-nm">Your next strategy</span><span class="sig-sum"> · new patterns your investigators spot become configured Event Strategies, live in days with no code change</span></span><span class="sig-badges"><span class="sig-cost next">Configurable</span></span></div></div>
@@ -1441,7 +1443,7 @@ const PHASE_DESC=[
 // Shown in the band AFTER a phase resolves — states the finding.
 const PHASE_RESULT_DESC=[
   { ph1:'No adverse findings on the receipt.',
-    ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern detected.',
+    ph2:'All five real-time event strategies clear — no suspicious cross-claim pattern detected.',
     ph3:'No entity known, no connection within 3 hops, and no comparable confirmed case.' },
   { ph1:'Suspicious receipt — spliced typefaces and a Photoshop metadata trail dated after the service.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
@@ -1449,10 +1451,10 @@ const PHASE_RESULT_DESC=[
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
     ph2:'ES-002 found five unrelated members on one device in 26 hours. The four earlier claims were assessed and cleared before the pattern existed; this claim is the one that revealed it.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
-    ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern in the stream. The risk sits in a relationship between entities, which Phase 3 follows.',
+    ph2:'All five real-time event strategies clear — no suspicious cross-claim pattern in the stream. The risk sits in a relationship between entities, which Phase 3 follows.',
     ph3:'Two weak signals, neither sufficient alone: the optometrist also bills through two practices under investigation, and the claim resembles three confirmed cases with no identifier in common. Referred for review, not to the SIU.' },
   { ph1:'No adverse findings on the receipt. That does not make it a clean claim.',
-    ph2:'All three real-time event strategies clear — no suspicious cross-claim pattern in the stream. The connection is a relationship in the network, which Phase 3 follows.',
+    ph2:'All five real-time event strategies clear — no suspicious cross-claim pattern in the stream. The connection is a relationship in the network, which Phase 3 follows.',
     ph3:'The practice is already monitored, and a 3-hop link via the shared submission IP reaches a confirmed fraud community — 14 members, 3 providers. Phase 2 saw nothing: no single claim contains this connection.' },
   {}, // CLM-0847: never reaches the pipeline
   {}, // CLM-0848: never reaches the pipeline
@@ -2174,6 +2176,16 @@ const PhaseSignals={
         +checks.map(mrow).join('')
         +'<div class="p1c-rule"></div>'
         +'<div class="p1c-row p2c-row p1c-total"><span class="p1c-l">Network verdict</span><span class="p2c-s">'+esc(res.verdict||(n?'SIGNALS RAISED':'CLEAR'))+'</span></div>'
+        +(res.action?'<div class="p1c-verdict">'+esc(res.action)+'</div>':'');
+      setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'end'}),150);
+      return true;
+    }
+    // Phase 2: two lines. Each strategy's result is already on its card, so the
+    // summary names them inline and ends on the action.
+    if(ph===2){
+      box.className='p1-calc show p2-compact '+(n?'bad':'ok');
+      const item=c=>'<span class="p2c-item">'+esc(c.id)+' <span class="p2c-s '+(raised(c)?'p1c-fail':'p1c-pass')+'">'+esc(raised(c)?'SIGNAL — '+what(c):c.verdict==='skipped'?'not run':'no signal')+'</span></span>';
+      box.innerHTML='<div class="p2c-line"><span class="p1c-total">Signals raised '+n+' of '+checks.length+'</span>'+checks.map(item).join('')+'</div>'
         +(res.action?'<div class="p1c-verdict">'+esc(res.action)+'</div>':'');
       setTimeout(()=>box.scrollIntoView({behavior:reducedMotion()?'auto':'smooth',block:'end'}),150);
       return true;

@@ -56,7 +56,7 @@
 
 **Question:** Does this claim make sense?
 
-- Checks: ES-001 distance anomaly, ES-002 device ring, ES-003 bank account ring (Pega Event Strategies). Planned, shown as cards with no verdict: ES-004 phantom ABN, ES-005 waiver abuse, ES-006 item code validation, ES-007 terminal mismatch, then "Your next strategy" (configurable).
+- Checks: ES-001 distance anomaly, ES-002 device ring, ES-003 bank account ring, ES-004 phantom ABN, ES-005 waiver abuse (Pega Event Strategies). Planned, shown as cards with no verdict: ES-006 item code validation, ES-007 terminal mismatch, then "Your next strategy" (configurable).
 - Result: PASS or FAIL
 
 ### Phase 3: Network Intelligence 🧠

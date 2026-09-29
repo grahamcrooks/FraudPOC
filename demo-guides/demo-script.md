@@ -180,17 +180,19 @@ Walk through CLM-0841 in full the first time: it's the clean baseline and runs e
 
 ### Step 5: Phase 2, cross-claim signals
 
-- **Say**: A clean receipt isn't a clean claim. Phase 1 asked whether this receipt is suspicious. Phase 2 asks a different question: is there an emerging pattern across claims over time? Three real-time Pega Event Strategies evaluate the claims stream continuously, using filters, time windows, aggregations and thresholds: a claim lodged far from home, one device used by unrelated members, one bank account collecting from unrelated practices. Each strategy raises a signal or it doesn't.
+- **Say**: A clean receipt isn't a clean claim. Phase 1 asked whether this receipt is suspicious. Phase 2 asks a different question: is there an emerging pattern across claims over time? Five real-time Pega Event Strategies evaluate the claims stream continuously, using filters, time windows, aggregations and thresholds: a claim lodged far from home, one device used by unrelated members, one bank account collecting from unrelated practices, a practice billing under an ABN that isn't live, and a run of waiting-period waivers. Each strategy raises a signal or it doesn't.
 - **Under the hood**:
-  - Three real-time Pega Event Strategies detect patterns across the claims event stream, using filters, time windows, aggregations and thresholds. Their output can triage work, update data or trigger the next action.
+  - Five real-time Pega Event Strategies detect patterns across the claims event stream, using filters, time windows, aggregations and thresholds. Their output can triage work, update data or trigger the next action.
     - **ES-001 distance anomaly**: the distance between the submission IP geolocation and the registered address. Graded: over 500 km moderate, over 1,500 km high, overseas critical.
     - **ES-002 device ring**: distinct members on one `DeviceFingerprintID` in 72 hours. Three or more unrelated members fires. Members sharing a membership and address are a household, not a ring.
     - **ES-003 bank account ring**: distinct practice ABNs paying into one account in 30 days. Three or more fires.
-  - Planned and not built: ES-004 phantom ABN, ES-005 waiver abuse, ES-006 item code validation, ES-007 terminal mismatch. A final card shows that new strategies are configured, not coded.
+    - **ES-004 phantom ABN**: the billing practice's ABN against the Australian Business Register. A cancelled, deregistered or invalid ABN, or one registered to a different entity, fires.
+    - **ES-005 waiver abuse**: waiting-period waivers and practice claim volume over a rolling 90 days. Repeated waivers for one member, or practice volume at three times its 90-day baseline, fires.
+  - Planned and not built: ES-006 item code validation, ES-007 terminal mismatch. A final card shows that new strategies are configured, not coded.
 - **Check**:
-  - Three checks run 6 seconds apart, in a single column, each badged "Real-time event strategy". The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 3 real-time event strategies running, 4 planned, more configurable." The finished stages above collapse to single lines, and the phase explanation is a line of text, not a navy box.
-  - CLM-0841 results: 0.4 km from home, 1 member on the device, 1 practice on the account.
-  - The block reads "Signals raised 0 of 3" and "No suspicious cross-claim pattern detected. Continuing to Phase 3.", and the result "Phase 2 Passed — No Suspicious Cross-Claim Pattern Detected".
+  - Five checks run 6 seconds apart, in a single column, each badged "Real-time event strategy". The phase header reads "Cross-claim pattern detection. Does this claim fit the broader pattern? 5 real-time event strategies running, 2 planned, more configurable." The finished stages above collapse to single lines, and the phase explanation is a line of text, not a navy box.
+  - CLM-0841 results: 0.4 km from home, 1 member on the device, 1 practice on the account, ABN active, 0 waivers at 1.1× baseline.
+  - The two-line summary reads "Signals raised 0 of 5", each strategy with "no signal", then "No suspicious cross-claim pattern detected. Continuing to Phase 3.", and the result "Phase 2 Passed — No Suspicious Cross-Claim Pattern Detected".
   - Four grey dashed cards follow the checks, each marked "Planned — not in this build", then a blue dashed "Your next strategy" card marked "Configurable". None carries a verdict.
 
 ### Step 6: Phase 3, network intelligence
@@ -243,7 +245,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
   - It found Active Rehab Centre, Southbank Physio Rooms, Westgate Allied Health and Keilor Road Physio, all paying into BSB 083-147 / 441820937. Four is above the threshold of three.
   - ES-001: about 26 km from home (Richmond to Dandenong). ES-002: clear.
 - **Check**:
-  - The block reads "Signals raised 1 of 3".
+  - The summary reads "Signals raised 1 of 5".
   - The action line: the claim is marked suspicious and referred to AIM, and a network assessment is raised against the account.
   - The claim goes to the SIU queue, HIGH. Phase 3 does not run.
 
@@ -257,7 +259,7 @@ For each one, run the steps as in Part 2 and slow down only at the step where it
 - **Check**:
   - The sign-in plays in a laptop browser frame, with a one-time code instead of Face ID and the H+ member website. The label reads "Simulated".
   - The chip shows 💻 DEV-1196 ⚠ new device.
-  - The block reads "Signals raised 1 of 3". The action line states the claim outcome and the device assessment separately.
+  - The summary reads "Signals raised 1 of 5". The action line states the claim outcome and the device assessment separately.
   - The claim goes to the SIU queue, HIGH. Phase 3 does not run.
 
 ### CLM-0845, Michael Torres: shared practitioner (stops in Phase 3)
