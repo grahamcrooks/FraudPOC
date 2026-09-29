@@ -264,6 +264,12 @@
       "lookedAt": "Every entity the claim touches, up to 3 hops: member, practice, practitioner, device, submission IP, payment account",
       "rule": "Any path within 3 hops to a confirmed fraud community or a monitored entity (one under investigation)",
       "found": "3-hop path: this claim's submission IP 203.0.113.91 → Kestrel Allied Health → confirmed fraud member MBR-99112, in Community #47 of 14 members and 3 providers",
+      "detail": {
+        "Hops": "Hop 1: 6 entities · Hop 2: 9, including Kestrel Allied Health through the shared submission IP · Hop 3: 6, including confirmed member MBR-99112",
+        "Relationships": "Uses device, submits from IP, paid into account, lives at address, treated by practitioner, practitioner works at practice; and the shared links between members and providers: same device, account, address, phone or email",
+        "Analytics": "Shortest path from every entity to any confirmed or monitored entity · membership of a confirmed fraud community (ring) · shared-attribute links that tie members or providers who look unrelated · path into Community #47, a confirmed ring of 14 members and 3 providers",
+        "What it is": "A graph of members, practices, practitioners, devices, IPs and payment accounts, built from every claim and sign-in and queried by the Pega agent over MCP. Each path comes back with its edges, so the investigator sees exactly how the claim connects"
+      },
       "verdict": "fail",
       "conclusion": "Connected to a confirmed fraud community",
       "metric": "21 entities within 3 hops · 1 confirmed"
