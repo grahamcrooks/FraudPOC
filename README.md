@@ -33,6 +33,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 - [The three phases](docs/three-phases-fraud-signals.md): each phase's fraud signals, explained one by one (original Word file in `docs/_source/`).
 - [Reference data](docs/reference-data.md): test practices and practitioners for the claim form dropdowns.
 - [Pega Blueprint export](docs/blueprint/README.md): the application's Blueprint file and how to use it.
+- [Blueprint requirements](docs/blueprint/blueprint-requirements.md): the whole target design as one requirements document, to upload under "Requirements documents" when starting a new Blueprint. It holds the same content as the four Blueprint prompts; keep them in step.
 - [Target case design](docs/blueprint/target-case-design.md): the case design the Blueprint should match: two case types, the stages and steps, how each scenario runs through them, the data model and personas.
 
 ## Data
