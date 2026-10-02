@@ -140,13 +140,13 @@ A child case of Claim, created only when a claim is referred. It references its 
 
 ## Data objects
 
-Exactly these 15. There is no separate Claim data object; the Claim case type holds the claim.
+Exactly these 15, plus two embedded objects: Practitioner Practice (in Practitioner) and Extracted Field (in Receipt). There is no separate Claim data object; the Claim case type holds the claim. Extract Receipt writes only to Receipt and Claim Line, as printed; Member, Practice and Practitioner are reference records it never writes to. Field lists: [data-object-fields.md](data-object-fields.md).
 
 | Data object | Holds |
 | --- | --- |
-| Member | The insured member. System of record: the fund's member system |
-| Practice | The provider practice, including ABN and bank account |
-| Practitioner | The treating practitioner, including AHPRA number |
+| Member | One person on a policy, including dependants: member and policy number, relationship, name, date of birth, address and coordinates, phone, email, cover. System of record: the fund's member system; read-only |
+| Practice | One practice location: name, type, address, phone, email, ABN, ABN status and registered entity, bank BSB and account, monitored flag |
+| Practitioner | Name, qualifications, profession, AHPRA number and status, monitored flag, and a list of practice affiliations, each with its own provider number |
 | Receipt | The uploaded file and its header fields: document title, type and number, issue and due dates, practice name, ABN and provider number, practitioner name and AHPRA number, referring provider, patient details, health fund details, total charged, adjustments, amount paid, amount due, payment method, declaration and signature, stamps and marks, raw text. Each field has a confidence score |
 | Claim Line | One service line; a document can have many: line number, service date, reference number, item code, description, body area or tooth, quantity, fee, GST applies. Each field has a confidence score |
 | Item Code Reference | Valid item codes and descriptions |
@@ -168,7 +168,8 @@ Use Decimal for scores, DateTime for dates and times, and Boolean for flags.
 
 | Field | Type |
 | --- | --- |
-| Member | Member |
+| Member | Member (who signed in and claimed) |
+| Patient | Member (who was treated, matched from the receipt; may be a dependant) |
 | Practice | Practice |
 | Practitioner | Practitioner |
 | Receipt | Receipt |

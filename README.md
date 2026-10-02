@@ -23,6 +23,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
   3. [Fraud Investigation case type](prompts/blueprint-case-design/03-fraud-investigation-case-type.md): the child case created on referral, connected to the Claim's Referred stage.
   4. [Data model](prompts/blueprint-case-design/04-data-model.md): the data objects and key fields, removing duplicates from the earlier steps.
   5. [AI step details](prompts/blueprint-case-design/05-ai-step-details.md): instructions, inputs and outputs for the three AI steps, which Blueprint marks incomplete until they're filled in.
+  6. [Data object fields](prompts/blueprint-case-design/06-data-object-fields.md): the fields Member, Practice, Practitioner, Receipt, Claim Line and Item Code Reference need to ingest a receipt, and a Patient field on the Claim.
 - [Add the PAID stamp as a disqualifying term](prompts/add-already-paid-disqualifying-term.md): extends SetKeywordMatchResults so a receipt stamped PAID is rejected in pre-flight (disposition AlreadyPaid), matching the stamp on word boundaries, not the substring.
 - Create fraud session data objects, run in order:
   1. [GeoSession](prompts/create-fraud-session-data-objects/01-geo-session.md): creates the object that captures where a claim was submitted from.
@@ -36,6 +37,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 - [Pega Blueprint export](docs/blueprint/README.md): the application's Blueprint file and how to use it.
 - [Blueprint requirements](docs/blueprint/blueprint-requirements.md): the whole target design as one requirements document, to upload under "Requirements documents" when starting a new Blueprint. It holds the same content as the four Blueprint prompts; keep them in step.
 - [Receipt extraction fields](docs/blueprint/receipt-extraction-fields.md): every field Extract Receipt reads from a receipt or tax invoice, header and per service line, the rules the layouts expose, and a worked example from the CLM-0848 receipt.
+- [Data object fields](docs/blueprint/data-object-fields.md): the fields each data object needs, why printed values stay on the Receipt rather than in Member, Practice or Practitioner, and the gaps this closes.
 - [Target case design](docs/blueprint/target-case-design.md): the case design the Blueprint should match: two case types, the stages and steps, how each scenario runs through them, the data model and personas.
 
 ## Data
