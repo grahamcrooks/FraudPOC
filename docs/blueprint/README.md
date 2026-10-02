@@ -4,6 +4,6 @@
 
 The file is an opaque binary export. It can't be read or diffed here; import it into Pega Blueprint to view or continue the design.
 
-The target design for the next version is in [`target-case-design.md`](target-case-design.md), built by the prompt in [`prompts/blueprint-case-design.md`](../../prompts/blueprint-case-design.md).
+The target design for the next version is in [`target-case-design.md`](target-case-design.md), built in a new Blueprint by the four prompts in [`prompts/blueprint-case-design/`](../../prompts/blueprint-case-design/).
 
 Don't commit Blueprint overview PDFs here: they're marked confidential and name the client.

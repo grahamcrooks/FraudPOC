@@ -1,6 +1,6 @@
 # Target Case Design
 
-The case design the Pega Blueprint should match, agreed after reviewing the Blueprint overview of 21 September 2026 (Blueprint ID BP-2441061) against the demo in `index.html` and the scenario data. It replaces three case types and 12 primary validation stages with two case types: a Claim of six stages and a Fraud Investigation of three. The prompt that builds it in Pega GenAI Blueprint is [`prompts/blueprint-case-design.md`](../../prompts/blueprint-case-design.md).
+The case design the Pega Blueprint should match, agreed after reviewing the Blueprint overview of 21 September 2026 (Blueprint ID BP-2441061) against the demo in `index.html` and the scenario data. It replaces three case types and 12 primary validation stages with two case types: a Claim of six stages and a Fraud Investigation of three. The four prompts in [`prompts/blueprint-case-design/`](../../prompts/blueprint-case-design/) build it in a new Pega GenAI Blueprint, one step at a time.
 
 ## Decisions
 
