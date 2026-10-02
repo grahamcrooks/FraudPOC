@@ -16,6 +16,8 @@ Extract Receipt writes only to the **Receipt** and its **Claim Lines**, exactly 
 | Health fund name, membership number | Receipt | The signed-in member | Recorded only; another fund's name is a signal |
 | Service lines | Claim Lines | Item Code Reference | Each line's item code record |
 
+Each claim has one practice and one practitioner, set once for the whole document; claim lines don't carry their own. An invoice listing different practitioners on different lines is out of scope for now.
+
 The signed-in member and the patient can differ: a member claims for a partner or child on the same policy. So the Claim has both: Member (who claimed, from sign-in) and Patient (who was treated, matched from the receipt).
 
 ## Member
