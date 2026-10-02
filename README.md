@@ -17,6 +17,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 
 - [Configure provider data object](prompts/configure-provider-data-object.md): creates the Provider data object, test providers and the Provider dropdown.
 - [Configure claim form sections](prompts/configure-claim-form-sections.md): sets out the claim form fields, line-items table and summary.
+- [Blueprint case design](prompts/blueprint-case-design.md): restructures the Pega Blueprint to the target case design: a Claim case of six stages and a Fraud Investigation child case of three.
 - [Add the PAID stamp as a disqualifying term](prompts/add-already-paid-disqualifying-term.md): extends SetKeywordMatchResults so a receipt stamped PAID is rejected in pre-flight (disposition AlreadyPaid), matching the stamp on word boundaries, not the substring.
 - Create fraud session data objects, run in order:
   1. [GeoSession](prompts/create-fraud-session-data-objects/01-geo-session.md): creates the object that captures where a claim was submitted from.
@@ -28,6 +29,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 - [The three phases](docs/three-phases-fraud-signals.md): each phase's fraud signals, explained one by one (original Word file in `docs/_source/`).
 - [Reference data](docs/reference-data.md): test practices and practitioners for the claim form dropdowns.
 - [Pega Blueprint export](docs/blueprint/README.md): the application's Blueprint file and how to use it.
+- [Target case design](docs/blueprint/target-case-design.md): the case design the Blueprint should match: two case types, the stages and steps, how each scenario runs through them, the data model and personas.
 
 ## Data
 
