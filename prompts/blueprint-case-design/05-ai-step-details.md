@@ -6,14 +6,18 @@ No placeholders.
 
 ## Extract Receipt
 
-Pre-flight stage, Document Analysis process.
+Pre-flight stage, Document Analysis process. The full field list, and where each field lands, is in [`docs/blueprint/receipt-extraction-fields.md`](../../docs/blueprint/receipt-extraction-fields.md).
 
 ```text
-Read the uploaded receipt (PDF or image) and extract the claim details. For each field, return the value and a confidence score from 0 to 1. Do not guess: if a field is missing or unreadable, leave it empty with confidence 0. Return the document type exactly as printed (receipt, tax invoice, quotation, estimate or statement) and any stamps or handwritten marks, such as PAID. Keep the full raw text of the document.
+Read the uploaded receipt or tax invoice (PDF or image) and extract its details. For every field, return the value and a confidence score from 0 to 1. Do not guess: if a field is missing or unreadable, leave it empty with confidence 0.
+
+Header fields, once per document: document title as printed; document type (receipt, tax invoice, quotation, estimate or statement); document number; issue date; service time; due date; practice name, address, phone, email, ABN and provider number; practitioner name, qualifications and AHPRA number; referring provider; patient name, date of birth, address, postcode and phone; health fund name, membership number and fund number; total charged; adjustments; amount paid; amount due; payment method; card last four digits only; whether GST applies; whether a practitioner declaration and signature are present, and the signature date; any stamps or handwritten marks, such as PAID; and the full raw text.
+
+Service lines: return one line for every service row, however many there are. For each: line number, service date, reference number, item code, description, body area or tooth, quantity, fee and whether GST applies. If a line has no service date of its own, use the document's date of service. If no quantity is printed, use 1. Mark any value you derived rather than read as derived.
 ```
 
 - **Input:** Receipt (the uploaded file).
-- **Outputs:** practice name, practice ABN, practitioner name, practitioner AHPRA number, patient name, service date, line items (item code, description, quantity, item charge, date) into Claim lines, total charged, amount paid, payment method, document type as printed, stamps detected, a confidence score per field, and the raw text into Receipt.
+- **Outputs:** the header fields into Receipt, and one Claim Line per service row into Claim lines, each field with its confidence score.
 
 ## Generate Forensic Narrative
 

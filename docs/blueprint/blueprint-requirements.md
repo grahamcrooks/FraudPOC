@@ -55,7 +55,7 @@ Created for every claim submission. Six primary stages and two alternate stages.
 | Classify Document | Automation | Receipt, quotation, estimate or statement. Anything other than a receipt goes to the Rejected stage |
 | Check Disqualifying Content | Automation | Matches the Invalid Document Keyword list, including a PAID stamp matched on word boundaries. A match goes to the Rejected stage with the reason recorded |
 | Check Completeness | Automation | Provider, practitioner, service date, line items and amount paid are present. Incomplete goes to the Rejected stage |
-| Reconcile Line Items | Automation | Line items add up to the total. A mismatch does not reject the claim; it is flagged and the claim continues to Receipt Forensics |
+| Reconcile Line Items | Automation | Line fees add up to the total charged, allowing for printed adjustments. A mismatch does not reject the claim; it is flagged and the claim continues to Receipt Forensics |
 | Link Practice and Practitioner | Automation | Matches to Practice and Practitioner reference data |
 | Record Claim Value | Automation | Sets High Value Flag at $5,000 or above. Context only; never routes the claim |
 
@@ -147,8 +147,8 @@ Exactly these 15. There is no separate Claim data object; the Claim case type ho
 | Member | The insured member. System of record: the fund's member system |
 | Practice | The provider practice, including ABN and bank account |
 | Practitioner | The treating practitioner, including AHPRA number |
-| Receipt | The uploaded file and the raw extracted text |
-| Claim Line | One service line: item code, quantity, item charge, date |
+| Receipt | The uploaded file and its header fields: document title, type and number, issue and due dates, practice name, ABN and provider number, practitioner name and AHPRA number, referring provider, patient details, health fund details, total charged, adjustments, amount paid, amount due, payment method, declaration and signature, stamps and marks, raw text. Each field has a confidence score |
+| Claim Line | One service line; a document can have many: line number, service date, reference number, item code, description, body area or tooth, quantity, fee, GST applies. Each field has a confidence score |
 | Item Code Reference | Valid item codes and descriptions |
 | GeoSession | Submission IP address and resolved suburb and state |
 | DeviceSession | Device fingerprint and app or browser profile |

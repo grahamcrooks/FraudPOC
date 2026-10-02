@@ -35,6 +35,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
 - [Reference data](docs/reference-data.md): test practices and practitioners for the claim form dropdowns.
 - [Pega Blueprint export](docs/blueprint/README.md): the application's Blueprint file and how to use it.
 - [Blueprint requirements](docs/blueprint/blueprint-requirements.md): the whole target design as one requirements document, to upload under "Requirements documents" when starting a new Blueprint. It holds the same content as the four Blueprint prompts; keep them in step.
+- [Receipt extraction fields](docs/blueprint/receipt-extraction-fields.md): every field Extract Receipt reads from a receipt or tax invoice, header and per service line, the rules the layouts expose, and a worked example from the CLM-0848 receipt.
 - [Target case design](docs/blueprint/target-case-design.md): the case design the Blueprint should match: two case types, the stages and steps, how each scenario runs through them, the data model and personas.
 
 ## Data

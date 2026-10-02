@@ -53,7 +53,7 @@ Is this a claimable receipt at all? Instant, deterministic checks run before any
 | Classify document | Automation | Receipt, quotation, estimate or statement | Rejected |
 | Check disqualifying content | Automation | Disqualifying terms, including a PAID stamp matched on word boundaries | Rejected |
 | Check completeness | Automation | Provider, practitioner, service date, items and amount paid are present | Rejected |
-| Reconcile line items | Automation | Line items add up to the total | Continues to Receipt forensics, flagged |
+| Reconcile line items | Automation | Line fees add up to the total charged, allowing for printed adjustments | Continues to Receipt forensics, flagged |
 | Link practice and practitioner | Automation | Matches the practice and practitioner to reference data | |
 | Record claim value | Automation | Flags $5,000 or above as context for later checks; never routes the claim | |
 
@@ -147,8 +147,8 @@ Held once on the Claim, referenced by the Fraud Investigation.
 | --- | --- |
 | Member | The insured member (system of record: the fund's member system) |
 | Practice, Practitioner | Provider reference data, including ABN, AHPRA number and bank account |
-| Receipt | The uploaded file and the raw extracted text |
-| Claim Line | One service line: item code, quantity, charge, date |
+| Receipt | The uploaded file, its header fields and the raw extracted text; fields in [receipt-extraction-fields.md](receipt-extraction-fields.md) |
+| Claim Line | One service line, many per document: service date, item code, description, body area or tooth, quantity, fee |
 | Item Code Reference | Valid item codes and descriptions |
 | GeoSession, DeviceSession | Submission location and device |
 | Invalid Document Keyword, Document Marker Flag | Pre-flight reference lists |

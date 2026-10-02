@@ -18,7 +18,7 @@ Stage 2: Pre-flight
 - Classify Document (automation): receipt, quotation, estimate or statement. Anything other than a receipt goes to the Rejected stage.
 - Check Disqualifying Content (automation): match the invalid document keyword list, including a PAID stamp matched on word boundaries. A match goes to the Rejected stage with the reason recorded.
 - Check Completeness (automation): provider, practitioner, service date, line items and amount paid are present. Incomplete goes to the Rejected stage.
-- Reconcile Line Items (automation): line items add up to the total. A mismatch does not reject the claim; it is flagged and the claim continues to Receipt Forensics.
+- Reconcile Line Items (automation): line fees add up to the total charged, allowing for printed adjustments. A mismatch does not reject the claim; it is flagged and the claim continues to Receipt Forensics.
 - Link Practice and Practitioner (automation): match to practice and practitioner reference data.
 - Record Claim Value (automation): flag claims of $5,000 or above as high value. Context only; never routes the claim.
 
