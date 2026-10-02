@@ -50,7 +50,7 @@ Is this a claimable receipt at all? Instant, deterministic checks run before any
 | Extract receipt | AI | Reads the receipt and fills the claim fields, each with a confidence score | |
 | Check extraction confidence | Automation | Every critical field at or above 0.70 | Review extracted data |
 | Review extracted data | Claims Administrator (user), conditional | Only when a critical field is below 0.70 | |
-| Classify document | Automation | Receipt, quotation, estimate or statement | Rejected |
+| Classify document | Automation | Receipt, tax invoice, quotation, estimate or statement; a receipt or tax invoice continues | Rejected: quotation, estimate or statement |
 | Check disqualifying content | Automation | Disqualifying terms, including a PAID stamp matched on word boundaries | Rejected |
 | Check completeness | Automation | Provider, practitioner, service date, items and amount paid are present | Rejected |
 | Reconcile line items | Automation | Line fees add up to the total charged, allowing for printed adjustments | Continues to Receipt forensics, flagged |

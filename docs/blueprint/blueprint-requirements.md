@@ -9,7 +9,7 @@
 - Department: Claims Operations
 - Language: English
 
-Real-time fraud detection for health insurance claims. The first release covers extras claims (dental, optical, physiotherapy). The design must extend to other claim types, such as ambulance, without changing the case structure: a new claim type adds reference data and checks, not new stages.
+Real-time fraud detection for health insurance claims. It covers any receipt or tax invoice a member can claim and upload, such as extras (dental, optical, physiotherapy) and pathology. The design must extend to other claim types, such as ambulance, without changing the case structure: a new claim type adds reference data and checks, not new stages.
 
 Every claim passes through three phases of analysis:
 
@@ -52,7 +52,7 @@ Created for every claim submission. Six primary stages and two alternate stages.
 | Extract Receipt | AI step | Reads the receipt and populates the claim fields, each with a confidence score |
 | Check Extraction Confidence | Automation | Every critical field at or above 0.70. If any is below, run Review Extracted Data |
 | Review Extracted Data | User step, Claims Administrator | Conditional: only when a critical field is below 0.70 |
-| Classify Document | Automation | Receipt, quotation, estimate or statement. Anything other than a receipt goes to the Rejected stage |
+| Classify Document | Automation | Receipt, tax invoice, quotation, estimate or statement. A receipt or tax invoice continues; a quotation, estimate or statement goes to the Rejected stage |
 | Check Disqualifying Content | Automation | Matches the Invalid Document Keyword list, including a PAID stamp matched on word boundaries. A match goes to the Rejected stage with the reason recorded |
 | Check Completeness | Automation | Provider, practitioner, service date, line items and amount paid are present. Incomplete goes to the Rejected stage |
 | Reconcile Line Items | Automation | Line fees add up to the total charged, allowing for printed adjustments. A mismatch does not reject the claim; it is flagged and the claim continues to Receipt Forensics |

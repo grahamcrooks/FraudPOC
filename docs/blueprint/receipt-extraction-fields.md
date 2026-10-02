@@ -2,7 +2,7 @@
 
 The fields the Extract Receipt step reads from a receipt or tax invoice, and where each one lands in the data model. Header fields go on the Receipt data object; each service line is one Claim Line, and a document can carry any number of them. Every field also gets a confidence score from 0 to 1, which Check Extraction Confidence compares with 0.70 for the critical fields.
 
-It is based on two layouts: a physiotherapy patient receipt and claim form (one service date, a fee per line, fully paid) and a pathology tax invoice (a service date per line, adjustments, an amount still due). Extraction has to handle both.
+Any receipt or tax invoice a member can claim is in scope, extras and pathology alike. The fields are based on two layouts: a physiotherapy patient receipt and claim form (one service date, a fee per line, fully paid) and a pathology tax invoice (a service date per line, adjustments, an amount still due). Extraction has to handle both.
 
 ## Receipt (one per document)
 
@@ -92,7 +92,7 @@ Printed on claim-form receipts; often absent on invoices.
 ## Rules the layouts expose
 
 - **Reconciliation allows for adjustments.** Line fees should equal the total charged, or the total charged plus printed adjustments. Reconcile Line Items records which one held; neither holding is the mismatch that sends the claim to Receipt Forensics.
-- **Paid or not.** A document is paid when the amount paid equals the amount owing and the amount due is 0. A tax invoice with an amount still due hasn't been paid. Whether that rejects the claim, like a quotation, is a business decision still to make.
+- **Paid or not.** A document is paid when the amount paid equals the amount owing and the amount due is 0. Extraction records the amount paid and amount due either way. How to treat a tax invoice with an amount still due is parked for now; nothing routes on it.
 - **Several service dates.** Duplicate detection and the event strategies work per line, using each line's service date, not one date per document.
 - **Derived values are marked.** A quantity of 1 that wasn't printed, or an issue date taken from the service date, is recorded as derived so an investigator can tell it from what was read.
 

@@ -15,7 +15,7 @@ Stage 2: Pre-flight
 - Extract Receipt (AI step): read the receipt and populate the claim fields, each with a confidence score.
 - Check Extraction Confidence (automation): every critical field at or above 0.70. If any is below, run Review Extracted Data.
 - Review Extracted Data (user step, Claims Administrator): conditional, only when a critical field is below 0.70.
-- Classify Document (automation): receipt, quotation, estimate or statement. Anything other than a receipt goes to the Rejected stage.
+- Classify Document (automation): receipt, tax invoice, quotation, estimate or statement. A receipt or tax invoice continues; a quotation, estimate or statement goes to the Rejected stage.
 - Check Disqualifying Content (automation): match the invalid document keyword list, including a PAID stamp matched on word boundaries. A match goes to the Rejected stage with the reason recorded.
 - Check Completeness (automation): provider, practitioner, service date, line items and amount paid are present. Incomplete goes to the Rejected stage.
 - Reconcile Line Items (automation): line fees add up to the total charged, allowing for printed adjustments. A mismatch does not reject the claim; it is flagged and the claim continues to Receipt Forensics.
