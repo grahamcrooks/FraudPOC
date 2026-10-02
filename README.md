@@ -22,6 +22,7 @@ The original Word files are in [`demo-guides/_source/`](demo-guides/_source/).
   2. [Claim case type](prompts/blueprint-case-design/02-claim-case-type.md): six primary stages and two alternate stages.
   3. [Fraud Investigation case type](prompts/blueprint-case-design/03-fraud-investigation-case-type.md): the child case created on referral, connected to the Claim's Referred stage.
   4. [Data model](prompts/blueprint-case-design/04-data-model.md): the data objects and key fields, removing duplicates from the earlier steps.
+  5. [AI step details](prompts/blueprint-case-design/05-ai-step-details.md): instructions, inputs and outputs for the three AI steps, which Blueprint marks incomplete until they're filled in.
 - [Add the PAID stamp as a disqualifying term](prompts/add-already-paid-disqualifying-term.md): extends SetKeywordMatchResults so a receipt stamped PAID is rejected in pre-flight (disposition AlreadyPaid), matching the stamp on word boundaries, not the substring.
 - Create fraud session data objects, run in order:
   1. [GeoSession](prompts/create-fraud-session-data-objects/01-geo-session.md): creates the object that captures where a claim was submitted from.
