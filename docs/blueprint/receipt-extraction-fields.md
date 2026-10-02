@@ -89,6 +89,33 @@ Printed on claim-form receipts; often absent on invoices.
 | Fee | Decimal | Yes | |
 | GST applies | Boolean | | From a per-line marker, where printed |
 
+## How the fields fill the Claim
+
+Extraction fills the claim form for the member to confirm. The form's fields (see [configure claim form sections](../../prompts/configure-claim-form-sections.md)) are filled in three ways: copied from what was read, matched to a reference record, or calculated.
+
+| Claim form field | Filled from | How |
+| --- | --- | --- |
+| Member Number | The member's sign-in | Not from the receipt. Printed Membership Number is compared with it when the printed fund is this fund |
+| Claim Type | Matched Practice's type and the line item codes | Derived, for example Physiotherapy or Pathology |
+| Service Date | Earliest line Service Date | Copied; each line keeps its own date |
+| Practice | Printed Practice Name, ABN, Provider Number, Address | Matched to a Practice record by Link Practice and Practitioner |
+| Practitioner | Printed Practitioner Name, AHPRA Number, Provider Number | Matched to a Practitioner record through its practice affiliations |
+| Patient | Printed Patient Name, Date of Birth, Address | Matched to a Member on the signed-in member's policy |
+| Line items: Item Code | Line Item Code | Copied; matched to Item Code Reference |
+| Line items: Quantity | Line Quantity | Copied, or 1 and marked derived |
+| Line items: Item Charge | Line Fee | Copied |
+| Line items: Date | Line Service Date | Copied, or the document's date of service |
+| Total Amount | Sum of line fees | Calculated by the form; Reconcile Line Items compares it with Total Charged and Adjustments |
+
+Set on the Claim by the pre-flight checks rather than shown on the form:
+
+| Claim field | Set from |
+| --- | --- |
+| Invalid Document Reason | Document Type (quotation, estimate, statement) or Stamps and Marks (PAID) |
+| High Value Flag | Total Amount of $5,000 or above |
+
+Everything else stays on the Receipt as evidence for the checks: document title, number and dates, service time, account reference, practice phone, email and address, referring provider, patient phone, health fund details, adjustments, amount paid and due, payment method, card last four, GST, declaration, signature and signature date, stamps and marks, raw text, and the confidence for every field.
+
 ## Rules the layouts expose
 
 - **Reconciliation allows for adjustments.** Line fees should equal the total charged, or the total charged plus printed adjustments. Reconcile Line Items records which one held; neither holding is the mismatch that sends the claim to Receipt Forensics.
