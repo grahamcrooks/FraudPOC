@@ -10,9 +10,9 @@ Placeholders:
 Design a new application. In this step, set up the application context and personas only. Do not create any case types or data objects yet; I will add them in the next steps.
 
 APPLICATION CONTEXT
-Application name: Extras Claim Fraud Detection.
+Application name: Health Claim Fraud Detection.
 Organisation: {{organisation_name}}. Location: Australia. Industry: Healthcare. Industry subsegment: Healthcare Insurance (Payer). Department: Claims Operations. Language: English.
-Real-time fraud detection for extras claims (dental, optical, physiotherapy). Every claim passes through three phases of analysis: Phase 1 receipt forensics (is the receipt genuine?), Phase 2 cross-claim signals (does the claim fit a pattern across other claims?) and Phase 3 network intelligence (is the claim connected to known fraud or an organised ring?). Clean claims go to adjudication; suspicious claims are referred to an investigator or the Specialist Investigation Unit (SIU) with a complete evidence package.
+Real-time fraud detection for health insurance claims. The first release covers extras claims (dental, optical, physiotherapy); the design must extend to other claim types, such as ambulance, without changing the case structure: a new claim type adds reference data and checks, not new stages. Every claim passes through three phases of analysis: Phase 1 receipt forensics (is the receipt genuine?), Phase 2 cross-claim signals (does the claim fit a pattern across other claims?) and Phase 3 network intelligence (is the claim connected to known fraud or an organised ring?). Clean claims go to adjudication; suspicious claims are referred to an investigator or the Specialist Investigation Unit (SIU) with a complete evidence package.
 
 PERSONAS
 Create exactly these four personas:
