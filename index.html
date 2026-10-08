@@ -369,6 +369,10 @@ body.run-rolling .presenter-only{display:none}
 .ae-arrow{color:#D1D5DB;font-weight:400}
 .ae-pending{color:#9CA3AF;font-style:italic;font-weight:400}
 .ae-evidence{padding:2px 20px 14px}
+.ae-box{margin:12px 20px 14px;background:var(--white);border:1px solid rgba(0,31,95,.22);border-radius:10px}
+.ae-actions{display:flex;gap:10px;padding:0 20px 16px}
+.ae-actions .btn-aim{flex:2;width:auto}
+.ae-actions .btn-back{flex:1}
 .ae-evidence-title{font-size:9.5px;text-transform:uppercase;letter-spacing:.5px;color:#9CA3AF;font-weight:700;margin-bottom:5px}
 #ae-evidence-body{font-size:12px;color:#374151;line-height:1.6}
 .downstream-label{font-size:10px;color:#9CA3AF;text-transform:uppercase;letter-spacing:.7px;font-weight:600;margin:14px 0 5px;padding-left:2px}
@@ -407,16 +411,16 @@ body.run-rolling .presenter-only{display:none}
 #fraud-dashboard{display:none;flex:1;overflow:hidden;flex-direction:column}
 #fraud-dashboard.active{display:flex}
 .fdb-content{padding:20px 40px}
-.fdb-filters{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:20px;padding:16px;background:#F9FAFB;border-radius:10px}
+.fdb-filters{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px;margin-bottom:20px;padding:16px;background:#F9FAFB;border-radius:10px;border:1px solid rgba(0,31,95,.22)}
 .fdb-filter{display:flex;flex-direction:column;gap:4px}
 .fdb-filter-label{font-size:11px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px}
 .fdb-filter-input{padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:12px;font-family:var(--font);color:var(--text)}
 .fdb-filter-input::placeholder{color:var(--text-4)}
 .fdb-summary{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:20px}
-.fdb-stat{background:var(--white);border:1px solid var(--border);border-radius:10px;padding:16px}
+.fdb-stat{background:var(--white);border:1px solid rgba(0,31,95,.22);border-radius:10px;padding:16px}
 .fdb-stat-value{font-size:24px;font-weight:700;color:var(--text)}
 .fdb-stat-label{font-size:11px;color:var(--text-3);margin-top:6px;text-transform:uppercase;letter-spacing:.4px;font-weight:600}
-.fdb-table{background:var(--white);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.fdb-table{background:var(--white);border:1px solid rgba(0,31,95,.22);border-radius:10px;overflow:hidden}
 .fdb-thead{background:linear-gradient(135deg,#F9FAFB 0%,#F3F4F6 100%);border-bottom:1px solid var(--border)}
 .fdb-th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.4px;cursor:pointer;user-select:none;transition:all .2s}
 .fdb-th:hover{background:rgba(0,0,0,.02)}
@@ -467,6 +471,7 @@ body.demo-paused .overlay *,body.demo-paused #demo-screen *{animation-play-state
 .aim-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
 .aim-section-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;text-transform:uppercase;letter-spacing:.5px}
 .aim-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.aim-section>.aim-grid{padding:14px 16px;border-radius:8px;background:#F9FAFB;border:1px solid var(--border)}
 .aim-field{display:flex;flex-direction:column;gap:3px}
 .aim-label{font-size:10px;font-weight:600;color:var(--text-3);text-transform:uppercase;letter-spacing:.4px}
 .aim-value{font-size:13px;font-weight:600;color:var(--text)}
@@ -1230,9 +1235,11 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     <div class="aim-escalation" id="aim-escalation" style="display:none">
       <div class="ae-hdr"><span style="font-size:26px">🚨</span><div><div class="ae-title">Pega Alerts & Investigations Management</div><div class="ae-sub" id="ae-sub">Case escalated to investigator queue</div></div><span class="ae-badge" id="ae-badge">SUSPICIOUS — HIGH PRIORITY</span></div>
       <div class="ae-stages"><span>🔔 Alert Triage</span><span class="ae-arrow">→</span><strong>🖥️ Investigator Workbench</strong><span class="ae-arrow">→</span><span>👤 Human Determination <span class="ae-pending">(pending)</span></span></div>
+      <div class="ae-box">
       <div class="ae-detail"><div class="ce-field"><span class="ce-lbl">Investigation</span><span class="ce-val" id="ae-ref">INV-2024-0842</span></div><div class="ce-field"><span class="ce-lbl">Queue</span><span class="ce-val" id="ae-queue">SIU Queue</span></div><div class="ce-field"><span class="ce-lbl">SLA</span><span class="ce-val" id="ae-sla">4 hours — Priority</span></div><div class="ce-field"><span class="ce-lbl">Assigned To</span><span class="ce-val">Next available investigator</span></div></div>
       <div class="ae-evidence"><div class="ae-evidence-title">Evidence package — assembled into one screen, zero re-keying</div><div id="ae-evidence-body">—</div></div>
-      <div style="padding:0 20px 16px"><button class="btn-back" style="width:100%" onclick="closeOverlay()">✕ Close</button></div>
+      </div>
+      <div class="ae-actions"><button class="btn-aim" id="ae-open-aim" hidden onclick="openAIMModal()">Open Alert &amp; Investigation Manager</button><button class="btn-back" onclick="closeOverlay()">✕ Close</button></div>
     </div>
   </div>
 </div>
@@ -3351,8 +3358,8 @@ function generateFraudDashboardData(){
   const scenarios = [
     {claim:'CLM-2024-0841',member:'James Kowalski',provider:'Bright Smile Dental',date:'12 Jul 2026',type:'Dental',amount:312,score:8,outcome:'clean'},
     {claim:'CLM-2024-0842',member:'Sarah Nguyen',provider:'Vision Direct Pty Ltd',date:'14 Jul 2026',type:'Optical',amount:487.50,discrepancy:42.50,score:85,outcome:'high',outcomeLabel:'Doctored Total'},
-    {claim:'CLM-2024-0843',member:'David Okafor',provider:'Active Rehab Centre',date:'11 Jul 2026',type:'Physio',amount:195,score:62,outcome:'suspicious'},
-    {claim:'CLM-2024-0844',member:'Linda Pham',provider:'Metro Dental Group',date:'13 Jul 2026',type:'Dental',amount:264,score:58,outcome:'suspicious'},
+    {claim:'CLM-2024-0843',member:'David Okafor',provider:'Active Rehab Centre',date:'11 Jul 2026',type:'Physio',amount:195,score:81,outcome:'high'},
+    {claim:'CLM-2024-0844',member:'Linda Pham',provider:'Metro Dental Group',date:'13 Jul 2026',type:'Dental',amount:264,score:65,outcome:'high'},
     {claim:'CLM-2024-0845',member:'Michael Torres',provider:'ClearView Optometry',date:'10 Jul 2026',type:'Optical',amount:390,score:55,outcome:'suspicious'},
     {claim:'CLM-2024-0846',member:'Angela Wu',provider:'Prime Physio & Sports',date:'15 Jul 2026',type:'Physio',amount:230,score:79,outcome:'high'},
   ];
@@ -3482,28 +3489,12 @@ function closeAIMModal(){
   document.getElementById('aim-modal').classList.remove('show');
 }
 
-// Hook into showFinalState to add AIM button for CLM-0845
+// The investigation screen is built for CLM-0845 only, so its button shows
+// for that outcome and is hidden for every other one.
 const origShowFinalState = showFinalState;
 showFinalState = function(clean){
   origShowFinalState(clean);
-  // Add AIM button for CLM-0845 (index 4)
-  if(!clean && curScenario===4){
-    const ae = document.getElementById('aim-escalation');
-    if(ae && !ae.querySelector('.btn-open-aim')){
-      // Create a clean button container matching the Close button style
-      const btnContainer = document.createElement('div');
-      btnContainer.style.padding = '0 20px 16px';
-      
-      const btnAIM = document.createElement('button');
-      btnAIM.className = 'btn-aim btn-open-aim';
-      btnAIM.textContent = 'Open Alert & Investigation Manager';
-      btnAIM.onclick = openAIMModal;
-      btnAIM.style.width = '100%';
-      
-      btnContainer.appendChild(btnAIM);
-      ae.appendChild(btnContainer);
-    }
-  }
+  const b=$('ae-open-aim'); if(b) b.hidden=!(!clean && curScenario===4);
 };
 </script>
 <!-- AIM MODAL FOR CLM-0845 -->
