@@ -103,9 +103,10 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 /* Auto-progress bar */
 .slide-progress{position:absolute;bottom:0;left:0;height:3px;background:var(--teal);transition:none;z-index:20}
 
-/* ── SLIDES 1–5 — full-slide images (assets/slides/). The whole image always
+/* ── BACKUP SLIDE — a full-slide image (assets/slides/). The whole image always
    shows (contain); a blurred copy fills any letterbox so the edges don't read as
-   bars. The images are dark in both themes, so the dots and buttons stay dark. ── */
+   bars. The image is dark in both themes, so the dots and buttons stay dark.
+   Slides 1–5 are HTML: see the document-style slide rules below. ── */
 #slides-screen .pslide.img-slide{padding:0;background:#061229}
 .img-slide .ps-fill{position:absolute;inset:-40px;background:center/cover no-repeat;filter:blur(28px) brightness(.5)}
 .img-slide .ps-img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
@@ -116,6 +117,86 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .img-slide .snav{background:rgba(2,8,20,.6);border-color:rgba(255,255,255,.25);color:#fff}
 .img-slide .snav.primary{background:var(--teal);border-color:var(--teal)}
 @media (prefers-reduced-motion:reduce){.img-slide.active .ps-img{animation:none}}
+/* Document-style slides (1-5): flat and light, like technical documentation.
+   Line icons, thin borders, connecting arrows; teal and dark grey, gold sparingly. */
+#slides-screen .pslide.doc-slide{background:var(--canvas);color:var(--text);padding:clamp(22px,3.6vh,44px) clamp(36px,4.6vw,80px) 62px}
+.doc-slide.active{animation:psFade .4s ease}
+.ds-hd{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;padding-bottom:clamp(10px,1.6vh,18px);border-bottom:1px solid var(--border)}
+.ds-eyebrow{display:flex;align-items:center;gap:8px;font-size:clamp(10.5px,.8vw,12px);font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-3);margin-bottom:6px}
+.ds-eyebrow::before{content:'';width:18px;height:3px;background:var(--teal)}
+.ds-title{font-size:clamp(26px,2.8vw,42px);font-weight:700;letter-spacing:-.5px;line-height:1.1;color:var(--text)}
+.ds-sub{font-size:clamp(14px,1.3vw,19px);color:var(--text-2);margin-top:4px}
+.ds-tag{font-size:11px;font-weight:600;color:var(--text-3);border:1px solid var(--border);background:var(--white);border-radius:4px;padding:4px 9px;white-space:nowrap}
+.ds-body{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,2vh,22px);padding-top:clamp(10px,2vh,22px)}
+.ds-flow{display:flex;align-items:stretch}
+.ds-flow>.ds-card,.ds-flow>.ds-step{flex:1;min-width:0}
+.ds-arrow{flex:0 0 clamp(18px,2vw,34px);position:relative}
+.ds-arrow::before{content:'';position:absolute;left:3px;right:6px;top:50%;border-top:1.5px solid var(--text-4)}
+.ds-arrow::after{content:'';position:absolute;right:2px;top:50%;margin-top:-4.5px;border:5px solid transparent;border-left:7px solid var(--text-4);border-right:0}
+.ds-card{background:var(--white);border:1px solid var(--border);border-top:3px solid var(--teal);border-radius:4px;padding:clamp(10px,2.2vh,26px) clamp(12px,1.3vw,24px);display:flex;flex-direction:column;gap:6px}
+.ds-card-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px}
+.ds-num{font-family:'Courier New',monospace;font-size:clamp(11px,.9vw,13px);font-weight:700;color:var(--text-2)}
+.ds-ic{width:clamp(20px,min(1.8vw,3vh),32px);height:clamp(20px,min(1.8vw,3vh),32px);fill:none;stroke:var(--teal);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.ds-h{font-size:clamp(14px,min(1.3vw,2.3vh),22px);font-weight:700;line-height:1.25;color:var(--text)}
+.ds-p{font-size:clamp(12px,min(1.02vw,1.8vh),17px);line-height:1.5;color:var(--text-2)}
+.ds-note{font-size:clamp(12px,.95vw,14px);color:var(--text-2);border-left:3px solid var(--gold);padding:2px 0 2px 12px}
+.ds-src{font-size:10.5px;color:var(--text-3)}
+.ds-facts{display:grid;grid-template-columns:1fr 1fr 1fr 1.3fr;border:1px solid var(--border);border-radius:4px;background:var(--white)}
+.ds-fact{padding:clamp(10px,1.6vh,16px) clamp(12px,1.2vw,18px);display:flex;flex-direction:column;gap:4px;justify-content:center}
+.ds-fact+.ds-fact{border-left:1px solid var(--border)}
+.ds-fact-key{border-left:3px solid var(--gold)!important}
+.ds-fig{font-size:clamp(22px,2.1vw,32px);font-weight:700;color:var(--text);font-variant-numeric:tabular-nums;line-height:1.1}
+.ds-panel{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:clamp(10px,1.6vh,18px) clamp(12px,1.2vw,18px);display:flex;flex-direction:column;gap:clamp(8px,1.4vh,14px)}
+.ds-panel-hd{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;font-size:clamp(11px,.85vw,12.5px);font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--text)}
+.ds-panel-hd span{font-weight:500;letter-spacing:0;text-transform:none;color:var(--text-3)}
+.ds-step{border:1px solid var(--border);border-radius:4px;padding:clamp(8px,1.4vh,14px) clamp(10px,1vw,14px);display:flex;flex-direction:column;gap:4px;background:var(--canvas)}
+.ds-split{display:grid;grid-template-columns:2fr 1fr;gap:clamp(12px,1.4vw,20px)}
+.ds-grid2{display:grid;grid-template-columns:1fr 1fr;gap:clamp(8px,1vw,12px)}
+.ds-grid2 .ds-card{border-top-width:1px;border-left:3px solid var(--teal)}
+.ds-checks{list-style:none;display:flex;flex-direction:column;gap:10px}
+.ds-checks li{position:relative;padding-left:26px;font-size:clamp(12px,.98vw,15px);line-height:1.45;color:var(--text-2)}
+.ds-checks li::before{content:'';position:absolute;left:0;top:2px;width:14px;height:14px;border:1.5px solid var(--text-3);border-radius:3px}
+.ds-phases{min-height:0}
+.ds-q{font-size:clamp(12px,.98vw,15px);color:var(--text-2);font-style:italic;padding-bottom:6px;border-bottom:1px solid var(--border)}
+.ds-sec{font-size:clamp(10px,.78vw,11.5px);font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text-3);margin-top:4px}
+.ds-items{list-style:none;display:flex;flex-direction:column;gap:2px}
+.ds-items li{position:relative;padding-left:14px;font-size:clamp(11.5px,min(.95vw,1.65vh),16px);line-height:1.4;color:var(--text)}
+.ds-items li::before{content:'';position:absolute;left:2px;top:.6em;width:5px;height:5px;background:var(--teal)}
+.ds-items code{font-family:'Courier New',monospace;font-weight:700;font-size:.92em;color:var(--text-2)}
+.ds-result{margin-top:auto;padding-top:8px;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:5px;font-size:clamp(11.5px,.9vw,13.5px);color:var(--text-2)}
+.ds-result>div{display:flex;align-items:center;gap:8px}
+.ds-badge{font-size:10.5px;font-weight:700;letter-spacing:.4px;border-radius:3px;padding:2px 7px;border:1.5px solid;white-space:nowrap;min-width:58px;text-align:center}
+.ds-pass{border-color:var(--teal);color:var(--text)}
+.ds-fail{border-color:var(--gold);color:var(--text)}
+.ds-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.ds-chips span{font-size:clamp(10.5px,.8vw,12px);color:var(--text-2);border:1px solid var(--border);border-radius:3px;padding:2px 7px;background:var(--canvas)}
+.ds-steps{list-style:none;display:flex;flex-wrap:wrap;align-items:center;gap:4px;margin-top:2px;counter-reset:st}
+.ds-steps li{font-size:clamp(10.5px,.8vw,12px);color:var(--text-2);border:1px solid var(--border);border-radius:3px;padding:2px 7px;background:var(--canvas)}
+.ds-steps li+li::before{content:'→';margin:0 6px 0 -2px;color:var(--text-4)}
+.ds-steps li+li{border-left:none;border-radius:0 3px 3px 0}
+.ds-arch{min-height:min(600px,60vh);display:grid;grid-template-columns:1fr clamp(24px,3vw,48px) minmax(200px,.8fr) clamp(24px,3vw,48px) 1fr;grid-template-rows:1fr 1fr;row-gap:clamp(12px,2vh,20px);align-items:stretch}
+.ds-a1{grid-column:1;grid-row:1}.ds-a3{grid-column:1;grid-row:2}.ds-a2{grid-column:5;grid-row:1}.ds-a4{grid-column:5;grid-row:2}
+.ds-a1,.ds-a2,.ds-a3,.ds-a4{position:relative;display:flex}
+.ds-a1>.ds-card,.ds-a2>.ds-card,.ds-a3>.ds-card,.ds-a4>.ds-card{flex:1;justify-content:center}
+.ds-a1::after,.ds-a3::after{content:'';position:absolute;left:100%;top:50%;width:clamp(24px,3vw,48px);border-top:1.5px solid var(--text-4)}
+.ds-a2::before,.ds-a4::before{content:'';position:absolute;right:100%;top:50%;width:clamp(24px,3vw,48px);border-top:1.5px solid var(--text-4)}
+.ds-core{grid-column:3;grid-row:1/3;background:var(--white);border:1.5px solid var(--text-2);border-radius:4px;padding:clamp(12px,2vh,20px);display:flex;flex-direction:column;gap:8px;justify-content:center}
+.ds-core-hd{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-3)}
+.ds-stack{list-style:none;display:flex;flex-direction:column;gap:clamp(6px,1vh,10px);margin-top:6px}
+.ds-agenda{list-style:none;display:flex;flex-direction:column;gap:clamp(10px,2.2vh,22px);position:relative;max-width:1200px}
+.ds-agenda::before{content:'';position:absolute;left:calc(clamp(20px,min(1.8vw,3vh),32px)/2 + clamp(28px,3vw,44px) + 18px);top:24px;bottom:24px;border-left:1.5px solid var(--text-4)}
+.ds-agenda li{position:relative;display:grid;grid-template-columns:clamp(28px,3vw,44px) auto 1fr auto;align-items:center;gap:18px;background:var(--white);border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:4px;padding:clamp(12px,2.6vh,28px) clamp(14px,1.6vw,28px)}
+.ds-agenda .ds-ic{background:var(--white);position:relative}
+.ds-agenda .ds-num{font-size:clamp(13px,min(1.1vw,2vh),18px)}
+.ds-where{font-size:11px;font-weight:600;color:var(--text-3);border:1px solid var(--border);border-radius:3px;padding:3px 8px;background:var(--canvas);white-space:nowrap}
+.ds-stack li{border:1px solid var(--border);border-left:3px solid var(--teal);border-radius:3px;padding:clamp(6px,1.2vh,12px) 12px;font-size:clamp(11px,.85vw,13px);font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text);background:var(--canvas)}
+.doc-slide .sdot{background:rgba(20,32,46,.2)}
+.doc-slide .sdot.on{background:var(--teal)}
+.doc-slide .snav{background:var(--white);border-color:var(--border);color:var(--text-2)}
+.doc-slide .snav.primary{background:var(--text);border-color:var(--text);color:#fff}
+#slides-screen:has(.doc-slide.active) .skip-demo-btn{background:var(--white);border-color:var(--border);color:var(--text-3)}
+#slides-screen:has(.doc-slide.active) .skip-demo-btn:hover{color:var(--text)}
+@media (prefers-reduced-motion:reduce){.doc-slide.active{animation:none}}
 
 
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.8)}}
@@ -855,42 +936,86 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     <div class="slide-progress" id="slide-progress" style="width:0"></div>
     <button class="skip-demo-btn" onclick="goDemo()">Skip to Demo →</button>
 
+    <!-- Flat line icons for the slides, drawn once and reused with <use>. -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+      <symbol id="ic-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></symbol>
+      <symbol id="ic-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+      <symbol id="ic-trend" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/></symbol>
+      <symbol id="ic-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M15.5 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M17.5 14.2c2.3.6 4 2.6 4 5.8"/></symbol>
+      <symbol id="ic-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 4.6-3.4 8.1-8 9-4.6-.9-8-4.4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
+      <symbol id="ic-bars" viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M6 17v-5M10.5 17V6M15 17v-8M19.5 17v-3"/></symbol>
+      <symbol id="ic-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></symbol>
+      <symbol id="ic-list" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 9l1.5 1.5L12 8M14.5 9.5H17M8 15l1.5 1.5L12 14M14.5 15.5H17"/></symbol>
+      <symbol id="ic-receipt" viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6M9 16h3"/></symbol>
+      <symbol id="ic-sliders" viewBox="0 0 24 24"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></symbol>
+      <symbol id="ic-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol>
+      <symbol id="ic-route" viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><path d="M7 12h5l4-5h4M12 12l4 5h4"/></symbol>
+      <symbol id="ic-usercheck" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M15.5 12l2 2 4-4"/></symbol>
+      <symbol id="ic-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-7 4 14 3-7h4"/></symbol>
+      <symbol id="ic-network" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2.5"/><circle cx="19" cy="6" r="2.5"/><circle cx="12" cy="18" r="2.5"/><path d="M7.5 6h9M6.3 8.2l4.4 7.6M17.7 8.2l-4.4 7.6"/></symbol>
+      <symbol id="ic-workflow" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="6" rx="1"/><rect x="14" y="15" width="7" height="6" rx="1"/><path d="M6.5 9v4a2 2 0 0 0 2 2H14"/></symbol>
+      <symbol id="ic-db" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></symbol>
+      <symbol id="ic-audit" viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M8.5 15l2.5 2.5 4.5-5"/></symbol>
+    </svg>
     <!-- SLIDE 1 — AGENDA -->
-    <div class="pslide dark img-slide active" id="ps0">
-      <div class="ps-fill" style="background-image:url(assets/slides/slide-1-agenda.webp)"></div>
-      <img class="ps-img" src="assets/slides/slide-1-agenda.webp" alt="Agenda: what we'll cover today. 01 Background: why prevention, not just recovery. 02 Quantify Bupa Claims Fraud: sizing the problem in Bupa's own claims. 03 Target Outcome: what success looks like for Phase 1. 04 Requirements: what we're asking for to get started.">
+    <div class="pslide light doc-slide active" id="ps0">
+      <div class="ds-hd"><div><div class="ds-eyebrow">Fraud detection proof of concept</div><div class="ds-title">Agenda</div><div class="ds-sub">What we'll cover today</div></div><div class="ds-tag">Fraud detection POC · Pega Infinity 26.1</div></div>
+      <div class="ds-body"><ol class="ds-agenda"><li><span class="ds-num">01</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-clock"/></svg><div><div class="ds-h">Background</div><div class="ds-p">Why prevention, not just recovery</div></div><span class="ds-where">Problem</span></li><li><span class="ds-num">02</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-bars"/></svg><div><div class="ds-h">Quantify Bupa claims fraud</div><div class="ds-p">Sizing the problem in Bupa's own claims</div></div><span class="ds-where">Problem · Business case</span></li><li><span class="ds-num">03</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-target"/></svg><div><div class="ds-h">Target outcome</div><div class="ds-p">What success looks like for Phase 1</div></div><span class="ds-where">Business case</span></li><li><span class="ds-num">04</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-list"/></svg><div><div class="ds-h">Requirements</div><div class="ds-p">What we're asking for to get started</div></div><span class="ds-where">Business case</span></li></ol><div class="ds-note">Followed by the live demo: claims run through the three phases, from sign-in to the investigator's screen.</div></div>
       <div class="sdots"><div class="sdot on" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
     <!-- SLIDE 2 — THE PROBLEM -->
-    <div class="pslide dark img-slide" id="ps1">
-      <div class="ps-fill" style="background-image:url(assets/slides/slide-2-problem.webp)"></div>
-      <img class="ps-img" src="assets/slides/slide-2-problem.webp" alt="Problem: why prevention, not just recovery. 01 Hidden anomalies in routine claims. 02 Manual review is reactive and slow. 03 Leakage compounds before recovery. 04 Members and providers need protection.">
+    <div class="pslide light doc-slide" id="ps1">
+      <div class="ds-hd"><div><div class="ds-eyebrow">01 · Background</div><div class="ds-title">Problem</div><div class="ds-sub">Why prevention, not just recovery</div></div><div class="ds-tag">Fraud detection POC · Pega Infinity 26.1</div></div>
+      <div class="ds-body"><div class="ds-flow"><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">01</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-search"/></svg></div><div class="ds-h">Hidden anomalies in routine claims</div><div class="ds-p">Opportunistic fraud, unusual claiming patterns, organised fraud and incorrect billing hide within high volumes of legitimate claims.</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">02</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-clock"/></svg></div><div class="ds-h">Manual review is reactive and slow</div><div class="ds-p">Rule-based checks and manual audits catch issues after the claim is paid, so fraudulent activity slips through.</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">03</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-trend"/></svg></div><div class="ds-h">Leakage compounds before recovery</div><div class="ds-p">Fraudulent claims cause direct losses and higher premiums as losses accumulate across large claim volumes.</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">04</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-users"/></svg></div><div class="ds-h">Members and providers need protection</div><div class="ds-p">Fraud undermines trust, affects genuine members and providers, and inflates the cost of care across the health system.</div></div></div>
+        <div class="ds-facts">
+          <div class="ds-fact"><div class="ds-fig">1–3%</div><div class="ds-p">of Bupa's claims are estimated to contain fraud, waste or abuse: a conservative internal estimate</div></div>
+          <div class="ds-fact"><div class="ds-fig">3–10%</div><div class="ds-p">the global industry range for fraud, waste and abuse</div></div>
+          <div class="ds-fact"><div class="ds-fig">#1</div><div class="ds-p">Healthcare is Australia's most targeted sector for data breaches, the infrastructure for large-scale fraud rings</div></div>
+          <div class="ds-fact ds-fact-key"><div class="ds-h">Recovery happens after a claim is paid. Prevention happens before.</div></div>
+        </div>
+        <div class="ds-src">Sources: internal estimate, benchmarked against PKF Littlejohn / Centre for Counter Fraud Studies global range · OAIC Notifiable Data Breaches Report, Jan–Jun 2023</div>
+      </div>
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot on" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
     <!-- SLIDE 3 — BUSINESS CASE -->
-    <div class="pslide dark img-slide" id="ps2">
-      <div class="ps-fill" style="background-image:url(assets/slides/slide-3-business-case.webp)"></div>
-      <img class="ps-img" src="assets/slides/slide-3-business-case.webp" alt="Business Case: the value of earlier detection. A claims analytics panel beside four outcomes: 01 Reduce improper payments. 02 Prioritise high-risk claims. 03 Improve operational efficiency. 04 Protect member trust.">
+    <div class="pslide light doc-slide" id="ps2">
+      <div class="ds-hd"><div><div class="ds-eyebrow">02–04 · Quantify · Target outcome · Requirements</div><div class="ds-title">Business case</div><div class="ds-sub">The value of earlier detection</div></div><div class="ds-tag">Fraud detection POC · Pega Infinity 26.1</div></div>
+      <div class="ds-body">
+        <div class="ds-panel"><div class="ds-panel-hd">How the POC will run<span>About 10,000 historical receipts, replayed through Phase 1 first, with later phases to follow</span></div>
+          <div class="ds-flow"><div class="ds-step"><svg class="ds-ic" aria-hidden="true"><use href="#ic-receipt"/></svg><div class="ds-h">Extract</div><div class="ds-p">AI extracts text and structured data from every receipt</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-step"><svg class="ds-ic" aria-hidden="true"><use href="#ic-sliders"/></svg><div class="ds-h">Analyse</div><div class="ds-p">Checked against configured rules and signals</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-step"><svg class="ds-ic" aria-hidden="true"><use href="#ic-layers"/></svg><div class="ds-h">Classify</div><div class="ds-p">Scored and grouped by risk level</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-step"><svg class="ds-ic" aria-hidden="true"><use href="#ic-route"/></svg><div class="ds-h">Route</div><div class="ds-p">Clean claims pass; flagged claims go to an investigator</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-step"><svg class="ds-ic" aria-hidden="true"><use href="#ic-usercheck"/></svg><div class="ds-h">Validate</div><div class="ds-p">The fraud team validates suspicious claims</div></div></div></div>
+        <div class="ds-split">
+          <div class="ds-panel"><div class="ds-panel-hd">Expected outcomes<span>Figures to be confirmed against the Phase 1 POC results</span></div>
+            <div class="ds-grid2"><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">01</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-shield"/></svg></div><div class="ds-h">Reduce improper payments</div><div class="ds-p">Identify and stop suspicious claims before payment, reducing financial leakage.</div></div><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">02</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-search"/></svg></div><div class="ds-h">Prioritise high-risk claims</div><div class="ds-p">Flag potentially fraudulent claims for faster, targeted review.</div></div><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">03</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-workflow"/></svg></div><div class="ds-h">Improve operational efficiency</div><div class="ds-p">Investigators focus on the highest-risk cases, with less manual review.</div></div><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">04</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-users"/></svg></div><div class="ds-h">Protect member trust</div><div class="ds-p">Detect and deter fraud early, helping keep premiums fair for honest members.</div></div></div></div>
+          <div class="ds-panel"><div class="ds-panel-hd">What's needed to start</div>
+            <ul class="ds-checks"><li>Executive project owner to authorise the Phase 1 POC with the historical claims dataset</li><li>AI Council approval of the detection methodology and governance framework</li><li>Resource and budget commitment for the Phase 1 build</li></ul></div>
+        </div>
+      </div>
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot on" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
     <!-- SLIDE 4 — THREE PHASES -->
-    <div class="pslide dark img-slide" id="ps3">
-      <div class="ps-fill" style="background-image:url(assets/slides/slide-4-three-phases.webp)"></div>
-      <img class="ps-img" src="assets/slides/slide-4-three-phases.webp" alt="Three Phases: a practical path from detection to prevention. 01 Receipt Forensics: is the receipt genuine and does it match the claim? 02 Cross-Claim Signals: does this claim fit a pattern across other claims? 03 Network Intelligence: is the claim connected to known fraud or an organised ring?">
+    <div class="pslide light doc-slide" id="ps3">
+      <div class="ds-hd"><div><div class="ds-eyebrow">How it works</div><div class="ds-title">Three phases</div><div class="ds-sub">Every claim answers three questions, in order. Any phase can stop it.</div></div><div class="ds-tag">Fraud detection POC · Pega Infinity 26.1</div></div>
+      <div class="ds-body"><div class="ds-flow ds-phases"><div class="ds-card ds-phase"><div class="ds-card-hd"><span class="ds-num">Phase 1</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-receipt"/></svg></div><div class="ds-h">Receipt forensics</div><div class="ds-q">Is the receipt genuine, and does it match the claim?</div><div class="ds-sec">Pre-flight · one AI read, then business rules</div><ul class="ds-items"><li>Receipt type</li><li>Field extraction and confidence</li><li>Disqualifying content</li><li>Receipt completeness</li><li>Line item reconciliation</li><li>Claim value</li></ul><div class="ds-sec">Forensic analysis</div><ul class="ds-items"><li>Font consistency</li><li>Colour and stamp analysis</li><li>AI-generated detection</li><li>Metadata and provenance</li><li>Duplicate detection</li></ul><div class="ds-result"><div><span class="ds-badge ds-pass">PASS ✓</span>On to Phase 2</div><div><span class="ds-badge ds-fail">FAIL ✗</span>Rejected at pre-flight, or referred to an investigator</div></div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-card ds-phase"><div class="ds-card-hd"><span class="ds-num">Phase 2</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-activity"/></svg></div><div class="ds-h">Cross-claim signals</div><div class="ds-q">Does this claim fit a pattern across other claims?</div><div class="ds-sec">Pega event strategies · real time</div><ul class="ds-items"><li><code>ES-001</code> Distance anomaly</li><li><code>ES-002</code> Device ring</li><li><code>ES-003</code> Bank account ring</li><li><code>ES-004</code> Phantom ABN</li><li><code>ES-005</code> Waiver abuse</li></ul><div class="ds-sec">Planned</div><ul class="ds-items"><li><code>ES-006</code> Item code validation</li><li><code>ES-007</code> Terminal mismatch</li></ul><div class="ds-result"><div><span class="ds-badge ds-pass">PASS ✓</span>On to Phase 3</div><div><span class="ds-badge ds-fail">FAIL ✗</span>Referred for investigation</div></div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-card ds-phase"><div class="ds-card-hd"><span class="ds-num">Phase 3</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-network"/></svg></div><div class="ds-h">Network intelligence</div><div class="ds-q">Is the claim connected to known fraud or an organised ring?</div><div class="ds-sec">Checks</div><ul class="ds-items"><li>Watchlist match</li><li>Network graph, up to 3 hops: member, practice, practitioner, device, submission IP, payment account</li><li>Fraud case similarity</li></ul><div class="ds-result"><div><span class="ds-badge ds-pass">PASS ✓</span>Sent for adjudication</div><div><span class="ds-badge ds-fail">FAIL ✗</span>Referred for investigation</div></div></div></div><div class="ds-note">Every signal is reviewed by an investigator in Pega Alerts &amp; Investigations Management. AI assists; people decide.</div></div>
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot on" onclick="goSlide(3)"></div><div class="sdot" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="nextSlide()">Next →</button></div>
     </div>
 
     <!-- SLIDE 5 — WHY PEGA -->
-    <div class="pslide dark img-slide" id="ps4">
-      <div class="ps-fill" style="background-image:url(assets/slides/slide-5-why-pega.webp)"></div>
-      <img class="ps-img" src="assets/slides/slide-5-why-pega.webp" alt="Why Pega? Decisioning, workflow and orchestration in one platform. 01 Decisioning and business rules. 02 Case management and workflow. 03 Integration across claims data. 04 Governance, audit trail and scale.">
+    <div class="pslide light doc-slide" id="ps4">
+      <div class="ds-hd"><div><div class="ds-eyebrow">Platform</div><div class="ds-title">Why Pega</div><div class="ds-sub">Decisioning, workflow and orchestration in one platform</div></div><div class="ds-tag">Fraud detection POC · Pega Infinity 26.1</div></div>
+      <div class="ds-body"><div class="ds-arch">
+          <div class="ds-a1"><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">01</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-sliders"/></svg></div><div class="ds-h">Decisioning and business rules</div><div class="ds-p">Real-time rules, event strategies and AI scoring detect suspicious claims.</div><div class="ds-chips"><span>Business rules</span><span>Event strategies</span><span>AI scoring</span></div></div></div>
+          <div class="ds-a3"><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">03</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-db"/></svg></div><div class="ds-h">Integration across claims data</div><div class="ds-p">Connects insurer, provider and member data for a complete view.</div><div class="ds-chips"><span>Claims</span><span>Member</span><span>Provider</span><span>Policy and benefits</span></div></div></div>
+          <div class="ds-core"><div class="ds-core-hd">Pega Infinity 26.1</div><div class="ds-h">One claim case</div><div class="ds-p">Every claim is a case: each check, signal and decision is recorded on it.</div><ol class="ds-stack"><li>Orchestrate</li><li>Automate</li><li>Decide</li><li>Scale</li></ol></div>
+          <div class="ds-a2"><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">02</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-workflow"/></svg></div><div class="ds-h">Case management and workflow</div><div class="ds-p">Investigations, approvals and communications across teams, end to end.</div><ol class="ds-steps"><li>Claim received</li><li>Review and investigate</li><li>Approval</li><li>Resolution</li></ol></div></div>
+          <div class="ds-a4"><div class="ds-card"><div class="ds-card-hd"><span class="ds-num">04</span><svg class="ds-ic" aria-hidden="true"><use href="#ic-audit"/></svg></div><div class="ds-h">Governance, audit trail and scale</div><div class="ds-p">A full audit trail on every case. Claims management is a critical operation under APRA CPS 230.</div><div class="ds-chips"><span>Full audit trail</span><span>Role-based access</span><span>Human determination</span></div></div></div>
+        </div></div>
       <div class="sdots"><div class="sdot" onclick="goSlide(0)"></div><div class="sdot" onclick="goSlide(1)"></div><div class="sdot" onclick="goSlide(2)"></div><div class="sdot" onclick="goSlide(3)"></div><div class="sdot on" onclick="goSlide(4)"></div></div>
       <div class="slide-nav"><button class="snav" onclick="prevSlide()">← Back</button><button class="snav primary" onclick="goDemo()">Launch Demo →</button></div>
     </div>
