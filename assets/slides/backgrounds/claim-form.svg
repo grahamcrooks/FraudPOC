@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 900">
+<g transform="rotate(-7 450 450)">
+ <rect x="150" y="90" width="660" height="790" rx="6" fill="#F4F7FA" stroke="#A9B4C0" stroke-width="2"/>
+ <rect x="110" y="60" width="660" height="800" rx="6" fill="#FFFFFF" stroke="#71808F" stroke-width="2"/>
+ <rect x="110" y="60" width="660" height="70" rx="6" fill="#001F5F" opacity=".85"/>
+ <text x="140" y="104" font-family="Inter,Arial,sans-serif" font-size="26" font-weight="700" fill="#fff" letter-spacing="1">CLAIM FORM</text>
+ <text x="560" y="104" font-family="Inter,Arial,sans-serif" font-size="20" font-weight="700" fill="#fff">H+</text>
+ <g font-family="Inter,Arial,sans-serif" font-size="15" font-weight="600" fill="#71808F" letter-spacing=".5">
+  <text x="140" y="175">MEMBER NUMBER</text><text x="470" y="175">DATE OF SERVICE</text>
+  <text x="140" y="275">PROVIDER</text><text x="470" y="275">PROVIDER NUMBER</text>
+  <text x="140" y="375">ITEMISED SERVICES</text>
+ </g>
+ <rect x="140" y="186" width="300" height="44" rx="4" fill="none" stroke="#71808F" stroke-width="1.5"/><rect x="156" y="204" width="160" height="7" rx="3" fill="#A9B4C0"/>
+ <rect x="470" y="186" width="270" height="44" rx="4" fill="none" stroke="#71808F" stroke-width="1.5"/><rect x="486" y="204" width="120" height="7" rx="3" fill="#A9B4C0"/>
+ <rect x="140" y="286" width="300" height="44" rx="4" fill="none" stroke="#71808F" stroke-width="1.5"/><rect x="156" y="304" width="200" height="7" rx="3" fill="#A9B4C0"/>
+ <rect x="470" y="286" width="270" height="44" rx="4" fill="none" stroke="#71808F" stroke-width="1.5"/><rect x="486" y="304" width="140" height="7" rx="3" fill="#A9B4C0"/>
+ <g transform="translate(70 -110)">
+  <rect x="70" y="496" width="620" height="40" fill="#F4F7FA" stroke="#71808F" stroke-width="1.5"/>
+  <g font-family="Inter,Arial,sans-serif" font-size="14" font-weight="700" fill="#3A4756"><text x="84" y="522">ITEM</text><text x="170" y="522">SERVICE</text><text x="600" y="522">FEE</text></g>
+  <line x1="70" y1="560" x2="690" y2="560" stroke="#A9B4C0" stroke-width="1.5"/><rect x="84" y="536" width="60" height="7" rx="3" fill="#A9B4C0"/><rect x="170" y="536" width="260" height="7" rx="3" fill="#A9B4C0"/><rect x="600" y="536" width="70" height="7" rx="3" fill="#A9B4C0"/><line x1="70" y1="606" x2="690" y2="606" stroke="#A9B4C0" stroke-width="1.5"/><rect x="84" y="582" width="60" height="7" rx="3" fill="#A9B4C0"/><rect x="170" y="582" width="260" height="7" rx="3" fill="#A9B4C0"/><rect x="600" y="582" width="70" height="7" rx="3" fill="#A9B4C0"/><line x1="70" y1="652" x2="690" y2="652" stroke="#A9B4C0" stroke-width="1.5"/><rect x="84" y="628" width="60" height="7" rx="3" fill="#A9B4C0"/><rect x="170" y="628" width="260" height="7" rx="3" fill="#A9B4C0"/><rect x="600" y="628" width="70" height="7" rx="3" fill="#A9B4C0"/><line x1="70" y1="698" x2="690" y2="698" stroke="#A9B4C0" stroke-width="1.5"/><rect x="84" y="674" width="60" height="7" rx="3" fill="#A9B4C0"/><rect x="170" y="674" width="260" height="7" rx="3" fill="#A9B4C0"/><rect x="600" y="674" width="70" height="7" rx="3" fill="#A9B4C0"/><line x1="70" y1="744" x2="690" y2="744" stroke="#A9B4C0" stroke-width="1.5"/><rect x="84" y="720" width="60" height="7" rx="3" fill="#A9B4C0"/><rect x="170" y="720" width="260" height="7" rx="3" fill="#A9B4C0"/><rect x="600" y="720" width="70" height="7" rx="3" fill="#A9B4C0"/>
+  <line x1="150" y1="496" x2="150" y2="742" stroke="#A9B4C0" stroke-width="1.5"/><line x1="580" y1="496" x2="580" y2="742" stroke="#A9B4C0" stroke-width="1.5"/>
+  <rect x="70" y="496" width="620" height="246" fill="none" stroke="#71808F" stroke-width="1.5"/>
+  <text x="400" y="790" font-family="Inter,Arial,sans-serif" font-size="15" font-weight="700" fill="#3A4756">TOTAL</text><rect x="470" y="778" width="120" height="12" rx="3" fill="#71808F"/>
+ </g>
+ <line x1="140" y1="800" x2="420" y2="800" stroke="#71808F" stroke-width="1.5"/>
+ <text x="140" y="826" font-family="Inter,Arial,sans-serif" font-size="13" fill="#71808F">Member declaration</text>
+</g></svg>

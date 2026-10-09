@@ -207,6 +207,13 @@ html,body{height:100%;overflow:hidden;font-family:var(--font);background:#000;co
 .doc-slide .snav.primary{background:var(--navy);border-color:var(--navy);color:#fff}
 #slides-screen:has(.doc-slide.active) .skip-demo-btn{background:var(--white);border-color:var(--border);color:var(--text-3)}
 #slides-screen:has(.doc-slide.active) .skip-demo-btn:hover{color:var(--text)}
+/* Background imagery: flat line drawings of a claim form, analytics and a claims
+   register at 35% opacity, top right, fading out towards the text, under a light
+   teal/grey wash. Slide content sits above it, with colour saturation softened by 30%. */
+.doc-slide .ds-bg{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.doc-slide .ds-bg::before{content:'';position:absolute;right:-3%;top:-2%;width:56%;height:72%;background:var(--bg) no-repeat right top/contain;opacity:.35;-webkit-mask-image:linear-gradient(100deg,transparent 0%,#000 38%,#000 75%,transparent 100%),linear-gradient(180deg,#000 0%,#000 38%,transparent 62%);-webkit-mask-composite:source-in;mask-image:linear-gradient(100deg,transparent 0%,#000 38%,#000 75%,transparent 100%),linear-gradient(180deg,#000 0%,#000 38%,transparent 62%);mask-composite:intersect}
+.doc-slide .ds-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 45%,rgba(16,165,172,.07) 75%,rgba(113,128,143,.10) 100%)}
+.doc-slide>.ds-hd,.doc-slide>.ds-body{position:relative;z-index:1;filter:saturate(.7)}
 @media (prefers-reduced-motion:reduce){.doc-slide.active{animation:none}}
 
 
@@ -970,6 +977,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
     </svg>
     <!-- SLIDE 1 — AGENDA -->
     <div class="pslide light doc-slide active" id="ps0">
+      <div class="ds-bg" style="--bg:url(assets/slides/backgrounds/claim-form.svg)" aria-hidden="true"></div>
       <div class="ds-hd"><div class="ds-title">Agenda</div><div class="ds-sub">What we'll cover today</div></div>
       <div class="ds-body">
         <ol class="ds-agenda"><li><span class="ds-tile"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-clock"/></svg><b>01</b></span><div><div class="ds-h">Background</div><div class="ds-p">Why prevention, not just recovery</div></div><span class="ds-lead" aria-hidden="true"></span><span class="ds-where">Problem</span></li><li><span class="ds-tile"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-bars"/></svg><b>02</b></span><div><div class="ds-h">Quantify Bupa claims fraud</div><div class="ds-p">Sizing the problem in Bupa's own claims</div></div><span class="ds-lead" aria-hidden="true"></span><span class="ds-where">Problem · Business case</span></li><li><span class="ds-tile"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-target"/></svg><b>03</b></span><div><div class="ds-h">Target outcome</div><div class="ds-p">What success looks like for Phase 1</div></div><span class="ds-lead" aria-hidden="true"></span><span class="ds-where">Business case</span></li><li><span class="ds-tile"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-list"/></svg><b>04</b></span><div><div class="ds-h">Requirements</div><div class="ds-p">What we're asking for to get started</div></div><span class="ds-lead" aria-hidden="true"></span><span class="ds-where">Business case</span></li></ol>
@@ -981,6 +989,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 
     <!-- SLIDE 2 — THE PROBLEM -->
     <div class="pslide light doc-slide" id="ps1">
+      <div class="ds-bg" style="--bg:url(assets/slides/backgrounds/claims-register.svg)" aria-hidden="true"></div>
       <div class="ds-hd"><div class="ds-title">Problem</div><div class="ds-sub">Why prevention, not just recovery</div></div>
       <div class="ds-body">
         <div class="ds-chain"><div class="ds-link"><div class="ds-block"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-search"/></svg><span>Hidden anomalies in routine claims</span></div><div class="ds-p">Opportunistic fraud, unusual claiming patterns, organised fraud and incorrect billing hide within high volumes of legitimate claims.</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-link"><div class="ds-block"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-clock"/></svg><span>Manual review is reactive and slow</span></div><div class="ds-p">Rule-based checks and manual audits catch issues after the claim is paid, so fraudulent activity slips through.</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-link"><div class="ds-block"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-trend"/></svg><span>Leakage compounds before recovery</span></div><div class="ds-p">Fraudulent claims cause direct losses and higher premiums as losses accumulate across large claim volumes.</div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-link"><div class="ds-block"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-users"/></svg><span>Members and providers need protection</span></div><div class="ds-p">Fraud undermines trust, affects genuine members and providers, and inflates the cost of care across the health system.</div></div></div>
@@ -998,6 +1007,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 
     <!-- SLIDE 3 — BUSINESS CASE -->
     <div class="pslide light doc-slide" id="ps2">
+      <div class="ds-bg" style="--bg:url(assets/slides/backgrounds/claims-analytics.svg)" aria-hidden="true"></div>
       <div class="ds-hd"><div class="ds-title">Business case</div><div class="ds-sub">The value of earlier detection</div></div>
       <div class="ds-body">
         <div class="ds-label">How the POC will run<span>About 10,000 historical receipts, replayed through Phase 1 first, with later phases to follow</span></div>
@@ -1016,6 +1026,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 
     <!-- SLIDE 4 — THREE PHASES -->
     <div class="pslide light doc-slide" id="ps3">
+      <div class="ds-bg" style="--bg:url(assets/slides/backgrounds/claim-form.svg)" aria-hidden="true"></div>
       <div class="ds-hd"><div class="ds-title">Three phases</div><div class="ds-sub">Every claim answers three questions, in order. Any phase can stop it.</div></div>
       <div class="ds-body">
         <div class="ds-phases"><div class="ds-phase"><div class="ds-block ds-block-lg"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-receipt"/></svg><span><small>Phase 1</small>Receipt forensics</span></div><div class="ds-q">Is the receipt genuine, and does it match the claim?</div><ul class="ds-items"><li><b>Pre-flight</b>: receipt type · field extraction and confidence · disqualifying content · receipt completeness · line item reconciliation · claim value</li><li><b>Forensic analysis</b>: font consistency · colour and stamp analysis · AI-generated detection · metadata and provenance · duplicate detection</li></ul><div class="ds-result"><div><span class="ds-badge ds-pass">PASS ✓</span>On to Phase 2</div><div><span class="ds-badge ds-fail">FAIL ✗</span>Rejected at pre-flight, or referred to an investigator</div></div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-phase"><div class="ds-block ds-block-lg"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-activity"/></svg><span><small>Phase 2</small>Cross-claim signals</span></div><div class="ds-q">Does this claim fit a pattern across other claims?</div><ul class="ds-items"><li><code>ES-001</code> Distance anomaly</li><li><code>ES-002</code> Device ring</li><li><code>ES-003</code> Bank account ring</li><li><code>ES-004</code> Phantom ABN</li><li><code>ES-005</code> Waiver abuse</li></ul><div class="ds-dashed ds-planned"><div class="ds-label">Planned</div><ul class="ds-items"><li><code>ES-006</code> Item code validation</li><li><code>ES-007</code> Terminal mismatch</li></ul></div><div class="ds-result"><div><span class="ds-badge ds-pass">PASS ✓</span>On to Phase 3</div><div><span class="ds-badge ds-fail">FAIL ✗</span>Referred for investigation</div></div></div><div class="ds-arrow" aria-hidden="true"></div><div class="ds-phase"><div class="ds-block ds-block-lg"><svg class="ds-ic on-fill" aria-hidden="true"><use href="#ic-network"/></svg><span><small>Phase 3</small>Network intelligence</span></div><div class="ds-q">Is the claim connected to known fraud or an organised ring?</div><ul class="ds-items"><li>Watchlist match</li><li>Network graph, up to 3 hops: member, practice, practitioner, device, submission IP, payment account</li><li>Fraud case similarity</li></ul><div class="ds-result"><div><span class="ds-badge ds-pass">PASS ✓</span>Sent for adjudication</div><div><span class="ds-badge ds-fail">FAIL ✗</span>Referred for investigation</div></div></div></div>
@@ -1028,6 +1039,7 @@ body.cap-on .ls-browser{width:min(52vw,calc((100vh - 200px - var(--cap-h,0px)) *
 
     <!-- SLIDE 5 — WHY PEGA -->
     <div class="pslide light doc-slide" id="ps4">
+      <div class="ds-bg" style="--bg:url(assets/slides/backgrounds/claims-analytics.svg)" aria-hidden="true"></div>
       <div class="ds-hd"><div class="ds-title">Why Pega</div><div class="ds-sub">Decisioning, workflow and orchestration in one platform</div></div>
       <div class="ds-body">
         <div class="ds-stackgrid">
