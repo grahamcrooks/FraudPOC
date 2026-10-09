@@ -25,9 +25,9 @@ slide
   - Slide 1: Agenda (Background, Quantify Bupa Claims Fraud, Target Outcome, Requirements)
   - Slide 2: Problem (why prevention, not just recovery)
   - Slide 3: Business Case (the value of earlier detection)
-  - Slide 4: Three Phases (a practical path from detection to prevention)
+  - Slide 4: Three Phases (receipt forensics, cross-claim signals, network intelligence: what each checks, and what a pass and a fail lead to)
   - Slide 5: Why Pega - ends with the Launch Demo button
-  - Slides 1 to 5 are full-slide images in `assets/slides/`
+  - Slides 1 to 5 are HTML in `index.html`, in the style of technical documentation; the backup slide is an image in `assets/slides/`
   - Backup slide: "Three Hops" identity-graph diagram - reachable only via the B key or the dashed Backup button, not part of the main sequence or Rolling Demo
 - Keyboard: S = Slides mode, Space / ← → = previous-next slide, B = jump to Backup slide
 

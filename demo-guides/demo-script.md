@@ -48,37 +48,37 @@ What stops the demo depends on the mode:
 
 ## Part 1: The slides
 
-The five slides are full-slide images in `assets/slides/`. The whole image always shows; on a screen that isn't 16:9, a blurred copy of it fills the edges. They look the same in the light and dark themes.
+The five slides are built in HTML in the style of technical documentation: a light background, flat line icons, thin borders, and arrows showing how the parts connect. They look the same in the light and dark themes. The backup slide is still an image.
 
 ### Slide 1: Agenda
 
-- **Say**: Four things today: why prevention rather than recovery, sizing the problem in Bupa's own claims, what success looks like for the first phase, and what we need to get started.
-- **Under the hood**: A static image slide.
-- **Check**: The slide shows four agenda items. Next moves to slide 2.
+- **Say**: Four things today: why prevention rather than recovery, sizing the problem in Bupa's own claims, what success looks like for Phase 1, and what we need to get started. Then the live demo.
+- **Under the hood**: A static slide. Each item names the slide that covers it.
+- **Check**: Four numbered rows joined by a line, each with a tag naming its slide, and a note about the live demo below.
 
 ### Slide 2: Problem
 
-- **Say**: Fraud hides in routine claims. Manual review is reactive: rules and audits catch it after the claim is paid, and by then the leakage has compounded across claim volumes and into premiums. It costs members and providers too. If you want a number: an estimated 1 to 3% of claims contain fraud, waste or abuse, against a global range of 3 to 10% (PKF Littlejohn / CCFS), and healthcare is Australia's most targeted sector for data breaches (OAIC, Jan to Jun 2023).
-- **Under the hood**: A static image slide. The sources aren't on the slide, so quote them if you use the figures.
-- **Check**: Four cards: hidden anomalies, manual review, leakage, protection.
+- **Say**: Fraud hides in routine claims. Manual review is reactive: rules and audits catch it after the claim is paid, and by then the leakage has compounded across claim volumes and into premiums. It costs members and providers too. The numbers: an estimated 1 to 3% of claims contain fraud, waste or abuse, against a global range of 3 to 10%, and healthcare is Australia's most targeted sector for data breaches. Recovery happens after a claim is paid; prevention happens before.
+- **Under the hood**: A static slide. The four problems are drawn as a chain, each leading to the next. The sources for the figures are on the slide: the internal estimate benchmarked against PKF Littlejohn / CCFS, and the OAIC Notifiable Data Breaches Report, Jan to Jun 2023.
+- **Check**: Four cards joined by arrows, a row of three figures with the prevention line, and the source line underneath.
 
 ### Slide 3: Business Case
 
-- **Say**: Four outcomes: reduce improper payments, prioritise high-risk claims, improve operational efficiency, protect member trust. The POC replays about 10,000 historical receipts, starting with Phase 1, to put real numbers on these.
-- **Under the hood**: A static image slide. The claims analytics panel ($270K, +42%, the monthly chart and risk categories) is illustrative, not Bupa data. Say so if anyone asks.
-- **Check**: The analytics panel and four outcome cards are fully visible.
+- **Say**: The POC replays about 10,000 historical receipts, through Phase 1 first. Each one is extracted, analysed, classified, routed and validated. Four outcomes: reduce improper payments, prioritise high-risk claims, improve operational efficiency, protect member trust. The figures come from the POC results. To start we need an executive owner, AI Council approval, and resource and budget for the build.
+- **Under the hood**: A static slide. There are no figures on it until the POC produces them; the earlier illustrative analytics panel has been removed.
+- **Check**: Five connected steps across the top, four outcome cards bottom left, three requirements bottom right.
 
 ### Slide 4: Three Phases
 
-- **Say**: A practical path: a detection POC to identify suspicious patterns, then workflow and review to triage and investigate, then prevention at scale with real-time intervention. Then bridge to the demo: inside the detection POC, every claim goes through three layers of checks, which the demo calls Phase 1 receipt forensics, Phase 2 cross-claim signals and Phase 3 network intelligence.
-- **Under the hood**: A static image slide. The delivery phases on the slide are not the demo's Phase 1, 2 and 3; the bridge line above keeps the two apart.
-- **Check**: Three cards: Detection POC, Workflow & Review, Prevention at Scale.
+- **Say**: Every claim answers three questions, in order, and any phase can stop it. Receipt forensics: is the receipt genuine and does it match the claim? Cross-claim signals: does it fit a pattern across other claims? Network intelligence: is it connected to known fraud or a ring? Each column lists exactly what runs, and what a pass and a fail lead to. Every signal goes to an investigator; AI assists, people decide.
+- **Under the hood**: A static slide that matches the demo. Phase 1: pre-flight (receipt type, field extraction and confidence, disqualifying content, completeness, line item reconciliation, claim value) and forensic analysis (font, colour and stamp, AI-generated, metadata, duplicate). Phase 2: ES-001 to ES-005, with ES-006 and ES-007 marked planned. Phase 3: watchlist match, network graph to 3 hops, fraud case similarity.
+- **Check**: Three columns joined by arrows, each with a PASS and a FAIL line. Phase 2 shows ES-006 and ES-007 under Planned.
 
 ### Slide 5: Why Pega
 
-- **Say**: Decisioning, workflow and orchestration in one platform: business rules and AI insight, case management for investigations, integration across claims, member and provider data, and the governance and audit trail a regulated insurer needs.
-- **Under the hood**: A static image slide. The impact figures at the foot (-65%, +40%, +28%) are illustrative, not measured. Launch Demo opens the claim portal.
-- **Check**: Launch Demo opens the portal on CLM-0841 and the sign-in scene starts.
+- **Say**: Decisioning, workflow and orchestration in one platform. Every claim is a case, and every check, signal and decision is recorded on it. Around that case: decisioning and business rules, case management for investigations, integration across claims, member and provider data, and the governance and audit trail a regulated insurer needs. Claims management is a critical operation under APRA CPS 230.
+- **Under the hood**: A static slide drawn as an architecture: the claim case in the centre, four capabilities connected to it. There are no impact figures; the earlier illustrative ones have been removed. Launch Demo opens the claim portal.
+- **Check**: The centre box and four cards connected by lines. Launch Demo opens the portal on CLM-0841 and the sign-in scene starts.
 
 ### Backup: How the network graph works
 
