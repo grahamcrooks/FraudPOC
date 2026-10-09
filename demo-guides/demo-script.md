@@ -48,37 +48,37 @@ What stops the demo depends on the mode:
 
 ## Part 1: The slides
 
-The five slides are built in HTML in the style of technical documentation: a light background, flat line icons, thin borders, and arrows showing how the parts connect. They look the same in the light and dark themes. The backup slide is still an image.
+The five slides are built in HTML after the "one platform, built like a ship" reference: a white background, a heavy navy title with a short teal bar, one diagram of solid teal and dark-grey blocks with line icons (gold dashed for what's planned or still to agree), and a three-colour tagline at the foot. They look the same in the light and dark themes. The backup slide is still an image.
 
 ### Slide 1: Agenda
 
 - **Say**: Four things today: why prevention rather than recovery, sizing the problem in Bupa's own claims, what success looks like for Phase 1, and what we need to get started. Then the live demo.
 - **Under the hood**: A static slide. Each item names the slide that covers it.
-- **Check**: Four numbered rows joined by a line, each with a tag naming its slide, and a note about the live demo below.
+- **Check**: Four rows, each with a teal number tile and a leader line to the slide that covers it. Tagline: "Four questions. Then the live demo."
 
 ### Slide 2: Problem
 
 - **Say**: Fraud hides in routine claims. Manual review is reactive: rules and audits catch it after the claim is paid, and by then the leakage has compounded across claim volumes and into premiums. It costs members and providers too. The numbers: an estimated 1 to 3% of claims contain fraud, waste or abuse, against a global range of 3 to 10%, and healthcare is Australia's most targeted sector for data breaches. Recovery happens after a claim is paid; prevention happens before.
 - **Under the hood**: A static slide. The four problems are drawn as a chain, each leading to the next. The sources for the figures are on the slide: the internal estimate benchmarked against PKF Littlejohn / CCFS, and the OAIC Notifiable Data Breaches Report, Jan to Jun 2023.
-- **Check**: Four cards joined by arrows, a row of three figures with the prevention line, and the source line underneath.
+- **Check**: Four teal blocks joined by arrows with a description under each, three figures with their sources, and the tagline "Recovery happens after a claim is paid. Prevention happens before."
 
 ### Slide 3: Business Case
 
 - **Say**: The POC replays about 10,000 historical receipts, through Phase 1 first. Each one is extracted, analysed, classified, routed and validated. Four outcomes: reduce improper payments, prioritise high-risk claims, improve operational efficiency, protect member trust. The figures come from the POC results. To start we need an executive owner, AI Council approval, and resource and budget for the build.
 - **Under the hood**: A static slide. There are no figures on it until the POC produces them; the earlier illustrative analytics panel has been removed.
-- **Check**: Five connected steps across the top, four outcome cards bottom left, three requirements bottom right.
+- **Check**: Five teal steps joined by arrows, four outcomes with teal dots, the three requirements in a gold dashed box, and the tagline "Replay 10,000 receipts. Measure what's caught. Then decide."
 
 ### Slide 4: Three Phases
 
 - **Say**: Every claim answers three questions, in order, and any phase can stop it. Receipt forensics: is the receipt genuine and does it match the claim? Cross-claim signals: does it fit a pattern across other claims? Network intelligence: is it connected to known fraud or a ring? Each column lists exactly what runs, and what a pass and a fail lead to. Every signal goes to an investigator; AI assists, people decide.
 - **Under the hood**: A static slide that matches the demo. Phase 1: pre-flight (receipt type, field extraction and confidence, disqualifying content, completeness, line item reconciliation, claim value) and forensic analysis (font, colour and stamp, AI-generated, metadata, duplicate). Phase 2: ES-001 to ES-005, with ES-006 and ES-007 marked planned. Phase 3: watchlist match, network graph to 3 hops, fraud case similarity.
-- **Check**: Three columns joined by arrows, each with a PASS and a FAIL line. Phase 2 shows ES-006 and ES-007 under Planned.
+- **Check**: Three teal phase headers joined by arrows, each column with a PASS and a FAIL line. Phase 2 shows ES-006 and ES-007 in a gold dashed Planned box. Tagline: "Is it genuine? Does it fit? Who else is involved?"
 
 ### Slide 5: Why Pega
 
 - **Say**: Decisioning, workflow and orchestration in one platform. Every claim is a case, and every check, signal and decision is recorded on it. Around that case: decisioning and business rules, case management for investigations, integration across claims, member and provider data, and the governance and audit trail a regulated insurer needs. Claims management is a critical operation under APRA CPS 230.
-- **Under the hood**: A static slide drawn as an architecture: the claim case in the centre, four capabilities connected to it. There are no impact figures; the earlier illustrative ones have been removed. Launch Demo opens the claim portal.
-- **Check**: The centre box and four cards connected by lines. Launch Demo opens the portal on CLM-0841 and the sign-in scene starts.
+- **Under the hood**: A static slide drawn as a layered stack, from the platform at the base up to the fraud checks this POC adds. There are no impact figures; the earlier illustrative ones have been removed. Launch Demo opens the claim portal.
+- **Check**: A layered stack: the three fraud checks (gold dashed) on four teal capabilities, on the teal claim case, on the dark Pega platform base, with a legend joined by leader lines. Tagline: "Build the case once. Add the checks. People decide." Launch Demo opens the portal on CLM-0841 and the sign-in scene starts.
 
 ### Backup: How the network graph works
 
